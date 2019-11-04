@@ -1,6 +1,6 @@
-name: TemplatePlugin
+name: zShop
 author: Maxlego08
-main: fr.maxlego08.template.Template
-version: 0.0.1.4
+main: fr.maxlego08.shop.ZShop
+version: DEV-0.0.0.1
 commands:
-  test:
+  shop:
