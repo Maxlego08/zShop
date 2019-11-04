@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.commands.CommandShop;
+import fr.maxlego08.shop.command.commands.CommandShopVersion;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.logger.Logger;
@@ -35,6 +36,19 @@ public class CommandManager implements CommandExecutor {
 				.setDescription("Open shop")
 				.setSyntaxe("/shop"));
 		
+		addCommand(new CommandShopVersion()
+				.setParent(command)
+				.addSubCommand("version", "v", "ver", "?")
+				.setSyntaxe("/shop version")
+				.setDescription("Show plugin version"));
+		
+		addCommand(new ZCommand()
+				.sendHelp("shop")
+				.addSubCommand("help")
+				.setSyntaxe("/shop help")
+				.setDescription("Show help")
+				.setPermission("zshop.help")
+				.setParent(command));
 		
 		
 		main.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);

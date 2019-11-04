@@ -12,7 +12,9 @@ import fr.maxlego08.shop.zcore.utils.VersionChecker;
 import fr.maxlego08.shop.zshop.ShopManager;
 import fr.maxlego08.shop.zshop.categories.CategoryManager;
 import fr.maxlego08.shop.zshop.factories.Categories;
+import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
+import fr.maxlego08.shop.zshop.items.ShopItemManager;
 
 public class ZShop extends ZPlugin {
 
@@ -20,6 +22,7 @@ public class ZShop extends ZPlugin {
 	private InventoryManager inventoryManager;
 	private Shop shop;
 	private Categories categories;
+	private Items items;
 
 	@Override
 	public void onEnable() {
@@ -32,9 +35,11 @@ public class ZShop extends ZPlugin {
 		inventoryManager = new InventoryManager(this);
 		shop = new ShopManager(this);
 		categories = new CategoryManager();
-
+		items = new ShopItemManager(this);
+		
 		getServer().getServicesManager().register(Shop.class, shop, this, ServicePriority.High);
 		getServer().getServicesManager().register(Categories.class, categories, this, ServicePriority.High);
+		getServer().getServicesManager().register(Items.class, items, this, ServicePriority.High);
 
 		VersionChecker versionChecker = new VersionChecker();
 		versionChecker.getLastVersion();
@@ -49,6 +54,8 @@ public class ZShop extends ZPlugin {
 
 		addSave(new Config());
 		addSave(new Lang());
+		addSave(categories);
+		addSave(items);
 
 		getSavers().forEach(saver -> saver.load(getPersist()));
 
@@ -81,6 +88,10 @@ public class ZShop extends ZPlugin {
 
 	public Shop getShop() {
 		return shop;
+	}
+	
+	public Items getItems() {
+		return items;
 	}
 
 }

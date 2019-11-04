@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.zcore.logger.Logger;
@@ -39,6 +40,11 @@ public abstract class VInventory extends ZUtils {
 	public void addItem(int slot, ItemButton item) {
 		this.items.put(slot, item);
 		this.inventory.setItem(slot, item.getDisplayItem());
+	}
+	
+	public void addItem(int slot, ItemStack item) {
+		this.items.put(slot, new ItemButton(item));
+		this.inventory.setItem(slot, item);
 	}
 
 	public void removeItem(int slot) {

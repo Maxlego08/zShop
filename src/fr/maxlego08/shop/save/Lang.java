@@ -5,7 +5,7 @@ import fr.maxlego08.shop.zcore.utils.storage.Saveable;
 
 public class Lang implements Saveable {
 
-	public static String prefix = "§8(§bTemplate§8)";
+	public static String prefix = "§8(§bLang§8)";
 	
 	public static String commandHelp = "§a» §6%syntaxe% §7- §e%description%";
 	public static String noPermission = "§cYou don't have permission !";

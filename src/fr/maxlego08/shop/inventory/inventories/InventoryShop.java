@@ -5,16 +5,22 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
 import fr.maxlego08.shop.ZShop;
+import fr.maxlego08.shop.inventory.ItemButton;
 import fr.maxlego08.shop.inventory.VInventory;
+import fr.maxlego08.shop.save.inventory.ConfigDefaultInventory;
 
 public class InventoryShop extends VInventory {
 
 	@Override
 	public boolean openInventory(ZShop main, Player player, int page, Object... args) throws Exception {
-		
-		createInventory("§eShop");
-		
-		
+
+		createInventory(ConfigDefaultInventory.inventoryName, ConfigDefaultInventory.inventorySize);
+
+		ConfigDefaultInventory.decoration.forEach((slot, button) -> addItem(slot, button.getInitButton()));
+
+		main.getCategories().getCategories()
+				.forEach(category -> addItem(category.getSlot(), new ItemButton(category.toItemStack())));
+
 		return true;
 	}
 
