@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.zcore;
 
+import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,9 @@ public abstract class ZPlugin extends JavaPlugin {
 
 		gson = getGsonBuilder().create();
 		persist = new Persist(this);
+
+		if (!new File(getDataFolder() + "/items.yml").exists())
+			saveResource("items.yml", false);
 
 		setupEconomy();
 

@@ -55,10 +55,10 @@ public class ZShop extends ZPlugin {
 		addSave(new Config());
 		addSave(new Lang());
 		addSave(categories);
-		addSave(items);
 
 		getSavers().forEach(saver -> saver.load(getPersist()));
-
+		items.load();
+		
 		postEnable();
 
 	}

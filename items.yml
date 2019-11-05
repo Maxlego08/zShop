@@ -1,0 +1,41 @@
+items:
+  1:
+    items:
+      1:
+        type: ITEM
+        item:
+          id: 1
+        buyPrice: 30.0
+        sellPrice: 0.1
+      2:
+        type: ITEM
+        item:
+          id: 2
+        buyPrice: 30.0
+        sellPrice: 0.1
+      3:
+        type: ITEM
+        item:
+          id: 3
+        buyPrice: 30.0
+        sellPrice: 0.1
+  2:
+    items:
+      1:
+        type: ITEM
+        item:
+          id: 364
+        buyPrice: 30.0
+        sellPrice: 0.1
+      2:
+        type: ITEM
+        item:
+          id: 365
+        buyPrice: 300.0
+        sellPrice: 50.0
+      3:
+        type: ITEM
+        item:
+          id: 366
+        buyPrice: 30.0
+        sellPrice: 0.1                        
