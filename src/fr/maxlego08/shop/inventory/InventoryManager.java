@@ -12,6 +12,8 @@ import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.exceptions.InventoryAlreadyExistException;
 import fr.maxlego08.shop.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.inventory.inventories.InventoryShop;
+import fr.maxlego08.shop.inventory.inventories.InventoryShopBuy;
+import fr.maxlego08.shop.inventory.inventories.InventoryShopCategory;
 import fr.maxlego08.shop.listener.ListenerAdapter;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
@@ -29,6 +31,8 @@ public class InventoryManager extends ListenerAdapter {
 
 		try {
 			addInventory(EnumCategory.DEFAULT.getInventoryID(), new InventoryShop());
+			addInventory(EnumCategory.SHOP.getInventoryID(), new InventoryShopCategory());
+			addInventory(EnumCategory.BUY.getInventoryID(), new InventoryShopBuy());
 		} catch (InventoryAlreadyExistException e) {
 			e.printStackTrace();
 		}

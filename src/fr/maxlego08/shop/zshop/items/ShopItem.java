@@ -17,9 +17,13 @@ public interface ShopItem{
 	
 	public ItemStack getItem();
 	
+	public ItemStack getDisplayItem();
+	
 	public double getSellPrice();
 	
 	public double getBuyPrice();
+	
+	public int getMaxStackSize();
 	
 	public enum ShopType{
 		

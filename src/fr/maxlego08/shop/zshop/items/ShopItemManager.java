@@ -75,11 +75,12 @@ public class ShopItemManager implements Items {
 					
 					double sellPrice = configuration.getDouble(currentPath+"sellPrice", 0);
 					double buyPrice = configuration.getDouble(currentPath+"buyPrice", 0);
+					int maxStackSize = configuration.getInt(currentPath+"item.stack", 64);
 					
 					ShopItem item = null;
 					switch (type) {
 					case ITEM:{
-						item = new ShopItemConsomable(currentId, itemStack, sellPrice, buyPrice);
+						item = new ShopItemConsomable(currentId, itemStack, sellPrice, buyPrice, maxStackSize);
 						break;
 					}
 					case UNIQUE_ITEM:{

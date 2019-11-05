@@ -1,20 +1,20 @@
 package fr.maxlego08.shop.zshop.categories;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import fr.maxlego08.shop.zcore.utils.storage.Persist;
 import fr.maxlego08.shop.zshop.factories.Categories;
+import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
 
 public class CategoryManager implements Categories{
 
-	private static List<Category> categories = new ArrayList<Category>();
+	private static Map<Integer, Category> categories = new HashMap<Integer, Category>();
 	
 	static{
 		
-		categories.add(new Category(1, 10, "§aBlocks", 3, Arrays.asList("")));
-		categories.add(new Category(1, 12, "§eFood", 364, Arrays.asList("")));
+		categories.put(1, (new Category(1, 10, ShopType.ITEM, "§aBlocks", 3, null, 9, 8, 0, 0)));
+		categories.put(2, (new Category(2, 12, ShopType.ITEM, "§eFood", 364, null, 18, 13, 12, 14)));
 		
 	}
 	
@@ -29,8 +29,13 @@ public class CategoryManager implements Categories{
 	}
 
 	@Override
-	public List<Category> getCategories() {
+	public Map<Integer, Category> getCategories() {
 		return categories;
+	}
+
+	@Override
+	public Category getCategory(int id) {
+		return categories.getOrDefault(id, null);
 	}
 
 }

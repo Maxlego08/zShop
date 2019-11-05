@@ -8,6 +8,7 @@ import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.inventory.ItemButton;
 import fr.maxlego08.shop.inventory.VInventory;
 import fr.maxlego08.shop.save.inventory.ConfigDefaultInventory;
+import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
 public class InventoryShop extends VInventory {
 
@@ -18,8 +19,10 @@ public class InventoryShop extends VInventory {
 
 		ConfigDefaultInventory.decoration.forEach((slot, button) -> addItem(slot, button.getInitButton()));
 
-		main.getCategories().getCategories()
-				.forEach(category -> addItem(category.getSlot(), new ItemButton(category.toItemStack())));
+		main.getCategories().getCategories().forEach(
+				(id, category) -> addItem(category.getSlot(), new ItemButton(category.toItemStack()).setClick(event -> {
+					main.getShop().openShop(player, EnumCategory.SHOP, 1, category);
+				})));
 
 		return true;
 	}

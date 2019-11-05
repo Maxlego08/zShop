@@ -10,8 +10,11 @@ public class Config implements Saveable {
 	public static String helpPermission = "zshop.help";
 	
 	public static boolean shopOpenEvent = true;
+	public static boolean shopPreSellEvent = true;
+	public static boolean shopPostSellEvent = true;
 	
 	public static ConfigDefaultInventory defaultInventory = new ConfigDefaultInventory();
+	public static ConfigDefaultInventory buyInventory = new ConfigDefaultInventory();
 	
 	private static transient Config i = new Config();
 	

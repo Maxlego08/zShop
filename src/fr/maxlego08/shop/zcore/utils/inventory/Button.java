@@ -9,20 +9,22 @@ import fr.maxlego08.shop.zcore.utils.ZUtils;
 
 public class Button extends ZUtils {
 
-	private String name;
-	private int item;
-	private int data;
-	private List<String> lore;
+	private final String name;
+	private final int item;
+	private final int data;
+	private final List<String> lore;
 
 	public Button(String name, int item, int data, List<String> lore) {
 		this.name = name;
 		this.lore = lore;
 		this.item = item;
+		this.data = data;
 	}
 
 	public Button(String name, int item, int data) {
 		this.name = name;
 		this.item = item;
+		this.data = data;
 		this.lore = null;
 	}
 
@@ -56,6 +58,17 @@ public class Button extends ZUtils {
 		ItemMeta itemM = item.getItemMeta();
 		if (hasName())
 			itemM.setDisplayName(getName());
+		if (hasLore())
+			itemM.setLore(getLore());
+		item.setItemMeta(itemM);
+		return item;
+	}
+	
+	public ItemStack getInitButton(String type, String replace) {
+		ItemStack item = getItem();
+		ItemMeta itemM = item.getItemMeta();
+		if (hasName())
+			itemM.setDisplayName(getName().replace(type, replace));
 		if (hasLore())
 			itemM.setLore(getLore());
 		item.setItemMeta(itemM);

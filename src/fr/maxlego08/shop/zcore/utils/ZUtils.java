@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -364,6 +365,18 @@ public abstract class ZUtils {
 	}
 
 	/**
+	 * Player bank
+	 * 
+	 * @param player
+	 * @return player bank
+	 */
+	protected double getBalance(String player) {
+		if (economy == null)
+			economy = ZPlugin.z().getEconomy();
+		return economy.getBalance(player);
+	}
+	
+	/**
 	 * Player has money
 	 * 
 	 * @param player
@@ -507,4 +520,12 @@ public abstract class ZUtils {
 		return economy;
 	}
 
+	public String color(String message){
+		return message.replace("&", "§");
+	}
+	
+	public List<String> color(List<String> messages){
+		return messages.stream().map(message -> color(message)).collect(Collectors.toList());
+	}
+	
 }

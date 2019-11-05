@@ -8,6 +8,7 @@ import fr.maxlego08.shop.listener.AdapterListener;
 import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
+import fr.maxlego08.shop.zcore.utils.Metrics;
 import fr.maxlego08.shop.zcore.utils.VersionChecker;
 import fr.maxlego08.shop.zshop.ShopManager;
 import fr.maxlego08.shop.zshop.categories.CategoryManager;
@@ -58,6 +59,8 @@ public class ZShop extends ZPlugin {
 
 		getSavers().forEach(saver -> saver.load(getPersist()));
 		items.load();
+
+		new Metrics(this);
 		
 		postEnable();
 
