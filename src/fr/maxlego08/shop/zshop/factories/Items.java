@@ -8,6 +8,10 @@ public interface Items {
 
 	List<ShopItem> getItems(int category);
 
+	void setItems(List<ShopItem> items, int id);
+	
 	void load();
+	
+	void save();
 
 }

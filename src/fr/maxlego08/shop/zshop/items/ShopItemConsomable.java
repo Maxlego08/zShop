@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.zshop.items;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import fr.maxlego08.shop.event.events.ShopPostBuyEvent;
 import fr.maxlego08.shop.event.events.ShopPostSellEvent;
+import fr.maxlego08.shop.event.events.ShopPreBuyEvent;
 import fr.maxlego08.shop.event.events.ShopPreSellEvent;
 import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
@@ -36,7 +39,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 	@Override
 	public ShopType getType() {
-		return ShopType.UNIQUE_ITEM;
+		return ShopType.ITEM;
 	}
 
 	@Override
@@ -51,6 +54,54 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 	@Override
 	public void performBuy(Player player, int amount) {
+		if (amount <= 0)
+			amount = 1;
+
+		double currentBuyPrice = buyPrice;
+
+		if (currentBuyPrice <= 0)
+			return;
+
+		double currentPrice = currentBuyPrice * amount;
+		if (getBalance(player) < currentPrice) {
+			player.sendMessage(Lang.prefix + " " + Lang.notEnouhtMoney);
+			return;
+		}
+
+		System.out.println(hasInventoryFull(player) +" wesh ?");
+		
+		if (!hasInventoryFull(player)){
+			player.sendMessage(Lang.prefix + " " + Lang.notEnouhtPlace);
+			return;
+		}
+		
+		if (Config.shopPreBuyEvent) {
+			ShopPreBuyEvent event = new ShopPreBuyEvent(this, player, amount, currentBuyPrice);
+			Bukkit.getPluginManager().callEvent(event);
+			if (event.isCancelled())
+				return;
+
+			currentBuyPrice = event.getPrice();
+			amount = event.getQuantity();
+		}
+
+		withdrawMoney(player, currentPrice);
+		ItemStack currentItem = itemStack.clone();
+		currentItem.setAmount(amount);
+		give(player, currentItem);
+
+		player.sendMessage(Lang.prefix + " "
+				+ Lang.sellItem.replace("%item%", currentItem.getType().name().toLowerCase().replace("_", " "))
+						.replace("%price%", format(currentPrice)));
+
+		Logger.info(player.getName() + " vient d'acheter x" + amount + " "
+				+ currentItem.getType().name().toLowerCase().replace("_", " ") + " pour " + format(currentPrice) + "$",
+				LogType.INFO);
+
+		if (Config.shopPostBuyEvent) {
+			ShopPostBuyEvent shopPostBuyEvent = new ShopPostBuyEvent(this, player, amount, currentBuyPrice);
+			Bukkit.getPluginManager().callEvent(shopPostBuyEvent);
+		}
 
 	}
 
@@ -159,9 +210,11 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 	public ItemStack getDisplayItem() {
 		ItemStack itemStack = this.itemStack.clone();
 		ItemMeta itemMeta = itemStack.getItemMeta();
-		List<String> lore = Lang.displayItemLore.stream().map(string -> string
+		List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<String>();
+		List<String> tmpLore = Lang.displayItemLore.stream().map(string -> string
 				.replace("%buyPrice%", String.valueOf(buyPrice)).replace("%sellPrice%", String.valueOf(sellPrice)))
 				.collect(Collectors.toList());
+		lore.addAll(tmpLore);
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);
 		return itemStack;

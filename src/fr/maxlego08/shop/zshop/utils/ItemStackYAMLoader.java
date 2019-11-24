@@ -27,13 +27,13 @@ public class ItemStackYAMLoader extends ZUtils {
 		List<String> tmpLore = configuration.getStringList(path + "lore");
 		if (tmpLore.size() != 0) {
 			List<String> lore = meta.getLore() == null ? new ArrayList<>() : meta.getLore();
-			lore.addAll(tmpLore);
+			lore.addAll(color(tmpLore));
 			meta.setLore(lore);
 		}
 
 		String displayName = configuration.getString(path + "name", null);
 		if (displayName != null)
-			meta.setDisplayName(displayName);
+			meta.setDisplayName(color(displayName));
 
 		item.setItemMeta(meta);
 
@@ -41,4 +41,16 @@ public class ItemStackYAMLoader extends ZUtils {
 
 	}
 
+	@SuppressWarnings("deprecation")
+	public void save(ItemStack item, YamlConfiguration configuration, String path){
+		configuration.set(path+"id", item.getType().getId());
+		configuration.set(path+"data", item.getData().getData());
+		ItemMeta meta = item.getItemMeta();
+		if (meta.hasDisplayName())
+			configuration.set(path+"name", meta.getDisplayName());
+		if (meta.hasLore())
+			configuration.set(path+"lore", meta.getLore());
+			
+	}
+	
 }

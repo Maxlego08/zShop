@@ -15,11 +15,11 @@ import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.inventory.ItemButton;
 import fr.maxlego08.shop.inventory.VInventory;
 import fr.maxlego08.shop.save.Lang;
-import fr.maxlego08.shop.save.inventory.ConfigBuyInventory;
+import fr.maxlego08.shop.save.inventory.ConfigSellInventory;
 import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
-public class InventoryShopBuy extends VInventory {
+public class InventoryShopSell extends VInventory {
 
 	private AtomicInteger amount = new AtomicInteger(1);
 	private ShopItem item;
@@ -30,51 +30,51 @@ public class InventoryShopBuy extends VInventory {
 		item = (ShopItem) args[0];
 		final int lastPage = (int) args[1];
 
-		createInventory(ConfigBuyInventory.inventoryName.replace("%item%", item.getDisplayItem().getType().name()),
-				ConfigBuyInventory.inventorySize);
+		createInventory(ConfigSellInventory.inventoryName.replace("%item%", item.getDisplayItem().getType().name()),
+				ConfigSellInventory.inventorySize);
 
-		ConfigBuyInventory.decoration.forEach((slot, button) -> addItem(slot, button.getInitButton()));
+		ConfigSellInventory.decoration.forEach((slot, button) -> addItem(slot, button.getInitButton()));
 
-		addItem(ConfigBuyInventory.resetItemintSlot,
+		addItem(ConfigSellInventory.resetItemintSlot,
 				new ItemButton(Lang.resetItemButton.getInitButton()).setClick(event -> {
 					amount.set(1);
 					setItem();
 				}));
-		addItem(ConfigBuyInventory.removeTenItemintSlot,
+		addItem(ConfigSellInventory.removeTenItemintSlot,
 				new ItemButton(Lang.removeTenItemButton.getInitButton()).setClick(event -> {
-					amount.getAndAdd(-10);
-					setItem();
-				}));
-		addItem(ConfigBuyInventory.removeOneItemintSlot,
-				new ItemButton(Lang.removeOneItemButton.getInitButton()).setClick(event -> {
 					amount.getAndAdd(-1);
 					setItem();
 				}));
+		addItem(ConfigSellInventory.removeOneItemintSlot,
+				new ItemButton(Lang.removeOneItemButton.getInitButton()).setClick(event -> {
+					amount.getAndAdd(-10);
+					setItem();
+				}));
 
-		addItem(ConfigBuyInventory.addOneItemintSlot,
+		addItem(ConfigSellInventory.addOneItemintSlot,
 				new ItemButton(Lang.addOneItemButton.getInitButton()).setClick(event -> {
 					amount.getAndAdd(1);
 					setItem();
 				}));
-		addItem(ConfigBuyInventory.addTenItemintSlot,
+		addItem(ConfigSellInventory.addTenItemintSlot,
 				new ItemButton(Lang.addTenItemButton.getInitButton()).setClick(event -> {
 					amount.getAndAdd(10);
 					setItem();
 				}));
-		addItem(ConfigBuyInventory.maxItemintSlot,
+		addItem(ConfigSellInventory.maxItemintSlot,
 				new ItemButton(Lang.maxItemButton.getInitButton("%max%", String.valueOf(item.getMaxStackSize())))
 						.setClick(event -> {
 							amount.set(item.getMaxStackSize());
 							setItem();
 						}));
 
-		addItem(ConfigBuyInventory.backintSlotSlot,
+		addItem(ConfigSellInventory.backintSlotSlot,
 				new ItemButton(Lang.backBuyButton.getInitButton()).setClick(event -> {
 					main.getShop().openShop(player, EnumCategory.SHOP, lastPage,
 							main.getCategories().getCategory(item.getCategory()));
 				}));
-		addItem(ConfigBuyInventory.buyintSlotSlot, new ItemButton(Lang.buyButton.getInitButton()).setClick(event -> {
-			item.performBuy(player, amount.get());
+		addItem(ConfigSellInventory.sellintSlotSlot, new ItemButton(Lang.buyButton.getInitButton()).setClick(event -> {
+			item.performSell(player, amount.get());
 		}));
 
 		setItem();
@@ -91,13 +91,13 @@ public class InventoryShopBuy extends VInventory {
 		ItemStack itemStack = item.getItem().clone();
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<String>();
-		lore.addAll(ConfigBuyInventory.lore.stream()
-				.map(string -> string.replace("%price%", format((item.getBuyPrice() * amount.get()))))
+		lore.addAll(ConfigSellInventory.lore.stream()
+				.map(string -> string.replace("%price%", format((item.getSellPrice() * amount.get()))))
 				.collect(Collectors.toList()));
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);
 		itemStack.setAmount(amount.get());
-		getInventory().setItem(ConfigBuyInventory.itemSlot, itemStack);
+		getInventory().setItem(ConfigSellInventory.itemSlot, itemStack);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class InventoryShopBuy extends VInventory {
 
 	@Override
 	public VInventory clone() {
-		return new InventoryShopBuy();
+		return new InventoryShopSell();
 	}
 
 }

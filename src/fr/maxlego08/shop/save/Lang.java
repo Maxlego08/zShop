@@ -23,7 +23,10 @@ public class Lang implements Saveable {
 	public static String canSell = "§cImpossible d'acheter";
 	public static String canBuy = "§cImpossible de vendre";
 	public static String sellItem = "§aVous venez de vendre §6%item%§a pour §6%price%§a$ !";
+	public static String buyItem = "§aVous venez d'acheter §6%item%§a pour §6%price%§a$ !";
 	public static String notEnouhtItems = "§cVous n'avez pas assez d'item dans votre inventaire.";
+	public static String notEnouhtMoney = "§cVous n'avez pas assez d'argent.";
+	public static String notEnouhtPlace = "§cVous avez l'inventaire plein !";
 	public static String notItems = "§cVous n'avez pas cet item dans votre inventaire.";
 	
 	public static List<String> displayItemLore = new ArrayList<String>();

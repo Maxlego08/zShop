@@ -1,10 +1,12 @@
 package fr.maxlego08.shop.zshop.items;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -46,68 +48,105 @@ public class ShopItemManager implements Items {
 		}
 
 		ItemStackYAMLoader itemStackYAMLoader = new ItemStackYAMLoader();
-		
-		//Chargement des categories
+
+		// Chargement des categories
 		for (String categoryId : configuration.getConfigurationSection("items.").getKeys(false)) {
 
 			List<ShopItem> currentItems = new ArrayList<>();
 			int currentId = 0;
-			
-			try{
+
+			try {
 				currentId = Integer.valueOf(categoryId);
-			}catch (NumberFormatException e) {
-				Logger.info("La catégorie " + categoryId +" n'est pas un nombre !", LogType.ERROR);
+			} catch (NumberFormatException e) {
+				Logger.info("La catégorie " + categoryId + " n'est pas un nombre !", LogType.ERROR);
 				return;
 			}
-			
-			//Chargement des items
+
+			// Chargement des items
 			for (String itemId : configuration.getConfigurationSection("items." + categoryId + ".items.")
 					.getKeys(false)) {
 
-				try{
-					
-					//Chargement des éléments de l'item
-					
-					String currentPath = "items." + categoryId + ".items."+itemId+".";
-					
-					ShopType type = ShopType.valueOf(configuration.getString(currentPath+"type").toUpperCase());
-					ItemStack itemStack = itemStackYAMLoader.load(configuration, currentPath+".item.");
-					
-					double sellPrice = configuration.getDouble(currentPath+"sellPrice", 0);
-					double buyPrice = configuration.getDouble(currentPath+"buyPrice", 0);
-					int maxStackSize = configuration.getInt(currentPath+"item.stack", 64);
-					
+				try {
+
+					// Chargement des éléments de l'item
+
+					String currentPath = "items." + categoryId + ".items." + itemId + ".";
+
+					ShopType type = ShopType.valueOf(configuration.getString(currentPath + "type").toUpperCase());
+					ItemStack itemStack = itemStackYAMLoader.load(configuration, currentPath + ".item.");
+
+					double sellPrice = configuration.getDouble(currentPath + "sellPrice", 0);
+					double buyPrice = configuration.getDouble(currentPath + "buyPrice", 0);
+					int maxStackSize = configuration.getInt(currentPath + "item.stack", 64);
+
 					ShopItem item = null;
 					switch (type) {
-					case ITEM:{
+					case ITEM: {
 						item = new ShopItemConsomable(currentId, itemStack, sellPrice, buyPrice, maxStackSize);
 						break;
 					}
-					case UNIQUE_ITEM:{
+					case UNIQUE_ITEM: {
 						break;
 					}
 					}
 
 					currentItems.add(item);
-					
-				}catch (Exception e) {
-					
-					//S'il y a une erreur alors il est impossible de charger l'item
-					
+
+				} catch (Exception e) {
+
+					// S'il y a une erreur alors il est impossible de charger
+					// l'item
+
 					try {
-						throw new ItemCreateException("Could load item with id " + itemId + " in category " + categoryId);
+						throw new ItemCreateException(
+								"Could load item with id " + itemId + " in category " + categoryId);
 					} catch (ItemCreateException e1) {
 						e1.printStackTrace();
 					}
 				}
 			}
-			
-			//Ajout des items
-			
+
+			// Ajout des items
+
 			this.items.put(currentId, currentItems);
 		}
-		
-		Logger.info(file.getAbsolutePath()+" loaded successfully !", LogType.SUCCESS);
+
+		Logger.info(file.getAbsolutePath() + " loaded successfully !", LogType.SUCCESS);
+	}
+
+	@Override
+	public void setItems(List<ShopItem> items, int id) {
+		this.items.put(id, items);
+	}
+
+	@Override
+	public void save() {
+		File file = new File(plugin.getDataFolder() + File.separator + "items_default.yml");
+		if (!file.exists())
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+		ItemStackYAMLoader stackYAMLoader = new ItemStackYAMLoader();
+		this.items.forEach((id, items) -> {
+			AtomicInteger integer = new AtomicInteger(1);
+			items.forEach(item -> {
+				String path = "items." + id + ".items." + integer.getAndIncrement() + ".";
+				configuration.set(path + "type", item.getType().name());
+				stackYAMLoader.save(item.getItem(), configuration, path + "item.");
+				if (item.getMaxStackSize() != 64)
+					configuration.set(path + "item.stack", item.getMaxStackSize());
+				configuration.set(path + "buyPrice", item.getSellPrice());
+				configuration.set(path + "sellPrice", item.getBuyPrice());
+			});
+		});
+		try {
+			configuration.save(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

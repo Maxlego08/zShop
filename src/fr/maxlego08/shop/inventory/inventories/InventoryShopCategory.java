@@ -45,7 +45,8 @@ public class InventoryShopCategory extends VInventory {
 					if (item.getBuyPrice() > 0)
 						main.getShop().openShop(player, EnumCategory.BUY, 1, item, page);
 				}).setRightClick(event -> {
-					;
+					if (item.getSellPrice() > 0)
+						main.getShop().openShop(player, EnumCategory.SELL, 1, item, page);
 				}).setMiddleClick(event -> {
 					if (item.getSellPrice() > 0)
 						item.performSell(player, 0);

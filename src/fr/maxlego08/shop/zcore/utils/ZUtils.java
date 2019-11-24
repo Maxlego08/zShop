@@ -18,6 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.save.Lang;
@@ -30,7 +31,8 @@ public abstract class ZUtils {
 	private static transient List<String> teleportPlayers = new ArrayList<String>();
 
 	/**
-	 * @param location as String
+	 * @param location
+	 *            as String
 	 * @return string as location
 	 */
 	protected Location changeStringLocationToLocation(String s) {
@@ -43,7 +45,8 @@ public abstract class ZUtils {
 	}
 
 	/**
-	 * @param location as string
+	 * @param location
+	 *            as string
 	 * @return string as locaiton
 	 */
 	protected Location changeStringLocationToLocationEye(String s) {
@@ -76,7 +79,7 @@ public abstract class ZUtils {
 				+ location.getBlockZ() + "," + location.getYaw() + "," + location.getPitch();
 		return ret;
 	}
-	
+
 	/**
 	 * @param chunk
 	 * @return string as Chunk
@@ -97,7 +100,8 @@ public abstract class ZUtils {
 	}
 
 	/**
-	 * @param {@link Cuboid}
+	 * @param {@link
+	 * 			Cuboid}
 	 * @return cuboid as string
 	 */
 	protected String changeCuboidToString(Cuboid cuboid) {
@@ -133,7 +137,7 @@ public abstract class ZUtils {
 		return new Cuboid(l1, l2);
 
 	}
-	
+
 	/**
 	 * @param item
 	 * @return the encoded item
@@ -143,13 +147,13 @@ public abstract class ZUtils {
 	}
 
 	/**
-	 * @param item 
+	 * @param item
 	 * @return the decoded item
 	 */
 	protected ItemStack decode(String item) {
 		return ItemDecoder.deserializeItemStack(item);
 	}
-	
+
 	/**
 	 * @param material
 	 * @return he name of the material with a better format
@@ -157,7 +161,7 @@ public abstract class ZUtils {
 	protected String betterMaterial(Material material) {
 		return TextUtil.getMaterialLowerAndMajAndSpace(material);
 	}
-	
+
 	/**
 	 * @param a
 	 * @param b
@@ -172,19 +176,21 @@ public abstract class ZUtils {
 	 * @return true if the player's inventory is full
 	 */
 	protected boolean hasInventoryFull(Player player) {
-		int slot = 0;
-		ItemStack[] arrayOfItemStack;
-		int x = (arrayOfItemStack = player.getInventory().getContents()).length;
-		for (int i = 0; i < x; i++) {
-			ItemStack contents = arrayOfItemStack[i];
-			if ((contents == null))
-				slot++;
+		Inventory inv = player.getInventory();
+		boolean check = false;
+		for (ItemStack item : inv.getContents()) {
+			if (item == null) {
+				check = true;
+				break;
+			}
 		}
-		return slot == 0;
+		return check;
 	}
 
 	/**
-	 * Gives an item to the player, if the player's inventory is full then the item will drop to the ground
+	 * Gives an item to the player, if the player's inventory is full then the
+	 * item will drop to the ground
+	 * 
 	 * @param player
 	 * @param item
 	 */
@@ -219,6 +225,7 @@ public abstract class ZUtils {
 
 	/**
 	 * Check if the item name is the same as the given string
+	 * 
 	 * @param stack
 	 * @param name
 	 * @return true if the item name is the same as string
@@ -230,6 +237,7 @@ public abstract class ZUtils {
 
 	/**
 	 * Check if the item name contains the given string
+	 * 
 	 * @param stack
 	 * @param name
 	 * @return true if the item name contains the string
@@ -241,8 +249,10 @@ public abstract class ZUtils {
 
 	/**
 	 * Remove the item from the player's hand
+	 * 
 	 * @param player
-	 * @param number of items to withdraw
+	 * @param number
+	 *            of items to withdraw
 	 */
 	protected void removeItemInHand(Player player, int how) {
 		if (player.getItemInHand().getAmount() > how)
@@ -375,7 +385,7 @@ public abstract class ZUtils {
 			economy = ZPlugin.z().getEconomy();
 		return economy.getBalance(player);
 	}
-	
+
 	/**
 	 * Player has money
 	 * 
@@ -520,12 +530,12 @@ public abstract class ZUtils {
 		return economy;
 	}
 
-	public String color(String message){
+	public String color(String message) {
 		return message.replace("&", "§");
 	}
-	
-	public List<String> color(List<String> messages){
+
+	public List<String> color(List<String> messages) {
 		return messages.stream().map(message -> color(message)).collect(Collectors.toList());
 	}
-	
+
 }
