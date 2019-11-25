@@ -28,6 +28,14 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 	private final double buyPrice;
 	private final int maxStackSize;
 
+	/**
+	 * Création de l'item
+	 * @param id -> de l'item
+	 * @param itemStack -> item a vendre
+	 * @param sellPrice -> prix de vente, si 0 alors invendable 
+	 * @param buyPrice -> prix d'achat, si 0 alors inchatable
+	 * @param maxStackSize -> nombre maximum d'achat ou de vente
+	 */
 	public ShopItemConsomable(int id, ItemStack itemStack, double sellPrice, double buyPrice, int maxStackSize) {
 		super();
 		this.id = id;
@@ -89,7 +97,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		give(player, currentItem);
 
 		player.sendMessage(Lang.prefix + " "
-				+ Lang.sellItem.replace("%item%", currentItem.getType().name().toLowerCase().replace("_", " "))
+				+ Lang.sellItem.replace("%amount%", String.valueOf(amount)).replace("%item%", currentItem.getType().name().toLowerCase().replace("_", " "))
 						.replace("%price%", format(currentPrice)));
 
 		Logger.info(player.getName() + " vient d'acheter x" + amount + " "
@@ -175,7 +183,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 				+ Lang.sellItem.replace("%amount%", String.valueOf(realAmount)).replace("%item%", itemName(itemStack))
 						.replace("%price%", format(price)));
 		Logger.info(
-				player.getName() + " just sold x" + amount + " "
+				player.getName() + " just sold x" + realAmount + " "
 						+ currentMaterial.name().toLowerCase().replace("_", " ") + " for " + format(price) + "$",
 				LogType.INFO);
 

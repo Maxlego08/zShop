@@ -21,6 +21,7 @@ import fr.maxlego08.shop.zshop.items.ShopItemConsomable;
 
 public class CommandShopDefauldConfig extends VCommand {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public CommandType perform(ZShop main) {
 
@@ -60,7 +61,7 @@ public class CommandShopDefauldConfig extends VCommand {
 		items.add(new ShopItemConsomable(1, new ItemStack(Material.WHEAT), 30, 2, 64));
 		items.add(new ShopItemConsomable(1, new ItemStack(getMaterial(392)), 30, 2, 64));
 		items.add(new ShopItemConsomable(1, new ItemStack(getMaterial(391)), 30, 2, 64));
-		items.add(new ShopItemConsomable(1, new ItemStack(Material.CAKE), 30, 2, 64));
+		items.add(new ShopItemConsomable(1, new ItemStack(Material.CAKE), 30, 2, 1));
 		main.getItems().setItems(items, 2);
 
 		items = new ArrayList<ShopItem>();
@@ -74,8 +75,8 @@ public class CommandShopDefauldConfig extends VCommand {
 		main.getItems().setItems(items, 3);
 
 		items = new ArrayList<ShopItem>();
-		items.add(new ShopItemConsomable(1, new ItemStack(Material.GOLDEN_APPLE, 1, (byte) 0), 30, 2, 16));
-		items.add(new ShopItemConsomable(1, new ItemStack(Material.GOLDEN_APPLE, 1, (byte) 1), 30, 2, 16));
+		items.add(new ShopItemConsomable(1, new ItemStack(Material.GOLDEN_APPLE, 1, (byte) 0), 30, 2, 64));
+		items.add(new ShopItemConsomable(1, new ItemStack(Material.GOLDEN_APPLE, 1, (byte) 1), 30, 2, 64));
 		for (int a = 0; a != 4; a++)
 			items.add(new ShopItemConsomable(1, new ItemStack(getMaterial(349), 1, (byte) a), 30, 2, 16));
 		main.getItems().setItems(items, 4);

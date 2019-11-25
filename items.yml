@@ -113,6 +113,7 @@ items:
         item:
           id: 354
           data: 0
+          stack: 1
         buyPrice: 30.0
         sellPrice: 2.0
   '3':
