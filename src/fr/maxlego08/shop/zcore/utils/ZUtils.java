@@ -18,7 +18,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.save.Lang;
@@ -176,15 +175,18 @@ public abstract class ZUtils {
 	 * @return true if the player's inventory is full
 	 */
 	protected boolean hasInventoryFull(Player player) {
-		Inventory inv = player.getInventory();
-		boolean check = false;
-		for (ItemStack item : inv.getContents()) {
-			if (item == null) {
-				check = true;
-				break;
+		int slot = 0;
+		ItemStack[] arrayOfItemStack;
+		double version = ItemDecoder.getNMSVersion();
+		int how = (version <= 1.8 && version >= 1.7 ? 4 : 5);
+		int x = (arrayOfItemStack = player.getInventory().getContents()).length - how;
+		for (int i = 0; i < x; i++) {
+			ItemStack contents = arrayOfItemStack[i];
+			if ((contents == null)) {
+				slot++;
 			}
 		}
-		return check;
+		return slot == 0;
 	}
 
 	/**
@@ -534,6 +536,11 @@ public abstract class ZUtils {
 		return message.replace("&", "§");
 	}
 
+	protected String itemName(ItemStack item) {
+		return item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName()
+				: "x" + item.getAmount() + " " + TextUtil.getMaterialLowerAndMajAndSpace(item.getType());
+	}
+	
 	public List<String> color(List<String> messages) {
 		return messages.stream().map(message -> color(message)).collect(Collectors.toList());
 	}

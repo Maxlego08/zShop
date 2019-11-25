@@ -12,31 +12,31 @@ import fr.maxlego08.shop.command.CommandType;
 import fr.maxlego08.shop.command.VCommand;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.save.inventory.ConfigDefaultInventory;
+import fr.maxlego08.shop.zcore.utils.MaterialData;
 import fr.maxlego08.shop.zcore.utils.inventory.Button;
 import fr.maxlego08.shop.zshop.categories.Category;
 import fr.maxlego08.shop.zshop.items.ShopItem;
-import fr.maxlego08.shop.zshop.items.ShopItemConsomable;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
+import fr.maxlego08.shop.zshop.items.ShopItemConsomable;
 
 public class CommandShopDefauldConfig extends VCommand {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public CommandType perform(ZShop main) {
 
 		main.getCategories().getCategories().clear();
 		main.getCategories().getCategories().put(1,
-				new Category(1, 0, ShopType.ITEM, "§eBlocks", 2, null, 54, 49, 49, 50));
+				new Category(1, 0, ShopType.ITEM, "§aBlocks", new MaterialData(Material.GRASS), null, 54, 49, 49, 50));
 		main.getCategories().getCategories().put(2,
-				new Category(2, 1, ShopType.ITEM, "§eFarm", 296, null, 54, 49, 49, 50));
-		main.getCategories().getCategories().put(3,
-				new Category(3, 2, ShopType.ITEM, "§eMobs", 367, null, 54, 49, 49, 50));
-		main.getCategories().getCategories().put(4,
-				new Category(4, 3, ShopType.ITEM, "§eFoods", 364, null, 54, 49, 49, 50));
-		main.getCategories().getCategories().put(5,
-				new Category(5, 4, ShopType.ITEM, "§eRedstones", 331, null, 54, 49, 49, 50));
-		main.getCategories().getCategories().put(6,
-				new Category(6, 5, ShopType.ITEM, "§eOres", 265, null, 54, 49, 49, 50));
+				new Category(2, 1, ShopType.ITEM, "§eFarm", new MaterialData(Material.WHEAT), null, 54, 49, 49, 50));
+		main.getCategories().getCategories().put(3, new Category(3, 2, ShopType.ITEM, "§eMobs",
+				new MaterialData(Material.ROTTEN_FLESH), null, 54, 49, 49, 50));
+		main.getCategories().getCategories().put(4, new Category(4, 3, ShopType.ITEM, "§eFoods",
+				new MaterialData(Material.COOKED_BEEF), null, 54, 49, 49, 50));
+		main.getCategories().getCategories().put(5, new Category(5, 4, ShopType.ITEM, "§eRedstones",
+				new MaterialData(Material.REDSTONE), null, 54, 49, 49, 50));
+		main.getCategories().getCategories().put(6, new Category(6, 5, ShopType.ITEM, "§eOres",
+				new MaterialData(Material.IRON_INGOT), null, 54, 49, 49, 50));
 
 		ConfigDefaultInventory.inventorySize = 9;
 		ConfigDefaultInventory.decoration = new HashMap<Integer, Button>();
@@ -79,7 +79,7 @@ public class CommandShopDefauldConfig extends VCommand {
 		for (int a = 0; a != 4; a++)
 			items.add(new ShopItemConsomable(1, new ItemStack(getMaterial(349), 1, (byte) a), 30, 2, 16));
 		main.getItems().setItems(items, 4);
-		
+
 		items = new ArrayList<ShopItem>();
 		items.add(new ShopItemConsomable(1, new ItemStack(Material.REDSTONE), 30, 2, 64));
 		items.add(new ShopItemConsomable(1, new ItemStack(getMaterial(29)), 30, 2, 64));
@@ -87,18 +87,18 @@ public class CommandShopDefauldConfig extends VCommand {
 		items.add(new ShopItemConsomable(1, new ItemStack(getMaterial(356)), 30, 2, 64));
 		items.add(new ShopItemConsomable(1, new ItemStack(getMaterial(404)), 30, 2, 64));
 		items.add(new ShopItemConsomable(1, new ItemStack(getMaterial(154)), 30, 2, 64));
-		
+
 		main.getItems().setItems(items, 5);
 		items = new ArrayList<ShopItem>();
 		items.add(new ShopItemConsomable(1, new ItemStack(Material.COAL), 30, 2, 64));
-		items.add(new ShopItemConsomable(1, new ItemStack(Material.COAL, 1, (byte)1), 30, 2, 64));
+		items.add(new ShopItemConsomable(1, new ItemStack(Material.COAL, 1, (byte) 1), 30, 2, 64));
 		items.add(new ShopItemConsomable(1, new ItemStack(Material.IRON_INGOT), 30, 2, 64));
 		items.add(new ShopItemConsomable(1, new ItemStack(Material.GOLD_INGOT), 30, 2, 64));
 		items.add(new ShopItemConsomable(1, new ItemStack(Material.DIAMOND), 30, 2, 64));
-		items.add(new ShopItemConsomable(1, new ItemStack(getMaterial(351), 1, (byte)4), 30, 2, 64));
+		items.add(new ShopItemConsomable(1, new ItemStack(getMaterial(351), 1, (byte) 4), 30, 2, 64));
 		items.add(new ShopItemConsomable(1, new ItemStack(Material.EMERALD), 30, 2, 64));
 		main.getItems().setItems(items, 6);
-		
+
 		main.getItems().save();
 
 		sendMessage(Lang.prefix + " §eCreate default config !");

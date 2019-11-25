@@ -47,6 +47,8 @@ public class ShopItemManager implements Items {
 			return;
 		}
 
+		int itemAmount = 0;
+		
 		ItemStackYAMLoader itemStackYAMLoader = new ItemStackYAMLoader();
 
 		// Chargement des categories
@@ -109,9 +111,11 @@ public class ShopItemManager implements Items {
 			// Ajout des items
 
 			this.items.put(currentId, currentItems);
+			itemAmount += currentItems.size();
 		}
 
 		Logger.info(file.getAbsolutePath() + " loaded successfully !", LogType.SUCCESS);
+		Logger.info("Loading " + items.size() + " categories and " + itemAmount + " items", LogType.SUCCESS);
 	}
 
 	@Override

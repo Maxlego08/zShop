@@ -68,9 +68,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 			return;
 		}
 
-		System.out.println(hasInventoryFull(player) +" wesh ?");
-		
-		if (!hasInventoryFull(player)){
+		if (hasInventoryFull(player)){
 			player.sendMessage(Lang.prefix + " " + Lang.notEnouhtPlace);
 			return;
 		}
@@ -174,7 +172,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		// On termine l'action
 		depositMoney(player, price);
 		player.sendMessage(Lang.prefix + " "
-				+ Lang.sellItem.replace("%item%", currentMaterial.name().toLowerCase().replace("_", " "))
+				+ Lang.sellItem.replace("%amount%", String.valueOf(realAmount)).replace("%item%", itemName(itemStack))
 						.replace("%price%", format(price)));
 		Logger.info(
 				player.getName() + " just sold x" + amount + " "
