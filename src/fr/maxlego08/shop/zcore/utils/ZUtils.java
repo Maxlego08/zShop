@@ -18,6 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.save.Lang;
@@ -538,11 +539,19 @@ public abstract class ZUtils {
 
 	protected String itemName(ItemStack item) {
 		return item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName()
-				: "x" + item.getAmount() + " " + TextUtil.getMaterialLowerAndMajAndSpace(item.getType());
+				: TextUtil.getMaterialLowerAndMajAndSpace(item.getType());
 	}
-	
+
 	public List<String> color(List<String> messages) {
 		return messages.stream().map(message -> color(message)).collect(Collectors.toList());
+	}
+
+	public ItemFlag getFlag(String flagString) {
+		for (ItemFlag flag : ItemFlag.values()) {
+			if (flag.name().equalsIgnoreCase(flagString))
+				return flag;
+		}
+		return null;
 	}
 
 }

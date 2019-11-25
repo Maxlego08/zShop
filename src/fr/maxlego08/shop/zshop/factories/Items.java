@@ -23,20 +23,37 @@ public interface Items {
 	/**
 	 * Load items
 	 * 
-	 * Here's an example to add an item with all the options you can add to the item:
-	 * 
-	 * '1': -> Corresponds to the item id in its category
-     *   type: ITEM -> the type of the item, either ITEM or UNIQUE_ITEM
-     *   item: -> Itemstack creation
-     *     id: 3 -> material id
-     *     data: 0 -> the data of the material
-     *     stack: 64 -> Limit the number of items sold or purchased (Useful for chicken eggs, cake, enderpearl etc ...)
-     *     name: "Random &cColored &fName" -> Item name, with the color code "&"
-     *     lore: -> Lore of the item, with the color code "&"
-     *       - "&fLine &51"
-     *       - "&fLine &22"
-     *   buyPrice: 30.0 -> Purchase price, if the price is 0 then the item can not be bought
-     *   sellPrice: 2.0 -> Selling price, if the price is 0 then the item can not be sold
+	 * <p>Here's an example to add an <b>item</b> with all the options you can add to the item:
+	 * <br>
+	 * <br>'1': -> Corresponds to the item id in its category
+     * <br>  type: ITEM -> the type of the item, either ITEM or UNIQUE_ITEM
+     * <br>  item: -> Itemstack creation
+     * <br>
+     * <br>    id: 3 -> material id
+     * <br>    data: 0 -> the data of the material
+     * <br>    stack: 64 -> Limit the number of items sold or purchased (Useful for chicken eggs, cake, enderpearl etc ...)
+     * <br>    name: "Random &cColored &fName" -> Item name, with the color code "&"
+     * <br>
+     * <br>    lore: -> Lore of the item, with the color code "&"
+     * <br>      - "&fLine &51"
+     * <br>      - "&fLine &22"
+     * <br>
+     * <br>    enchants: -> Add enchantments
+     * <br>      - DAMAGE_ALL,5
+     * <br>
+     * <br>    flags: -> Add ItemFlag
+     * <br>      - HIDE_ENCHANTS 
+     * <br>
+     * <br>  buyPrice: 30.0 -> Purchase price, if the price is 0 then the item can not be bought
+     * <br>  sellPrice: 2.0 -> Selling price, if the price is 0 then the item can not be sold
+     * <br>
+     * <br>  giveItem: true -> Give the item or not when buying
+     * <br>  executeSellCommand: false -> Execute orders when an item is sold
+     * <br>  executeBuyCommand: true -> execute orders when an item is purchased
+     * <br>  commands: -> Commands run when buying or selling
+     * <br>    - "bc %player% was just bought x%amount% %item% in shop !"
+     * <br>
+     * </p>
 	 * 
 	 */
 	void load();

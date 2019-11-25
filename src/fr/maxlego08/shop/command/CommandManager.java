@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.commands.CommandShop;
-import fr.maxlego08.shop.command.commands.CommandShopDefauldConfig;
 import fr.maxlego08.shop.command.commands.CommandShopReload;
 import fr.maxlego08.shop.command.commands.CommandShopVersion;
 import fr.maxlego08.shop.save.Lang;
@@ -58,14 +57,6 @@ public class CommandManager implements CommandExecutor {
 				.setDescription("Reload plugin")
 				.setPermission("zshop.reload")
 				.setParent(command));
-		
-		addCommand(new CommandShopDefauldConfig()
-				.addSubCommand("default")
-				.setSyntaxe("/shop default")
-				.setDescription("Create default config")
-				.setPermission("zshop.default")
-				.setParent(command));
-		
 		
 		main.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 	}

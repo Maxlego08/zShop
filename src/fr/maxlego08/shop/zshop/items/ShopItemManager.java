@@ -48,7 +48,7 @@ public class ShopItemManager implements Items {
 		}
 
 		int itemAmount = 0;
-		
+
 		ItemStackYAMLoader itemStackYAMLoader = new ItemStackYAMLoader();
 
 		// Chargement des categories
@@ -79,12 +79,17 @@ public class ShopItemManager implements Items {
 
 					double sellPrice = configuration.getDouble(currentPath + "sellPrice", 0);
 					double buyPrice = configuration.getDouble(currentPath + "buyPrice", 0);
+					boolean giveItem = configuration.getBoolean(currentPath + "give", true);
+					boolean executeSellCommand = configuration.getBoolean(currentPath + "executeSellCommand", true);
+					boolean executeBuyCommand = configuration.getBoolean(currentPath + "executeBuyCommand", true);
 					int maxStackSize = configuration.getInt(currentPath + "item.stack", 64);
+					List<String> commands = configuration.getStringList(currentPath + "commands");
 
 					ShopItem item = null;
 					switch (type) {
 					case ITEM: {
-						item = new ShopItemConsomable(currentId, itemStack, sellPrice, buyPrice, maxStackSize);
+						item = new ShopItemConsomable(currentId, itemStack, sellPrice, buyPrice, maxStackSize, giveItem,
+								executeSellCommand, executeBuyCommand, commands);
 						break;
 					}
 					case UNIQUE_ITEM: {

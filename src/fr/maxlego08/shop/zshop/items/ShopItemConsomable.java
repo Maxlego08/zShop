@@ -27,22 +27,31 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 	private final double sellPrice;
 	private final double buyPrice;
 	private final int maxStackSize;
+	private boolean giveItem = true;
+	private boolean executeSellCommand = true;
+	private boolean executeBuyCommand = true;
+	private List<String> commands = new ArrayList<>();
 
-	/**
-	 * Création de l'item
-	 * @param id -> de l'item
-	 * @param itemStack -> item a vendre
-	 * @param sellPrice -> prix de vente, si 0 alors invendable 
-	 * @param buyPrice -> prix d'achat, si 0 alors inchatable
-	 * @param maxStackSize -> nombre maximum d'achat ou de vente
-	 */
-	public ShopItemConsomable(int id, ItemStack itemStack, double sellPrice, double buyPrice, int maxStackSize) {
+	public ShopItemConsomable(int id, ItemStack itemStack, double sellPrice, double buyPrice, int maxStackSize,
+			boolean giveItem, boolean executeSellCommand, boolean executeBuyCommand, List<String> commands) {
 		super();
 		this.id = id;
 		this.itemStack = itemStack;
 		this.sellPrice = sellPrice;
 		this.buyPrice = buyPrice;
 		this.maxStackSize = maxStackSize;
+		this.giveItem = giveItem;
+		this.executeSellCommand = executeSellCommand;
+		this.executeBuyCommand = executeBuyCommand;
+		this.commands = commands;
+	}
+
+	public List<String> getCommands() {
+		return commands;
+	}
+
+	public boolean isGiveItem() {
+		return giveItem;
 	}
 
 	@Override
@@ -76,11 +85,11 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 			return;
 		}
 
-		if (hasInventoryFull(player)){
+		if (hasInventoryFull(player)) {
 			player.sendMessage(Lang.prefix + " " + Lang.notEnouhtPlace);
 			return;
 		}
-		
+
 		if (Config.shopPreBuyEvent) {
 			ShopPreBuyEvent event = new ShopPreBuyEvent(this, player, amount, currentBuyPrice);
 			Bukkit.getPluginManager().callEvent(event);
@@ -94,10 +103,12 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		withdrawMoney(player, currentPrice);
 		ItemStack currentItem = itemStack.clone();
 		currentItem.setAmount(amount);
-		give(player, currentItem);
+		if (giveItem)
+			give(player, currentItem);
 
 		player.sendMessage(Lang.prefix + " "
-				+ Lang.sellItem.replace("%amount%", String.valueOf(amount)).replace("%item%", currentItem.getType().name().toLowerCase().replace("_", " "))
+				+ Lang.sellItem.replace("%amount%", String.valueOf(amount))
+						.replace("%item%", currentItem.getType().name().toLowerCase().replace("_", " "))
 						.replace("%price%", format(currentPrice)));
 
 		Logger.info(player.getName() + " vient d'acheter x" + amount + " "
@@ -108,6 +119,12 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 			ShopPostBuyEvent shopPostBuyEvent = new ShopPostBuyEvent(this, player, amount, currentBuyPrice);
 			Bukkit.getPluginManager().callEvent(shopPostBuyEvent);
 		}
+
+		if (commands.size() != 0 && executeBuyCommand)
+			for (String command : commands)
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+						command.replace("%player%", player.getName()).replace("%amount%", String.valueOf(amount))
+								.replace("%item%", itemName(itemStack)).replace("%price%", format(currentBuyPrice)));
 
 	}
 
@@ -179,9 +196,8 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 		// On termine l'action
 		depositMoney(player, price);
-		player.sendMessage(Lang.prefix + " "
-				+ Lang.sellItem.replace("%amount%", String.valueOf(realAmount)).replace("%item%", itemName(itemStack))
-						.replace("%price%", format(price)));
+		player.sendMessage(Lang.prefix + " " + Lang.sellItem.replace("%amount%", String.valueOf(realAmount))
+				.replace("%item%", itemName(itemStack)).replace("%price%", format(price)));
 		Logger.info(
 				player.getName() + " just sold x" + realAmount + " "
 						+ currentMaterial.name().toLowerCase().replace("_", " ") + " for " + format(price) + "$",
@@ -194,6 +210,12 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 			ShopPostSellEvent eventPost = new ShopPostSellEvent(this, player, realAmount, price);
 			Bukkit.getPluginManager().callEvent(eventPost);
 		}
+
+		if (commands.size() != 0 && executeSellCommand)
+			for (String command : commands)
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+						command.replace("%player%", player.getName()).replace("%amount%", String.valueOf(realAmount))
+								.replace("%item%", itemName(itemStack)).replace("%price%", format(price)));
 
 	}
 
