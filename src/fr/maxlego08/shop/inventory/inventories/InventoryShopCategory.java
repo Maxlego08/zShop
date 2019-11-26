@@ -23,23 +23,31 @@ public class InventoryShopCategory extends VInventory {
 	public boolean openInventory(ZShop main, Player player, int page, Object... args) throws Exception {
 
 		Category category = (Category) args[0];
-
 		List<ShopItem> items = main.getItems().getItems(category.getId());
 
+		int pageSize = items.size() < (category.getInventorySize() - 9) ? items.size()
+				: (category.getInventorySize() - 9);
+
+		/**
+		 * Création du nom de l'inventaire en fonction de son type
+		 */
 		String inventoryName = category.getType().equals(ShopType.ITEM)
 				? Lang.shopInventoryItem.replace("%page%", String.valueOf(page)).replace("%maxPage%",
-						String.valueOf(getMaxPage(category.getInventorySize() - 9, items)))
+						String.valueOf(getMaxPage(pageSize, items)))
 				: Lang.shopInventoryUniqueItem;
-
 		createInventory(inventoryName.replace("%category%", category.getName()), category.getInventorySize());
 
+		/**
+		 * Notre items est un item de type ITEM, donc on entre dans la condition
+		 */
 		if (category.getType().equals(ShopType.ITEM)) {
 
 			Pagination<ShopItem> pagination = new Pagination<>();
 			AtomicInteger slot = new AtomicInteger();
 
-			int pageSize = items.size() < category.getInventorySize() ? items.size() : category.getInventorySize() - 9;
-
+			/*
+			 * Système de pagination pour ajouter les items
+			 */
 			pagination.paginate(items, pageSize, page).forEach(item -> {
 				addItem(slot.getAndIncrement(), new ItemButton(item.getDisplayItem()).setLeftClick(event -> {
 					if (item.getBuyPrice() > 0)
@@ -53,16 +61,30 @@ public class InventoryShopCategory extends VInventory {
 				}));
 			});
 
+			/**
+			 * Ajout des boutons pour changer de page si besoin
+			 */
 			if (getPage() != 1)
 				addItem(category.getPreviousButtonSlot(),
 						new ItemButton(Lang.previousButton.getInitButton()).setClick(event -> {
 							main.getShop().openShop(player, EnumCategory.SHOP, page - 1, args);
 						}));
-			if (getPage() != getMaxPage(category.getInventorySize() - 9, items))
+			if (getPage() != getMaxPage(pageSize, items))
 				addItem(category.getNexButtonSlot(), new ItemButton(Lang.nextButton.getInitButton()).setClick(event -> {
 					main.getShop().openShop(player, EnumCategory.SHOP, page + 1, args);
 				}));
 		} else {
+
+			items.forEach(item -> {
+
+				addItem(item.getSlot(), new ItemButton(item.getDisplayItem()).setClick(event -> {
+					if (item.useConfirm())
+						main.getShop().openShop(player, EnumCategory.CONFIRM, 1, item);
+					else
+						item.performBuy(player, 1);
+				}));
+
+			});
 
 		}
 
@@ -74,6 +96,8 @@ public class InventoryShopCategory extends VInventory {
 
 	private int getMaxPage(int size, List<ShopItem> items) {
 		if (size == 0)
+			return 1;
+		if (size == items.size())
 			return 1;
 		return (items.size() / size) + 1;
 	}

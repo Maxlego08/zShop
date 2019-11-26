@@ -13,6 +13,8 @@ public class CommandShopReload extends VCommand {
 		main.getSavers().forEach(saver -> saver.load(main.getPersist()));
 		main.getItems().load();
 		
+		main.getInventoryManager().updateAllPlayer();
+		
 		sendMessage(Lang.prefix + " §aReload !");
 		
 		return CommandType.SUCCESS;

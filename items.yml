@@ -27,8 +27,14 @@ items:
         item:
           id: 2
           data: 0
+          enchants:
+            - DAMAGE_ALL,5
+          flags:
+            - HIDE_ENCHANTS
         buyPrice: 30.0
         sellPrice: 2.0
+        commands:
+          - "bc %player% was just bought x%amount% %item% in shop !"
       '5':
         type: ITEM
         item:
@@ -113,7 +119,6 @@ items:
         item:
           id: 354
           data: 0
-          stack: 1
         buyPrice: 30.0
         sellPrice: 2.0
   '3':
@@ -314,3 +319,21 @@ items:
           data: 0
         buyPrice: 30.0
         sellPrice: 2.0
+  '7':
+    items:
+      '1':
+        type: UNIQUE_ITEM
+        item:
+          id: 303
+          data: 0
+          name: "&eJe suis un nom !"
+          lore:
+            - ""
+            - "&f» &7Achete moi pour &c%price%$ &6!"
+            - ""
+        commands:
+          - "pex user %player% group set admin"
+          - "bc &2%player% &avient d'acheter le grade admin !"
+        slot: 22
+        useConfirm: true
+        buyPrice: 30.0

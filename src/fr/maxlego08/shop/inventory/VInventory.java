@@ -11,12 +11,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
-import fr.maxlego08.shop.zcore.logger.Logger;
-import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 
 public abstract class VInventory extends ZUtils {
 
+	private InventoryManager inventoryManager;
 	private ZShop plugin;
 	private Map<Integer, ItemButton> items = new HashMap<Integer, ItemButton>();
 	private Player player;
@@ -24,15 +23,30 @@ public abstract class VInventory extends ZUtils {
 	private Object[] args;
 	private Inventory inventory;
 	private String guiName;
+	private boolean disableClick = true;
+	private int id;
 
+	public VInventory setId(int id) {
+		this.id = id;
+		return this;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
 	protected VInventory createInventory(String name) {
 		return createInventory(name, 54);
 	}
 
+	public ZShop getPlugin() {
+		return plugin;
+	}
+	
 	protected VInventory createInventory(String name, int size) {
 		guiName = name;
-		if (name.length() > 32)
-			Logger.getLogger().log("The name of the menu is over 32 characters!", LogType.ERROR);
+//		if (name.length() > 32)
+//			Logger.getLogger().log("The name of the menu is over 32 characters!", LogType.ERROR);
 		this.inventory = Bukkit.createInventory(null, size, name);
 		return this;
 	}
@@ -62,6 +76,14 @@ public abstract class VInventory extends ZUtils {
 		return items;
 	}
 
+	public boolean isDisableClick() {
+		return disableClick;
+	}
+	
+	public void setDisableClick(boolean disableClick) {
+		this.disableClick = disableClick;
+	}
+	
 	/**
 	 * @return the player
 	 */
@@ -133,8 +155,12 @@ public abstract class VInventory extends ZUtils {
 		this.plugin = plugin;
 	}
 	
+	public void setInventoryManager(InventoryManager inventoryManager) {
+		this.inventoryManager = inventoryManager;
+	}
+	
 	public void createInventory(int id, Player player, int page, Object... args){
-		plugin.getInventoryManager().createInventory(id, player, page, args);
+		inventoryManager.createInventory(id, player, page, args);
 	}
 	
 	public abstract boolean openInventory(ZShop main, Player player, int page, Object... args) throws Exception;

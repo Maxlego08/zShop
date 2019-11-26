@@ -6,6 +6,7 @@ public enum EnumCategory {
 	SHOP(1),
 	BUY(2),
 	SELL(3),
+	CONFIRM(4),
 
 	;
 

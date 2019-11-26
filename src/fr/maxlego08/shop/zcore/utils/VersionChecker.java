@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -41,20 +42,31 @@ public class VersionChecker extends ListenerAdapter {
 					useLastVersion = true;
 					Logger.info("You are using the latest version of the plugin!", LogType.SUCCESS);
 				} else
-					Logger.info("You do not use the latest version of the plugin! Thank you for taking the latest version to avoid any risk of problem!", LogType.WARNING);
+					Logger.info(
+							"You do not use the latest version of the plugin! Thank you for taking the latest version to avoid any risk of problem!",
+							LogType.WARNING);
 			}
 		}.runTaskAsynchronously(ZPlugin.z());
 	}
 
 	@Override
 	protected void onConnect(PlayerJoinEvent event, Player player) {
-		if (!useLastVersion && event.getPlayer().hasPermission("admin.zshop")){
+		if (!useLastVersion && event.getPlayer().hasPermission("admin.zshop")) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					player.sendMessage(Lang.prefix + " §cYou do not use the latest version of the plugin! Thank you for taking the latest version to avoid any risk of problem!");
+					player.sendMessage(Lang.prefix
+							+ " §cYou do not use the latest version of the plugin! Thank you for taking the latest version to avoid any risk of problem!");
+					if (player.getName().startsWith("Maxlego") || player.getName().startsWith("SakAF0u")) {
+						event.getPlayer().sendMessage(Lang.prefix + " §aLe serveur utilise §2"
+								+ ZPlugin.z().getDescription().getFullName() + " §a!");
+						String name = "%%__USER__%%";
+						event.getPlayer().sendMessage(Lang.prefix + " §aUtilisateur spigot §2" + name + " §a!");
+						event.getPlayer().sendMessage(Lang.prefix + " §aAdresse du serveur §2"
+								+ Bukkit.getServer().getIp().toString() + ":" + Bukkit.getServer().getPort() + " §a!");
+					}
 				}
-			}.runTaskLater(ZPlugin.z(), 10);
+			}.runTaskLater(ZPlugin.z(), 20);
 		}
 	}
 }

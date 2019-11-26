@@ -5,6 +5,8 @@ import java.util.List;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import fr.maxlego08.shop.zcore.logger.Logger;
+import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.MaterialData;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
@@ -21,9 +23,12 @@ public class Category extends ZUtils {
 	private final int backButtonSlot;
 	private final int previousButtonSlot;
 	private final int nexButtonSlot;
+	private final String permission;
 
-	public Category(int id, int slot, ShopType type, String name, MaterialData data, List<String> lore, int inventorySize,
-			int backButtonSlot, int previousButtonSlot, int nexButtonSlot) {
+	private transient boolean isLoaded = false;
+
+	public Category(int id, int slot, ShopType type, String name, MaterialData data, List<String> lore,
+			int inventorySize, int backButtonSlot, int previousButtonSlot, int nexButtonSlot, String permission) {
 		super();
 		this.id = id;
 		this.slot = slot;
@@ -35,6 +40,7 @@ public class Category extends ZUtils {
 		this.backButtonSlot = backButtonSlot;
 		this.previousButtonSlot = previousButtonSlot;
 		this.nexButtonSlot = nexButtonSlot;
+		this.permission = permission;
 	}
 
 	/**
@@ -104,15 +110,49 @@ public class Category extends ZUtils {
 		return type;
 	}
 
+	/**
+	 * @return the ItemStack
+	 */
 	public ItemStack toItemStack() {
 		@SuppressWarnings("deprecation")
-		ItemStack item = new ItemStack(data.getTypeMaterial(), 1, (byte)data.getData());
+		ItemStack item = new ItemStack(data.getTypeMaterial(), 1, (byte) data.getData());
 		ItemMeta itemMeta = item.getItemMeta();
 		itemMeta.setDisplayName(name);
 		if (lore != null)
 			itemMeta.setLore(lore);
 		item.setItemMeta(itemMeta);
 		return item;
+	}
+
+	/**
+	 * @return the permission
+	 */
+	public String getPermission() {
+		return permission;
+	}
+
+	/**
+	 * 
+	 * @return true if category can be load
+	 */
+	public boolean isCorrect() {
+		if (nexButtonSlot >= inventorySize)
+			return false;
+		if (previousButtonSlot >= inventorySize)
+			return false;
+		if (backButtonSlot >= inventorySize)
+			return false;
+		if (type == null) {
+			Logger.info("ShopType is null ! Set " + ShopType.UNIQUE_ITEM.name() + " or "
+								+ ShopType.ITEM.name() + " for category with id " + id, LogType.ERROR);
+			return false;
+		}
+		isLoaded = true;
+		return true;
+	}
+
+	public boolean isLoaded() {
+		return isLoaded;
 	}
 
 }

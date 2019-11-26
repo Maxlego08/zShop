@@ -25,6 +25,8 @@ public interface ShopItem{
 	
 	public int getMaxStackSize();
 	
+	public boolean useConfirm();
+	
 	public enum ShopType{
 		
 		ITEM,

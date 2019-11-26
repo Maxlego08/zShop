@@ -19,10 +19,13 @@ public class InventoryShop extends VInventory {
 
 		ConfigDefaultInventory.decoration.forEach((slot, button) -> addItem(slot, button.getInitButton()));
 
-		main.getCategories().getCategories().forEach(
-				(id, category) -> addItem(category.getSlot(), new ItemButton(category.toItemStack()).setClick(event -> {
+		main.getCategories().getCategories().forEach((id, category) -> {
+			if (category.isLoaded() && category.getPermission() == null
+					|| player.hasPermission(category.getPermission()))
+				addItem(category.getSlot(), new ItemButton(category.toItemStack()).setClick(event -> {
 					main.getShop().openShop(player, EnumCategory.SHOP, 1, category);
-				})));
+				}));
+		});
 
 		return true;
 	}

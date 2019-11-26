@@ -30,7 +30,7 @@ public class InventoryShopBuy extends VInventory {
 		item = (ShopItem) args[0];
 		final int lastPage = (int) args[1];
 
-		createInventory(ConfigBuyInventory.inventoryName.replace("%item%", item.getDisplayItem().getType().name()),
+		createInventory(ConfigBuyInventory.inventoryName.replace("%item%", itemName(item.getDisplayItem())),
 				ConfigBuyInventory.inventorySize);
 
 		ConfigBuyInventory.decoration.forEach((slot, button) -> addItem(slot, button.getInitButton()));

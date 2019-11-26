@@ -2,6 +2,7 @@ package fr.maxlego08.shop.zshop.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,12 +20,16 @@ public class ItemStackYAMLoader extends ZUtils {
 	@SuppressWarnings("deprecation")
 	public ItemStack load(YamlConfiguration configuration, String path) {
 
-		int id = configuration.getInt(path + "id");
+		int id = configuration.getInt(path + "id", 0);
 		int data = configuration.getInt(path + ".data", 0);
+		int amount = configuration.getInt(path + ".amount", 1);
+
+		if (id == 0)
+			return null;
 
 		Material material = getMaterial(id);
 
-		ItemStack item = new ItemStack(material, 1, (byte) data);
+		ItemStack item = new ItemStack(material, amount, (byte) data);
 
 		ItemMeta meta = item.getItemMeta();
 
@@ -115,6 +120,14 @@ public class ItemStackYAMLoader extends ZUtils {
 			configuration.set(path + "name", meta.getDisplayName());
 		if (meta.hasLore())
 			configuration.set(path + "lore", meta.getLore());
+		if (meta.getItemFlags().size() != 0)
+			configuration.set(path + "flags",
+					meta.getItemFlags().stream().map(flag -> flag.name()).collect(Collectors.toList()));
+		if (meta.hasEnchants()) {
+			List<String> enchantList = new ArrayList<>();
+			meta.getEnchants().forEach((enchant, level) -> enchantList.add(enchant.getName() + "," + level));
+			configuration.set(path + "enchants", enchantList);
+		}
 
 	}
 

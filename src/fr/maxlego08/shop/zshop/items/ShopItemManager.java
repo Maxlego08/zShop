@@ -75,13 +75,23 @@ public class ShopItemManager implements Items {
 					String currentPath = "items." + categoryId + ".items." + itemId + ".";
 
 					ShopType type = ShopType.valueOf(configuration.getString(currentPath + "type").toUpperCase());
-					ItemStack itemStack = itemStackYAMLoader.load(configuration, currentPath + ".item.");
 
+					if (type == null) {
+						throw new ItemCreateException("Could load item with id " + itemId + " in category " + categoryId
+								+ " ! ShopType is null ! Set " + ShopType.UNIQUE_ITEM.name() + " or "
+								+ ShopType.ITEM.name() + " !");
+					}
+
+					ItemStack itemStack = itemStackYAMLoader.load(configuration, currentPath + ".item.");
+					ItemStack giveItemStack = itemStackYAMLoader.load(configuration, currentPath + ".giveItem.");
+
+					int slot = configuration.getInt(currentPath + "slot", 0);
 					double sellPrice = configuration.getDouble(currentPath + "sellPrice", 0);
 					double buyPrice = configuration.getDouble(currentPath + "buyPrice", 0);
 					boolean giveItem = configuration.getBoolean(currentPath + "give", true);
 					boolean executeSellCommand = configuration.getBoolean(currentPath + "executeSellCommand", true);
 					boolean executeBuyCommand = configuration.getBoolean(currentPath + "executeBuyCommand", true);
+					boolean useConfirm = configuration.getBoolean(currentPath + "useConfirm", true);
 					int maxStackSize = configuration.getInt(currentPath + "item.stack", 64);
 					List<String> commands = configuration.getStringList(currentPath + "commands");
 
@@ -93,6 +103,8 @@ public class ShopItemManager implements Items {
 						break;
 					}
 					case UNIQUE_ITEM: {
+						item = new ShopItemUnique(currentId, slot, itemStack, buyPrice, useConfirm, commands,
+								giveItemStack);
 						break;
 					}
 					}
@@ -129,8 +141,8 @@ public class ShopItemManager implements Items {
 	}
 
 	@Override
-	public void save() {
-		File file = new File(plugin.getDataFolder() + File.separator + "items_default.yml");
+	public void save(String fileName) {
+		File file = new File(plugin.getDataFolder() + File.separator + fileName + ".yml");
 		if (!file.exists())
 			try {
 				file.createNewFile();
@@ -144,11 +156,22 @@ public class ShopItemManager implements Items {
 			items.forEach(item -> {
 				String path = "items." + id + ".items." + integer.getAndIncrement() + ".";
 				configuration.set(path + "type", item.getType().name());
-				stackYAMLoader.save(item.getItem(), configuration, path + "item.");
+				stackYAMLoader.save(item.getType().equals(ShopType.ITEM) ? item.getItem() : item.getDisplayItem(),
+						configuration, path + "item.");
 				if (item.getMaxStackSize() != 64)
 					configuration.set(path + "item.stack", item.getMaxStackSize());
 				configuration.set(path + "buyPrice", item.getSellPrice());
 				configuration.set(path + "sellPrice", item.getBuyPrice());
+				if (item instanceof ShopItemConsomable) {
+					ShopItemConsomable tmpItem = (ShopItemConsomable) item;
+					configuration.set(path + "give", tmpItem.isGiveItem());
+					configuration.set(path + "executeSellCommand", tmpItem.isExecuteSellCommand());
+					configuration.set(path + "executeBuyCommand", tmpItem.isExecuteBuyCommand());
+					configuration.set(path + "commands", tmpItem.getCommands());
+				} else {
+					ShopItemUnique tmpItem = (ShopItemUnique) item;
+					stackYAMLoader.save(tmpItem.getItem(), configuration, path + "giveItem.");
+				}
 			});
 		});
 		try {

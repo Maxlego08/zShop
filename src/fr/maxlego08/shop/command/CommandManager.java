@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.commands.CommandShop;
 import fr.maxlego08.shop.command.commands.CommandShopReload;
+import fr.maxlego08.shop.command.commands.CommandShopTest;
 import fr.maxlego08.shop.command.commands.CommandShopVersion;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
@@ -33,6 +34,7 @@ public class CommandManager implements CommandExecutor {
 
 		VCommand command = addCommand("shop", new CommandShop()
 				.setConsoleCanUse(false)
+				.addSubCommand("zshop")
 				.setPermission("zshop.use")
 				.setDescription("Open shop")
 				.setSyntaxe("/shop"));
@@ -57,6 +59,8 @@ public class CommandManager implements CommandExecutor {
 				.setDescription("Reload plugin")
 				.setPermission("zshop.reload")
 				.setParent(command));
+		
+		addCommand(new CommandShopTest().setParent(command).addSubCommand("test").setPermission("zshop.test"));
 		
 		main.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 	}

@@ -111,9 +111,10 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 						.replace("%item%", currentItem.getType().name().toLowerCase().replace("_", " "))
 						.replace("%price%", format(currentPrice)));
 
-		Logger.info(player.getName() + " vient d'acheter x" + amount + " "
-				+ currentItem.getType().name().toLowerCase().replace("_", " ") + " pour " + format(currentPrice) + "$",
-				LogType.INFO);
+		if (Config.logConsole)
+			Logger.info(player.getName() + " vient d'acheter x" + amount + " "
+					+ currentItem.getType().name().toLowerCase().replace("_", " ") + " pour " + format(currentPrice)
+					+ "$", LogType.INFO);
 
 		if (Config.shopPostBuyEvent) {
 			ShopPostBuyEvent shopPostBuyEvent = new ShopPostBuyEvent(this, player, amount, currentBuyPrice);
@@ -198,10 +199,12 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		depositMoney(player, price);
 		player.sendMessage(Lang.prefix + " " + Lang.sellItem.replace("%amount%", String.valueOf(realAmount))
 				.replace("%item%", itemName(itemStack)).replace("%price%", format(price)));
-		Logger.info(
-				player.getName() + " just sold x" + realAmount + " "
-						+ currentMaterial.name().toLowerCase().replace("_", " ") + " for " + format(price) + "$",
-				LogType.INFO);
+
+		if (Config.logConsole)
+			Logger.info(
+					player.getName() + " just sold x" + realAmount + " "
+							+ currentMaterial.name().toLowerCase().replace("_", " ") + " for " + format(price) + "$",
+					LogType.INFO);
 
 		/**
 		 * Appel de l'event
@@ -253,4 +256,67 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		return maxStackSize;
 	}
 
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @return the itemStack
+	 */
+	public ItemStack getItemStack() {
+		return itemStack;
+	}
+
+	/**
+	 * @return the executeSellCommand
+	 */
+	public boolean isExecuteSellCommand() {
+		return executeSellCommand;
+	}
+
+	/**
+	 * @return the executeBuyCommand
+	 */
+	public boolean isExecuteBuyCommand() {
+		return executeBuyCommand;
+	}
+
+	/**
+	 * @param giveItem the giveItem to set
+	 */
+	public void setGiveItem(boolean giveItem) {
+		this.giveItem = giveItem;
+	}
+
+	/**
+	 * @param executeSellCommand the executeSellCommand to set
+	 */
+	public void setExecuteSellCommand(boolean executeSellCommand) {
+		this.executeSellCommand = executeSellCommand;
+	}
+
+	/**
+	 * @param executeBuyCommand the executeBuyCommand to set
+	 */
+	public void setExecuteBuyCommand(boolean executeBuyCommand) {
+		this.executeBuyCommand = executeBuyCommand;
+	}
+
+	/**
+	 * @param commands the commands to set
+	 */
+	public void setCommands(List<String> commands) {
+		this.commands = commands;
+	}
+
+	@Override
+	public boolean useConfirm() {
+		return false;
+	}
+
+	
+	
 }

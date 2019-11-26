@@ -61,6 +61,6 @@ public interface Items {
 	/**
 	 * Save items
 	 */
-	void save();
+	void save(String fileName);
 
 }

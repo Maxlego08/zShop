@@ -71,6 +71,8 @@ public class ZShop extends ZPlugin {
 
 		preDisable();
 
+		inventoryManager.closeAllPlayer();
+		
 		getSavers().forEach(saver -> saver.save(getPersist()));
 
 		postDisable();

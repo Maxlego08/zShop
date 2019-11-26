@@ -30,7 +30,7 @@ public class InventoryShopSell extends VInventory {
 		item = (ShopItem) args[0];
 		final int lastPage = (int) args[1];
 
-		createInventory(ConfigSellInventory.inventoryName.replace("%item%", item.getDisplayItem().getType().name()),
+		createInventory(ConfigSellInventory.inventoryName.replace("%item%", itemName(item.getDisplayItem())),
 				ConfigSellInventory.inventorySize);
 
 		ConfigSellInventory.decoration.forEach((slot, button) -> addItem(slot, button.getInitButton()));
@@ -73,7 +73,7 @@ public class InventoryShopSell extends VInventory {
 					main.getShop().openShop(player, EnumCategory.SHOP, lastPage,
 							main.getCategories().getCategory(item.getCategory()));
 				}));
-		addItem(ConfigSellInventory.sellintSlotSlot, new ItemButton(Lang.buyButton.getInitButton()).setClick(event -> {
+		addItem(ConfigSellInventory.sellintSlotSlot, new ItemButton(Lang.sellButton.getInitButton()).setClick(event -> {
 			item.performSell(player, amount.get());
 		}));
 
