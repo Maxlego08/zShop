@@ -2,6 +2,8 @@ package fr.maxlego08.shop.zshop.factories;
 
 import java.util.List;
 
+import org.bukkit.Material;
+
 import fr.maxlego08.shop.zshop.items.ShopItem;
 
 public interface Items {
@@ -12,7 +14,21 @@ public interface Items {
 	 * @return items of category
 	 */
 	List<ShopItem> getItems(int category);
+	
+	/**
+	 * Allows you to retrieve an item list based on a material
+	 * @param material
+	 * @return items that have the same material as in parameter 
+	 */
+	List<ShopItem> getItems(Material material);
 
+	/**
+	 * Allows to check if at least one item is in the shop with the given material
+	 * @param material
+	 * @return true if items was found
+	 */
+	boolean hasItems(Material material);
+	
 	/**
 	 * Allows you to change the items of a category
 	 * @param items list

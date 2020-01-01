@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -179,6 +181,19 @@ public class ShopItemManager implements Items {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<ShopItem> getItems(Material material) {
+		List<ShopItem> items = new ArrayList<>();
+		this.items.values().forEach(list -> items.addAll(
+				list.stream().filter(item -> item.getItem().getType().equals(material)).collect(Collectors.toList())));
+		return items;
+	}
+
+	@Override
+	public boolean hasItems(Material material) {
+		return getItems(material).size() != 0;
 	}
 
 }

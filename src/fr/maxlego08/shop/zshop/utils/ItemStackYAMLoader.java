@@ -99,7 +99,7 @@ public class ItemStackYAMLoader extends ZUtils {
 					meta.addItemFlags(flag);
 
 				} catch (ItemFlagException e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 
 			}
