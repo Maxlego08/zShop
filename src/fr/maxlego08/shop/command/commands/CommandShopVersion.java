@@ -7,6 +7,11 @@ import fr.maxlego08.shop.save.Lang;
 
 public class CommandShopVersion extends VCommand {
 
+	public CommandShopVersion() {
+		this.addSubCommand("version", "v", "ver", "?");
+		this.setDescription("Show plugin version");
+	}
+	
 	@Override
 	public CommandType perform(ZShop main) {
 

@@ -125,22 +125,21 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 			for (String command : commands)
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
 						command.replace("%player%", player.getName()).replace("%amount%", String.valueOf(amount))
-								.replace("%item%", itemName(itemStack)).replace("%price%", format(currentBuyPrice)));
+								.replace("%item%", getItemName(itemStack)).replace("%price%", format(currentBuyPrice)));
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void performSell(Player player, int amount) {
 		int item = 0;
 		final Material currentMaterial = itemStack.getType();
 		ItemStack[] arrayOfItemStack;
-
-		// On définie le nombre d'item que le joueur peut vendre
-
 		int x = (arrayOfItemStack = player.getInventory().getContents()).length;
 		for (int i = 0; i < x; i++) {
 			ItemStack contents = arrayOfItemStack[i];
-			if ((contents != null) && (contents.getType() != Material.AIR) && (contents.getType() == currentMaterial))
+			if ((contents != null) && (contents.getType() != Material.AIR) && (contents.getType() == currentMaterial)
+					&& itemStack.getData().getData() == contents.getData().getData())
 				item = item + contents.getAmount();
 		}
 		if (item == 0) {
@@ -176,35 +175,25 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		/* Fin de l'event */
 
 		// On retire ensuite les items de l'inventaire du joueur
-		for (int i = 0; i < x; i++) {
-			ItemStack contents = arrayOfItemStack[i];
-			if ((contents != null) && (contents.getType() != Material.AIR) && (contents.getType() == currentMaterial)) {
-				if (item <= 0)
-					continue;
-				if (contents.getAmount() >= 64 && item >= 64) {
-					player.getInventory().remove(contents.getType());
-					item -= 64;
-				} else if (contents.getAmount() == item) {
-					player.getInventory().remove(contents.getType());
-					item -= contents.getAmount();
-				} else {
-					int diff = contents.getAmount() - item;
-					contents.setAmount(diff);
-					item -= diff;
-				}
+		for (ItemStack is : player.getInventory().getContents()) {
+			if (is != null && is.isSimilar(itemStack)) {
+				int currentAmount = is.getAmount() - item;
+				item -= is.getAmount();
+				if (currentAmount <= 0)
+					player.getInventory().removeItem(is);
+				else
+					is.setAmount(currentAmount);
 			}
 		}
 
 		// On termine l'action
 		depositMoney(player, price);
 		player.sendMessage(Lang.prefix + " " + Lang.sellItem.replace("%amount%", String.valueOf(realAmount))
-				.replace("%item%", itemName(itemStack)).replace("%price%", format(price)));
+				.replace("%item%", getItemName(itemStack)).replace("%price%", format(price)));
 
 		if (Config.logConsole)
-			Logger.info(
-					player.getName() + " just sold x" + realAmount + " "
-							+ currentMaterial.name().toLowerCase().replace("_", " ") + " for " + format(price) + "$",
-					LogType.INFO);
+			Logger.info(player.getName() + " just sold x" + realAmount + " " + getItemName(itemStack) + " for "
+					+ format(price) + "$", LogType.INFO);
 
 		/**
 		 * Appel de l'event
@@ -218,7 +207,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 			for (String command : commands)
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
 						command.replace("%player%", player.getName()).replace("%amount%", String.valueOf(realAmount))
-								.replace("%item%", itemName(itemStack)).replace("%price%", format(price)));
+								.replace("%item%", getItemName(itemStack)).replace("%price%", format(price)));
 
 	}
 
@@ -285,28 +274,32 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 	}
 
 	/**
-	 * @param giveItem the giveItem to set
+	 * @param giveItem
+	 *            the giveItem to set
 	 */
 	public void setGiveItem(boolean giveItem) {
 		this.giveItem = giveItem;
 	}
 
 	/**
-	 * @param executeSellCommand the executeSellCommand to set
+	 * @param executeSellCommand
+	 *            the executeSellCommand to set
 	 */
 	public void setExecuteSellCommand(boolean executeSellCommand) {
 		this.executeSellCommand = executeSellCommand;
 	}
 
 	/**
-	 * @param executeBuyCommand the executeBuyCommand to set
+	 * @param executeBuyCommand
+	 *            the executeBuyCommand to set
 	 */
 	public void setExecuteBuyCommand(boolean executeBuyCommand) {
 		this.executeBuyCommand = executeBuyCommand;
 	}
 
 	/**
-	 * @param commands the commands to set
+	 * @param commands
+	 *            the commands to set
 	 */
 	public void setCommands(List<String> commands) {
 		this.commands = commands;
@@ -317,6 +310,4 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		return false;
 	}
 
-	
-	
 }

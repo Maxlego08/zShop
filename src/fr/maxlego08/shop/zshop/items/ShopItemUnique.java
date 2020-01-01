@@ -84,7 +84,7 @@ public class ShopItemUnique extends ZUtils implements ShopItem {
 		}
 
 		withdrawMoney(player, buyPrice);
-		String itemName = itemName(getDisplayItem());
+		String itemName = getItemName(getDisplayItem());
 
 		if (giveItem != null)
 			give(player, giveItem);

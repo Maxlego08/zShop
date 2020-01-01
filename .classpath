@@ -11,12 +11,12 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveur1.14/spigot-1.14.4.jar"/>
 	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveurdedev/plugins/BCP DE PLUGIN ICI/Vault.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveur1.15/spigot-1.15.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

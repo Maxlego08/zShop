@@ -24,20 +24,26 @@ public class ZShop extends ZPlugin {
 	private Shop shop;
 	private Categories categories;
 	private Items items;
+	private static ZShop instance;
 
 	@Override
 	public void onEnable() {
 
+		instance = this;
+
 		preEnable();
 
 		commandManager = new CommandManager(this);
+		commandManager.registerCommands();
+
 		if (!isEnabled())
 			return;
+
 		inventoryManager = new InventoryManager(this);
 		shop = new ShopManager(this);
 		categories = new CategoryManager();
 		items = new ShopItemManager(this);
-		
+
 		getServer().getServicesManager().register(Shop.class, shop, this, ServicePriority.High);
 		getServer().getServicesManager().register(Categories.class, categories, this, ServicePriority.High);
 		getServer().getServicesManager().register(Items.class, items, this, ServicePriority.High);
@@ -61,7 +67,7 @@ public class ZShop extends ZPlugin {
 		items.load();
 
 		new Metrics(this);
-		
+
 		postEnable();
 
 	}
@@ -72,7 +78,7 @@ public class ZShop extends ZPlugin {
 		preDisable();
 
 		inventoryManager.closeAllPlayer();
-		
+
 		getSavers().forEach(saver -> saver.save(getPersist()));
 
 		postDisable();
@@ -94,9 +100,13 @@ public class ZShop extends ZPlugin {
 	public Shop getShop() {
 		return shop;
 	}
-	
+
 	public Items getItems() {
 		return items;
+	}
+
+	public static ZShop i() {
+		return instance;
 	}
 
 }
