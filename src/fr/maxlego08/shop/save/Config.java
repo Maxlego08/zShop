@@ -17,6 +17,8 @@ public class Config implements Saveable {
 	public static boolean shopPostSellEvent = true;
 	public static boolean shopPostBuyEvent = true;
 	public static boolean shopPreBuyEvent = true;
+	public static boolean shopPreSellAllEvent = true;
+	public static boolean shopPostSellAllEvent = true;
 	
 	public static boolean logConsole = true;
 	

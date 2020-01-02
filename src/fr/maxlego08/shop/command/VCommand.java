@@ -147,7 +147,7 @@ public abstract class VCommand extends Arguments {
 	}
 
 	public String getDescription() {
-		return description;
+		return description == null ? "no description" : description; 
 	}
 
 	//

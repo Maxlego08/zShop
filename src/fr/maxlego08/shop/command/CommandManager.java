@@ -29,7 +29,7 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 	public void registerCommands() {
 
 		addCommand("shop", new CommandShop());
-		
+
 		main.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 		this.commandChecking();
 	}
@@ -122,7 +122,7 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 						iIventory.getArgs());
 			}
 			CommandType returnType = command.prePerform(main, sender, strings);
-			if (returnType == CommandType.SYNTAX_ERROR) 
+			if (returnType == CommandType.SYNTAX_ERROR)
 				message(sender, Message.COMMAND_SYNTAXE_ERROR, command.getSyntaxe());
 			return returnType;
 		}
@@ -138,14 +138,13 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 		return (int) commands.stream().filter(command -> command.getParent() == null).count();
 	}
 
-
 	/**
 	 * @param commandString
 	 * @param sender
 	 */
 	public void sendHelp(String commandString, CommandSender sender) {
 		commands.forEach(command -> {
-			if (isValid(command, commandString) && command.getDescription() != null
+			if (isValid(command, commandString)
 					&& (command.getPermission() == null || hasPermission(sender, command.getPermission()))) {
 				message(sender, Message.COMMAND_SYNTAXE_HELP, command.getSyntaxe(), command.getDescription());
 			}

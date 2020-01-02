@@ -15,4 +15,23 @@ public interface Shop {
 	 */
 	void openShop(Player player, EnumCategory category, int page, Object... args);
 	
+	/**
+	 * Set item in hand
+	 * @param player
+	 * @param amount
+	 */
+	void sellHand(Player player, int amount);
+	
+	/**
+	 * Sells all items inventory which are the same as the one being held in your hand
+	 * @param player
+	 */
+	void sellAllHand(Player player);
+
+	/**
+	 * Sells all items
+	 * @param player
+	 */
+	void sellAll(Player player);
+	
 }

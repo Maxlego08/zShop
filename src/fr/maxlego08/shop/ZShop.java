@@ -40,9 +40,9 @@ public class ZShop extends ZPlugin {
 			return;
 
 		inventoryManager = new InventoryManager(this);
-		shop = new ShopManager(this);
 		categories = new CategoryManager();
 		items = new ShopItemManager(this);
+		shop = new ShopManager(this);
 
 		getServer().getServicesManager().register(Shop.class, shop, this, ServicePriority.High);
 		getServer().getServicesManager().register(Categories.class, categories, this, ServicePriority.High);

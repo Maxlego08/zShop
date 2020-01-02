@@ -683,7 +683,8 @@ public abstract class ZUtils {
 		try {
 			if (item.hasItemMeta() && item.getItemMeta().hasLocalizedName())
 				return item.getItemMeta().getLocalizedName();
-		} catch (Exception e) { }
+		} catch (NoSuchMethodError e) {
+		}
 		String name = item.serialize().get("type").toString().replace("_", " ").toLowerCase();
 		return name.substring(0, 1).toUpperCase() + name.substring(1);
 	}

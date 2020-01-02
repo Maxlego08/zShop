@@ -5,6 +5,9 @@ public enum Permission {
 	SHOP_USE("zshop.use"),
 	SHOP_RELOAD("zshop.reload"),
 	SHOP_HELP("zshop.help"),
+	SHOP_HAND("zshop.hand"),
+	SHOP_HAND_ALL("zshop.hand.all"),
+	SHOP_ALL("zshop.all"),
 	
 	;
 

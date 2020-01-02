@@ -10,6 +10,7 @@ public class CommandShopReload extends VCommand {
 
 	public CommandShopReload() {
 		this.addSubCommand("reload", "rl");
+		this.setDescription("Reload configuration");
 		this.setPermission(Permission.SHOP_RELOAD);
 	}
 	

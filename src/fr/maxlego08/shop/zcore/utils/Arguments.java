@@ -17,6 +17,14 @@ public abstract class Arguments extends ZUtils {
 		return Integer.valueOf(argAsString(index));
 	}
 
+	protected int argAsInteger(int index, int defaultNumber) {
+		try {
+			return Integer.valueOf(argAsString(index));
+		} catch (Exception e) {
+			return defaultNumber;
+		}
+	}
+
 	protected long argAsLong(int index) {
 		return Long.valueOf(argAsString(index));
 	}

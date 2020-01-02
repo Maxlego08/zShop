@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -184,16 +183,16 @@ public class ShopItemManager implements Items {
 	}
 
 	@Override
-	public List<ShopItem> getItems(Material material) {
+	public List<ShopItem> getItems(ItemStack itemStack) {
 		List<ShopItem> items = new ArrayList<>();
 		this.items.values().forEach(list -> items.addAll(
-				list.stream().filter(item -> item.getItem().getType().equals(material)).collect(Collectors.toList())));
+				list.stream().filter(item -> item.getItem().isSimilar(itemStack)).collect(Collectors.toList())));
 		return items;
 	}
 
 	@Override
-	public boolean hasItems(Material material) {
-		return getItems(material).size() != 0;
+	public boolean hasItems(ItemStack itemStack) {
+		return getItems(itemStack).size() != 0;
 	}
 
 }

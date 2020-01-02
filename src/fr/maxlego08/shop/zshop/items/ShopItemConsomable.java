@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -129,27 +128,27 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void performSell(Player player, int amount) {
 		int item = 0;
-		final Material currentMaterial = itemStack.getType();
-		ItemStack[] arrayOfItemStack;
-		int x = (arrayOfItemStack = player.getInventory().getContents()).length;
-		for (int i = 0; i < x; i++) {
-			ItemStack contents = arrayOfItemStack[i];
-			if ((contents != null) && (contents.getType() != Material.AIR) && (contents.getType() == currentMaterial)
-					&& itemStack.getData().getData() == contents.getData().getData())
-				item = item + contents.getAmount();
-		}
+		
+		//On définie le nombre d'item dans l'inventaire du joueur
+		for (ItemStack is : player.getInventory().getContents()) 
+			if (is != null && is.isSimilar(itemStack)) 
+				item += is.getAmount();
+		
+		//On verif si le joueur à bien l'item
 		if (item == 0) {
 			player.sendMessage(Lang.prefix + " " + Lang.notItems);
 			return;
 		}
+		
+		//On verif que le joueur ne veut pas vendre plus qu'il possède
 		if (item < amount) {
 			player.sendMessage(Lang.prefix + " " + Lang.notEnouhtItems);
 			return;
 		}
+		
 		// On définie le nombre d'item a vendre en fonction du nombre d'item que
 		// le joueur peut vendre
 		item = amount == 0 ? item : item < amount ? amount : amount > item ? item : amount;
@@ -176,7 +175,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 		// On retire ensuite les items de l'inventaire du joueur
 		for (ItemStack is : player.getInventory().getContents()) {
-			if (is != null && is.isSimilar(itemStack)) {
+			if (is != null && is.isSimilar(itemStack) && item > 0) {
 				int currentAmount = is.getAmount() - item;
 				item -= is.getAmount();
 				if (currentAmount <= 0)
@@ -188,7 +187,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 		// On termine l'action
 		depositMoney(player, price);
-		player.sendMessage(Lang.prefix + " " + Lang.sellItem.replace("%amount%", String.valueOf(realAmount))
+		message(player, Lang.sellItem.replace("%amount%", String.valueOf(realAmount))
 				.replace("%item%", getItemName(itemStack)).replace("%price%", format(price)));
 
 		if (Config.logConsole)

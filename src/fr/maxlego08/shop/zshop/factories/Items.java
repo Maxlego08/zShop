@@ -2,7 +2,7 @@ package fr.maxlego08.shop.zshop.factories;
 
 import java.util.List;
 
-import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.zshop.items.ShopItem;
 
@@ -17,17 +17,17 @@ public interface Items {
 	
 	/**
 	 * Allows you to retrieve an item list based on a material
-	 * @param material
+	 * @param itemStack
 	 * @return items that have the same material as in parameter 
 	 */
-	List<ShopItem> getItems(Material material);
+	List<ShopItem> getItems(ItemStack itemStack);
 
 	/**
 	 * Allows to check if at least one item is in the shop with the given material
-	 * @param material
+	 * @param itemStack
 	 * @return true if items was found
 	 */
-	boolean hasItems(Material material);
+	boolean hasItems(ItemStack itemStack);
 	
 	/**
 	 * Allows you to change the items of a category
