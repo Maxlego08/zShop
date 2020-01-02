@@ -22,5 +22,11 @@ public interface Categories extends Saveable {
 	 * @return category according to the id
 	 */
 	Category getCategory(int id);
+	
+	/**
+	 * @param name
+	 * @return
+	 */
+	Category getCategory(String name);
 
 }

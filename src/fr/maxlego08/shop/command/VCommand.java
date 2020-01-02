@@ -11,6 +11,8 @@ import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.zcore.utils.Arguments;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zcore.utils.inventory.IIventory;
+import fr.maxlego08.shop.zshop.factories.Items;
+import fr.maxlego08.shop.zshop.factories.Shop;
 
 public abstract class VCommand extends Arguments {
 
@@ -33,6 +35,9 @@ public abstract class VCommand extends Arguments {
 	private List<String> requireArgs = new ArrayList<String>();
 	private List<String> optionalArgs = new ArrayList<String>();
 
+	protected Shop shop;
+	protected Items items;
+	
 	/**
 	 * If this variable is false the command will not be able to use this
 	 * command
@@ -69,6 +74,10 @@ public abstract class VCommand extends Arguments {
 	// GETTER
 	//
 
+	public void setIgnoreParent(boolean ignoreParent) {
+		this.ignoreParent = ignoreParent;
+	}
+	
 	/**
 	 * @return the permission
 	 */
@@ -317,6 +326,9 @@ public abstract class VCommand extends Arguments {
 
 		// On met à jour le nombre d'argument en fonction du nombre de parent
 
+		shop = main.getShop();
+		items = main.getItems();
+		
 		parentCount = parentCount(0);
 		argsMaxLength = requireArgs.size() + optionalArgs.size() + parentCount;
 		argsMinLength = requireArgs.size() + parentCount;

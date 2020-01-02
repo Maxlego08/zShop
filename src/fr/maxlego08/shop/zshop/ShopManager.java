@@ -8,16 +8,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
+import fr.maxlego08.shop.command.CommandManager;
+import fr.maxlego08.shop.command.CommandType;
+import fr.maxlego08.shop.command.VCommand;
 import fr.maxlego08.shop.event.events.ShopOpenEvent;
 import fr.maxlego08.shop.event.events.ShopPostSellAllEvent;
 import fr.maxlego08.shop.event.events.ShopPreSellAllEvent;
 import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
+import fr.maxlego08.shop.zshop.categories.Category;
 import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
 import fr.maxlego08.shop.zshop.items.ShopItem;
@@ -158,6 +163,24 @@ public class ShopManager extends ZUtils implements Shop {
 			Bukkit.getPluginManager().callEvent(allEvent);
 		}
 
+	}
+
+	@Override
+	public CommandType openShop(Player player, String str) {
+		
+		CommandManager commandManager = ZShop.i().getCommandManager();
+		for(VCommand command : commandManager.getCommands())
+			if (command.getSubCommands().contains(str.toLowerCase()))
+				return CommandType.CONTINUE;
+		
+		Category category = ZShop.i().getCategories().getCategory(str);
+		
+		if (category == null)
+			return CommandType.SYNTAX_ERROR;
+		
+		this.openShop(player, EnumCategory.SHOP, 1, category);
+		
+		return CommandType.SUCCESS;
 	}
 
 }

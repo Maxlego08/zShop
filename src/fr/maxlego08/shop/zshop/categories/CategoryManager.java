@@ -73,4 +73,9 @@ public class CategoryManager implements Categories {
 		return categories.getOrDefault(id, null);
 	}
 
+	@Override
+	public Category getCategory(String name) {
+		return categories.values().stream().filter(category -> category.getName().toLowerCase().contains(name.toLowerCase())).findAny().orElse(null);
+	}
+
 }

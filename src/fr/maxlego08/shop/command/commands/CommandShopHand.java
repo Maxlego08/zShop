@@ -24,7 +24,7 @@ public class CommandShopHand extends VCommand {
 		if (amount > player.getItemInHand().getAmount())
 			amount = player.getItemInHand().getAmount();
 		
-		main.getShop().sellHand(player, amount);
+		shop.sellHand(player, amount);
 		
 		return CommandType.SUCCESS;
 	}

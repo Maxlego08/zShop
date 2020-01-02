@@ -2,6 +2,7 @@ package fr.maxlego08.shop.zshop.factories;
 
 import org.bukkit.entity.Player;
 
+import fr.maxlego08.shop.command.CommandType;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
 public interface Shop {
@@ -14,6 +15,13 @@ public interface Shop {
 	 * @param args
 	 */
 	void openShop(Player player, EnumCategory category, int page, Object... args);
+	
+	/**
+	 * Open shop with category
+	 * @param player
+	 * @param category
+	 */
+	CommandType openShop(Player player, String category);
 	
 	/**
 	 * Set item in hand

@@ -17,11 +17,15 @@ public class CommandShop extends VCommand {
 		this.addSubCommand(new CommandShopHand());
 		this.addSubCommand(new CommandShopAllHand());
 		this.addSubCommand(new CommandShopAll());
+		this.setIgnoreParent(true);
+		this.setSyntaxe("/zshop [<category>]");
 		this.setDescription("Open shop inventory");
 	}
 	
 	@Override
 	public CommandType perform(ZShop main) {
+		if (args.length != 0)
+			return shop.openShop(player, argAsString(0));
 		main.getShop().openShop(player, EnumCategory.DEFAULT, 0);
 		return CommandType.SUCCESS;
 	}

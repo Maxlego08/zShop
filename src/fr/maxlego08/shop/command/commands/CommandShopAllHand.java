@@ -16,7 +16,7 @@ public class CommandShopAllHand extends VCommand {
 
 	@Override
 	protected CommandType perform(ZShop main) {
-		main.getShop().sellAllHand(player);
+		shop.sellAllHand(player);
 		return CommandType.SUCCESS;
 	}
 	
