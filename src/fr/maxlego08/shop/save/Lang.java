@@ -34,8 +34,20 @@ public class Lang implements Saveable {
 	public static String sellHandAllItem = "§ax§e%amount% §2%item%§a";
 	public static String sellHandEmpty = "§cImpossible de trouver un item à vendre";
 	public static String sellHandAir = "§cVous ne pouvez pas vendre de l'air !";
+	public static String boostError = "§cImpossible de boost cet item, un boost est déjà en cours.";
+	public static String boostSuccess = "§aVous venez de créer un boost pour l'item §6%item%§a.";
+	public static String boostBroadcast = "§aL'item §2%item% §avient d'avoir un boost §2%boosttype% §apendant §2%timer% §avec un multiplicateur de §2%modifier%§a.";
+	public static String boostBuy = "d'achat";
+	public static String boostSell = "de vente";
+	public static String boostItemSell = "§7§m%defaultPrice%$§b » §a§l%newPrice%";
+	public static String boostItemBuy = "§7§m%defaultPrice%$§b » §a§l%newPrice%";
+	public static String boostErrorFound = "§cAucun boost n'est disponible pour §6%item%§c.";
+	public static String boostStopSuccess = "§aVous venez d'arreter le boost sur §6%item%§a.";
+	public static String boostEmpty = "§cAucun boost en cours.";
+	public static String boostShow = "§aBoost §2%type% §asur l'item §2%item% §apendant§6 %timer% §aavec un multiplicateur de§2 %modifier% §a.";
 	
 	public static List<String> displayItemLore = new ArrayList<String>();
+	public static List<String> displayItemLoreBoost = new ArrayList<String>();
 	
 	public static String second = "second";
 	public static String minute = "minute";
@@ -58,12 +70,17 @@ public class Lang implements Saveable {
 	
 	static{
 		
-		displayItemLore.add("§f» §2Prix d'achat§7: §a%buyPrice%");
-		displayItemLore.add("§f» §2Prix de vente§7: §a%sellPrice%");
-		displayItemLore.add("");
+		displayItemLore.add("§f» §2Prix d'achat§7: §a%buyPrice%$");
+		displayItemLore.add("§f» §2Prix de vente§7: §a%sellPrice%$");
+		displayItemLore.add("%boostinfo%");
 		displayItemLore.add("§f» §7Clique gauche pour acheter");
 		displayItemLore.add("§f» §7Clique molette pour tout vendre");
 		displayItemLore.add("§f» §7Clique droit pour vendre");
+		
+		displayItemLoreBoost.add("");
+		displayItemLoreBoost.add("§f» §7Boost de §ax%modifier% §7!");
+		displayItemLoreBoost.add("§f» §7Fin du boost dans §2%ending%");
+		displayItemLoreBoost.add("");
 		
 	}
 	

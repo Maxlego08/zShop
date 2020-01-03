@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.commands.CommandShop;
+import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
@@ -55,14 +56,13 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 						return true;
 				}
 			} else if (args.length >= 1 && command.getParent() != null
-					&& command.getParent().getSubCommands().contains(cmd.getName().toLowerCase())
 					&& canExecute(args, cmd.getName().toLowerCase(), command)) {
 				CommandType type = processRequirements(command, sender, args);
 				if (!type.equals(CommandType.CONTINUE))
 					return true;
 			}
 		}
-		message(sender, Message.COMMAND_NO_ARG);
+		message(sender, Lang.commandError);
 		return true;
 	}
 
@@ -123,17 +123,23 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 			}
 			CommandType returnType = command.prePerform(main, sender, strings);
 			if (returnType == CommandType.SYNTAX_ERROR)
-				message(sender, Message.COMMAND_SYNTAXE_ERROR, command.getSyntaxe());
+				message(sender, Lang.syntaxeError.replace("%command%", command.getSyntaxe()));
 			return returnType;
 		}
-		message(sender, Message.COMMAND_NO_PERMISSION);
+		message(sender, Lang.noPermission);
 		return CommandType.DEFAULT;
 	}
 
+	/**
+	 * @return
+	 */
 	public List<VCommand> getCommands() {
 		return commands;
 	}
 
+	/**
+	 * @return
+	 */
 	private int getUniqueCommand() {
 		return (int) commands.stream().filter(command -> command.getParent() == null).count();
 	}
@@ -143,7 +149,7 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 	 * @param sender
 	 */
 	public void sendHelp(String commandString, CommandSender sender) {
-		commands.forEach(command -> {
+		reverse(commands).forEach(command -> {
 			if (isValid(command, commandString)
 					&& (command.getPermission() == null || hasPermission(sender, command.getPermission()))) {
 				message(sender, Message.COMMAND_SYNTAXE_HELP, command.getSyntaxe(), command.getDescription());
@@ -151,9 +157,14 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 		});
 	}
 
+	/**
+	 * @param command
+	 * @param commandString
+	 * @return
+	 */
 	public boolean isValid(VCommand command, String commandString) {
-		return (command.getSubCommands().contains(commandString)
-				|| command.getParent() != null && command.getParent().getSubCommands().contains(commandString));
+		return command.getParent() != null ? isValid(command.getParent(), commandString)
+				: command.getSubCommands().contains(commandString.toLowerCase());
 	}
 
 	/**

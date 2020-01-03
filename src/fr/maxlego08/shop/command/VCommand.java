@@ -11,6 +11,7 @@ import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.zcore.utils.Arguments;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zcore.utils.inventory.IIventory;
+import fr.maxlego08.shop.zshop.factories.Boost;
 import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
 
@@ -31,13 +32,15 @@ public abstract class VCommand extends Arguments {
 	 * Are all sub commands used
 	 */
 	private List<String> subCommands = new ArrayList<String>();
+	private List<VCommand> subVCommands = new ArrayList<VCommand>();
 
 	private List<String> requireArgs = new ArrayList<String>();
 	private List<String> optionalArgs = new ArrayList<String>();
 
 	protected Shop shop;
 	protected Items items;
-	
+	protected Boost boost;
+
 	/**
 	 * If this variable is false the command will not be able to use this
 	 * command
@@ -77,7 +80,7 @@ public abstract class VCommand extends Arguments {
 	public void setIgnoreParent(boolean ignoreParent) {
 		this.ignoreParent = ignoreParent;
 	}
-	
+
 	/**
 	 * @return the permission
 	 */
@@ -156,7 +159,7 @@ public abstract class VCommand extends Arguments {
 	}
 
 	public String getDescription() {
-		return description == null ? "no description" : description; 
+		return description == null ? "no description" : description;
 	}
 
 	//
@@ -268,6 +271,7 @@ public abstract class VCommand extends Arguments {
 	public VCommand addSubCommand(VCommand command) {
 		command.setParent(this);
 		ZShop.i().getCommandManager().addCommand(command);
+		subVCommands.add(command);
 		return this;
 	}
 
@@ -293,12 +297,12 @@ public abstract class VCommand extends Arguments {
 
 		String tmpString = subCommands.get(0);
 
-		if (requireArgs.size() != 0)
+		if (requireArgs.size() != 0 && syntaxe.equals(""))
 			for (String requireArg : requireArgs) {
 				requireArg = "<" + requireArg + ">";
 				syntaxe += " " + requireArg;
 			}
-		if (optionalArgs.size() != 0)
+		if (optionalArgs.size() != 0 && syntaxe.equals(""))
 			for (String optionalArg : optionalArgs) {
 				optionalArg = "[<" + optionalArg + ">]";
 				syntaxe += " " + optionalArg;
@@ -328,7 +332,8 @@ public abstract class VCommand extends Arguments {
 
 		shop = main.getShop();
 		items = main.getItems();
-		
+		boost = main.getBoost();
+
 		parentCount = parentCount(0);
 		argsMaxLength = requireArgs.size() + optionalArgs.size() + parentCount;
 		argsMinLength = requireArgs.size() + parentCount;
@@ -337,15 +342,25 @@ public abstract class VCommand extends Arguments {
 		if (syntaxe == null)
 			syntaxe = generateDefaultSyntaxe("");
 
+		this.args = args;
+
+		String defaultString = argAsString(0);
+
+		if (defaultString != null) {
+			for (VCommand subCommand : subVCommands) {
+				if (subCommand.getSubCommands().contains(defaultString.toLowerCase()))
+					return CommandType.CONTINUE;
+			}
+		}
+
 		if (argsMinLength != 0 && argsMaxLength != 0
 				&& !(args.length >= argsMinLength && args.length <= argsMaxLength)) {
 			return CommandType.SYNTAX_ERROR;
 		}
-		
+
 		this.sender = commandSender;
 		if (sender instanceof Player)
 			player = (Player) commandSender;
-		this.args = args;
 
 		try {
 			return perform(main);

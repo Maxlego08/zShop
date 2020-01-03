@@ -11,7 +11,9 @@ import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.utils.Metrics;
 import fr.maxlego08.shop.zcore.utils.VersionChecker;
 import fr.maxlego08.shop.zshop.ShopManager;
+import fr.maxlego08.shop.zshop.boost.BoostManager;
 import fr.maxlego08.shop.zshop.categories.CategoryManager;
+import fr.maxlego08.shop.zshop.factories.Boost;
 import fr.maxlego08.shop.zshop.factories.Categories;
 import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
@@ -24,6 +26,7 @@ public class ZShop extends ZPlugin {
 	private Shop shop;
 	private Categories categories;
 	private Items items;
+	private Boost boost;
 	private static ZShop instance;
 
 	@Override
@@ -43,10 +46,12 @@ public class ZShop extends ZPlugin {
 		categories = new CategoryManager();
 		items = new ShopItemManager(this);
 		shop = new ShopManager(this);
-
+		boost = new BoostManager();
+		
 		getServer().getServicesManager().register(Shop.class, shop, this, ServicePriority.High);
 		getServer().getServicesManager().register(Categories.class, categories, this, ServicePriority.High);
 		getServer().getServicesManager().register(Items.class, items, this, ServicePriority.High);
+		getServer().getServicesManager().register(Boost.class, boost, this, ServicePriority.High);
 
 		VersionChecker versionChecker = new VersionChecker();
 		versionChecker.getLastVersion();
@@ -62,6 +67,7 @@ public class ZShop extends ZPlugin {
 		addSave(new Config());
 		addSave(new Lang());
 		addSave(categories);
+		addSave(boost);
 
 		getSavers().forEach(saver -> saver.load(getPersist()));
 		items.load();
@@ -109,4 +115,8 @@ public class ZShop extends ZPlugin {
 		return instance;
 	}
 
+	public Boost getBoost() {
+		return boost;
+	}
+	
 }

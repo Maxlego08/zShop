@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -43,6 +42,8 @@ public class ShopManager extends ZUtils implements Shop {
 	@Override
 	public void openShop(Player player, EnumCategory category, int page, Object... args) {
 
+		plugin.getBoost().updateBoost();
+		
 		if (Config.shopOpenEvent) {
 			ShopOpenEvent event = new ShopOpenEvent(player, category);
 			Bukkit.getPluginManager().callEvent(event);

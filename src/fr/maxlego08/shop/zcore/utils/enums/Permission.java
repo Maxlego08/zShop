@@ -8,6 +8,9 @@ public enum Permission {
 	SHOP_HAND("zshop.hand"),
 	SHOP_HAND_ALL("zshop.hand.all"),
 	SHOP_ALL("zshop.all"),
+	SHOP_BOOST("zshop.boost"),
+	SHOP_BOOST_STOP("zshop.boost.stop"),
+	SHOP_BOOST_SHOW("zshop.boost.show"),
 	
 	;
 

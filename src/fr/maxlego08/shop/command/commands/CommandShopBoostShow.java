@@ -5,17 +5,17 @@ import fr.maxlego08.shop.command.CommandType;
 import fr.maxlego08.shop.command.VCommand;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 
-public class CommandShopHelp extends VCommand {
+public class CommandShopBoostShow extends VCommand {
 
-	public CommandShopHelp() {
-		this.addSubCommand("help", "aide", "?");
-		this.setPermission(Permission.SHOP_HELP);
-		this.DEBUG = true;
+	public CommandShopBoostShow() {
+		this.addSubCommand("show");
+		this.setDescription("Show current boost");
+		this.setPermission(Permission.SHOP_BOOST_SHOW);
 	}
-
+	
 	@Override
 	protected CommandType perform(ZShop main) {
-		main.getCommandManager().sendHelp("shop", sender);
+		boost.show(sender);
 		return CommandType.SUCCESS;
 	}
 

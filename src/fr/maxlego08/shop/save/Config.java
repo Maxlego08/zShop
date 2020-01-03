@@ -19,8 +19,11 @@ public class Config implements Saveable {
 	public static boolean shopPreBuyEvent = true;
 	public static boolean shopPreSellAllEvent = true;
 	public static boolean shopPostSellAllEvent = true;
+	public static boolean shopBoostStartEvent = true;
+	public static boolean shopBoostEndEvent = true;
 	
 	public static boolean logConsole = true;
+	public static boolean broadcastMessageWhenBoostIsCreate = true;
 	
 	public static ConfigDefaultInventory defaultInventory = new ConfigDefaultInventory();
 	public static ConfigBuyInventory buyInventory = new ConfigBuyInventory();

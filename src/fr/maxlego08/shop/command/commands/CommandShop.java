@@ -17,8 +17,9 @@ public class CommandShop extends VCommand {
 		this.addSubCommand(new CommandShopHand());
 		this.addSubCommand(new CommandShopAllHand());
 		this.addSubCommand(new CommandShopAll());
+		this.addSubCommand(new CommandShopBoost());
 		this.setIgnoreParent(true);
-		this.setSyntaxe("/zshop [<category>]");
+		this.addOptionalArg("category");
 		this.setDescription("Open shop inventory");
 	}
 	

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.event.events.ShopPostBuyEvent;
 import fr.maxlego08.shop.event.events.ShopPostSellEvent;
 import fr.maxlego08.shop.event.events.ShopPreBuyEvent;
@@ -18,6 +19,10 @@ import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
+import fr.maxlego08.shop.zcore.utils.builder.TimerBuilder;
+import fr.maxlego08.shop.zshop.boost.BoostItem;
+import fr.maxlego08.shop.zshop.boost.BoostType;
+import fr.maxlego08.shop.zshop.factories.Boost;
 
 public class ShopItemConsomable extends ZUtils implements ShopItem {
 
@@ -30,6 +35,8 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 	private boolean executeSellCommand = true;
 	private boolean executeBuyCommand = true;
 	private List<String> commands = new ArrayList<>();
+
+	protected Boost boost = ZShop.i().getBoost();
 
 	public ShopItemConsomable(int id, ItemStack itemStack, double sellPrice, double buyPrice, int maxStackSize,
 			boolean giveItem, boolean executeSellCommand, boolean executeBuyCommand, List<String> commands) {
@@ -131,31 +138,31 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 	@Override
 	public void performSell(Player player, int amount) {
 		int item = 0;
-		
-		//On définie le nombre d'item dans l'inventaire du joueur
-		for (ItemStack is : player.getInventory().getContents()) 
-			if (is != null && is.isSimilar(itemStack)) 
+
+		// On définie le nombre d'item dans l'inventaire du joueur
+		for (ItemStack is : player.getInventory().getContents())
+			if (is != null && is.isSimilar(itemStack))
 				item += is.getAmount();
-		
-		//On verif si le joueur à bien l'item
+
+		// On verif si le joueur à bien l'item
 		if (item == 0) {
 			player.sendMessage(Lang.prefix + " " + Lang.notItems);
 			return;
 		}
-		
-		//On verif que le joueur ne veut pas vendre plus qu'il possède
+
+		// On verif que le joueur ne veut pas vendre plus qu'il possède
 		if (item < amount) {
 			player.sendMessage(Lang.prefix + " " + Lang.notEnouhtItems);
 			return;
 		}
-		
+
 		// On définie le nombre d'item a vendre en fonction du nombre d'item que
 		// le joueur peut vendre
 		item = amount == 0 ? item : item < amount ? amount : amount > item ? item : amount;
 		int realAmount = item;
 
 		// On créer le prix
-		double currentSellPrice = sellPrice;
+		double currentSellPrice = getSellPrice();
 		double price = realAmount * currentSellPrice;
 
 		/* On appel l'event */
@@ -217,11 +224,30 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 	@Override
 	public double getSellPrice() {
+
+		if (sellPrice == 0)
+			return sellPrice;
+
+		// On verifie si l'item est boost ou pas
+		if (boost.isBoost(itemStack)) {
+			BoostItem boostItem = boost.getBoost(itemStack);
+			if (boostItem.getBoostType().equals(BoostType.SELL))
+				return boostItem.getModifier() * sellPrice;
+		}
 		return sellPrice;
 	}
 
 	@Override
 	public double getBuyPrice() {
+		if (buyPrice == 0)
+			return buyPrice;
+
+		// On verifie si l'item est boost ou pas
+		if (boost.isBoost(itemStack)) {
+			BoostItem boostItem = boost.getBoost(itemStack);
+			if (boostItem.getBoostType().equals(BoostType.BUY))
+				return boostItem.getModifier() * buyPrice;
+		}
 		return buyPrice;
 	}
 
@@ -231,12 +257,52 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<String>();
 		List<String> tmpLore = Lang.displayItemLore.stream().map(string -> string
-				.replace("%buyPrice%", String.valueOf(buyPrice)).replace("%sellPrice%", String.valueOf(sellPrice)))
+				.replace("%buyPrice%", getBuyPriceAsString()).replace("%sellPrice%", getSellPriceAsString()))
 				.collect(Collectors.toList());
 		lore.addAll(tmpLore);
-		itemMeta.setLore(lore);
+
+		List<String> tmpLore2 = new ArrayList<>();
+		for (String string : lore) {
+			if (string.equalsIgnoreCase("%boostinfo%")) {
+
+				if (boost.isBoost(this.itemStack)) {
+					BoostItem boost = this.boost.getBoost(itemStack);
+					if (boost != null) {
+						String tmpStr = TimerBuilder
+								.getStringTime(Math.abs((boost.getEnding() - System.currentTimeMillis())) / 1000);
+						tmpLore2.addAll(Lang.displayItemLoreBoost.stream().map(
+								s -> s.replace("%ending%", tmpStr).replace("%modifier%", format(boost.getModifier())))
+								.collect(Collectors.toList()));
+					} else
+						tmpLore2.add("");
+				} else
+					tmpLore2.add("");
+			} else
+				tmpLore2.add(string);
+		}
+		itemMeta.setLore(tmpLore2);
 		itemStack.setItemMeta(itemMeta);
 		return itemStack;
+	}
+
+	private String getSellPriceAsString() {
+		if (boost.isBoost(itemStack)) {
+			BoostItem boostItem = boost.getBoost(itemStack);
+			if (boostItem.getBoostType().equals(BoostType.SELL))
+				return Lang.boostItemSell.replace("%defaultPrice%", String.valueOf(sellPrice)).replace("%newPrice%",
+						format(sellPrice * boostItem.getModifier()));
+		}
+		return String.valueOf(sellPrice);
+	}
+
+	private String getBuyPriceAsString() {
+		if (boost.isBoost(itemStack)) {
+			BoostItem boostItem = boost.getBoost(itemStack);
+			if (boostItem.getBoostType().equals(BoostType.BUY))
+				return Lang.boostItemBuy.replace("%defaultPrice%", String.valueOf(buyPrice)).replace("%newPrice%",
+						format(buyPrice * boostItem.getModifier()));
+		}
+		return String.valueOf(buyPrice);
 	}
 
 	@Override

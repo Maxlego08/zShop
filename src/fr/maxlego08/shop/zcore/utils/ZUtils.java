@@ -624,6 +624,10 @@ public abstract class ZUtils {
 	protected void message(CommandSender player, String message) {
 		player.sendMessage(Message.PREFIX.msg() + " " + message);
 	}
+	
+	protected void message(CommandSender player, String message, Object...args) {
+		player.sendMessage(Message.PREFIX.msg() + " " + String.format(message, args));
+	}
 
 	protected void messageWO(CommandSender player, Message message) {
 		player.sendMessage(message.msg());
@@ -709,4 +713,12 @@ public abstract class ZUtils {
 		}
 		return null;
 	}
+	
+	protected <T> List<T> reverse(List<T> list){
+		List<T> tmpList = new ArrayList<>();
+		for(int index = list.size()-1; index != -1; index--)
+			tmpList.add(list.get(index));
+		return tmpList;
+	}
+	
 }
