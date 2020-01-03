@@ -16,6 +16,7 @@ import fr.maxlego08.shop.inventory.ItemButton;
 import fr.maxlego08.shop.inventory.VInventory;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.save.inventory.ConfigBuyInventory;
+import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
@@ -71,6 +72,7 @@ public class InventoryShopBuy extends VInventory {
 		addItem(ConfigBuyInventory.backintSlotSlot,
 				new ItemButton(Lang.backBuyButton.getInitButton()).setClick(event -> {
 					main.getShop().openShop(player, EnumCategory.SHOP, lastPage,
+							Permission.SHOP_OPEN.getPermission(item.getCategory()),
 							main.getCategories().getCategory(item.getCategory()));
 				}));
 		addItem(ConfigBuyInventory.buyintSlotSlot, new ItemButton(Lang.buyButton.getInitButton()).setClick(event -> {

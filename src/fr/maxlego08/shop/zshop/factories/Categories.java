@@ -2,6 +2,8 @@ package fr.maxlego08.shop.zshop.factories;
 
 import java.util.Map;
 
+import org.bukkit.entity.Player;
+
 import fr.maxlego08.shop.zcore.utils.storage.Saveable;
 import fr.maxlego08.shop.zshop.categories.Category;
 
@@ -29,4 +31,9 @@ public interface Categories extends Saveable {
 	 */
 	Category getCategory(String name);
 
+	/**
+	 * @param commandSender
+	 */
+	void showInformation(Player sender);
+	
 }

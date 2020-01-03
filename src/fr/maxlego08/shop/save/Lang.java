@@ -46,6 +46,14 @@ public class Lang implements Saveable {
 	public static String boostEmpty = "§cAucun boost en cours.";
 	public static String boostShow = "§aBoost §2%type% §asur l'item §2%item% §apendant§6 %timer% §aavec un multiplicateur de§2 %modifier% §a.";
 	
+	public static String configAddItemError = "§cL'item §6%item% §cexiste déjà dans la shop !";
+	public static String configAddItemErrorCategory = "§cLa categorie séléctionné ne peut pas avoir des items en vente !";
+	public static String configAddItemSuccess = "§aVous venez d'ajouter l'item §6%item% §adans la categorie §6%category%§a.";
+	public static String configRemoveItemSuccess = "§aVous venez de supprimer l'item §6%item% §ade la categorie §6%category%§a.";
+	public static String configRemoveItemError = "§cL'item §6%item% §cn'existe pas dans la shop !";
+	public static String configEditError = "§cImpossible de trouver l'item !";
+	public static String configEditSuccess = "§aVous venez de modifier le prix §6%type% §apour l'item §6%item% §aà §6%price%§a$.";
+	
 	public static List<String> displayItemLore = new ArrayList<String>();
 	public static List<String> displayItemLoreBoost = new ArrayList<String>();
 	

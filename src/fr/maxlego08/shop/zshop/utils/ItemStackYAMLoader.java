@@ -13,6 +13,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.maxlego08.shop.exceptions.ItemEnchantException;
 import fr.maxlego08.shop.exceptions.ItemFlagException;
+import fr.maxlego08.shop.zcore.logger.Logger;
+import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 
 public class ItemStackYAMLoader extends ZUtils {
@@ -113,6 +115,12 @@ public class ItemStackYAMLoader extends ZUtils {
 
 	@SuppressWarnings("deprecation")
 	public void save(ItemStack item, YamlConfiguration configuration, String path) {
+
+		if (item == null) {
+			Logger.info("Impossible de sauvegarder l'item car il est null ! Le path: " + path, LogType.ERROR);
+			return;
+		}
+
 		configuration.set(path + "id", item.getType().getId());
 		configuration.set(path + "data", item.getData().getData());
 		ItemMeta meta = item.getItemMeta();

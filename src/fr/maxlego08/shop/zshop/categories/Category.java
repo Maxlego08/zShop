@@ -23,12 +23,11 @@ public class Category extends ZUtils {
 	private final int backButtonSlot;
 	private final int previousButtonSlot;
 	private final int nexButtonSlot;
-	private final String permission;
 
 	private transient boolean isLoaded = false;
 
 	public Category(int id, int slot, ShopType type, String name, MaterialData data, List<String> lore,
-			int inventorySize, int backButtonSlot, int previousButtonSlot, int nexButtonSlot, String permission) {
+			int inventorySize, int backButtonSlot, int previousButtonSlot, int nexButtonSlot) {
 		super();
 		this.id = id;
 		this.slot = slot;
@@ -40,7 +39,6 @@ public class Category extends ZUtils {
 		this.backButtonSlot = backButtonSlot;
 		this.previousButtonSlot = previousButtonSlot;
 		this.nexButtonSlot = nexButtonSlot;
-		this.permission = permission;
 	}
 
 	/**
@@ -122,13 +120,6 @@ public class Category extends ZUtils {
 			itemMeta.setLore(lore);
 		item.setItemMeta(itemMeta);
 		return item;
-	}
-
-	/**
-	 * @return the permission
-	 */
-	public String getPermission() {
-		return permission;
 	}
 
 	/**

@@ -151,7 +151,7 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 	public void sendHelp(String commandString, CommandSender sender) {
 		reverse(commands).forEach(command -> {
 			if (isValid(command, commandString)
-					&& (command.getPermission() == null || hasPermission(sender, command.getPermission()))) {
+					&& (command.getPermission() == null || hasPermission(sender, command.getPermission())) && command.isShowHelp()) {
 				message(sender, Message.COMMAND_SYNTAXE_HELP, command.getSyntaxe(), command.getDescription());
 			}
 		});

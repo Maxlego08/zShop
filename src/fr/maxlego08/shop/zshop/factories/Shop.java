@@ -3,6 +3,7 @@ package fr.maxlego08.shop.zshop.factories;
 import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.command.CommandType;
+import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
 public interface Shop {
@@ -14,7 +15,16 @@ public interface Shop {
 	 * @param page
 	 * @param args
 	 */
-	void openShop(Player player, EnumCategory category, int page, Object... args);
+	void openShop(Player player, EnumCategory category, int page, String permission, Object... args);
+	
+	/**
+	 * @param player
+	 * @param category
+	 * @param page
+	 * @param permission
+	 * @param args
+	 */
+	void openShop(Player player, EnumCategory category, int page, Permission permission, Object... args);
 	
 	/**
 	 * Open shop with category
@@ -41,5 +51,6 @@ public interface Shop {
 	 * @param player
 	 */
 	void sellAll(Player player);
+
 	
 }

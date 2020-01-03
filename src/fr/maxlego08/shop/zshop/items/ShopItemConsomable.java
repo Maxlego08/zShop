@@ -28,8 +28,8 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 	private final int id;
 	private final ItemStack itemStack;
-	private final double sellPrice;
-	private final double buyPrice;
+	private double sellPrice;
+	private double buyPrice;
 	private final int maxStackSize;
 	private boolean giveItem = true;
 	private boolean executeSellCommand = true;
@@ -37,6 +37,15 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 	private List<String> commands = new ArrayList<>();
 
 	protected Boost boost = ZShop.i().getBoost();
+
+	public ShopItemConsomable(int id, ItemStack itemStack, double sellPrice, double buyPrice, int maxStackSize) {
+		super();
+		this.id = id;
+		this.itemStack = itemStack;
+		this.sellPrice = sellPrice;
+		this.buyPrice = buyPrice;
+		this.maxStackSize = maxStackSize;
+	}
 
 	public ShopItemConsomable(int id, ItemStack itemStack, double sellPrice, double buyPrice, int maxStackSize,
 			boolean giveItem, boolean executeSellCommand, boolean executeBuyCommand, List<String> commands) {
@@ -80,7 +89,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		if (amount <= 0)
 			amount = 1;
 
-		double currentBuyPrice = buyPrice;
+		double currentBuyPrice = getBuyPrice();
 
 		if (currentBuyPrice <= 0)
 			return;
@@ -219,6 +228,9 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 	@Override
 	public ItemStack getItem() {
+		if (itemStack == null)
+			throw new IllegalArgumentException(
+					"L'item est null dans la category " + id + " avec les prix: " + sellPrice + " - " + buyPrice);
 		return itemStack;
 	}
 
@@ -373,6 +385,14 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 	@Override
 	public boolean useConfirm() {
 		return false;
+	}
+
+	public void setSellPrice(double sellPrice) {
+		this.sellPrice = sellPrice;
+	}
+
+	public void setBuyPrice(double buyPrice) {
+		this.buyPrice = buyPrice;
 	}
 
 }

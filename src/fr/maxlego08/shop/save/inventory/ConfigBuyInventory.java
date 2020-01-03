@@ -11,7 +11,7 @@ public class ConfigBuyInventory {
 
 	public static int inventorySize = 54;
 	public static String inventoryName = "§aAchat §2%item%";
-	public static List<String> lore = Arrays.asList("§f» §2Prix§7: §a%price%");
+	public static List<String> lore = Arrays.asList("§f» §2Prix§7: §a%price%$");
 	public static Map<Integer, Button> decoration = new HashMap<Integer, Button>();
 	public static int backintSlotSlot = 39;
 	public static int buyintSlotSlot = 41;

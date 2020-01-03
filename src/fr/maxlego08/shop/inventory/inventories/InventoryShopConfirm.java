@@ -9,6 +9,7 @@ import fr.maxlego08.shop.inventory.ItemButton;
 import fr.maxlego08.shop.inventory.VInventory;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.save.inventory.ConfigInventoryConfirm;
+import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
@@ -28,6 +29,7 @@ public class InventoryShopConfirm extends VInventory {
 		addItem(ConfigInventoryConfirm.backButton,
 				new ItemButton(Lang.backBuyButton.getInitButton()).setClick(event -> {
 					main.getShop().openShop(player, EnumCategory.SHOP, 1,
+							Permission.SHOP_OPEN_CONFIRM.getPermission(item.getCategory()),
 							main.getCategories().getCategory(item.getCategory()));
 				}));
 
@@ -35,6 +37,7 @@ public class InventoryShopConfirm extends VInventory {
 				new ItemButton(Lang.confirmButton.getInitButton()).setClick(event -> {
 					item.performBuy(player, 0);
 					main.getShop().openShop(player, EnumCategory.SHOP, 1,
+							Permission.SHOP_OPEN_CONFIRM.getPermission(item.getCategory()),
 							main.getCategories().getCategory(item.getCategory()));
 				}));
 

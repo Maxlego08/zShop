@@ -12,6 +12,7 @@ import fr.maxlego08.shop.zcore.utils.Arguments;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zcore.utils.inventory.IIventory;
 import fr.maxlego08.shop.zshop.factories.Boost;
+import fr.maxlego08.shop.zshop.factories.Categories;
 import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
 
@@ -32,7 +33,7 @@ public abstract class VCommand extends Arguments {
 	 * Are all sub commands used
 	 */
 	private List<String> subCommands = new ArrayList<String>();
-	private List<VCommand> subVCommands = new ArrayList<VCommand>();
+	protected List<VCommand> subVCommands = new ArrayList<VCommand>();
 
 	private List<String> requireArgs = new ArrayList<String>();
 	private List<String> optionalArgs = new ArrayList<String>();
@@ -40,12 +41,14 @@ public abstract class VCommand extends Arguments {
 	protected Shop shop;
 	protected Items items;
 	protected Boost boost;
+	protected Categories categories;
 
 	/**
 	 * If this variable is false the command will not be able to use this
 	 * command
 	 */
 	private boolean consoleCanUse = true;
+	private boolean showHelp = true;
 
 	/**
 	 * This variable allows to run the main class of the command even with
@@ -77,10 +80,18 @@ public abstract class VCommand extends Arguments {
 	// GETTER
 	//
 
-	public void setIgnoreParent(boolean ignoreParent) {
+	protected void setIgnoreParent(boolean ignoreParent) {
 		this.ignoreParent = ignoreParent;
 	}
 
+	protected void setShowHelp(boolean showHelp) {
+		this.showHelp = showHelp;
+	}
+	
+	public boolean isShowHelp() {
+		return showHelp;
+	}
+	
 	/**
 	 * @return the permission
 	 */
@@ -333,7 +344,8 @@ public abstract class VCommand extends Arguments {
 		shop = main.getShop();
 		items = main.getItems();
 		boost = main.getBoost();
-
+		categories = main.getCategories();
+		
 		parentCount = parentCount(0);
 		argsMaxLength = requireArgs.size() + optionalArgs.size() + parentCount;
 		argsMinLength = requireArgs.size() + parentCount;

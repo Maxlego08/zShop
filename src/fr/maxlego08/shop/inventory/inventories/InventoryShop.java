@@ -8,6 +8,7 @@ import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.inventory.ItemButton;
 import fr.maxlego08.shop.inventory.VInventory;
 import fr.maxlego08.shop.save.inventory.ConfigDefaultInventory;
+import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
 public class InventoryShop extends VInventory {
@@ -20,10 +21,10 @@ public class InventoryShop extends VInventory {
 		ConfigDefaultInventory.decoration.forEach((slot, button) -> addItem(slot, button.getInitButton()));
 
 		main.getCategories().getCategories().forEach((id, category) -> {
-			if (category.isLoaded() && category.getPermission() == null
-					|| player.hasPermission(category.getPermission()))
+			if (category.isLoaded())
 				addItem(category.getSlot(), new ItemButton(category.toItemStack()).setClick(event -> {
-					main.getShop().openShop(player, EnumCategory.SHOP, 1, category);
+					main.getShop().openShop(player, EnumCategory.SHOP, 1,
+							Permission.SHOP_OPEN.getPermission(category.getId()), category);
 				}));
 		});
 

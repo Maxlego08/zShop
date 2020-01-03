@@ -21,6 +21,7 @@ import fr.maxlego08.shop.event.events.ShopPreSellAllEvent;
 import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
+import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zshop.categories.Category;
 import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
@@ -40,7 +41,7 @@ public class ShopManager extends ZUtils implements Shop {
 	}
 
 	@Override
-	public void openShop(Player player, EnumCategory category, int page, Object... args) {
+	public void openShop(Player player, EnumCategory category, int page, String permission, Object... args) {
 
 		plugin.getBoost().updateBoost();
 		
@@ -52,6 +53,11 @@ public class ShopManager extends ZUtils implements Shop {
 			category = event.getCategory();
 		}
 
+		if (permission != null && !player.hasPermission(permission)){
+			message(player, Lang.noPermission);
+			return;
+		}
+		
 		plugin.getInventoryManager().createInventory(category.getInventoryID(), player, page, args);
 	}
 
@@ -179,9 +185,14 @@ public class ShopManager extends ZUtils implements Shop {
 		if (category == null)
 			return CommandType.SYNTAX_ERROR;
 		
-		this.openShop(player, EnumCategory.SHOP, 1, category);
+		this.openShop(player, EnumCategory.SHOP, 1, Permission.SHOP_OPEN.getPermission(category.getId()), category);
 		
 		return CommandType.SUCCESS;
+	}
+
+	@Override
+	public void openShop(Player player, EnumCategory category, int page, Permission permission, Object... args) {
+		this.openShop(player, category, page, permission.getPermission(), args);
 	}
 
 }
