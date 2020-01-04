@@ -1,5 +1,6 @@
 package fr.maxlego08.shop;
 
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 
 import fr.maxlego08.shop.command.CommandManager;
@@ -76,6 +77,18 @@ public class ZShop extends ZPlugin {
 
 		postEnable();
 
+		
+	}
+	
+	public boolean setupAuction(){
+		try {
+			RegisteredServiceProvider<Shop> auctionProvider = getServer().getServicesManager().getRegistration(Shop.class);
+			if (auctionProvider != null) {
+				shop = auctionProvider.getProvider();
+			}
+		} catch (NoClassDefFoundError e) {
+		}
+		return (shop != null);
 	}
 
 	@Override
