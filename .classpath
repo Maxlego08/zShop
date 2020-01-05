@@ -18,5 +18,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveur1.15/spigot-1.15.1.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveurdedev/plugins/Plugin zAuctionHouse/PlayerPoints.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -13,10 +13,10 @@ import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
-import fr.maxlego08.shop.zcore.utils.ZUtils;
 
-public class ShopItemUnique extends ZUtils implements ShopItem {
+public class ShopItemUnique extends EconomyUtils implements ShopItem {
 
+	private final Economy economy;
 	private final int id;
 	private final int slot;
 	private final ItemStack displayItem;
@@ -25,9 +25,10 @@ public class ShopItemUnique extends ZUtils implements ShopItem {
 	private final List<String> commands;
 	private final ItemStack giveItem;
 
-	public ShopItemUnique(int id, int slot, ItemStack displayItem, double buyPrice, boolean useConfirm,
+	public ShopItemUnique(Economy economy, int id, int slot, ItemStack displayItem, double buyPrice, boolean useConfirm,
 			List<String> commands, ItemStack giveItem) {
 		super();
+		this.economy = economy;
 		this.id = id;
 		this.slot = slot;
 		this.displayItem = displayItem;
@@ -63,7 +64,7 @@ public class ShopItemUnique extends ZUtils implements ShopItem {
 	@Override
 	public void performBuy(Player player, int amount) {
 		double tmpPrice = buyPrice;
-		if (getBalance(player) < tmpPrice) {
+		if (!this.hasMoney(economy, player, tmpPrice)) {
 			player.sendMessage(Lang.prefix + " " + Lang.notEnouhtMoney);
 			return;
 		}
@@ -83,7 +84,7 @@ public class ShopItemUnique extends ZUtils implements ShopItem {
 			amount = event.getQuantity();
 		}
 
-		withdrawMoney(player, buyPrice);
+		withdrawMoney(economy, player, buyPrice);
 		String itemName = getItemName(getDisplayItem());
 
 		if (giveItem != null)
@@ -92,15 +93,18 @@ public class ShopItemUnique extends ZUtils implements ShopItem {
 		if (commands != null)
 			for (String command : commands)
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-						command.replace("%amount%", String.valueOf(amount)).replace("%item%", itemName)
-								.replace("%price%", format(tmpPrice)).replace("%player%", player.getName()));
+						command.replace("%currency%", economy.toCurrency()).replace("%amount%", String.valueOf(amount))
+								.replace("%item%", itemName).replace("%price%", format(tmpPrice))
+								.replace("%player%", player.getName()));
 
-		player.sendMessage(Lang.prefix + " " + Lang.buyUniqueItem.replace("%amount%", String.valueOf(amount))
-				.replace("%item%", itemName).replace("%price%", format(tmpPrice)));
+		player.sendMessage(Lang.prefix + " "
+				+ Lang.buyUniqueItem.replace("%currency%", economy.toCurrency())
+						.replace("%amount%", String.valueOf(amount)).replace("%item%", itemName)
+						.replace("%price%", format(tmpPrice)));
 
 		if (Config.logConsole)
 			Logger.info(player.getName() + " vient d'acheter x" + amount + " " + itemName + " pour " + format(tmpPrice)
-					+ "$", LogType.INFO);
+					+ economy.toCurrency(), LogType.INFO);
 	}
 
 	@Override
@@ -117,8 +121,10 @@ public class ShopItemUnique extends ZUtils implements ShopItem {
 	public ItemStack getDisplayItem() {
 		ItemStack tmpitem = displayItem.clone();
 		ItemMeta itemMeta = tmpitem.getItemMeta();
-		itemMeta.setDisplayName(itemMeta.getDisplayName().replace("%price%", format(buyPrice)));
-		itemMeta.setLore(itemMeta.getLore().stream().map(string -> string.replace("%price%", format(buyPrice)))
+		itemMeta.setDisplayName(itemMeta.getDisplayName().replace("%currency%", economy.toCurrency()).replace("%price%",
+				format(buyPrice)));
+		itemMeta.setLore(itemMeta.getLore().stream()
+				.map(string -> string.replace("%currency%", economy.toCurrency()).replace("%price%", format(buyPrice)))
 				.collect(Collectors.toList()));
 		tmpitem.setItemMeta(itemMeta);
 		return tmpitem;
@@ -137,6 +143,11 @@ public class ShopItemUnique extends ZUtils implements ShopItem {
 	@Override
 	public int getMaxStackSize() {
 		return 0;
+	}
+
+	@Override
+	public Economy getEconomyType() {
+		return economy;
 	}
 
 }

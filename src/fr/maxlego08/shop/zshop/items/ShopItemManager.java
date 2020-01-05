@@ -101,6 +101,8 @@ public class ShopItemManager extends ZUtils implements Items {
 					int slot = configuration.getInt(currentPath + "slot", 0);
 					double sellPrice = configuration.getDouble(currentPath + "sellPrice", 0);
 					double buyPrice = configuration.getDouble(currentPath + "buyPrice", 0);
+					Economy economy = Economy.getOrDefault(configuration.getString(currentPath + "economy", "VAULT"),
+							Economy.VAULT);
 					boolean giveItem = configuration.getBoolean(currentPath + "give", true);
 					boolean executeSellCommand = configuration.getBoolean(currentPath + "executeSellCommand", true);
 					boolean executeBuyCommand = configuration.getBoolean(currentPath + "executeBuyCommand", true);
@@ -111,12 +113,12 @@ public class ShopItemManager extends ZUtils implements Items {
 					ShopItem item = null;
 					switch (type) {
 					case ITEM: {
-						item = new ShopItemConsomable(currentId, itemStack, sellPrice, buyPrice, maxStackSize, giveItem,
-								executeSellCommand, executeBuyCommand, commands);
+						item = new ShopItemConsomable(economy, currentId, itemStack, sellPrice, buyPrice, maxStackSize,
+								giveItem, executeSellCommand, executeBuyCommand, commands);
 						break;
 					}
 					case UNIQUE_ITEM: {
-						item = new ShopItemUnique(currentId, slot, itemStack, buyPrice, useConfirm, commands,
+						item = new ShopItemUnique(economy, currentId, slot, itemStack, buyPrice, useConfirm, commands,
 								giveItemStack);
 						break;
 					}
@@ -181,6 +183,7 @@ public class ShopItemManager extends ZUtils implements Items {
 					configuration.set(path + "item.stack", item.getMaxStackSize());
 				configuration.set(path + "buyPrice", item.getSellPrice());
 				configuration.set(path + "sellPrice", item.getBuyPrice());
+				configuration.set(path + "economy", item.getEconomyType());
 				if (item instanceof ShopItemConsomable) {
 					ShopItemConsomable tmpItem = (ShopItemConsomable) item;
 					configuration.set(path + "give", tmpItem.isGiveItem());

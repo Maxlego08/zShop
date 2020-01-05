@@ -93,8 +93,9 @@ public class InventoryShopSell extends VInventory {
 		ItemStack itemStack = item.getItem().clone();
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<String>();
-		lore.addAll(ConfigSellInventory.lore.stream()
-				.map(string -> string.replace("%price%", format((item.getSellPrice() * amount.get()))))
+		lore.addAll(ConfigSellInventory.lore
+				.stream().map(string -> string.replace("%currency%", item.getEconomyType().toCurrency())
+						.replace("%price%", format((item.getSellPrice() * amount.get()))))
 				.collect(Collectors.toList()));
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);

@@ -319,6 +319,19 @@ items:
           data: 0
         buyPrice: 30.0
         sellPrice: 2.0
+  '8':
+    items:
+      '1':
+        type: ITEM
+        item:
+          id: 52
+          data: 0
+          name: "&2PigZombie"
+        economy: PLAYERPOINT
+        buyPrice: 500.0
+        sellPrice: 0.0
+        commands:
+          - "spawners give %player% pigzombie"       
   '7':
     items:
       '1':

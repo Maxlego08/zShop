@@ -18,14 +18,14 @@ import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
-import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.builder.TimerBuilder;
 import fr.maxlego08.shop.zshop.boost.BoostItem;
 import fr.maxlego08.shop.zshop.boost.BoostType;
 import fr.maxlego08.shop.zshop.factories.Boost;
 
-public class ShopItemConsomable extends ZUtils implements ShopItem {
+public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 
+	private final Economy economy;
 	private final int id;
 	private final ItemStack itemStack;
 	private double sellPrice;
@@ -40,6 +40,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 	public ShopItemConsomable(int id, ItemStack itemStack, double sellPrice, double buyPrice, int maxStackSize) {
 		super();
+		this.economy = Economy.VAULT;
 		this.id = id;
 		this.itemStack = itemStack;
 		this.sellPrice = sellPrice;
@@ -47,9 +48,11 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		this.maxStackSize = maxStackSize;
 	}
 
-	public ShopItemConsomable(int id, ItemStack itemStack, double sellPrice, double buyPrice, int maxStackSize,
-			boolean giveItem, boolean executeSellCommand, boolean executeBuyCommand, List<String> commands) {
+	public ShopItemConsomable(Economy economy, int id, ItemStack itemStack, double sellPrice, double buyPrice,
+			int maxStackSize, boolean giveItem, boolean executeSellCommand, boolean executeBuyCommand,
+			List<String> commands) {
 		super();
+		this.economy = economy;
 		this.id = id;
 		this.itemStack = itemStack;
 		this.sellPrice = sellPrice;
@@ -95,7 +98,7 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 			return;
 
 		double currentPrice = currentBuyPrice * amount;
-		if (getBalance(player) < currentPrice) {
+		if (!this.hasMoney(economy, player, currentPrice)) {
 			player.sendMessage(Lang.prefix + " " + Lang.notEnouhtMoney);
 			return;
 		}
@@ -115,21 +118,21 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 			amount = event.getQuantity();
 		}
 
-		withdrawMoney(player, currentPrice);
+		withdrawMoney(economy, player, currentPrice);
 		ItemStack currentItem = itemStack.clone();
 		currentItem.setAmount(amount);
 		if (giveItem)
 			give(player, currentItem);
 
 		player.sendMessage(Lang.prefix + " "
-				+ Lang.sellItem.replace("%amount%", String.valueOf(amount))
+				+ Lang.sellItem.replace("%currency%", economy.toCurrency()).replace("%amount%", String.valueOf(amount))
 						.replace("%item%", currentItem.getType().name().toLowerCase().replace("_", " "))
 						.replace("%price%", format(currentPrice)));
 
 		if (Config.logConsole)
 			Logger.info(player.getName() + " vient d'acheter x" + amount + " "
 					+ currentItem.getType().name().toLowerCase().replace("_", " ") + " pour " + format(currentPrice)
-					+ "$", LogType.INFO);
+					+ economy.toCurrency(), LogType.INFO);
 
 		if (Config.shopPostBuyEvent) {
 			ShopPostBuyEvent shopPostBuyEvent = new ShopPostBuyEvent(this, player, amount, currentBuyPrice);
@@ -139,8 +142,9 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		if (commands.size() != 0 && executeBuyCommand)
 			for (String command : commands)
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-						command.replace("%player%", player.getName()).replace("%amount%", String.valueOf(amount))
-								.replace("%item%", getItemName(itemStack)).replace("%price%", format(currentBuyPrice)));
+						command.replace("%currency%", economy.toCurrency()).replace("%player%", player.getName())
+								.replace("%amount%", String.valueOf(amount)).replace("%item%", getItemName(itemStack))
+								.replace("%price%", format(currentBuyPrice)));
 
 	}
 
@@ -202,13 +206,15 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		}
 
 		// On termine l'action
-		depositMoney(player, price);
-		message(player, Lang.sellItem.replace("%amount%", String.valueOf(realAmount))
-				.replace("%item%", getItemName(itemStack)).replace("%price%", format(price)));
+		this.depositMoney(economy, player, price);
+		message(player,
+				Lang.sellItem.replace("%currency%", economy.toCurrency())
+						.replace("%amount%", String.valueOf(realAmount)).replace("%item%", getItemName(itemStack))
+						.replace("%price%", format(price)));
 
 		if (Config.logConsole)
 			Logger.info(player.getName() + " just sold x" + realAmount + " " + getItemName(itemStack) + " for "
-					+ format(price) + "$", LogType.INFO);
+					+ format(price) + economy.toCurrency(), LogType.INFO);
 
 		/**
 		 * Appel de l'event
@@ -221,7 +227,8 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		if (commands.size() != 0 && executeSellCommand)
 			for (String command : commands)
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-						command.replace("%player%", player.getName()).replace("%amount%", String.valueOf(realAmount))
+						command.replace("%currency%", economy.toCurrency()).replace("%player%", player.getName())
+								.replace("%amount%", String.valueOf(realAmount))
 								.replace("%item%", getItemName(itemStack)).replace("%price%", format(price)));
 
 	}
@@ -268,8 +275,9 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		ItemStack itemStack = this.itemStack.clone();
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<String>();
-		List<String> tmpLore = Lang.displayItemLore.stream().map(string -> string
-				.replace("%buyPrice%", getBuyPriceAsString()).replace("%sellPrice%", getSellPriceAsString()))
+		List<String> tmpLore = Lang.displayItemLore.stream()
+				.map(string -> string.replace("%buyPrice%", getBuyPriceAsString())
+						.replace("%currency%", economy.toCurrency()).replace("%sellPrice%", getSellPriceAsString()))
 				.collect(Collectors.toList());
 		lore.addAll(tmpLore);
 
@@ -282,8 +290,9 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 					if (boost != null) {
 						String tmpStr = TimerBuilder
 								.getStringTime(Math.abs((boost.getEnding() - System.currentTimeMillis())) / 1000);
-						tmpLore2.addAll(Lang.displayItemLoreBoost.stream().map(
-								s -> s.replace("%ending%", tmpStr).replace("%modifier%", format(boost.getModifier())))
+						tmpLore2.addAll(Lang.displayItemLoreBoost.stream()
+								.map(s -> s.replace("%currency%", economy.toCurrency()).replace("%ending%", tmpStr)
+										.replace("%modifier%", format(boost.getModifier())))
 								.collect(Collectors.toList()));
 					} else
 						tmpLore2.add("");
@@ -301,8 +310,9 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		if (boost.isBoost(itemStack)) {
 			BoostItem boostItem = boost.getBoost(itemStack);
 			if (boostItem.getBoostType().equals(BoostType.SELL))
-				return Lang.boostItemSell.replace("%defaultPrice%", String.valueOf(sellPrice)).replace("%newPrice%",
-						format(sellPrice * boostItem.getModifier()));
+				return Lang.boostItemSell.replace("%currency%", economy.toCurrency())
+						.replace("%defaultPrice%", String.valueOf(sellPrice))
+						.replace("%newPrice%", format(sellPrice * boostItem.getModifier()));
 		}
 		return String.valueOf(sellPrice);
 	}
@@ -311,8 +321,9 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 		if (boost.isBoost(itemStack)) {
 			BoostItem boostItem = boost.getBoost(itemStack);
 			if (boostItem.getBoostType().equals(BoostType.BUY))
-				return Lang.boostItemBuy.replace("%defaultPrice%", String.valueOf(buyPrice)).replace("%newPrice%",
-						format(buyPrice * boostItem.getModifier()));
+				return Lang.boostItemBuy.replace("%currency%", economy.toCurrency())
+						.replace("%defaultPrice%", String.valueOf(buyPrice))
+						.replace("%newPrice%", format(buyPrice * boostItem.getModifier()));
 		}
 		return String.valueOf(buyPrice);
 	}
@@ -393,6 +404,11 @@ public class ShopItemConsomable extends ZUtils implements ShopItem {
 
 	public void setBuyPrice(double buyPrice) {
 		this.buyPrice = buyPrice;
+	}
+
+	@Override
+	public Economy getEconomyType() {
+		return economy;
 	}
 
 }

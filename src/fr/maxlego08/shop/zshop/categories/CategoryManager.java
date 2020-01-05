@@ -39,8 +39,10 @@ public class CategoryManager extends ZUtils implements Categories {
 				54, 49, 48, 50)));
 		categories.put(6, (new Category(6, 5, ShopType.ITEM, "§eOres", new MaterialData(Material.IRON_INGOT), null, 54,
 				49, 48, 50)));
-		categories.put(7, (new Category(7, 5, ShopType.UNIQUE_ITEM, "§eRanks",
+		categories.put(7, (new Category(7, 6, ShopType.UNIQUE_ITEM, "§eRanks",
 				new MaterialData(Material.DIAMOND_CHESTPLATE), null, 54, 49, 48, 50)));
+		categories.put(8, (new Category(8, 7, ShopType.ITEM, "§3Spawners",
+				new MaterialData(getMaterial(52)), null, 54, 49, 48, 50)));
 
 	}
 

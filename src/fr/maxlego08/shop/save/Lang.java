@@ -22,15 +22,15 @@ public class Lang implements Saveable {
 	
 	public static String canSell = "§cUnable to sell";
 	public static String canBuy = "§cUnable to buy";
-	public static String sellItem = "§aYou just sold §6x%amount% %item%§a for §6%price%§a$ !";
-	public static String buyItem = "§aYou just sold §6x%amount% %item%§a for §6%price%§a$ !";
-	public static String buyUniqueItem = "§aYou just bought §6%item%§a for §6%price%§a$ !";
+	public static String sellItem = "§aYou just sold §6x%amount% %item%§a for §6%price%§a%currency% !";
+	public static String buyItem = "§aYou just sold §6x%amount% %item%§a for §6%price%§a%currency% !";
+	public static String buyUniqueItem = "§aYou just bought §6%item%§a for §6%price%§a%currency% !";
 	public static String notEnouhtItems = "§cYou do not have enough items in your inventory.";
 	public static String notEnouhtMoney = "§cYou do not have enough money.";
 	public static String notEnouhtPlace = "§cYour inventory is ful";
 	public static String notItems = "§cYou do not have this item in your inventory.";
 	public static String and = "and";
-	public static String sellHandAll = "§aYou just sold §6%item% §afor §6%price%§a$.";
+	public static String sellHandAll = "§aYou just sold §6%item% §afor §6%price%§a%currency%.";
 	public static String sellHandAllItem = "§ax§e%amount% §2%item%§a";
 	public static String sellHandEmpty = "§cUnable to find an item for sale.";
 	public static String sellHandAir = "§cYou can't sell air !";
@@ -39,8 +39,8 @@ public class Lang implements Saveable {
 	public static String boostBroadcast = "§aItem §2%item% §ajust had a boost §2%boosttype% §awhile §2%timer% §awith a multiplier of §2%modifier%§a.";
 	public static String boostBuy = "purchase";
 	public static String boostSell = "of sale";
-	public static String boostItemSell = "§7§m%defaultPrice%$§b » §a§l%newPrice%";
-	public static String boostItemBuy = "§7§m%defaultPrice%$§b » §a§l%newPrice%";
+	public static String boostItemSell = "§7§m%defaultPrice%%currency%§b » §a§l%newPrice%%currency%";
+	public static String boostItemBuy = "§7§m%defaultPrice%%currency%§b » §a§l%newPrice%%currency%";
 	public static String boostErrorFound = "§cNo boost is available for §6%item%§c.";
 	public static String boostStopSuccess = "§aYou just stopped the boost on §6%item%§a.";
 	public static String boostEmpty = "§cNo boost in progress.";
@@ -62,6 +62,9 @@ public class Lang implements Saveable {
 	public static String hour = "hour";
 	public static String day = "day";
 	
+	public static String currencyVault = "$";
+	public static String currencyPlayerPoint = "£";
+	
 	public static Button backButton = new Button("§cBack", 399, 0);
 	public static Button nextButton = new Button("§eNext", 262, 0);
 	public static Button previousButton = new Button("§cPrevious", 262, 0);
@@ -78,8 +81,8 @@ public class Lang implements Saveable {
 	
 	static{
 		
-		displayItemLore.add("§f» §2Buying price§7: §a%buyPrice%$");
-		displayItemLore.add("§f» §2Selling price§7: §a%sellPrice%$");
+		displayItemLore.add("§f» §2Buying price§7: §a%buyPrice%%currency%");
+		displayItemLore.add("§f» §2Selling price§7: §a%sellPrice%%currency%");
 		displayItemLore.add("%boostinfo%");
 		displayItemLore.add("§f» §7Left click to buy");
 		displayItemLore.add("§f» §7Click wheel to sell everything");

@@ -238,7 +238,7 @@ public abstract class ZUtils {
 	 * @param id
 	 * @return the material according to his id
 	 */
-	protected Material getMaterial(int id) {
+	protected static Material getMaterial(int id) {
 		return byId.length > id && id >= 0 ? byId[id] : null;
 	}
 
