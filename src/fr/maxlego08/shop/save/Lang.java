@@ -64,6 +64,8 @@ public class Lang implements Saveable {
 	
 	public static String currencyVault = "$";
 	public static String currencyPlayerPoint = "£";
+	public static String currencyTokenManager = "T";
+	public static String currencyMySQLToken = "MT";
 	
 	public static Button backButton = new Button("§cBack", 399, 0);
 	public static Button nextButton = new Button("§eNext", 262, 0);

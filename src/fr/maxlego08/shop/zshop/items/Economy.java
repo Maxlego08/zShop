@@ -6,6 +6,8 @@ public enum Economy {
 
 	VAULT,
 	PLAYERPOINT,
+	TOKENMANAGER,
+	MYSQLTOKEN,
 	
 	;
 
@@ -22,6 +24,10 @@ public enum Economy {
 			return Lang.currencyPlayerPoint;
 		case VAULT:
 			return Lang.currencyVault;
+		case TOKENMANAGER:
+			return Lang.currencyTokenManager;
+		case MYSQLTOKEN:
+			return Lang.currencyMySQLToken;
 		default:
 			return "$";
 		}
