@@ -25,6 +25,7 @@ import fr.maxlego08.shop.zshop.factories.Boost;
 
 public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 
+	
 	private final Economy economy;
 	private final int id;
 	private final ItemStack itemStack;

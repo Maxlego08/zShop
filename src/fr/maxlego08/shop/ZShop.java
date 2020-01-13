@@ -18,6 +18,8 @@ import fr.maxlego08.shop.zshop.factories.Boost;
 import fr.maxlego08.shop.zshop.factories.Categories;
 import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
+import fr.maxlego08.shop.zshop.inventories.Inventories;
+import fr.maxlego08.shop.zshop.inventories.InventoryUtils;
 import fr.maxlego08.shop.zshop.items.ShopItemManager;
 
 public class ZShop extends ZPlugin {
@@ -28,6 +30,7 @@ public class ZShop extends ZPlugin {
 	private Categories categories;
 	private Items items;
 	private Boost boost;
+	private Inventories inventory;
 	private static ZShop instance;
 
 	@Override
@@ -48,6 +51,7 @@ public class ZShop extends ZPlugin {
 		items = new ShopItemManager(this);
 		shop = new ShopManager(this);
 		boost = new BoostManager();
+		inventory = new InventoryUtils(categories);
 		
 		getServer().getServicesManager().register(Shop.class, shop, this, ServicePriority.High);
 		getServer().getServicesManager().register(Categories.class, categories, this, ServicePriority.High);
@@ -67,22 +71,23 @@ public class ZShop extends ZPlugin {
 
 		addSave(new Config());
 		addSave(new Lang());
-		addSave(categories);
 		addSave(boost);
 
 		getSavers().forEach(saver -> saver.load(getPersist()));
 		items.load();
-
+		categories.load();
+		inventory.load();
+		
 		new Metrics(this);
 
 		postEnable();
 
-		
 	}
-	
-	public boolean setupAuction(){
+
+	public boolean setupAuction() {
 		try {
-			RegisteredServiceProvider<Shop> auctionProvider = getServer().getServicesManager().getRegistration(Shop.class);
+			RegisteredServiceProvider<Shop> auctionProvider = getServer().getServicesManager()
+					.getRegistration(Shop.class);
 			if (auctionProvider != null) {
 				shop = auctionProvider.getProvider();
 			}
@@ -130,6 +135,10 @@ public class ZShop extends ZPlugin {
 
 	public Boost getBoost() {
 		return boost;
+	}
+
+	public Inventories getInventory() {
+		return inventory;
 	}
 	
 }

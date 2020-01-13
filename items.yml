@@ -330,6 +330,7 @@ items:
         economy: PLAYERPOINT
         buyPrice: 500.0
         sellPrice: 0.0
+        give: false
         commands:
           - "spawners give %player% pigzombie"       
   '7':

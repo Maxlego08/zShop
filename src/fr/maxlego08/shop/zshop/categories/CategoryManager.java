@@ -1,21 +1,24 @@
 package fr.maxlego08.shop.zshop.categories;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
-import fr.maxlego08.shop.zcore.utils.MaterialData;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.enums.Message;
-import fr.maxlego08.shop.zcore.utils.storage.Persist;
 import fr.maxlego08.shop.zshop.factories.Categories;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
+import fr.maxlego08.shop.zshop.utils.ItemStackYAMLoader;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
@@ -23,28 +26,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 public class CategoryManager extends ZUtils implements Categories {
 
-	private static Map<Integer, Category> categories = new HashMap<Integer, Category>();
-
-	static {
-
-		categories.put(1, (new Category(1, 0, ShopType.ITEM, "§aBlocks", new MaterialData(Material.GRASS), null, 54, 49,
-				48, 50)));
-		categories.put(2,
-				(new Category(2, 1, ShopType.ITEM, "§eFarm", new MaterialData(Material.WHEAT), null, 54, 49, 48, 50)));
-		categories.put(3, (new Category(3, 2, ShopType.ITEM, "§eMobs", new MaterialData(Material.ROTTEN_FLESH), null,
-				54, 49, 48, 50)));
-		categories.put(4, (new Category(4, 3, ShopType.ITEM, "§eFoods", new MaterialData(Material.COOKED_BEEF), null,
-				54, 49, 48, 50)));
-		categories.put(5, (new Category(5, 4, ShopType.ITEM, "§eRedstones", new MaterialData(Material.REDSTONE), null,
-				54, 49, 48, 50)));
-		categories.put(6, (new Category(6, 5, ShopType.ITEM, "§eOres", new MaterialData(Material.IRON_INGOT), null, 54,
-				49, 48, 50)));
-		categories.put(7, (new Category(7, 6, ShopType.UNIQUE_ITEM, "§eRanks",
-				new MaterialData(Material.DIAMOND_CHESTPLATE), null, 54, 49, 48, 50)));
-		categories.put(8, (new Category(8, 7, ShopType.ITEM, "§3Spawners",
-				new MaterialData(getMaterial(52)), null, 54, 49, 48, 50)));
-
-	}
+	private Map<Integer, Category> categories = new HashMap<Integer, Category>();
 
 	private void testCategories() {
 
@@ -60,17 +42,6 @@ public class CategoryManager extends ZUtils implements Categories {
 			}
 
 		}
-	}
-
-	@Override
-	public void save(Persist persist) {
-		persist.save(this, "categories");
-	}
-
-	@Override
-	public void load(Persist persist) {
-		persist.loadOrSaveDefault(this, CategoryManager.class, "categories");
-		testCategories();
 	}
 
 	@Override
@@ -98,20 +69,124 @@ public class CategoryManager extends ZUtils implements Categories {
 
 			TextComponent message = new TextComponent(
 					Lang.prefix + " §eCategory§8: §6" + c.getName() + " §7(hover me)");
-			BaseComponent[] components = { 
-					new TextComponent("§7§m-----------------------\n"),
+			BaseComponent[] components = { new TextComponent("§7§m-----------------------\n"),
 					new TextComponent("§f§l» §7Id: §2" + c.getId() + "\n"),
 					new TextComponent("§f§l» §7Name: §2" + c.getName() + "\n"),
 					new TextComponent("§f§l» §7Type: §2" + c.getType().name().replace("_", " ") + "\n"),
 					new TextComponent("§f§l» §7Inventory size: §2" + c.getInventorySize() + "\n"),
-					new TextComponent("§7§m-----------------------")
-					};
+					new TextComponent("§7§m-----------------------") };
 			HoverEvent event = new HoverEvent(Action.SHOW_TEXT, components);
 			message.setHoverEvent(event);
 			sender.spigot().sendMessage(message);
 
 		});
 
+	}
+
+	@Override
+	public void load() {
+
+		File file = new File(plugin.getDataFolder() + File.separator + "categories.yml");
+		if (!file.exists())
+			return;
+		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+
+		if (configuration.getString("categories") == null) {
+			Logger.info("Impossible de charger les categories !", LogType.ERROR);
+			return;
+		}
+
+		ItemStackYAMLoader itemStackYAMLoader = new ItemStackYAMLoader();
+
+		// Chargement des categories
+		for (String categoryId : configuration.getConfigurationSection("categories.").getKeys(false)) {
+
+			String path = "categories." + categoryId + ".";
+
+			String name = color(configuration.getString(path + "name", "Default name"));
+			ItemStack itemStack = itemStackYAMLoader.load(configuration, path + "items.");
+			ShopType type = ShopType.valueOf(configuration.getString(path + "type"));
+			int slot = configuration.getInt(path + "slot", 0);
+			int inventoryId = configuration.getInt(path + "inventoryId", 0);
+			int inventorySize = configuration.getInt(path + "inventorySize", 0);
+			int backButtonSlot = configuration.getInt(path + "backButtonSlot", 0);
+			int previousButtonSlot = configuration.getInt(path + "previousButtonSlot", 0);
+			int nexButtonSlot = configuration.getInt(path + "nexButtonSlot", 0);
+
+			int id = Integer.valueOf(categoryId);
+			
+			Category category = new Category(id, slot, inventoryId, type, name, itemStack,
+					inventorySize, backButtonSlot, previousButtonSlot, nexButtonSlot);
+			this.categories.put(id, category);
+
+		}
+
+		Logger.info(file.getAbsolutePath() + " loaded successfully !", LogType.SUCCESS);
+		Logger.info("Loading " + categories.size() + " categories", LogType.SUCCESS);
+		
+		testCategories();
+	}
+
+	@Override
+	public void save() {
+		if (categories == null)
+			throw new IllegalArgumentException("La liste des categories est null !");
+
+		File file = new File(plugin.getDataFolder() + File.separator + "categories.yml");
+		if (file.exists())
+			file.delete();
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+		ItemStackYAMLoader stackYAMLoader = new ItemStackYAMLoader();
+
+		this.categories.forEach((id, c) -> {
+			String path = "categories." + id + ".";
+			configuration.set(path + "name", colorReverse(c.getName()));
+			configuration.set(path + "type", c.getType().name());
+			stackYAMLoader.save(c.getData(), configuration, path + "items.");
+			configuration.set(path + "slot", c.getSlot());
+			configuration.set(path + "inventoryId", c.getInventoryId());
+			configuration.set(path + "inventorySize", c.getInventorySize());
+			configuration.set(path + "backButtonSlot", c.getBackButtonSlot());
+			configuration.set(path + "previousButtonSlot", c.getPreviousButtonSlot());
+			configuration.set(path + "nexButtonSlot", c.getNexButtonSlot());
+		});
+		try {
+			configuration.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void saveDefault() {
+
+		categories.clear();
+
+		categories.put(1,
+				(new Category(1, 0, 1, ShopType.ITEM, "§aBlocks", new ItemStack(Material.GRASS), 54, 49, 48, 50)));
+		categories.put(2,
+				(new Category(2, 1, 1, ShopType.ITEM, "§eFarm", new ItemStack(Material.WHEAT), 54, 49, 48, 50)));
+		categories.put(3,
+				(new Category(3, 2, 1, ShopType.ITEM, "§eMobs", new ItemStack(Material.ROTTEN_FLESH), 54, 49, 48, 50)));
+		categories.put(4,
+				(new Category(4, 3, 1, ShopType.ITEM, "§eFoods", new ItemStack(Material.COOKED_BEEF), 54, 49, 48, 50)));
+		categories.put(5, (new Category(5, 4, 1, ShopType.ITEM, "§eRedstones", new ItemStack(Material.REDSTONE), 54, 49,
+				48, 50)));
+		categories.put(6,
+				(new Category(6, 5, 1, ShopType.ITEM, "§eOres", new ItemStack(Material.IRON_INGOT), 54, 49, 48, 50)));
+		categories.put(7, (new Category(7, 6, 1, ShopType.UNIQUE_ITEM, "§eRanks",
+				new ItemStack(Material.DIAMOND_CHESTPLATE), 54, 49, 48, 50)));
+		categories.put(8,
+				(new Category(8, 7, 1, ShopType.ITEM, "§3Spawners", new ItemStack(getMaterial(52)), 54, 49, 48, 50)));
+
+		this.save();
 	}
 
 }

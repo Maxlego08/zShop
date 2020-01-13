@@ -1,13 +1,9 @@
 package fr.maxlego08.shop.zshop.categories;
 
-import java.util.List;
-
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
-import fr.maxlego08.shop.zcore.utils.MaterialData;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
 
@@ -15,10 +11,10 @@ public class Category extends ZUtils {
 
 	private final int id;
 	private final int slot;
+	private final int inventoryId;
 	private final ShopType type;
 	private final String name;
-	private final MaterialData data;
-	private final List<String> lore;
+	private final ItemStack data;
 	private final int inventorySize;
 	private final int backButtonSlot;
 	private final int previousButtonSlot;
@@ -26,21 +22,25 @@ public class Category extends ZUtils {
 
 	private transient boolean isLoaded = false;
 
-	public Category(int id, int slot, ShopType type, String name, MaterialData data, List<String> lore,
+	public Category(int id, int slot, int inventoryId, ShopType type, String name, ItemStack data,
 			int inventorySize, int backButtonSlot, int previousButtonSlot, int nexButtonSlot) {
 		super();
 		this.id = id;
 		this.slot = slot;
 		this.type = type;
+		this.inventoryId = inventoryId;
 		this.name = name;
 		this.data = data;
-		this.lore = lore;
 		this.inventorySize = inventorySize;
 		this.backButtonSlot = backButtonSlot;
 		this.previousButtonSlot = previousButtonSlot;
 		this.nexButtonSlot = nexButtonSlot;
 	}
 
+	public int getInventoryId() {
+		return inventoryId;
+	}
+	
 	/**
 	 * @return the backButtonSlot
 	 */
@@ -90,15 +90,8 @@ public class Category extends ZUtils {
 		return name;
 	}
 
-	public MaterialData getData() {
+	public ItemStack getData() {
 		return data;
-	}
-
-	/**
-	 * @return the lore
-	 */
-	public List<String> getLore() {
-		return lore;
 	}
 
 	/**
@@ -106,20 +99,6 @@ public class Category extends ZUtils {
 	 */
 	public ShopType getType() {
 		return type;
-	}
-
-	/**
-	 * @return the ItemStack
-	 */
-	public ItemStack toItemStack() {
-		@SuppressWarnings("deprecation")
-		ItemStack item = new ItemStack(data.getTypeMaterial(), 1, (byte) data.getData());
-		ItemMeta itemMeta = item.getItemMeta();
-		itemMeta.setDisplayName(name);
-		if (lore != null)
-			itemMeta.setLore(lore);
-		item.setItemMeta(itemMeta);
-		return item;
 	}
 
 	/**

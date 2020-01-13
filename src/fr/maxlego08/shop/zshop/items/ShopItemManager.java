@@ -147,7 +147,7 @@ public class ShopItemManager extends ZUtils implements Items {
 		}
 
 		Logger.info(file.getAbsolutePath() + " loaded successfully !", LogType.SUCCESS);
-		Logger.info("Loading " + items.size() + " categories and " + itemAmount + " items", LogType.SUCCESS);
+		Logger.info("Loading " + itemAmount + " items", LogType.SUCCESS);
 	}
 
 	@Override

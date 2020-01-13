@@ -44,7 +44,7 @@ public class ShopManager extends ZUtils implements Shop {
 	public void openShop(Player player, EnumCategory category, int page, String permission, Object... args) {
 
 		plugin.getBoost().updateBoost();
-		
+
 		if (Config.shopOpenEvent) {
 			ShopOpenEvent event = new ShopOpenEvent(player, category);
 			Bukkit.getPluginManager().callEvent(event);
@@ -53,11 +53,11 @@ public class ShopManager extends ZUtils implements Shop {
 			category = event.getCategory();
 		}
 
-		if (permission != null && !player.hasPermission(permission)){
+		if (permission != null && !player.hasPermission(permission)) {
 			message(player, Lang.noPermission);
 			return;
 		}
-		
+
 		plugin.getInventoryManager().createInventory(category.getInventoryID(), player, page, args);
 	}
 
@@ -131,7 +131,7 @@ public class ShopManager extends ZUtils implements Shop {
 			}
 		}
 
-		//On call l'event
+		// On call l'event
 		if (Config.shopPreSellAllEvent) {
 			ShopPreSellAllEvent allEvent = new ShopPreSellAllEvent(player, map, price);
 			Bukkit.getPluginManager().callEvent(allEvent);
@@ -158,13 +158,13 @@ public class ShopManager extends ZUtils implements Shop {
 					getItemName(items)));
 			player.getInventory().remove(items);
 		}
-		//On donne l'argent au mec
+		// On donne l'argent au mec
 		depositMoney(player, price);
-		//On envoie le message
+		// On envoie le message
 		message(player,
 				Lang.sellHandAll.replace("%item%", builder.toString()).replace("%price%", String.valueOf(price)));
 
-		//On call l'event
+		// On call l'event
 		if (Config.shopPostSellAllEvent) {
 			ShopPostSellAllEvent allEvent = new ShopPostSellAllEvent(player, map, price);
 			Bukkit.getPluginManager().callEvent(allEvent);
@@ -174,19 +174,19 @@ public class ShopManager extends ZUtils implements Shop {
 
 	@Override
 	public CommandType openShop(Player player, String str) {
-		
-		CommandManager commandManager = ZShop.i().getCommandManager();
-		for(VCommand command : commandManager.getCommands())
+
+		CommandManager commandManager = plugin.getCommandManager();
+		for (VCommand command : commandManager.getCommands())
 			if (command.getSubCommands().contains(str.toLowerCase()))
 				return CommandType.CONTINUE;
-		
-		Category category = ZShop.i().getCategories().getCategory(str);
-		
+
+		Category category = plugin.getCategories().getCategory(str);
+
 		if (category == null)
 			return CommandType.SYNTAX_ERROR;
-		
+
 		this.openShop(player, EnumCategory.SHOP, 1, Permission.SHOP_OPEN.getPermission(category.getId()), category);
-		
+
 		return CommandType.SUCCESS;
 	}
 

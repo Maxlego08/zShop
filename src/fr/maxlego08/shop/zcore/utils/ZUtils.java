@@ -696,6 +696,10 @@ public abstract class ZUtils {
 	public String color(String message) {
 		return message.replace("&", "§");
 	}
+	
+	public String colorReverse(String message) {
+		return message.replace("§", "&");
+	}
 
 	protected String itemName(ItemStack item) {
 		return item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName()
@@ -704,6 +708,10 @@ public abstract class ZUtils {
 
 	public List<String> color(List<String> messages) {
 		return messages.stream().map(message -> color(message)).collect(Collectors.toList());
+	}
+	
+	public List<String> colorReverse(List<String> messages) {
+		return messages.stream().map(message -> colorReverse(message)).collect(Collectors.toList());
 	}
 
 	public ItemFlag getFlag(String flagString) {

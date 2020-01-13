@@ -36,7 +36,7 @@ public abstract class ZPlugin extends JavaPlugin {
 
 	private PlayerPoints playerPoints;
 	private PlayerPointsAPI playerPointsAPI;
-	
+
 	public ZPlugin() {
 		plugin = this;
 	}
@@ -50,6 +50,7 @@ public abstract class ZPlugin extends JavaPlugin {
 
 		getDataFolder().mkdirs();
 
+		
 		gson = getGsonBuilder().create();
 		persist = new Persist(this);
 
@@ -144,7 +145,7 @@ public abstract class ZPlugin extends JavaPlugin {
 	public List<ListenerAdapter> getListenerAdapters() {
 		return listenerAdapters;
 	}
-	
+
 	/**
 	 * @return boolean
 	 */
@@ -154,8 +155,11 @@ public abstract class ZPlugin extends JavaPlugin {
 			if (plugin == null)
 				return;
 			playerPoints = PlayerPoints.class.cast(plugin);
-			playerPointsAPI = playerPoints.getAPI();
-			log.log("PlayerPoint plugin detection performed successfully", LogType.SUCCESS);
+			if (playerPoints != null) {
+				playerPointsAPI = playerPoints.getAPI();
+				log.log("PlayerPoint plugin detection performed successfully", LogType.SUCCESS);
+			} else
+				log.log("Impossible de charger player point !", LogType.SUCCESS);
 		} catch (Exception e) {
 		}
 	}
@@ -171,6 +175,13 @@ public abstract class ZPlugin extends JavaPlugin {
 	 * @return the playerPointsAPI
 	 */
 	public PlayerPointsAPI getPlayerPointsAPI() {
+
+		if (playerPointsAPI == null) {
+
+			hookPlayerPoints();
+
+		}
+
 		return playerPointsAPI;
 	}
 

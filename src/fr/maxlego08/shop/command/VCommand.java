@@ -15,6 +15,7 @@ import fr.maxlego08.shop.zshop.factories.Boost;
 import fr.maxlego08.shop.zshop.factories.Categories;
 import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
+import fr.maxlego08.shop.zshop.inventories.Inventories;
 
 public abstract class VCommand extends Arguments {
 
@@ -42,6 +43,7 @@ public abstract class VCommand extends Arguments {
 	protected Items items;
 	protected Boost boost;
 	protected Categories categories;
+	protected Inventories inventories;
 
 	/**
 	 * If this variable is false the command will not be able to use this
@@ -345,6 +347,7 @@ public abstract class VCommand extends Arguments {
 		items = main.getItems();
 		boost = main.getBoost();
 		categories = main.getCategories();
+		inventories = main.getInventory();
 		
 		parentCount = parentCount(0);
 		argsMaxLength = requireArgs.size() + optionalArgs.size() + parentCount;

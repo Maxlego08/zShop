@@ -125,9 +125,9 @@ public class ItemStackYAMLoader extends ZUtils {
 		configuration.set(path + "data", item.getData().getData());
 		ItemMeta meta = item.getItemMeta();
 		if (meta.hasDisplayName())
-			configuration.set(path + "name", meta.getDisplayName());
+			configuration.set(path + "name", meta.getDisplayName().replace("&", "§"));
 		if (meta.hasLore())
-			configuration.set(path + "lore", meta.getLore());
+			configuration.set(path + "lore", colorReverse(meta.getLore()));
 		if (meta.getItemFlags().size() != 0)
 			configuration.set(path + "flags",
 					meta.getItemFlags().stream().map(flag -> flag.name()).collect(Collectors.toList()));

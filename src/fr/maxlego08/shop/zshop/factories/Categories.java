@@ -4,10 +4,9 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 
-import fr.maxlego08.shop.zcore.utils.storage.Saveable;
 import fr.maxlego08.shop.zshop.categories.Category;
 
-public interface Categories extends Saveable {
+public interface Categories{
 
 	/**
 	 * Allows you to retrieve all available categories
@@ -35,5 +34,12 @@ public interface Categories extends Saveable {
 	 * @param commandSender
 	 */
 	void showInformation(Player sender);
+
+
+	void load();
+	
+	void save();
+	
+	void saveDefault();
 	
 }
