@@ -1,4 +1,4 @@
-package fr.maxlego08.shop.zshop;
+package fr.maxlego08.shop.zshop.utils;
 
 import java.util.List;
 
@@ -34,6 +34,19 @@ public class Command {
 		this.name = name;
 		this.aliases = aliases;
 		this.inventoryId = inventoryId;
+	}
+
+	public boolean match(org.bukkit.command.Command command, int id) {
+		return (command.getName().equalsIgnoreCase(name) || contains(command.getAliases(), aliases))
+				&& id == inventoryId;
+	}
+
+	private boolean contains(List<String> a, List<String> b) {
+		for (String c : a)
+			for (String d : b)
+				if (d.equalsIgnoreCase(c))
+					return true;
+		return false;
 	}
 
 }

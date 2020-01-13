@@ -2,8 +2,10 @@ package fr.maxlego08.shop.zshop.categories;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Material;
@@ -19,6 +21,7 @@ import fr.maxlego08.shop.zcore.utils.enums.Message;
 import fr.maxlego08.shop.zshop.factories.Categories;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.utils.ItemStackYAMLoader;
+import fr.maxlego08.shop.zshop.utils.Loader;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
@@ -88,7 +91,8 @@ public class CategoryManager extends ZUtils implements Categories {
 
 		File file = new File(plugin.getDataFolder() + File.separator + "categories.yml");
 		if (!file.exists())
-			return;
+			this.saveDefault();
+		
 		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
 		if (configuration.getString("categories") == null) {
@@ -96,7 +100,7 @@ public class CategoryManager extends ZUtils implements Categories {
 			return;
 		}
 
-		ItemStackYAMLoader itemStackYAMLoader = new ItemStackYAMLoader();
+		Loader<ItemStack> itemStackYAMLoader = new ItemStackYAMLoader();
 
 		// Chargement des categories
 		for (String categoryId : configuration.getConfigurationSection("categories.").getKeys(false)) {
@@ -114,16 +118,16 @@ public class CategoryManager extends ZUtils implements Categories {
 			int nexButtonSlot = configuration.getInt(path + "nexButtonSlot", 0);
 
 			int id = Integer.valueOf(categoryId);
-			
-			Category category = new Category(id, slot, inventoryId, type, name, itemStack,
-					inventorySize, backButtonSlot, previousButtonSlot, nexButtonSlot);
+
+			Category category = new Category(id, slot, inventoryId, type, name, itemStack, inventorySize,
+					backButtonSlot, previousButtonSlot, nexButtonSlot);
 			this.categories.put(id, category);
 
 		}
 
 		Logger.info(file.getAbsolutePath() + " loaded successfully !", LogType.SUCCESS);
 		Logger.info("Loading " + categories.size() + " categories", LogType.SUCCESS);
-		
+
 		testCategories();
 	}
 
@@ -184,9 +188,29 @@ public class CategoryManager extends ZUtils implements Categories {
 		categories.put(7, (new Category(7, 6, 1, ShopType.UNIQUE_ITEM, "§eRanks",
 				new ItemStack(Material.DIAMOND_CHESTPLATE), 54, 49, 48, 50)));
 		categories.put(8,
-				(new Category(8, 7, 1, ShopType.ITEM, "§3Spawners", new ItemStack(getMaterial(52)), 54, 49, 48, 50)));
+				(new Category(8, 22, 1, ShopType.ITEM, "§3Spawners", new ItemStack(getMaterial(52)), 54, 49, 48, 50)));
 
 		this.save();
+	}
+
+	@Override
+	public List<Category> getCategories(List<Integer> id) {
+		List<Category> categories = new ArrayList<Category>();
+		for (int i : id) {
+			Category c = getCategory(i);
+			if (c != null)
+				categories.add(c);
+		}
+		return categories;
+	}
+
+	@Override
+	public List<Category> getCategories(int... id) {
+		List<Integer> integers = new ArrayList<>();
+		for (int i : id)
+			integers.add(i);
+		return getCategories(integers);
+
 	}
 
 }

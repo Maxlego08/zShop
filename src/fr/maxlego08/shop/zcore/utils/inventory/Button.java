@@ -40,6 +40,10 @@ public class Button extends ZUtils {
 		return data;
 	}
 
+	public int getItemInInteger() {
+		return item;
+	}
+
 	@SuppressWarnings("deprecation")
 	public ItemStack getItem() {
 		return new ItemStack(getMaterial(item), 1, (byte) data);
@@ -63,7 +67,7 @@ public class Button extends ZUtils {
 		item.setItemMeta(itemM);
 		return item;
 	}
-	
+
 	public ItemStack getInitButton(String type, String replace) {
 		ItemStack item = getItem();
 		ItemMeta itemM = item.getItemMeta();
@@ -75,14 +79,15 @@ public class Button extends ZUtils {
 		return item;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Button [name=" + name + ", item=" + item + ", data=" + data + ", lore=" + lore + ", item="+getInitButton()+"]";
+		return "Button [name=" + name + ", item=" + item + ", data=" + data + ", lore=" + lore + ", item="
+				+ getInitButton() + "]";
 	}
-	
-	
 
 }

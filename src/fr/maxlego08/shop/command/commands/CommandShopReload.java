@@ -18,6 +18,8 @@ public class CommandShopReload extends VCommand {
 
 		main.getSavers().forEach(saver -> saver.load(main.getPersist()));
 		items.load();
+		categories.load();
+		inventories.load();
 		
 		main.getInventoryManager().updateAllPlayer();
 		

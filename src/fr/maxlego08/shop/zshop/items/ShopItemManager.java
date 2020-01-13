@@ -26,6 +26,7 @@ import fr.maxlego08.shop.zshop.categories.Category;
 import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.utils.ItemStackYAMLoader;
+import fr.maxlego08.shop.zshop.utils.Loader;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -62,7 +63,7 @@ public class ShopItemManager extends ZUtils implements Items {
 
 		int itemAmount = 0;
 
-		ItemStackYAMLoader itemStackYAMLoader = new ItemStackYAMLoader();
+		Loader<ItemStack> itemStackYAMLoader = new ItemStackYAMLoader();
 
 		// Chargement des categories
 		for (String categoryId : configuration.getConfigurationSection("items.").getKeys(false)) {
@@ -171,7 +172,8 @@ public class ShopItemManager extends ZUtils implements Items {
 		}
 
 		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
-		ItemStackYAMLoader stackYAMLoader = new ItemStackYAMLoader();
+		Loader<ItemStack> stackYAMLoader = new ItemStackYAMLoader();
+		
 		this.items.forEach((id, items) -> {
 			AtomicInteger integer = new AtomicInteger(1);
 			items.forEach(item -> {

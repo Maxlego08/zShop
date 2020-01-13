@@ -20,8 +20,9 @@ public class CommandShop extends VCommand {
 		this.addSubCommand(new CommandShopAll());
 		this.addSubCommand(new CommandShopBoost());
 		this.addSubCommand(new CommandShopConfig());
-		this.addSubCommand(new CommandShopCategory().addSubCommand("categories"));
+		this.addSubCommand(new CommandShopDefault());
 		this.setIgnoreParent(true);
+		this.DEBUG = true;
 		this.addOptionalArg("category");
 		this.setDescription("Open shop inventory");
 	}
@@ -30,7 +31,7 @@ public class CommandShop extends VCommand {
 	public CommandType perform(ZShop main) {
 		if (args.length != 0)
 			return shop.openShop(player, argAsString(0));
-		main.getShop().openShop(player, EnumCategory.DEFAULT, 0, Permission.SHOP_USE);
+		main.getShop().openShop(player, EnumCategory.DEFAULT, 0, 1, Permission.SHOP_USE);
 		return CommandType.SUCCESS;
 	}
 

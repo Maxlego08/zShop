@@ -16,13 +16,14 @@ import org.bukkit.plugin.Plugin;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.commands.CommandShop;
+import fr.maxlego08.shop.command.commands.CommandShopCustom;
+import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.enums.Message;
-import fr.maxlego08.shop.zcore.utils.inventory.IIventory;
 
 public class CommandManager extends ZUtils implements CommandExecutor {
 
@@ -36,7 +37,9 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 	public void registerCommands() {
 
 		addCommand("shop", new CommandShop());
-		
+
+		Config.commands.forEach(command -> registerCommand(command.getName(), new CommandShopCustom(command.getAliases()), command.getAliases()));
+
 		main.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 		this.commandChecking();
 	}
@@ -52,42 +55,45 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 		return command;
 	}
 
-	public void registerCommand(String string, VCommand vCommand){
+	public void registerCommand(String string, VCommand vCommand, List<String> aliases) {
 		try {
 			Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 			bukkitCommandMap.setAccessible(true);
-			
+
 			CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
 
 			Class<? extends PluginCommand> class1 = PluginCommand.class;
-			Constructor<? extends PluginCommand> constructor = class1.getDeclaredConstructor(String.class, Plugin.class);
+			Constructor<? extends PluginCommand> constructor = class1.getDeclaredConstructor(String.class,
+					Plugin.class);
 			constructor.setAccessible(true);
-			
+
 			PluginCommand command = constructor.newInstance(string, ZPlugin.z());
+
 			command.setExecutor(this);
-			
+			command.setAliases(aliases);
+
 			commands.add(vCommand.addSubCommand(string));
-			
+
 			commandMap.register(command.getName(), ZPlugin.z().getDescription().getName(), command);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		
+
 		for (VCommand command : commands) {
 			if (command.getSubCommands().contains(cmd.getName().toLowerCase())) {
 				if ((args.length == 0 || command.isIgnoreParent()) && command.getParent() == null) {
-					CommandType type = processRequirements(command, sender, args);
+					CommandType type = processRequirements(cmd, command, sender, args);
 					if (!type.equals(CommandType.CONTINUE))
 						return true;
 				}
 			} else if (args.length >= 1 && command.getParent() != null
 					&& canExecute(args, cmd.getName().toLowerCase(), command)) {
-				CommandType type = processRequirements(command, sender, args);
+				CommandType type = processRequirements(cmd, command, sender, args);
 				if (!type.equals(CommandType.CONTINUE))
 					return true;
 			}
@@ -139,19 +145,20 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 	 * @param strings
 	 * @return
 	 */
-	private CommandType processRequirements(VCommand command, CommandSender sender, String[] strings) {
+	private CommandType processRequirements(Command cmd, VCommand command, CommandSender sender, String[] strings) {
 
 		if (!(sender instanceof Player) && !command.isConsoleCanUse()) {
 			message(sender, Message.COMMAND_NO_CONSOLE);
 			return CommandType.DEFAULT;
 		}
 		if (command.getPermission() == null || hasPermission(sender, command.getPermission())) {
-			if (command.getInventory() != null && sender instanceof Player) {
-				IIventory iIventory = command.getInventory();
-				main.getInventoryManager().createInventory(iIventory.getId(), command.getPlayer(), iIventory.getPage(),
-						iIventory.getArgs());
-			}
-			CommandType returnType = command.prePerform(main, sender, strings);
+			// if (command.getInventory() != null && sender instanceof Player) {
+			// IIventory iIventory = command.getInventory();
+			// main.getInventoryManager().createInventory(iIventory.getId(),
+			// command.getPlayer(), iIventory.getPage(),
+			// iIventory.getArgs());
+			// }
+			CommandType returnType = command.prePerform(main, sender, cmd, strings);
 			if (returnType == CommandType.SYNTAX_ERROR)
 				message(sender, Lang.syntaxeError.replace("%command%", command.getSyntaxe()));
 			return returnType;
@@ -181,7 +188,8 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 	public void sendHelp(String commandString, CommandSender sender) {
 		reverse(commands).forEach(command -> {
 			if (isValid(command, commandString)
-					&& (command.getPermission() == null || hasPermission(sender, command.getPermission())) && command.isShowHelp()) {
+					&& (command.getPermission() == null || hasPermission(sender, command.getPermission()))
+					&& command.isShowHelp()) {
 				message(sender, Message.COMMAND_SYNTAXE_HELP, command.getSyntaxe(), command.getDescription());
 			}
 		});

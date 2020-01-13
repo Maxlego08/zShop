@@ -23,6 +23,7 @@ public enum Permission {
 	SHOP_CONFIG_DELETE_CATEGORY("zshop.config.delete.category"),
 	SHOP_CONFIG_CATEGORIES("zshop.config.categories"),
 	SHOP_CONFIG_ITEMS("zshop.config.items"),
+	SHOP_DEFAULT("zshop.default"),
 	
 	;
 

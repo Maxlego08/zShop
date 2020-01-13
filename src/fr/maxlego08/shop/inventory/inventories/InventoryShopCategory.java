@@ -14,6 +14,7 @@ import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zcore.utils.inventory.Pagination;
 import fr.maxlego08.shop.zshop.categories.Category;
+import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
@@ -23,7 +24,9 @@ public class InventoryShopCategory extends VInventory {
 	@Override
 	public boolean openInventory(ZShop main, Player player, int page, Object... args) throws Exception {
 
+		InventoryObject object = getInventoryObject();
 		Category category = (Category) args[0];
+
 		List<ShopItem> items = main.getItems().getItems(category.getId());
 
 		int pageSize = items.size() < (category.getInventorySize() - 9) ? items.size()
@@ -52,10 +55,12 @@ public class InventoryShopCategory extends VInventory {
 			pagination.paginate(items, pageSize, page).forEach(item -> {
 				addItem(slot.getAndIncrement(), new ItemButton(item.getDisplayItem()).setLeftClick(event -> {
 					if (item.getBuyPrice() > 0)
-						main.getShop().openShop(player, EnumCategory.BUY, 1, Permission.SHOP_OPEN_BUY, item, page);
+						main.getShop().openShop(player, EnumCategory.BUY, 1, object.getId(), Permission.SHOP_OPEN_BUY,
+								item, page);
 				}).setRightClick(event -> {
 					if (item.getSellPrice() > 0)
-						main.getShop().openShop(player, EnumCategory.SELL, 1, Permission.SHOP_OPEN_SELL, item, page);
+						main.getShop().openShop(player, EnumCategory.SELL, 1, object.getId(), Permission.SHOP_OPEN_SELL,
+								item, page);
 				}).setMiddleClick(event -> {
 					if (item.getSellPrice() > 0)
 						item.performSell(player, 0);
@@ -68,12 +73,12 @@ public class InventoryShopCategory extends VInventory {
 			if (getPage() != 1)
 				addItem(category.getPreviousButtonSlot(),
 						new ItemButton(Lang.previousButton.getInitButton()).setClick(event -> {
-							main.getShop().openShop(player, EnumCategory.SHOP, page - 1,
+							main.getShop().openShop(player, EnumCategory.SHOP, page - 1, object.getId(),
 									Permission.SHOP_OPEN.getPermission(category.getId()), args);
 						}));
 			if (getPage() != getMaxPage(pageSize, items))
 				addItem(category.getNexButtonSlot(), new ItemButton(Lang.nextButton.getInitButton()).setClick(event -> {
-					main.getShop().openShop(player, EnumCategory.SHOP, page + 1,
+					main.getShop().openShop(player, EnumCategory.SHOP, page + 1, object.getId(),
 							Permission.SHOP_OPEN.getPermission(category.getId()), args);
 				}));
 		} else {
@@ -82,7 +87,8 @@ public class InventoryShopCategory extends VInventory {
 
 				addItem(item.getSlot(), new ItemButton(item.getDisplayItem()).setClick(event -> {
 					if (item.useConfirm())
-						main.getShop().openShop(player, EnumCategory.CONFIRM, 1, Permission.SHOP_OPEN_CONFIRM, item);
+						main.getShop().openShop(player, EnumCategory.CONFIRM, 1, object.getId(),
+								Permission.SHOP_OPEN_CONFIRM, item);
 					else
 						item.performBuy(player, 1);
 				}));
@@ -91,8 +97,8 @@ public class InventoryShopCategory extends VInventory {
 
 		}
 
-		addItem(category.getBackButtonSlot(), new ItemButton(Lang.backButton.getInitButton())
-				.setClick(event -> main.getShop().openShop(player, EnumCategory.DEFAULT, 0, Permission.SHOP_USE)));
+		addItem(category.getBackButtonSlot(), new ItemButton(Lang.backButton.getInitButton()).setClick(event -> main
+				.getShop().openShop(player, EnumCategory.DEFAULT, 0, object.getId(), Permission.SHOP_USE)));
 
 		return true;
 	}

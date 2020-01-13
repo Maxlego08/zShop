@@ -8,7 +8,7 @@ import fr.maxlego08.shop.save.inventory.ConfigInventoryConfirm;
 import fr.maxlego08.shop.save.inventory.ConfigSellInventory;
 import fr.maxlego08.shop.zcore.utils.storage.Persist;
 import fr.maxlego08.shop.zcore.utils.storage.Saveable;
-import fr.maxlego08.shop.zshop.Command;
+import fr.maxlego08.shop.zshop.utils.Command;
 
 public class Config implements Saveable {
 
@@ -28,7 +28,7 @@ public class Config implements Saveable {
 	public static boolean logConsole = true;
 	public static boolean broadcastMessageWhenBoostIsCreate = true;
 	
-	public static List<Command> commands = Arrays.asList(new Command("shop", Arrays.asList("zshop"), 1));
+	public static List<Command> commands = Arrays.asList(new Command("vip", Arrays.asList("getspawnereasly"), 2));
 	
 	public static ConfigBuyInventory buyInventory = new ConfigBuyInventory();
 	public static ConfigSellInventory sellInventory = new ConfigSellInventory();

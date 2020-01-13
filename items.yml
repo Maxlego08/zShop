@@ -327,12 +327,28 @@ items:
           id: 52
           data: 0
           name: "&2PigZombie"
+          lore:
+            - "§fPigZombie spawner"          
         economy: PLAYERPOINT
         buyPrice: 500.0
         sellPrice: 0.0
         give: false
         commands:
-          - "spawners give %player% pigzombie"       
+          - "spawners give %player% pigzombie"      
+      '2':
+        type: ITEM
+        item:
+          id: 52
+          data: 0
+          name: "&2Cow"
+          lore:
+            - "§fCow spawner"
+        economy: PLAYERPOINT
+        buyPrice: 10
+        sellPrice: 0.0
+        give: false
+        commands:
+          - "spawners give %player% cow"               
   '7':
     items:
       '1':

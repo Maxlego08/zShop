@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.zshop.factories;
 
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
@@ -23,6 +24,10 @@ public interface Categories{
 	 * @return category according to the id
 	 */
 	Category getCategory(int id);
+	
+	List<Category> getCategories(int... id);
+	
+	List<Category> getCategories(List<Integer> id);
 	
 	/**
 	 * @param name

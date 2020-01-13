@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -44,7 +45,8 @@ public abstract class VCommand extends Arguments {
 	protected Boost boost;
 	protected Categories categories;
 	protected Inventories inventories;
-
+	protected Command command;
+	
 	/**
 	 * If this variable is false the command will not be able to use this
 	 * command
@@ -339,7 +341,7 @@ public abstract class VCommand extends Arguments {
 		return parent == null ? defaultParent : parent.parentCount(defaultParent + 1);
 	}
 
-	public CommandType prePerform(ZShop main, CommandSender commandSender, String[] args) {
+	public CommandType prePerform(ZShop main, CommandSender commandSender, Command commands, String[] args) {
 
 		// On met à jour le nombre d'argument en fonction du nombre de parent
 
@@ -348,6 +350,7 @@ public abstract class VCommand extends Arguments {
 		boost = main.getBoost();
 		categories = main.getCategories();
 		inventories = main.getInventory();
+		command = commands;
 		
 		parentCount = parentCount(0);
 		argsMaxLength = requireArgs.size() + optionalArgs.size() + parentCount;

@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,6 +26,8 @@ import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zshop.categories.Category;
 import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
+import fr.maxlego08.shop.zshop.inventories.Inventories;
+import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
@@ -33,15 +36,17 @@ public class ShopManager extends ZUtils implements Shop {
 	private final ZShop plugin;
 
 	private final Items items;
+	private final Inventories inventories;
 
 	public ShopManager(ZShop plugin) {
 		super();
 		this.plugin = plugin;
 		this.items = plugin.getItems();
+		this.inventories = plugin.getInventory();
 	}
 
 	@Override
-	public void openShop(Player player, EnumCategory category, int page, String permission, Object... args) {
+	public void openShop(Player player, EnumCategory category, int page, int id, String permission, Object... args) {
 
 		plugin.getBoost().updateBoost();
 
@@ -58,7 +63,8 @@ public class ShopManager extends ZUtils implements Shop {
 			return;
 		}
 
-		plugin.getInventoryManager().createInventory(category.getInventoryID(), player, page, args);
+		plugin.getInventoryManager().createInventory(category.getInventoryID(), player, page,
+				inventories.getInventory(id), args);
 	}
 
 	@Override
@@ -185,14 +191,29 @@ public class ShopManager extends ZUtils implements Shop {
 		if (category == null)
 			return CommandType.SYNTAX_ERROR;
 
-		this.openShop(player, EnumCategory.SHOP, 1, Permission.SHOP_OPEN.getPermission(category.getId()), category);
+		this.openShop(player, EnumCategory.SHOP, 1, 1, Permission.SHOP_OPEN.getPermission(category.getId()), category);
 
 		return CommandType.SUCCESS;
 	}
 
 	@Override
-	public void openShop(Player player, EnumCategory category, int page, Permission permission, Object... args) {
-		this.openShop(player, category, page, permission.getPermission(), args);
+	public void openShop(Player player, EnumCategory category, int page, int id, Permission permission,
+			Object... args) {
+		this.openShop(player, category, page, id, permission.getPermission(), args);
+	}
+
+	@Override
+	public void openShop(Player player, Command command) {
+
+		
+		InventoryObject obj = inventories.getInventory(command);
+
+		if (obj != null)
+			this.openShop(player, EnumCategory.DEFAULT, 0, obj.getId(), Permission.SHOP_DEFAULT);
+		else {
+			message(player, "§cPlease contact an administrator for he perform command §f'§6/shop reload§f'");
+		}
+
 	}
 
 }

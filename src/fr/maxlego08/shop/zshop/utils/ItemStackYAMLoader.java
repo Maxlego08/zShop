@@ -17,7 +17,7 @@ import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 
-public class ItemStackYAMLoader extends ZUtils {
+public class ItemStackYAMLoader extends ZUtils implements Loader<ItemStack>{
 
 	@SuppressWarnings("deprecation")
 	public ItemStack load(YamlConfiguration configuration, String path) {

@@ -24,6 +24,7 @@ import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
+import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
 public class InventoryManager extends ListenerAdapter {
@@ -55,7 +56,7 @@ public class InventoryManager extends ListenerAdapter {
 			throw new InventoryAlreadyExistException("Inventory with id " + id + " already exist !");
 	}
 
-	public void createInventory(int id, Player player, int page, Object... objects) {
+	public void createInventory(int id, Player player, int page, InventoryObject obj, Object... objects) {
 		VInventory inventory = getInventory(id);
 		if (inventory == null)
 			return;
@@ -72,6 +73,8 @@ public class InventoryManager extends ListenerAdapter {
 		clonedInventory.setPlugin(plugin);
 		clonedInventory.setId(id);
 		clonedInventory.setInventoryManager(this);
+		clonedInventory.setInventoryObject(obj);
+		
 		try {
 			if (clonedInventory.openInventory(plugin, player, page, objects)) {
 				player.openInventory(clonedInventory.getInventory());
@@ -99,6 +102,7 @@ public class InventoryManager extends ListenerAdapter {
 		clonedInventory.setArgs(parent.getArgs());
 		clonedInventory.setPage(parent.getPage());
 		clonedInventory.setPlugin(plugin);
+		clonedInventory.setInventoryObject(parent.getInventoryObject());
 		clonedInventory.setInventoryManager(this);
 
 		try {

@@ -641,19 +641,6 @@ public abstract class ZUtils {
 		player.sendMessage(Message.PREFIX.msg() + " " + String.format(message.msg(), args));
 	}
 
-	protected void createInventory(Player player, int inventoryId) {
-		createInventory(player, inventoryId, 1);
-	}
-
-	protected void createInventory(Player player, int inventoryId, int page) {
-		createInventory(player, inventoryId, page, new Object() {
-		});
-	}
-
-	protected void createInventory(Player player, int inventoryId, int page, Object... objects) {
-		plugin.getInventoryManager().createInventory(inventoryId, player, page, objects);
-	}
-
 	protected boolean hasPermission(Permissible permissible, Permission permission) {
 		return permissible.hasPermission(permission.getPermission());
 	}

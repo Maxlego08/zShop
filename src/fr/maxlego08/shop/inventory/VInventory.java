@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
+import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 
 public abstract class VInventory extends ZUtils {
 
@@ -24,17 +25,26 @@ public abstract class VInventory extends ZUtils {
 	private Inventory inventory;
 	private String guiName;
 	private boolean disableClick = true;
+	private InventoryObject inventoryObject;
 	private int id;
+
+	public void setInventoryObject(InventoryObject inventoryObject) {
+		this.inventoryObject = inventoryObject;
+	}
+
+	public InventoryObject getInventoryObject() {
+		return inventoryObject;
+	}
 
 	public VInventory setId(int id) {
 		this.id = id;
 		return this;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	protected VInventory createInventory(String name) {
 		return createInventory(name, 54);
 	}
@@ -42,11 +52,12 @@ public abstract class VInventory extends ZUtils {
 	public ZShop getPlugin() {
 		return plugin;
 	}
-	
+
 	protected VInventory createInventory(String name, int size) {
 		guiName = name;
-//		if (name.length() > 32)
-//			Logger.getLogger().log("The name of the menu is over 32 characters!", LogType.ERROR);
+		// if (name.length() > 32)
+		// Logger.getLogger().log("The name of the menu is over 32 characters!",
+		// LogType.ERROR);
 		this.inventory = Bukkit.createInventory(null, size, name);
 		return this;
 	}
@@ -55,7 +66,7 @@ public abstract class VInventory extends ZUtils {
 		this.items.put(slot, item);
 		this.inventory.setItem(slot, item.getDisplayItem());
 	}
-	
+
 	public void addItem(int slot, ItemStack item) {
 		this.items.put(slot, new ItemButton(item));
 		this.inventory.setItem(slot, item);
@@ -79,11 +90,11 @@ public abstract class VInventory extends ZUtils {
 	public boolean isDisableClick() {
 		return disableClick;
 	}
-	
+
 	public void setDisableClick(boolean disableClick) {
 		this.disableClick = disableClick;
 	}
-	
+
 	/**
 	 * @return the player
 	 */
@@ -154,20 +165,21 @@ public abstract class VInventory extends ZUtils {
 	public void setPlugin(ZShop plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	public void setInventoryManager(InventoryManager inventoryManager) {
 		this.inventoryManager = inventoryManager;
 	}
-	
-	public void createInventory(int id, Player player, int page, Object... args){
-		inventoryManager.createInventory(id, player, page, args);
+
+	public void createInventory(int id, Player player, int page, InventoryObject obj, Object... args) {
+		inventoryManager.createInventory(id, player, page, obj, args);
 	}
-	
-	public abstract boolean openInventory(ZShop main, Player player, int page, Object... args) throws Exception;
+
+	public abstract boolean openInventory(ZShop main, Player player, int page, Object... args)
+			throws Exception;
 
 	protected abstract void onClose(InventoryCloseEvent event, ZShop plugin, Player player);
 
 	protected abstract void onDrag(InventoryDragEvent event, ZShop plugin, Player player);
-	
+
 	public abstract VInventory clone();
 }

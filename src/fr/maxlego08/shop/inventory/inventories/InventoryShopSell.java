@@ -17,6 +17,7 @@ import fr.maxlego08.shop.inventory.VInventory;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.save.inventory.ConfigSellInventory;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
+import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
@@ -28,6 +29,7 @@ public class InventoryShopSell extends VInventory {
 	@Override
 	public boolean openInventory(ZShop main, Player player, int page, Object... args) throws Exception {
 
+		InventoryObject object = getInventoryObject();
 		item = (ShopItem) args[0];
 		final int lastPage = (int) args[1];
 
@@ -71,7 +73,7 @@ public class InventoryShopSell extends VInventory {
 
 		addItem(ConfigSellInventory.backintSlotSlot,
 				new ItemButton(Lang.backBuyButton.getInitButton()).setClick(event -> {
-					main.getShop().openShop(player, EnumCategory.SHOP, lastPage,
+					main.getShop().openShop(player, EnumCategory.SHOP, lastPage, object.getId(), 
 							Permission.SHOP_OPEN_CONFIRM.getPermission(item.getCategory()),
 							main.getCategories().getCategory(item.getCategory()));
 				}));
