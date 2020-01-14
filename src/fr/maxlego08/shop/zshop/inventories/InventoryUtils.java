@@ -113,18 +113,18 @@ public class InventoryUtils extends ZUtils implements Inventories {
 
 		this.inventories.clear();
 
-		InventoryObject obj = new InventoryObject(categories.getCategories(1, 2, 3, 4, 5, 6, 7), 1, 9, "§7Shop",
+		InventoryObject obj = new InventoryObject(categories.getCategories(1, 2, 3, 4, 5, 6), 1, 9, "§7Shop",
 				new HashMap<>());
 		this.inventories.put(1, obj);
 
-		int[] array = new int[] { 13, 13, 5, 5, 5, 5, 5, 13, 13, 13, 5, 5, 4, 4, 4, 5, 5, 13, 5, 5, 4, 4, 0, 4, 4, 5, 5,
+		int[] array = new int[] { 13, 13, 5, 5, 5, 5, 5, 13, 13, 13, 5, 5, 4, 4, 4, 5, 5, 13, 5, 5, 4, 4, 4, 4, 4, 5, 5,
 				13, 5, 5, 4, 4, 4, 5, 5, 13, 13, 13, 5, 5, 5, 5, 5, 13, 13 };
 
 		Map<Integer, Button> buttons = new HashMap<>();
 		for(int slot = 0; slot != array.length; slot++)
 			buttons.put(slot, new Button("", 160, array[slot]));
 		
-		obj = new InventoryObject(categories.getCategories(8), 1, 45, "§cVip", buttons);
+		obj = new InventoryObject(categories.getCategories(8, 7), 1, 45, "§cVip", buttons);
 		this.inventories.put(2, obj);
 
 		this.save();

@@ -17,6 +17,7 @@ import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
+import fr.maxlego08.shop.zcore.utils.builder.ItemBuilder;
 import fr.maxlego08.shop.zcore.utils.enums.Message;
 import fr.maxlego08.shop.zshop.factories.Categories;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
@@ -92,7 +93,7 @@ public class CategoryManager extends ZUtils implements Categories {
 		File file = new File(plugin.getDataFolder() + File.separator + "categories.yml");
 		if (!file.exists())
 			this.saveDefault();
-		
+
 		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
 		if (configuration.getString("categories") == null) {
@@ -185,10 +186,10 @@ public class CategoryManager extends ZUtils implements Categories {
 				48, 50)));
 		categories.put(6,
 				(new Category(6, 5, 1, ShopType.ITEM, "§eOres", new ItemStack(Material.IRON_INGOT), 54, 49, 48, 50)));
-		categories.put(7, (new Category(7, 6, 1, ShopType.UNIQUE_ITEM, "§eRanks",
-				new ItemStack(Material.DIAMOND_CHESTPLATE), 54, 49, 48, 50)));
-		categories.put(8,
-				(new Category(8, 22, 1, ShopType.ITEM, "§3Spawners", new ItemStack(getMaterial(52)), 54, 49, 48, 50)));
+		categories.put(7, (new Category(7, 23, 1, ShopType.UNIQUE_ITEM, "§eRanks",
+				ItemBuilder.getCreatedItem(Material.DIAMOND_CHESTPLATE, 1, "§cRanks"), 54, 49, 48, 50)));
+		categories.put(8, (new Category(8, 21, 1, ShopType.ITEM, "§3Spawners",
+				ItemBuilder.getCreatedItem(getMaterial(52), 1, "§a§nSpawners"), 54, 49, 48, 50)));
 
 		this.save();
 	}
