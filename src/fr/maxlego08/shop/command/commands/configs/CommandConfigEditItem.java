@@ -3,7 +3,9 @@ package fr.maxlego08.shop.command.commands.configs;
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.CommandType;
 import fr.maxlego08.shop.command.VCommand;
+import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
+import fr.maxlego08.shop.zshop.categories.Category;
 
 public class CommandConfigEditItem extends VCommand {
 
@@ -30,7 +32,14 @@ public class CommandConfigEditItem extends VCommand {
 		if (!type.equalsIgnoreCase("buy") && !type.equalsIgnoreCase("sell"))
 			return CommandType.SYNTAX_ERROR;
 		
-		items.updatePrice(sender, type.equalsIgnoreCase("sell"), categories.getCategory(id), itemId, price);
+		Category category = categories.getCategory(id);
+
+		if (category == null) {
+			message(sender, Lang.commandCategoryError.replace("%id%", String.valueOf(id)));
+			return CommandType.DEFAULT;
+		}
+		
+		items.updatePrice(sender, type.equalsIgnoreCase("sell"), category, itemId, price);
 		
 		return CommandType.SUCCESS;
 	}

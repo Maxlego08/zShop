@@ -15,6 +15,8 @@ public class Lang implements Saveable {
 	public static String noPermission = "§cYou don't have permission !";
 	public static String syntaxeError = "§cYou must execute the command like this §7: §a%command%";
 	public static String commandError = "§cThis argument does not exist!";
+	public static String commandCategoryError = "§cUnable to find categories with id §6%id%§c.";
+	public static String commandItemError = "§cUnable to create the item with this id §6%id%§c.";
 	public static String onlinePlayerCanUse = "§cYou must be player to do this !";
 	
 	public static String shopInventoryItem = "§a%category% §e%page%§7/§6%maxPage%";
