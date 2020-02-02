@@ -42,7 +42,7 @@ public class ZShop extends ZPlugin {
 
 		commandManager = new CommandManager(this);
 		commandManager.registerCommands();
-
+		
 		if (!isEnabled())
 			return;
 

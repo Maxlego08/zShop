@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import fr.maxlego08.shop.zcore.utils.builder.ItemBuilder;
+import fr.maxlego08.shop.zcore.utils.builder.OLDItemBuilder;
 
 public class ItemButton {
 
@@ -24,19 +24,19 @@ public class ItemButton {
 	}
 
 	public ItemButton(Material material, int id, String name, String... lore) {
-		this(ItemBuilder.getCreatedItemWithLoreAndShort(material, 1, (short)id, name, Arrays.asList(lore)));
+		this(OLDItemBuilder.getCreatedItemWithLoreAndShort(material, 1, (short)id, name, Arrays.asList(lore)));
 	}
 
 	public ItemButton(Material material, String name, String... lore) {
-		this(ItemBuilder.getCreatedItemWithLore(material, 1, name, lore));
+		this(OLDItemBuilder.getCreatedItemWithLore(material, 1, name, lore));
 	}
 	
 	public ItemButton(Material material) {
-		this(ItemBuilder.getCreatedItemWithLore(material, 1, null));
+		this(OLDItemBuilder.getCreatedItemWithLore(material, 1, null));
 	}
 	
 	public ItemButton(Material material, String name) {
-		this(ItemBuilder.getCreatedItemWithLore(material, 1, name));
+		this(OLDItemBuilder.getCreatedItemWithLore(material, 1, name));
 	}
 
 	public ItemButton setClick(Consumer<InventoryClickEvent> onClick) {

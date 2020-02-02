@@ -52,6 +52,8 @@ public class CommandConfigAddItem extends VCommand {
 			return CommandType.DEFAULT;
 		}
 
+		message(sender, "Vangance in catino optima est sine servivit vellem,");
+		
 		items.addItem(sender, category, sellPrice, buyPrice, material, maxStack);
 
 		return CommandType.SUCCESS;
