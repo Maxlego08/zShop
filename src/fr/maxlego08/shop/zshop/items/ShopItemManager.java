@@ -99,6 +99,11 @@ public class ShopItemManager extends ZUtils implements Items {
 					ItemStack itemStack = itemStackYAMLoader.load(configuration, currentPath + ".item.");
 					ItemStack giveItemStack = itemStackYAMLoader.load(configuration, currentPath + ".giveItem.");
 
+					if (itemStack == null) {
+						throw new ItemCreateException("Could load item with id " + itemId + " in category " + categoryId
+								+ " -> " + (currentPath + ".item.") + " is null");
+					}
+
 					int slot = configuration.getInt(currentPath + "slot", 0);
 					double sellPrice = configuration.getDouble(currentPath + "sellPrice", 0);
 					double buyPrice = configuration.getDouble(currentPath + "buyPrice", 0);
@@ -132,12 +137,7 @@ public class ShopItemManager extends ZUtils implements Items {
 					// S'il y a une erreur alors il est impossible de charger
 					// l'item
 
-					try {
-						throw new ItemCreateException(
-								"Could load item with id " + itemId + " in category " + categoryId);
-					} catch (ItemCreateException e1) {
-						e1.printStackTrace();
-					}
+					throw new ItemCreateException("Could load item with id " + itemId + " in category " + categoryId);
 				}
 			}
 
@@ -173,7 +173,7 @@ public class ShopItemManager extends ZUtils implements Items {
 
 		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 		Loader<ItemStack> stackYAMLoader = new ItemStackYAMLoader();
-		
+
 		this.items.forEach((id, items) -> {
 			AtomicInteger integer = new AtomicInteger(1);
 			items.forEach(item -> {

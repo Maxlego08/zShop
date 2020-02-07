@@ -1,6 +1,6 @@
 package fr.maxlego08.shop.exceptions;
 
-public class ItemCreateException extends Exception {
+public class ItemCreateException extends Error {
 
 	/**
 	 * 
