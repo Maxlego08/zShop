@@ -3,6 +3,9 @@ package fr.maxlego08.shop.zshop.items;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import fr.maxlego08.shop.event.events.economy.EconomyDepositEvent;
+import fr.maxlego08.shop.event.events.economy.EconomyHasMoneyEvent;
+import fr.maxlego08.shop.event.events.economy.EconomyWithdrawMoney;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import me.bukkit.mTokens.Inkzzz.Tokens;
@@ -29,6 +32,10 @@ public class EconomyUtils extends ZUtils {
 			return ZPlugin.z().getPlayerPointsAPI().look(player.getUniqueId()) >= (int) price;
 		case VAULT:
 			return super.getBalance(player) >= price;
+		case CUSTOM:
+			EconomyHasMoneyEvent event = new EconomyHasMoneyEvent(player, price);
+			Bukkit.getPluginManager().callEvent(event);
+			return event.hasMoney();
 		default:
 			return false;
 		}
@@ -53,6 +60,10 @@ public class EconomyUtils extends ZUtils {
 		case VAULT:
 			super.depositMoney(player, value);
 			break;
+		case CUSTOM:
+			EconomyDepositEvent event = new EconomyDepositEvent(player, value);
+			Bukkit.getPluginManager().callEvent(event);
+			break;
 		default:
 			break;
 		}
@@ -76,6 +87,10 @@ public class EconomyUtils extends ZUtils {
 			break;
 		case VAULT:
 			super.withdrawMoney(player, value);
+			break;
+		case CUSTOM:
+			EconomyWithdrawMoney event = new EconomyWithdrawMoney(player, value);
+			Bukkit.getPluginManager().callEvent(event);
 			break;
 		default:
 			break;
