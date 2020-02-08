@@ -17,10 +17,10 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveur1.15/spigot-1.15.1.jar"/>
 	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveurdedev/plugins/Plugin zAuctionHouse/PlayerPoints.jar"/>
 	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveurdedev/plugins/zShop/TokenManager-3.2.4.jar"/>
 	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveurdedev/plugins/zShop/MySQLTokens.jar"/>
 	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveurdedev/plugins/zShop/expbank-6.0.0.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Maxlego08/Desktop/Serveur dev/Serveur1.15/spigot-1.15.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
