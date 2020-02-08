@@ -2,9 +2,9 @@ package fr.maxlego08.shop.event.events.economy;
 
 import org.bukkit.entity.Player;
 
-import fr.maxlego08.shop.event.EconomyEvent;
+import fr.maxlego08.shop.event.ShopEvent;
 
-public class EconomyWithdrawMoney extends EconomyEvent {
+public class EconomyWithdrawMoney extends ShopEvent {
 
 	private final Player player;
 	private final double money;

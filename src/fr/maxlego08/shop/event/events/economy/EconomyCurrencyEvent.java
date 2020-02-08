@@ -1,8 +1,8 @@
 package fr.maxlego08.shop.event.events.economy;
 
-import fr.maxlego08.shop.event.EconomyEvent;
+import fr.maxlego08.shop.event.ShopEvent;
 
-public class EconomyCurrencyEvent extends EconomyEvent {
+public class EconomyCurrencyEvent extends ShopEvent {
 
 	private String currency = "$";
 
