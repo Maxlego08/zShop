@@ -11,7 +11,7 @@ public class CommandShopAll extends VCommand {
 		this.addSubCommand("all");
 		this.setDescription("Sells all items from your inventory");
 		this.setConsoleCanUse(false);
-		this.setPermission(Permission.SHOP_HAND_ALL);
+		this.setPermission(Permission.SHOP_ALL);
 	}
 
 	@Override

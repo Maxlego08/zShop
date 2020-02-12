@@ -401,6 +401,9 @@ public abstract class ZUtils {
 	 * @return player bank
 	 */
 	protected double getBalance(Player player) {
+		Economy economy = ZPlugin.z().getEconomy();
+		if (economy == null)
+			return 0.0;
 		return economy.getBalance(player);
 	}
 
@@ -624,8 +627,8 @@ public abstract class ZUtils {
 	protected void message(CommandSender player, String message) {
 		player.sendMessage(Message.PREFIX.msg() + " " + message);
 	}
-	
-	protected void message(CommandSender player, String message, Object...args) {
+
+	protected void message(CommandSender player, String message, Object... args) {
 		player.sendMessage(Message.PREFIX.msg() + " " + String.format(message, args));
 	}
 
@@ -683,7 +686,7 @@ public abstract class ZUtils {
 	public String color(String message) {
 		return message.replace("&", "§");
 	}
-	
+
 	public String colorReverse(String message) {
 		return message.replace("§", "&");
 	}
@@ -696,7 +699,7 @@ public abstract class ZUtils {
 	public List<String> color(List<String> messages) {
 		return messages.stream().map(message -> color(message)).collect(Collectors.toList());
 	}
-	
+
 	public List<String> colorReverse(List<String> messages) {
 		return messages.stream().map(message -> colorReverse(message)).collect(Collectors.toList());
 	}
@@ -708,12 +711,12 @@ public abstract class ZUtils {
 		}
 		return null;
 	}
-	
-	protected <T> List<T> reverse(List<T> list){
+
+	protected <T> List<T> reverse(List<T> list) {
 		List<T> tmpList = new ArrayList<>();
-		for(int index = list.size()-1; index != -1; index--)
+		for (int index = list.size() - 1; index != -1; index--)
 			tmpList.add(list.get(index));
 		return tmpList;
 	}
-	
+
 }

@@ -55,9 +55,6 @@ public abstract class VInventory extends ZUtils {
 
 	protected VInventory createInventory(String name, int size) {
 		guiName = name;
-		// if (name.length() > 32)
-		// Logger.getLogger().log("The name of the menu is over 32 characters!",
-		// LogType.ERROR);
 		this.inventory = Bukkit.createInventory(null, size, name);
 		return this;
 	}
@@ -182,4 +179,6 @@ public abstract class VInventory extends ZUtils {
 	protected abstract void onDrag(InventoryDragEvent event, ZShop plugin, Player player);
 
 	public abstract VInventory clone();
+	
+	
 }

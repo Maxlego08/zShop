@@ -139,6 +139,10 @@ public abstract class ZPlugin extends JavaPlugin {
 	}
 
 	public Economy getEconomy() {
+		if (!setupEconomy()){
+			
+			this.getServer().getPluginManager().disablePlugin(this);
+		}
 		return economy;
 	}
 

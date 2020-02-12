@@ -57,6 +57,7 @@ public class InventoryManager extends ListenerAdapter {
 	}
 
 	public void createInventory(int id, Player player, int page, InventoryObject obj, Object... objects) {
+
 		VInventory inventory = getInventory(id);
 		if (inventory == null)
 			return;
@@ -74,7 +75,7 @@ public class InventoryManager extends ListenerAdapter {
 		clonedInventory.setId(id);
 		clonedInventory.setInventoryManager(this);
 		clonedInventory.setInventoryObject(obj);
-		
+
 		try {
 			if (clonedInventory.openInventory(plugin, player, page, objects)) {
 				player.openInventory(clonedInventory.getInventory());
@@ -124,6 +125,7 @@ public class InventoryManager extends ListenerAdapter {
 		if (event.getClickedInventory() == null)
 			return;
 		if (event.getWhoClicked() instanceof Player) {
+
 			if (!exist(player))
 				return;
 			VInventory gui = playerInventories.get(player);
@@ -131,8 +133,9 @@ public class InventoryManager extends ListenerAdapter {
 				Logger.info("An error has occurred with the menu ! " + gui.getClass().getName());
 				return;
 			}
+
 			if (event.getView() != null && gui.getPlayer().equals(player)
-					&& event.getView().getTitle().equals(gui.getGuiName())) {
+					&& gui.getGuiName().replace("§", "&").contains(event.getView().getTitle().replace("§", "&"))) {
 				event.setCancelled(true);
 				ItemButton button = gui.getItems().getOrDefault(event.getSlot(), null);
 				if (button != null)
@@ -177,7 +180,7 @@ public class InventoryManager extends ListenerAdapter {
 	 */
 	public void updateAllPlayer(int... id) {
 		if (id.length == 0)
-			for(EnumCategory category : EnumCategory.values())
+			for (EnumCategory category : EnumCategory.values())
 				updateAllPlayer(category.getInventoryID());
 		for (int currentId : id)
 			updateAllPlayer(currentId);

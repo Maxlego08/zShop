@@ -211,7 +211,6 @@ public class CategoryManager extends ZUtils implements Categories {
 		for (int i : id)
 			integers.add(i);
 		return getCategories(integers);
-
 	}
 
 }
