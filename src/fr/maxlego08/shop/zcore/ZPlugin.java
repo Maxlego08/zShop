@@ -56,6 +56,8 @@ public abstract class ZPlugin extends JavaPlugin {
 
 		if (!new File(getDataFolder() + "/items.yml").exists())
 			saveResource("items.yml", false);
+		saveResource("items-example-fr.yml", true);
+		saveResource("items-example-en.yml", true);
 
 		setupEconomy();
 		hookPlayerPoints();

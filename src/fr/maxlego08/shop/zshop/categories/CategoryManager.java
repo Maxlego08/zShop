@@ -17,6 +17,7 @@ import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
+import fr.maxlego08.shop.zcore.utils.builder.ItemBuilder;
 import fr.maxlego08.shop.zcore.utils.builder.OLDItemBuilder;
 import fr.maxlego08.shop.zcore.utils.enums.Message;
 import fr.maxlego08.shop.zshop.factories.Categories;
@@ -174,18 +175,26 @@ public class CategoryManager extends ZUtils implements Categories {
 
 		categories.clear();
 
-		categories.put(1,
-				(new Category(1, 0, 1, ShopType.ITEM, "§aBlocks", new ItemStack(Material.GRASS), 54, 49, 48, 50)));
-		categories.put(2,
-				(new Category(2, 1, 1, ShopType.ITEM, "§eFarm", new ItemStack(Material.WHEAT), 54, 49, 48, 50)));
-		categories.put(3,
-				(new Category(3, 2, 1, ShopType.ITEM, "§eMobs", new ItemStack(Material.ROTTEN_FLESH), 54, 49, 48, 50)));
-		categories.put(4,
-				(new Category(4, 3, 1, ShopType.ITEM, "§eFoods", new ItemStack(Material.COOKED_BEEF), 54, 49, 48, 50)));
-		categories.put(5, (new Category(5, 4, 1, ShopType.ITEM, "§eRedstones", new ItemStack(Material.REDSTONE), 54, 49,
-				48, 50)));
-		categories.put(6,
-				(new Category(6, 5, 1, ShopType.ITEM, "§eOres", new ItemStack(Material.IRON_INGOT), 54, 49, 48, 50)));
+		categories.put(1, (new Category(1, 0, 1, ShopType.ITEM, "§aBlocks",
+				new ItemBuilder(Material.GRASS, "§aBlocks").build(), 54, 49, 48, 50)));
+		
+		categories.put(2, (new Category(2, 1, 1, ShopType.ITEM, "§eFarm",
+				new ItemBuilder(Material.WHEAT, "§eFarm").build(), 54, 49, 48, 50)));
+		
+		categories.put(3, (new Category(3, 2, 1, ShopType.ITEM, "§eMobs",
+				new ItemBuilder(Material.ROTTEN_FLESH, "§eMobs").build(), 54, 49, 48, 50)));
+		
+		categories.put(4, (new Category(4, 3, 1, ShopType.ITEM, "§eFoods",
+				new ItemBuilder(Material.COOKED_BEEF, "§eFoods").build(), 54, 49, 48, 50)));
+		
+		categories.put(5, (new Category(5, 4, 1, ShopType.ITEM, "§eRedstones",
+				new ItemBuilder(Material.REDSTONE, "§eRedstones").build(), 54, 49, 48, 50)));
+		
+		categories.put(6, (new Category(6, 5, 1, ShopType.ITEM, "§eOres",
+				new ItemBuilder(Material.IRON_INGOT, "§eOres").build(), 54, 49, 48, 50)));
+		
+		
+		
 		categories.put(7, (new Category(7, 23, 1, ShopType.UNIQUE_ITEM, "§eRanks",
 				OLDItemBuilder.getCreatedItem(Material.DIAMOND_CHESTPLATE, 1, "§cRanks"), 54, 49, 48, 50)));
 		categories.put(8, (new Category(8, 21, 1, ShopType.ITEM, "§3Spawners",

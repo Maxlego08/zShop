@@ -14,7 +14,7 @@ import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 
-public abstract class VInventory extends ZUtils {
+public abstract class VInventory extends ZUtils implements Cloneable{
 
 	private InventoryManager inventoryManager;
 	private ZShop plugin;

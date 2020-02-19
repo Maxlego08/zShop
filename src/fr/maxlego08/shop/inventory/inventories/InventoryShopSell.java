@@ -45,12 +45,12 @@ public class InventoryShopSell extends VInventory {
 				}));
 		addItem(ConfigSellInventory.removeTenItemintSlot,
 				new ItemButton(Lang.removeTenItemButton.getInitButton()).setClick(event -> {
-					amount.getAndAdd(-1);
+					amount.getAndAdd(-10);
 					setItem();
 				}));
 		addItem(ConfigSellInventory.removeOneItemintSlot,
 				new ItemButton(Lang.removeOneItemButton.getInitButton()).setClick(event -> {
-					amount.getAndAdd(-10);
+					amount.getAndAdd(-1);
 					setItem();
 				}));
 
