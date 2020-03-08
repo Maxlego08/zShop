@@ -178,8 +178,8 @@ public class CategoryManager extends ZUtils implements Categories {
 		categories.put(1, (new Category(1, 0, 1, ShopType.ITEM_SLOT, "§aBlocks",
 				new ItemBuilder(Material.GRASS, "§aBlocks").build(), 54, 49, 48, 50)));
 		
-		categories.put(2, (new Category(2, 1, 1, ShopType.ITEM, "§eFarm",
-				new ItemBuilder(Material.WHEAT, "§eFarm").build(), 54, 49, 48, 50)));
+		categories.put(2, (new Category(2, 1, 1, ShopType.ITEM_SLOT, "§eFarm",
+				new ItemBuilder(Material.WHEAT, "§eFarm").build(), 36, 31, 30, 32)));
 		
 		categories.put(3, (new Category(3, 2, 1, ShopType.ITEM, "§eMobs",
 				new ItemBuilder(Material.ROTTEN_FLESH, "§eMobs").build(), 54, 49, 48, 50)));

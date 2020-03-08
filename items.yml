@@ -1,116 +1,230 @@
 items:
   '1':
     items:
-      '1':
-        type: ITEM_SLOT
-        slot: 10
-        item:
-          id: 3
-          data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
       '2':
-        type: ITEM_SLOT
-        slot: 11
+        type: ITEM
         item:
           id: 1
           data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 11        
       '3':
-        type: ITEM_SLOT
-        slot: 62
+        type: ITEM
         item:
-          id: 17
-          data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
+          id: 1
+          data: 1
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 12    
       '4':
-        type: ITEM_SLOT
-        slot: 60
+        type: ITEM
+        item:
+          id: 1
+          data: 2
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 13      
+      '5':
+        type: ITEM
+        item:
+          id: 1
+          data: 3
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 14        
+      '6':
+        type: ITEM
+        item:
+          id: 1
+          data: 4
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 15         
+      '7':
+        type: ITEM
+        item:
+          id: 1
+          data: 5
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 19       
+      '8':
+        type: ITEM
+        item:
+          id: 1
+          data: 6
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 20         
+      '9':
+        type: ITEM
         item:
           id: 2
           data: 0
-          enchants:
-            - DAMAGE_ALL,5
-          flags:
-            - HIDE_ENCHANTS
-        buyPrice: 30.0
-        sellPrice: 2.0
-        commands:
-          - "bc %player% was just bought x%amount% %item% in shop !"
-      '5':
-        type: ITEM
-        slot: 61
-        item:
-          id: 12
-          data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
-      '6':
-        type: ITEM
-        slot: 63        
-        item:
-          id: 49
-          data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
-      '7':
-        type: ITEM
-        slot: 64        
-        item:
-          id: 155
-          data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
-      '8':
-        type: ITEM
-        slot: 86        
-        item:
-          id: 79
-          data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
-      '9':
-        type: ITEM
-        slot: 90        
-        item:
-          id: 174
-          data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 21      
       '10':
         type: ITEM
-        slot: 120        
         item:
-          id: 46
+          id: 3
           data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 22    
       '11':
         type: ITEM
-        slot: 130        
+        item:
+          id: 3
+          data: 1
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 23       
+      '12':
+        type: ITEM
+        item:
+          id: 3
+          data: 2
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 24       
+      '13':
+        type: ITEM
         item:
           id: 4
           data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
-      '12':
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 25
+      '14':
         type: ITEM
-        slot: 150        
+        item:
+          id: 5
+          data: 0
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 28 
+      '15':
+        type: ITEM
+        item:
+          id: 5
+          data: 1
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 29
+      '16':
+        type: ITEM
+        item:
+          id: 5
+          data: 2
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 30 
+      '17':
+        type: ITEM
+        item:
+          id: 5
+          data: 3
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 31 
+      '18':
+        type: ITEM
+        item:
+          id: 5
+          data: 4
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 32
+      '19':
+        type: ITEM
+        item:
+          id: 5
+          data: 5
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 33
+      '20':
+        type: ITEM
+        item:
+          id: 12
+          data: 0
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 34
+      '21':
+        type: ITEM
         item:
           id: 13
           data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0      
-      '12':
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 39
+      '25':
         type: ITEM
-        slot: 694        
         item:
-          id: 7
+          id: 12
+          data: 1
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 38        
+      '22':
+        type: ITEM
+        item:
+          id: 17
           data: 0
-        buyPrice: 30.0
-        sellPrice: 2.0
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 40
+      '23':
+        type: ITEM
+        item:
+          id: 17
+          data: 1
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 41
+      '24':
+        type: ITEM
+        item:
+          id: 17
+          data: 2
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 42
+      '26':
+        type: ITEM
+        item:
+          id: 17
+          data: 3
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 65
+      '27':
+        type: ITEM
+        item:
+          id: 16
+          data: 0
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 120
+      '28':
+        type: ITEM
+        item:
+          id: 15
+          data: 0
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 121     
+      '29':
+        type: ITEM
+        item:
+          id: 14
+          data: 0
+        buyPrice: 0.1
+        sellPrice: 30.0
+        slot: 122 
   '2':
     items:
       '1':
@@ -120,13 +234,15 @@ items:
           data: 0
         buyPrice: 30.0
         sellPrice: 2.0
+        slot: 10
       '2':
         type: ITEM
         item:
           id: 392
           data: 0
         buyPrice: 30.0
-        sellPrice: 2.0
+        sellPrice: 2.0s
+        slot: 46
       '3':
         type: ITEM
         item:
@@ -134,6 +250,7 @@ items:
           data: 0
         buyPrice: 30.0
         sellPrice: 2.0
+        slot: 82
       '4':
         type: ITEM
         item:
@@ -141,6 +258,7 @@ items:
           data: 0
         buyPrice: 30.0
         sellPrice: 2.0
+        slot: 118
   '3':
     items:
       '1':

@@ -26,7 +26,7 @@ public class InventoryShopCategory extends VInventory {
 	public boolean openInventory(ZShop main, Player player, int page, Object... args) throws Exception {
 
 		InventoryObject object = getInventoryObject();
-		
+
 		Category category = (Category) args[0];
 
 		List<ShopItem> items = main.getItems().getItems(category.getId());
@@ -47,9 +47,11 @@ public class InventoryShopCategory extends VInventory {
 		createInventory(inventoryName.replace("%category%", category.getName()), category.getInventorySize());
 
 		if (!category.getType().equals(ShopType.ITEM)) {
-			object.getDecorations(category.getId()).forEach((slot, button) -> addItem(slot, button.getInitButton()));
+			object.getDecorations(category.getId()).forEach((slot, button) -> {
+				addItem(slot, button.getInitButton());
+			});
 		}
-		
+
 		/**
 		 * Notre items est un item de type ITEM, donc on entre dans la condition
 		 */
@@ -113,7 +115,7 @@ public class InventoryShopCategory extends VInventory {
 			});
 
 		}
-		
+
 		if (category.getType().equals(ShopType.ITEM_SLOT) || category.getType().equals(ShopType.ITEM)) {
 			/**
 			 * Ajout des boutons pour changer de page si besoin
