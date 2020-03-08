@@ -35,7 +35,7 @@ public class InventoryUtils extends ZUtils implements Inventories {
 		File file = new File(plugin.getDataFolder() + File.separator + "inventories.yml");
 		if (!file.exists())
 			this.saveDefault();
-		
+
 		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 		Loader<Button> buttons = new ButtonLoader();
 
@@ -53,23 +53,41 @@ public class InventoryUtils extends ZUtils implements Inventories {
 			String name = color(configuration.getString(path + "name"));
 			int inventorySize = configuration.getInt(path + "inventorySize", 54);
 			List<Integer> categories = configuration.getIntegerList(path + "categories");
-			Map<Integer, Button> decorations = new HashMap<>();
+			Map<Integer, Map<Integer, Button>> decorations = new HashMap<>();
 			path = path + "buttons";
 			if (configuration.get(path) != null)
 				for (String u : configuration.getConfigurationSection(path + ".").getKeys(false)) {
 					String tmpPath = path + "." + u + ".";
 					int slot = configuration.getInt(tmpPath + "slot");
+					int category = configuration.getInt(tmpPath + "category", 0);
 					Button button = buttons.load(configuration, tmpPath + "button.");
-					decorations.put(slot, button);
+					button.setCategory(category);
+					this.fillMap(decorations, category, button, slot);
 				}
-			inventories.put(id, new InventoryObject(this.categories.getCategories(categories), id, inventorySize, name,
-					decorations));
+			this.inventories.put(id, new InventoryObject(this.categories.getCategories(categories), id, inventorySize,
+					name, decorations));
 
 		}
 
 		Logger.info(file.getAbsolutePath() + " loaded successfully !", LogType.SUCCESS);
 		Logger.info("Loading " + inventories.size() + " inventories", LogType.SUCCESS);
 
+	}
+
+	/**
+	 * Permet de remplir la map
+	 * 
+	 * @param decorations
+	 * @param category
+	 * @param button
+	 * @param slot
+	 */
+	private void fillMap(Map<Integer, Map<Integer, Button>> decorations, int category, Button button, int slot) {
+		// On ajoute la map pour l'id s'il n'existe pas
+		if (!decorations.containsKey(category)) {
+			decorations.put(category, new HashMap<>());
+		}
+		decorations.get(category).put(slot, button);
 	}
 
 	@Override
@@ -94,11 +112,12 @@ public class InventoryUtils extends ZUtils implements Inventories {
 			List<Integer> categories = v.getCategories().stream().map(c -> c.getId()).collect(Collectors.toList());
 			configuration.set(path + "categories", categories);
 			AtomicInteger integer = new AtomicInteger(1);
-			v.getDecorations().forEach((slot, button) -> {
+			v.getAll().forEach((b, m) -> m.forEach((slot, button) -> {
 				configuration.set(path + "buttons." + integer.get() + ".slot", slot);
+				configuration.set(path + "buttons." + integer.get() + ".category", b);
 				buttonLoader.save(button, configuration, path + "buttons." + integer.get() + ".button.");
 				integer.getAndIncrement();
-			});
+			}));
 		});
 		try {
 			configuration.save(file);
@@ -113,18 +132,36 @@ public class InventoryUtils extends ZUtils implements Inventories {
 
 		this.inventories.clear();
 
-		InventoryObject obj = new InventoryObject(categories.getCategories(1, 2, 3, 4, 5, 6), 1, 9, "§7Shop",
-				new HashMap<>());
+		Map<Integer, Map<Integer, Button>> b = new HashMap<>();
+		Map<Integer, Button> buttons = new HashMap<>();
+
+		int[] array = new int[] { 5, 5, 8, 8, 8, 8, 8, 5, 5, 5, 8, 8, 5, 8, 8, 8, 8, 5, 8, 8, 5, 5, 5, 8, 8, 8, 8, 8, 5,
+				5 };
+		int[] slots = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 17, 18, 26, 27, 35, 36, 37, 43, 44, 45, 46, 47,
+				48, 49, 50, 51, 52, 53 };
+
+		for (int a = 0; a != slots.length; a++) {
+			Button button = new Button("", 160, array[a], 1);
+			button.setCategory(1);
+			buttons.put(slots[a], button);
+		}
+		b.put(1, buttons);
+
+		InventoryObject obj = new InventoryObject(categories.getCategories(1, 2, 3, 4, 5, 6), 1, 9, "§7Shop", b);
+
 		this.inventories.put(1, obj);
 
-		int[] array = new int[] { 13, 13, 5, 5, 5, 5, 5, 13, 13, 13, 5, 5, 4, 4, 4, 5, 5, 13, 5, 5, 4, 4, 4, 4, 4, 5, 5,
-				13, 5, 5, 4, 4, 4, 5, 5, 13, 13, 13, 5, 5, 5, 5, 5, 13, 13 };
+		int[] arrays = new int[] { 13, 13, 5, 5, 5, 5, 5, 13, 13, 13, 5, 5, 4, 4, 4, 5, 5, 13, 5, 5, 4, 4, 4, 4, 4, 5,
+				5, 13, 5, 5, 4, 4, 4, 5, 5, 13, 13, 13, 5, 5, 5, 5, 5, 13, 13 };
 
-		Map<Integer, Button> buttons = new HashMap<>();
-		for(int slot = 0; slot != array.length; slot++)
-			buttons.put(slot, new Button("", 160, array[slot]));
-		
-		obj = new InventoryObject(categories.getCategories(8, 7), 1, 45, "§cVip", buttons);
+		Map<Integer, Map<Integer, Button>> b1 = new HashMap<>();
+		Map<Integer, Button> buttons1 = new HashMap<>();
+
+		for (int slot = 0; slot != array.length; slot++)
+			buttons1.put(slot, new Button("", 160, arrays[slot]));
+		b1.put(0, buttons1);
+
+		obj = new InventoryObject(categories.getCategories(8, 7), 1, 45, "§cVip", b1);
 		this.inventories.put(2, obj);
 
 		this.save();

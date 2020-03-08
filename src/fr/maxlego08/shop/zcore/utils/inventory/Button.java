@@ -13,6 +13,8 @@ public class Button extends ZUtils {
 	private final int item;
 	private final int data;
 	private final List<String> lore;
+	private int category;
+
 
 	public Button(String name, int item, int data, List<String> lore) {
 		this.name = name;
@@ -24,6 +26,14 @@ public class Button extends ZUtils {
 	public Button(String name, int item, int data) {
 		this.name = name;
 		this.item = item;
+		this.data = data;
+		this.lore = null;
+	}
+
+	public Button(String name, int item, int data, int category) {
+		this.name = name;
+		this.item = item;
+		this.category = category;
 		this.data = data;
 		this.lore = null;
 	}
@@ -42,6 +52,21 @@ public class Button extends ZUtils {
 
 	public int getItemInInteger() {
 		return item;
+	}
+
+	/**
+	 * @return the category
+	 */
+	public int getCategory() {
+		return category;
+	}
+
+	/**
+	 * @param category
+	 *            the category to set
+	 */
+	public void setCategory(int category) {
+		this.category = category;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -86,8 +111,8 @@ public class Button extends ZUtils {
 	 */
 	@Override
 	public String toString() {
-		return "Button [name=" + name + ", item=" + item + ", data=" + data + ", lore=" + lore + ", item="
-				+ getInitButton() + "]";
+		return "Button [name=" + name + ", item=" + item + ", data=" + data + ", lore=" + lore + ", category="
+				+ category + "]";
 	}
 
 }

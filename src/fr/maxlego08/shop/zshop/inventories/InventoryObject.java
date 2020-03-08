@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.zshop.inventories;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +16,9 @@ public class InventoryObject {
 	private final int id;
 	private final String name;
 	private final int inventorySize;
-	private final Map<Integer, Button> decorations;
+	private final Map<Integer, Map<Integer, Button>> decorations;
 
-	public InventoryObject(List<Category> categories, int id, int inventorySize, String name, Map<Integer, Button> decorations) {
+	public InventoryObject(List<Category> categories, int id, int inventorySize, String name, Map<Integer, Map<Integer, Button>> decorations) {
 		super();
 		this.categories = categories;
 		this.id = id;
@@ -55,11 +56,33 @@ public class InventoryObject {
 	 * @return the decorations
 	 */
 	public Map<Integer, Button> getDecorations() {
+		return getDecorations(0);
+	}
+	
+	public Map<Integer, Map<Integer, Button>> getAll(){
 		return decorations;
+	}
+	
+	/**
+	 * @return the decorations
+	 */
+	public Map<Integer, Button> getDecorations(int category) {
+		return decorations.getOrDefault(category, new HashMap<>());
 	}
 
 	public boolean match(Command command) {
 		return Config.commands.stream().filter(cmd -> cmd.match(command, id)).findAny().isPresent();
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "InventoryObject [categories=" + categories + ", id=" + id + ", name=" + name + ", inventorySize="
+				+ inventorySize + ", decorations=" + decorations + "]";
+	}
+	
+	
 
 }

@@ -26,6 +26,7 @@ public class InventoryShopCategory extends VInventory {
 	public boolean openInventory(ZShop main, Player player, int page, Object... args) throws Exception {
 
 		InventoryObject object = getInventoryObject();
+		
 		Category category = (Category) args[0];
 
 		List<ShopItem> items = main.getItems().getItems(category.getId());
@@ -45,6 +46,10 @@ public class InventoryShopCategory extends VInventory {
 
 		createInventory(inventoryName.replace("%category%", category.getName()), category.getInventorySize());
 
+		if (!category.getType().equals(ShopType.ITEM)) {
+			object.getDecorations(category.getId()).forEach((slot, button) -> addItem(slot, button.getInitButton()));
+		}
+		
 		/**
 		 * Notre items est un item de type ITEM, donc on entre dans la condition
 		 */
@@ -78,7 +83,7 @@ public class InventoryShopCategory extends VInventory {
 
 			itemConsomables.forEach(item -> {
 
-				addItem(item.getTmpSlot(), item.getItem()).setLeftClick(event -> {
+				addItem(item.getTmpSlot(), item.getDisplayItem()).setLeftClick(event -> {
 					if (item.getBuyPrice() > 0)
 						main.getShop().openShop(player, EnumCategory.BUY, 1, object.getId(), Permission.SHOP_OPEN_BUY,
 								item, page);
@@ -108,7 +113,7 @@ public class InventoryShopCategory extends VInventory {
 			});
 
 		}
-
+		
 		if (category.getType().equals(ShopType.ITEM_SLOT) || category.getType().equals(ShopType.ITEM)) {
 			/**
 			 * Ajout des boutons pour changer de page si besoin

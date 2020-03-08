@@ -49,6 +49,12 @@ public class InventoryManager extends ListenerAdapter {
 		plugin.getLog().log("Loading " + inventories.size() + " inventories", LogType.SUCCESS);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param inventory
+	 * @throws InventoryAlreadyExistException
+	 */
 	private void addInventory(int id, VInventory inventory) throws InventoryAlreadyExistException {
 		if (!inventories.containsKey(id))
 			inventories.put(id, inventory.setId(id));
@@ -56,6 +62,14 @@ public class InventoryManager extends ListenerAdapter {
 			throw new InventoryAlreadyExistException("Inventory with id " + id + " already exist !");
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param player
+	 * @param page
+	 * @param obj
+	 * @param objects
+	 */
 	public void createInventory(int id, Player player, int page, InventoryObject obj, Object... objects) {
 
 		VInventory inventory = getInventory(id);
