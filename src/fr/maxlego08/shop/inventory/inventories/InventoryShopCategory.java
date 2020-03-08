@@ -17,6 +17,7 @@ import fr.maxlego08.shop.zshop.categories.Category;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
+import fr.maxlego08.shop.zshop.items.ShopItemConsomable;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
 public class InventoryShopCategory extends VInventory {
@@ -32,13 +33,16 @@ public class InventoryShopCategory extends VInventory {
 		int pageSize = items.size() < (category.getInventorySize() - 9) ? items.size()
 				: (category.getInventorySize() - 9);
 
+		int maxPage = main.getItems().getMaxPage(items, category, pageSize);
+
 		/**
 		 * Création du nom de l'inventaire en fonction de son type
 		 */
-		String inventoryName = category.getType().equals(ShopType.ITEM)
-				? Lang.shopInventoryItem.replace("%page%", String.valueOf(page)).replace("%maxPage%",
-						String.valueOf(getMaxPage(pageSize, items)))
-				: Lang.shopInventoryUniqueItem;
+		String inventoryName = category.isItem() ? Lang.shopInventoryItem : Lang.shopInventoryUniqueItem;
+
+		inventoryName = inventoryName.replace("%page%", String.valueOf(page)).replace("%maxPage%",
+				String.valueOf(maxPage));
+
 		createInventory(inventoryName.replace("%category%", category.getName()), category.getInventorySize());
 
 		/**
@@ -53,7 +57,7 @@ public class InventoryShopCategory extends VInventory {
 			 * Système de pagination pour ajouter les items
 			 */
 			pagination.paginate(items, pageSize, page).forEach(item -> {
-				addItem(slot.getAndIncrement(), new ItemButton(item.getDisplayItem()).setLeftClick(event -> {
+				addItem(slot.getAndIncrement(), item.getDisplayItem()).setLeftClick(event -> {
 					if (item.getBuyPrice() > 0)
 						main.getShop().openShop(player, EnumCategory.BUY, 1, object.getId(), Permission.SHOP_OPEN_BUY,
 								item, page);
@@ -64,23 +68,31 @@ public class InventoryShopCategory extends VInventory {
 				}).setMiddleClick(event -> {
 					if (item.getSellPrice() > 0)
 						item.performSell(player, 0);
-				}));
+				});
 			});
 
-			/**
-			 * Ajout des boutons pour changer de page si besoin
-			 */
-			if (getPage() != 1)
-				addItem(category.getPreviousButtonSlot(),
-						new ItemButton(Lang.previousButton.getInitButton()).setClick(event -> {
-							main.getShop().openShop(player, EnumCategory.SHOP, page - 1, object.getId(),
-									Permission.SHOP_OPEN.getPermission(category.getId()), args);
-						}));
-			if (getPage() != getMaxPage(pageSize, items))
-				addItem(category.getNexButtonSlot(), new ItemButton(Lang.nextButton.getInitButton()).setClick(event -> {
-					main.getShop().openShop(player, EnumCategory.SHOP, page + 1, object.getId(),
-							Permission.SHOP_OPEN.getPermission(category.getId()), args);
-				}));
+		} else if (category.getType().equals(ShopType.ITEM_SLOT)) {
+
+			List<ShopItemConsomable> itemConsomables = main.getItems().shorItems(items, category.getInventorySize(),
+					maxPage, page);
+
+			itemConsomables.forEach(item -> {
+
+				addItem(item.getTmpSlot(), item.getItem()).setLeftClick(event -> {
+					if (item.getBuyPrice() > 0)
+						main.getShop().openShop(player, EnumCategory.BUY, 1, object.getId(), Permission.SHOP_OPEN_BUY,
+								item, page);
+				}).setRightClick(event -> {
+					if (item.getSellPrice() > 0)
+						main.getShop().openShop(player, EnumCategory.SELL, 1, object.getId(), Permission.SHOP_OPEN_SELL,
+								item, page);
+				}).setMiddleClick(event -> {
+					if (item.getSellPrice() > 0)
+						item.performSell(player, 0);
+				});
+
+			});
+
 		} else {
 
 			items.forEach(item -> {
@@ -97,18 +109,27 @@ public class InventoryShopCategory extends VInventory {
 
 		}
 
+		if (category.getType().equals(ShopType.ITEM_SLOT) || category.getType().equals(ShopType.ITEM)) {
+			/**
+			 * Ajout des boutons pour changer de page si besoin
+			 */
+			if (getPage() != 1)
+				addItem(category.getPreviousButtonSlot(),
+						new ItemButton(Lang.previousButton.getInitButton()).setClick(event -> {
+							main.getShop().openShop(player, EnumCategory.SHOP, page - 1, object.getId(),
+									Permission.SHOP_OPEN.getPermission(category.getId()), args);
+						}));
+			if (getPage() != maxPage)
+				addItem(category.getNexButtonSlot(), new ItemButton(Lang.nextButton.getInitButton()).setClick(event -> {
+					main.getShop().openShop(player, EnumCategory.SHOP, page + 1, object.getId(),
+							Permission.SHOP_OPEN.getPermission(category.getId()), args);
+				}));
+		}
+
 		addItem(category.getBackButtonSlot(), new ItemButton(Lang.backButton.getInitButton()).setClick(event -> main
 				.getShop().openShop(player, EnumCategory.DEFAULT, 0, object.getId(), Permission.SHOP_USE)));
 
 		return true;
-	}
-
-	private int getMaxPage(int size, List<ShopItem> items) {
-		if (size == 0)
-			return 1;
-		if (size == items.size())
-			return 1;
-		return (items.size() / size) + 1;
 	}
 
 	@Override

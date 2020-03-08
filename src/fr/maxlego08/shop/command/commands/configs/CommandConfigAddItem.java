@@ -18,6 +18,7 @@ public class CommandConfigAddItem extends VCommand {
 		this.addRequireArg("sell price");
 		this.addRequireArg("buy price");
 		this.addRequireArg("max item stack size");
+		this.addRequireArg("slot");
 		this.setDescription("Add item in shop");
 		this.setShowHelp(false);
 		this.DEBUG = true;
@@ -31,6 +32,7 @@ public class CommandConfigAddItem extends VCommand {
 		double sellPrice = argAsDouble(2);
 		double buyPrice = argAsDouble(3);
 		int maxStack = argAsInteger(4);
+		int slot = argAsInteger(5);
 
 		MaterialData material = null;
 
@@ -52,9 +54,7 @@ public class CommandConfigAddItem extends VCommand {
 			return CommandType.DEFAULT;
 		}
 
-		message(sender, "Vangance in catino optima est sine servivit vellem,");
-		
-		items.addItem(sender, category, sellPrice, buyPrice, material, maxStack);
+		items.addItem(sender, category, sellPrice, buyPrice, material, maxStack, slot);
 
 		return CommandType.SUCCESS;
 	}

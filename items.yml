@@ -2,28 +2,32 @@ items:
   '1':
     items:
       '1':
-        type: ITEM
+        type: ITEM_SLOT
+        slot: 10
         item:
           id: 3
           data: 0
         buyPrice: 30.0
         sellPrice: 2.0
       '2':
-        type: ITEM
+        type: ITEM_SLOT
+        slot: 11
         item:
           id: 1
           data: 0
         buyPrice: 30.0
         sellPrice: 2.0
       '3':
-        type: ITEM
+        type: ITEM_SLOT
+        slot: 62
         item:
           id: 17
           data: 0
         buyPrice: 30.0
         sellPrice: 2.0
       '4':
-        type: ITEM
+        type: ITEM_SLOT
+        slot: 60
         item:
           id: 2
           data: 0
@@ -37,6 +41,7 @@ items:
           - "bc %player% was just bought x%amount% %item% in shop !"
       '5':
         type: ITEM
+        slot: 61
         item:
           id: 12
           data: 0
@@ -44,6 +49,7 @@ items:
         sellPrice: 2.0
       '6':
         type: ITEM
+        slot: 63        
         item:
           id: 49
           data: 0
@@ -51,6 +57,7 @@ items:
         sellPrice: 2.0
       '7':
         type: ITEM
+        slot: 64        
         item:
           id: 155
           data: 0
@@ -58,6 +65,7 @@ items:
         sellPrice: 2.0
       '8':
         type: ITEM
+        slot: 86        
         item:
           id: 79
           data: 0
@@ -65,6 +73,7 @@ items:
         sellPrice: 2.0
       '9':
         type: ITEM
+        slot: 90        
         item:
           id: 174
           data: 0
@@ -72,6 +81,7 @@ items:
         sellPrice: 2.0
       '10':
         type: ITEM
+        slot: 120        
         item:
           id: 46
           data: 0
@@ -79,6 +89,7 @@ items:
         sellPrice: 2.0
       '11':
         type: ITEM
+        slot: 130        
         item:
           id: 4
           data: 0
@@ -86,8 +97,17 @@ items:
         sellPrice: 2.0
       '12':
         type: ITEM
+        slot: 150        
         item:
           id: 13
+          data: 0
+        buyPrice: 30.0
+        sellPrice: 2.0      
+      '12':
+        type: ITEM
+        slot: 694        
+        item:
+          id: 7
           data: 0
         buyPrice: 30.0
         sellPrice: 2.0

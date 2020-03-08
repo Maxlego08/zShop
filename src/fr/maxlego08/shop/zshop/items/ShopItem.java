@@ -32,6 +32,7 @@ public interface ShopItem{
 	public enum ShopType{
 		
 		ITEM,
+		ITEM_SLOT,
 		UNIQUE_ITEM,
 		
 	}

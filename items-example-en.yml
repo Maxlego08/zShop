@@ -3,8 +3,9 @@ items:
   '1':
     items:
       '1':
-        #Type of item, you have the choice between ITEM and UNIQUE_ITEM
+        #Type of item, you have the choice between ITEM and UNIQUE_ITEM and ITEM_SLOT
         #An item which will be UNIQUE_ITEM will have an inventory to confirm the purchase and will be unsellable. Perfect for buying ranks, kits, spawners etc ...
+        #An item which will be in ITEM_SLOT will be as for the ITEM type but the slot of the item will be taken into account
         type: ITEM
         #Here you will be able to put all the information on an item
         item:

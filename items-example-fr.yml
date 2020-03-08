@@ -3,8 +3,9 @@ items:
   '1':
     items:
       '1':
-        #Type de l'item, vous avez le choix entre ITEM et UNIQUE_ITEM
+        #Type de l'item, vous avez le choix entre ITEM, ITEM_SLOT et UNIQUE_ITEM
         #Un item qui sera UNIQUE_ITEM aura un inventaire pour confirmer l'achat et sera invendable. Parfait pour l'achat de grades, kits, spawners etc...
+        #Un item qui sera en ITEM_SLOT sera comme pour le type ITEM mais le slot de l'item sera pris en compte
         type: ITEM
         #Ici vous allez pouvoir mettre toutes les informations sur un item
         item:

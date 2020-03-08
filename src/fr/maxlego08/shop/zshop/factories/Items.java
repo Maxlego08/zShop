@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import fr.maxlego08.shop.zcore.utils.MaterialData;
 import fr.maxlego08.shop.zshop.categories.Category;
 import fr.maxlego08.shop.zshop.items.ShopItem;
+import fr.maxlego08.shop.zshop.items.ShopItemConsomable;
 
 public interface Items {
 
@@ -119,7 +120,7 @@ public interface Items {
 	 * @param data
 	 * @param maxStackSize
 	 */
-	void addItem(CommandSender sender, Category category, double sellPrice, double buyPrice, MaterialData data, int maxStackSize);
+	void addItem(CommandSender sender, Category category, double sellPrice, double buyPrice, MaterialData data, int maxStackSize, int slot);
 	
 	/**
 	 * Remove item
@@ -150,5 +151,20 @@ public interface Items {
 	 * @param itemId
 	 */
 	ShopItem getItem(Category category, int itemId);
+	
+	/**
+	 * Allows you to sort the items according to their slot for the type ITEM_SLOT
+	 * @param items
+	 * @return
+	 */
+	List<ShopItemConsomable> shorItems(List<ShopItem> items, int pageSize, int maxPage, int page);
+	
+	/**
+	 * Used to retrieve the number of pages
+	 * @param items
+	 * @param category
+	 * @return
+	 */
+	int getMaxPage(List<ShopItem> items, Category category, int size);
 
 }

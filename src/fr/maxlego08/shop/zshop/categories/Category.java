@@ -101,6 +101,10 @@ public class Category extends ZUtils {
 		return type;
 	}
 
+	public boolean isItem(){
+		return type.equals(ShopType.ITEM) || type.equals(ShopType.ITEM_SLOT);
+	}
+	
 	/**
 	 * 
 	 * @return true if category can be load

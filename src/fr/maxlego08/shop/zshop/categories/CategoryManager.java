@@ -175,7 +175,7 @@ public class CategoryManager extends ZUtils implements Categories {
 
 		categories.clear();
 
-		categories.put(1, (new Category(1, 0, 1, ShopType.ITEM, "§aBlocks",
+		categories.put(1, (new Category(1, 0, 1, ShopType.ITEM_SLOT, "§aBlocks",
 				new ItemBuilder(Material.GRASS, "§aBlocks").build(), 54, 49, 48, 50)));
 		
 		categories.put(2, (new Category(2, 1, 1, ShopType.ITEM, "§eFarm",

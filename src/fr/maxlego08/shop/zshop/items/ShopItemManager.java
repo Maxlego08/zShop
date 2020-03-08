@@ -118,11 +118,11 @@ public class ShopItemManager extends ZUtils implements Items {
 
 					ShopItem item = null;
 					switch (type) {
-					case ITEM: {
-						item = new ShopItemConsomable(economy, currentId, itemStack, sellPrice, buyPrice, maxStackSize,
-								giveItem, executeSellCommand, executeBuyCommand, commands);
+					case ITEM_SLOT:
+					case ITEM:
+						item = new ShopItemConsomable(economy, currentId, itemStack, slot, sellPrice, buyPrice,
+								maxStackSize, giveItem, executeSellCommand, executeBuyCommand, commands);
 						break;
-					}
 					case UNIQUE_ITEM: {
 						item = new ShopItemUnique(economy, currentId, slot, itemStack, buyPrice, useConfirm, commands,
 								giveItemStack);
@@ -224,7 +224,7 @@ public class ShopItemManager extends ZUtils implements Items {
 
 	@Override
 	public void addItem(CommandSender sender, Category category, double sellPrice, double buyPrice, MaterialData data,
-			int maxStackSize) {
+			int maxStackSize, int slot) {
 
 		ItemStack itemStack = data.toItemStack();
 
@@ -239,7 +239,8 @@ public class ShopItemManager extends ZUtils implements Items {
 			return;
 		}
 
-		ShopItem shopItem = new ShopItemConsomable(category.getId(), itemStack, sellPrice, buyPrice, maxStackSize);
+		ShopItem shopItem = new ShopItemConsomable(category.getId(), itemStack, slot, sellPrice, buyPrice,
+				maxStackSize);
 		items.get(category.getId()).add(shopItem);
 		this.save("items");
 		message(sender, Lang.configAddItemSuccess.replace("%item%", getItemName(itemStack)).replace("%category%",
@@ -395,6 +396,41 @@ public class ShopItemManager extends ZUtils implements Items {
 			tmpId++;
 		}
 		return null;
+	}
+
+	@Override
+	public List<ShopItemConsomable> shorItems(List<ShopItem> items, int pageSize, int maxPage, int page) {
+
+		List<ShopItemConsomable> newItems = new ArrayList<>();
+
+		for (ShopItemConsomable item : items.stream().map(item -> (ShopItemConsomable) item)
+				.collect(Collectors.toList())) {
+
+			int slot = item.getSlot() - ((page - 1) * pageSize);
+			if (slot >= 0 && slot <= pageSize) {
+				item.setTmpSlot(slot);
+				newItems.add(item);
+			}
+
+		}
+
+		return newItems;
+	}
+
+	@Override
+	public int getMaxPage(List<ShopItem> items, Category category, int size) {
+
+		if (category.getType().equals(ShopType.ITEM_SLOT)) {
+
+			int maxSlot = 0;
+			for (ShopItem item : items)
+				maxSlot = Math.max(maxSlot, item.getSlot());
+
+			return (maxSlot / category.getInventorySize()) + 1;
+		}
+		if (size == 0 || size == items.size())
+			return 1;
+		return (items.size() / size) + 1;
 	}
 
 }

@@ -25,10 +25,11 @@ import fr.maxlego08.shop.zshop.factories.Boost;
 
 public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 
-	
 	private final Economy economy;
 	private final int id;
 	private final ItemStack itemStack;
+	private final int slot;
+	private int tmpSlot;
 	private double sellPrice;
 	private double buyPrice;
 	private final int maxStackSize;
@@ -39,17 +40,19 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 
 	protected Boost boost = ZShop.i().getBoost();
 
-	public ShopItemConsomable(int id, ItemStack itemStack, double sellPrice, double buyPrice, int maxStackSize) {
+	public ShopItemConsomable(int id, ItemStack itemStack, int slot, double sellPrice, double buyPrice,
+			int maxStackSize) {
 		super();
 		this.economy = Economy.VAULT;
 		this.id = id;
 		this.itemStack = itemStack;
 		this.sellPrice = sellPrice;
 		this.buyPrice = buyPrice;
+		this.slot = slot;
 		this.maxStackSize = maxStackSize;
 	}
 
-	public ShopItemConsomable(Economy economy, int id, ItemStack itemStack, double sellPrice, double buyPrice,
+	public ShopItemConsomable(Economy economy, int id, ItemStack itemStack, int slot, double sellPrice, double buyPrice,
 			int maxStackSize, boolean giveItem, boolean executeSellCommand, boolean executeBuyCommand,
 			List<String> commands) {
 		super();
@@ -58,11 +61,27 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 		this.itemStack = itemStack;
 		this.sellPrice = sellPrice;
 		this.buyPrice = buyPrice;
+		this.slot = slot;
 		this.maxStackSize = maxStackSize;
 		this.giveItem = giveItem;
 		this.executeSellCommand = executeSellCommand;
 		this.executeBuyCommand = executeBuyCommand;
 		this.commands = commands;
+	}
+
+	/**
+	 * @return the tmpSlot
+	 */
+	public int getTmpSlot() {
+		return tmpSlot;
+	}
+
+	/**
+	 * @param tmpSlot
+	 *            the tmpSlot to set
+	 */
+	public void setTmpSlot(int tmpSlot) {
+		this.tmpSlot = tmpSlot;
 	}
 
 	public List<String> getCommands() {
@@ -85,7 +104,7 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 
 	@Override
 	public int getSlot() {
-		return 0;
+		return slot;
 	}
 
 	@Override

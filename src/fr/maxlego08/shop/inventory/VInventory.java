@@ -14,7 +14,7 @@ import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 
-public abstract class VInventory extends ZUtils implements Cloneable{
+public abstract class VInventory extends ZUtils implements Cloneable {
 
 	private InventoryManager inventoryManager;
 	private ZShop plugin;
@@ -64,9 +64,11 @@ public abstract class VInventory extends ZUtils implements Cloneable{
 		this.inventory.setItem(slot, item.getDisplayItem());
 	}
 
-	public void addItem(int slot, ItemStack item) {
-		this.items.put(slot, new ItemButton(item));
+	public ItemButton addItem(int slot, ItemStack item) {
+		ItemButton button = new ItemButton(item);
+		this.items.put(slot, button);
 		this.inventory.setItem(slot, item);
+		return button;
 	}
 
 	public void removeItem(int slot) {
@@ -171,14 +173,12 @@ public abstract class VInventory extends ZUtils implements Cloneable{
 		inventoryManager.createInventory(id, player, page, obj, args);
 	}
 
-	public abstract boolean openInventory(ZShop main, Player player, int page, Object... args)
-			throws Exception;
+	public abstract boolean openInventory(ZShop main, Player player, int page, Object... args) throws Exception;
 
 	protected abstract void onClose(InventoryCloseEvent event, ZShop plugin, Player player);
 
 	protected abstract void onDrag(InventoryDragEvent event, ZShop plugin, Player player);
 
 	public abstract VInventory clone();
-	
-	
+
 }
