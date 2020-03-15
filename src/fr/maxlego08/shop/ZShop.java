@@ -1,11 +1,13 @@
 package fr.maxlego08.shop;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.listener.AdapterListener;
+import fr.maxlego08.shop.listener.listener.CitizenListener;
 import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
@@ -68,6 +70,10 @@ public class ZShop extends ZPlugin {
 		addListener(inventoryManager);
 		addListener(versionChecker);
 
+		if (Bukkit.getPluginManager().getPlugin("Citizens") != null){
+			addListener(new CitizenListener(this));
+		}
+		
 		/* Add Saver */
 
 		addSave(new Config());
