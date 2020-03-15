@@ -30,6 +30,7 @@ import fr.maxlego08.shop.zshop.inventories.Inventories;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
+import net.citizensnpcs.api.npc.NPC;
 
 public class ShopManager extends ZUtils implements Shop {
 
@@ -205,13 +206,30 @@ public class ShopManager extends ZUtils implements Shop {
 	@Override
 	public void openShop(Player player, Command command) {
 
-		
 		InventoryObject obj = inventories.getInventory(command);
 
 		if (obj != null)
 			this.openShop(player, EnumCategory.DEFAULT, 0, obj.getId(), Permission.SHOP_DEFAULT);
 		else {
 			message(player, "§cPlease contact an administrator for he perform command §f'§6/shop reload§f'");
+		}
+
+	}
+
+	@Override
+	public void openShopWithCitizen(Player player, NPC npc) {
+
+		String name = npc.getName();
+		int categoryId = Config.citizens.getOrDefault(name, -99);
+		if (categoryId == -99)
+			return;
+		else if (categoryId == -1)
+			this.openShop(player, EnumCategory.DEFAULT, 0, 1, Permission.SHOP_USE);
+		else if (categoryId > 0) {
+			Category category = plugin.getCategories().getCategory(categoryId);
+			if (category == null)
+				return;
+			openShop(player, EnumCategory.SHOP, 1, 1, Permission.SHOP_OPEN.getPermission(category.getId()), category);
 		}
 
 	}

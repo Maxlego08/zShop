@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import fr.maxlego08.shop.command.CommandType;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
+import net.citizensnpcs.api.npc.NPC;
 
 public interface Shop {
 
@@ -19,6 +20,13 @@ public interface Shop {
 	 */
 	void openShop(Player player, EnumCategory category, int page, int id, String permission, Object... args);
 
+	/**
+	 * Open shop with citizen 
+	 * @param player
+	 * @param npc
+	 */
+	void openShopWithCitizen(Player player, NPC npc);
+	
 	/**
 	 * @param player
 	 * @param category
