@@ -2,3 +2,5 @@
 target/
 bin/
 .settings/
+doc/
+doc

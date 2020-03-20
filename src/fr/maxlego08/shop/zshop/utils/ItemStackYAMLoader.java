@@ -25,6 +25,7 @@ public class ItemStackYAMLoader extends ZUtils implements Loader<ItemStack>{
 		int id = configuration.getInt(path + "id", 0);
 		int data = configuration.getInt(path + ".data", 0);
 		int amount = configuration.getInt(path + ".amount", 1);
+		short durability = (short) configuration.getInt(path + ".durability", 0);
 
 		if (id == 0)
 			return null;
@@ -32,6 +33,8 @@ public class ItemStackYAMLoader extends ZUtils implements Loader<ItemStack>{
 		Material material = getMaterial(id);
 
 		ItemStack item = new ItemStack(material, amount, (byte) data);
+
+		item.setDurability(durability);
 
 		ItemMeta meta = item.getItemMeta();
 
@@ -123,6 +126,8 @@ public class ItemStackYAMLoader extends ZUtils implements Loader<ItemStack>{
 
 		configuration.set(path + "id", item.getType().getId());
 		configuration.set(path + "data", item.getData().getData());
+		configuration.set(path + "amount", item.getAmount());
+		configuration.set(path + "durability", item.getDurability());
 		ItemMeta meta = item.getItemMeta();
 		if (meta.hasDisplayName())
 			configuration.set(path + "name", meta.getDisplayName().replace("&", "§"));
