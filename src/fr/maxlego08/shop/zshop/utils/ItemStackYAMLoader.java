@@ -17,15 +17,15 @@ import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 
-public class ItemStackYAMLoader extends ZUtils implements Loader<ItemStack>{
+public class ItemStackYAMLoader extends ZUtils implements Loader<ItemStack> {
 
 	@SuppressWarnings("deprecation")
 	public ItemStack load(YamlConfiguration configuration, String path) {
 
 		int id = configuration.getInt(path + "id", 0);
-		int data = configuration.getInt(path + ".data", 0);
-		int amount = configuration.getInt(path + ".amount", 1);
-		short durability = (short) configuration.getInt(path + ".durability", 0);
+		int data = configuration.getInt(path + "data", 0);
+		int amount = configuration.getInt(path + "amount", 1);
+		short durability = (short) configuration.getInt(path + "durability", 0);
 
 		if (id == 0)
 			return null;
@@ -34,7 +34,8 @@ public class ItemStackYAMLoader extends ZUtils implements Loader<ItemStack>{
 
 		ItemStack item = new ItemStack(material, amount, (byte) data);
 
-		item.setDurability(durability);
+		if (durability != 0)
+			item.setDurability(durability);
 
 		ItemMeta meta = item.getItemMeta();
 
