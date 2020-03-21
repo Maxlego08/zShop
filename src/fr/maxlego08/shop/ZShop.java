@@ -85,6 +85,8 @@ public class ZShop extends ZPlugin {
 		categories.load();
 		inventory.load();
 		
+		commandManager.registerCommandsPost();
+		
 		new Metrics(this);
 
 		postEnable();

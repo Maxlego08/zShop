@@ -38,12 +38,15 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 
 		addCommand("shop", new CommandShop());
 
-		Config.commands.forEach(command -> registerCommand(command.getName(), new CommandShopCustom(command.getAliases()), command.getAliases()));
 
 		main.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 		this.commandChecking();
 	}
 
+	public void registerCommandsPost(){
+		Config.commands.forEach(command -> registerCommand(command.getName(), new CommandShopCustom(command.getAliases()), command.getAliases()));
+	}
+	
 	public VCommand addCommand(VCommand command) {
 		commands.add(command);
 		return command;
