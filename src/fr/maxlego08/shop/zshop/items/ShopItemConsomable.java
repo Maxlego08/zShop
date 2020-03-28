@@ -196,8 +196,6 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 		item = amount == 0 ? item : item < amount ? amount : amount > item ? item : amount;
 		int realAmount = item;
 
-		System.out.println(item + " -- " + amount + " -- " + realAmount);
-
 		// On créer le prix
 		double currentSellPrice = getSellPrice();
 		double price = realAmount * currentSellPrice;
