@@ -173,12 +173,14 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 		int item = 0;
 
 		// On définie le nombre d'item dans l'inventaire du joueur
-		for (ItemStack is : player.getInventory().getContents())
-			if (is != null && is.isSimilar(itemStack))
+		for (ItemStack is : player.getInventory().getContents()) {
+			if (is != null && is.isSimilar(itemStack)) {
 				item += is.getAmount();
+			}
+		}
 
 		// On verif si le joueur à bien l'item
-		if (item == 0) {
+		if (item <= 0) {
 			player.sendMessage(Lang.prefix + " " + Lang.notItems);
 			return;
 		}
@@ -193,6 +195,8 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 		// le joueur peut vendre
 		item = amount == 0 ? item : item < amount ? amount : amount > item ? item : amount;
 		int realAmount = item;
+
+		System.out.println(item + " -- " + amount + " -- " + realAmount);
 
 		// On créer le prix
 		double currentSellPrice = getSellPrice();
@@ -213,16 +217,25 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 
 		/* Fin de l'event */
 
+		int slot = 0;
+
 		// On retire ensuite les items de l'inventaire du joueur
 		for (ItemStack is : player.getInventory().getContents()) {
+
 			if (is != null && is.isSimilar(itemStack) && item > 0) {
+
 				int currentAmount = is.getAmount() - item;
 				item -= is.getAmount();
-				if (currentAmount <= 0)
-					player.getInventory().removeItem(is);
-				else
+
+				if (currentAmount <= 0) {
+					if (slot == 40)
+						player.getInventory().setItemInOffHand(null);
+					else
+						player.getInventory().removeItem(is);
+				} else
 					is.setAmount(currentAmount);
 			}
+			slot++;
 		}
 
 		// On termine l'action
