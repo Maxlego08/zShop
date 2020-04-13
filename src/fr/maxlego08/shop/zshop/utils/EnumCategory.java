@@ -7,6 +7,7 @@ public enum EnumCategory {
 	BUY(2),
 	SELL(3),
 	CONFIRM(4),
+	CONFIG(5),
 
 	;
 

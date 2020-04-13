@@ -47,6 +47,7 @@ public class Lang implements Saveable {
 	public static String boostStopSuccess = "§aYou just stopped the boost on §6%item%§a.";
 	public static String boostEmpty = "§cNo boost in progress.";
 	public static String boostShow = "§aBoost §2%type% §aon the item §2%item% §awhile§6 %timer% §awith a multiplier of§2 %modifier% §a.";
+	public static String shopConfigError = "§cYou can't config this category with this type.";
 	
 	public static String configAddItemError = "§cItem §6%item% §calready exists in the shop!";
 	public static String configAddItemErrorCategory = "§cThe selected category cannot have items for sale!";

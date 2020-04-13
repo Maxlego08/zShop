@@ -15,7 +15,6 @@ public class Button extends ZUtils {
 	private final List<String> lore;
 	private int category;
 
-
 	public Button(String name, int item, int data, List<String> lore) {
 		this.name = name;
 		this.lore = lore;
@@ -36,6 +35,17 @@ public class Button extends ZUtils {
 		this.category = category;
 		this.data = data;
 		this.lore = null;
+	}
+
+	/**
+	 * 
+	 * @param itemStack
+	 */
+	@SuppressWarnings("deprecation")
+	public Button(ItemStack itemStack) {
+		this(itemStack.getItemMeta().hasDisplayName() ? itemStack.getItemMeta().getDisplayName() : "",
+				itemStack.getType().getId(), itemStack.getData().getData(),
+				itemStack.getItemMeta().hasLore() ? itemStack.getItemMeta().getLore() : null);
 	}
 
 	public String getName() {

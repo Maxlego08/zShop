@@ -49,6 +49,14 @@ public interface Shop {
 	 * @param category
 	 */
 	CommandType openShop(Player player, String category);
+	
+	/**
+	 * Open shop with category
+	 * 
+	 * @param player
+	 * @param category
+	 */
+	CommandType openConfigShop(Player player, String category);
 
 	/**
 	 * Set item in hand

@@ -17,6 +17,7 @@ import fr.maxlego08.shop.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.inventory.inventories.InventoryShop;
 import fr.maxlego08.shop.inventory.inventories.InventoryShopBuy;
 import fr.maxlego08.shop.inventory.inventories.InventoryShopCategory;
+import fr.maxlego08.shop.inventory.inventories.InventoryShopConfig;
 import fr.maxlego08.shop.inventory.inventories.InventoryShopConfirm;
 import fr.maxlego08.shop.inventory.inventories.InventoryShopSell;
 import fr.maxlego08.shop.listener.ListenerAdapter;
@@ -42,6 +43,7 @@ public class InventoryManager extends ListenerAdapter {
 			addInventory(EnumCategory.BUY.getInventoryID(), new InventoryShopBuy());
 			addInventory(EnumCategory.SELL.getInventoryID(), new InventoryShopSell());
 			addInventory(EnumCategory.CONFIRM.getInventoryID(), new InventoryShopConfirm());
+			addInventory(EnumCategory.CONFIG.getInventoryID(), new InventoryShopConfig());
 		} catch (InventoryAlreadyExistException e) {
 			e.printStackTrace();
 		}
@@ -150,7 +152,7 @@ public class InventoryManager extends ListenerAdapter {
 
 			if (event.getView() != null && gui.getPlayer().equals(player)
 					&& gui.getGuiName().replace("§", "&").contains(event.getView().getTitle().replace("§", "&"))) {
-				event.setCancelled(true);
+				event.setCancelled(gui.isDisableClick());
 				ItemButton button = gui.getItems().getOrDefault(event.getSlot(), null);
 				if (button != null)
 					button.onClick(event);
