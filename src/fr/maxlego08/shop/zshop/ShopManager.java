@@ -29,6 +29,7 @@ import fr.maxlego08.shop.zshop.factories.Shop;
 import fr.maxlego08.shop.zshop.inventories.Inventories;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 import fr.maxlego08.shop.zshop.items.ShopItem;
+import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 import net.citizensnpcs.api.npc.NPC;
 
@@ -232,6 +233,30 @@ public class ShopManager extends ZUtils implements Shop {
 			openShop(player, EnumCategory.SHOP, 1, 1, Permission.SHOP_OPEN.getPermission(category.getId()), category);
 		}
 
+	}
+
+	@Override
+	public CommandType openConfigShop(Player player, String str) {
+		
+		CommandManager commandManager = plugin.getCommandManager();
+		for (VCommand command : commandManager.getCommands())
+			if (command.getSubCommands().contains(str.toLowerCase()))
+				return CommandType.CONTINUE;
+
+		Category category = plugin.getCategories().getCategory(str);
+
+		if (category == null)
+			return CommandType.SYNTAX_ERROR;
+
+		if (category.getType().equals(ShopType.ITEM)){
+			message(player, Lang.shopConfigError);
+			return CommandType.SUCCESS;
+		}
+		
+		this.openShop(player, EnumCategory.CONFIG, 1, 1, Permission.SHOP_OPEN.getPermission(category.getId()), category);
+
+		return CommandType.SUCCESS;
+		
 	}
 
 }

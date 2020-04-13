@@ -150,7 +150,7 @@ public class InventoryManager extends ListenerAdapter {
 
 			if (event.getView() != null && gui.getPlayer().equals(player)
 					&& gui.getGuiName().replace("§", "&").contains(event.getView().getTitle().replace("§", "&"))) {
-				event.setCancelled(true);
+				event.setCancelled(gui.isDisableClick());
 				ItemButton button = gui.getItems().getOrDefault(event.getSlot(), null);
 				if (button != null)
 					button.onClick(event);

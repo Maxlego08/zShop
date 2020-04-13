@@ -24,7 +24,7 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 	private Object[] args;
 	private Inventory inventory;
 	private String guiName;
-	private boolean disableClick = true;
+	protected boolean disableClick = true;
 	private InventoryObject inventoryObject;
 	private int id;
 

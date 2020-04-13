@@ -16,6 +16,7 @@ public class CommandShopConfig extends VCommand {
 		this.addSubCommand(new CommandConfigAddItem());
 		this.addSubCommand(new CommandConfigRemoveItem());
 		this.addSubCommand(new CommandConfigEditItem());
+		this.addSubCommand(new CommandConfigEditShop());
 		this.setDescription("Show help commande");
 	}
 

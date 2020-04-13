@@ -145,7 +145,7 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 			give(player, currentItem);
 
 		player.sendMessage(Lang.prefix + " "
-				+ Lang.sellItem.replace("%currency%", economy.toCurrency()).replace("%amount%", String.valueOf(amount))
+				+ Lang.buyItem.replace("%currency%", economy.toCurrency()).replace("%amount%", String.valueOf(amount))
 						.replace("%item%", currentItem.getType().name().toLowerCase().replace("_", " "))
 						.replace("%price%", format(currentPrice)));
 
