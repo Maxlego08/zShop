@@ -1,21 +1,25 @@
 package fr.maxlego08.shop.inventory.inventories;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.inventory.ItemButton;
 import fr.maxlego08.shop.inventory.VInventory;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
+import fr.maxlego08.shop.zcore.utils.inventory.Button;
 import fr.maxlego08.shop.zshop.categories.Category;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 import fr.maxlego08.shop.zshop.items.ShopItem;
-import fr.maxlego08.shop.zshop.items.ShopItemConsomable;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
+import fr.maxlego08.shop.zshop.items.ShopItemConsomable;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
 public class InventoryShopConfig extends VInventory {
@@ -91,6 +95,14 @@ public class InventoryShopConfig extends VInventory {
 	@Override
 	protected void onClose(InventoryCloseEvent event, ZShop plugin, Player player) {
 
+		Map<Integer, Button> buttons = new HashMap<Integer, Button>();
+		int slot = 0;
+		for(ItemStack itemStack : event.getInventory().getContents()){
+			if (itemStack != null)
+				buttons.put(slot, new Button(itemStack));
+			slot++;
+		}
+		
 	}
 
 	@Override

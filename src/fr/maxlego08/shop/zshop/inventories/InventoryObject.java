@@ -16,9 +16,10 @@ public class InventoryObject {
 	private final int id;
 	private final String name;
 	private final int inventorySize;
-	private final Map<Integer, Map<Integer, Button>> decorations;
+	private Map<Integer, Map<Integer, Button>> decorations;
 
-	public InventoryObject(List<Category> categories, int id, int inventorySize, String name, Map<Integer, Map<Integer, Button>> decorations) {
+	public InventoryObject(List<Category> categories, int id, int inventorySize, String name,
+			Map<Integer, Map<Integer, Button>> decorations) {
 		super();
 		this.categories = categories;
 		this.id = id;
@@ -30,7 +31,7 @@ public class InventoryObject {
 	public int getInventorySize() {
 		return inventorySize;
 	}
-	
+
 	/**
 	 * @return the categories
 	 */
@@ -58,11 +59,11 @@ public class InventoryObject {
 	public Map<Integer, Button> getDecorations() {
 		return getDecorations(0);
 	}
-	
-	public Map<Integer, Map<Integer, Button>> getAll(){
+
+	public Map<Integer, Map<Integer, Button>> getAll() {
 		return decorations;
 	}
-	
+
 	/**
 	 * @return the decorations
 	 */
@@ -70,11 +71,26 @@ public class InventoryObject {
 		return decorations.getOrDefault(category, new HashMap<>());
 	}
 
+	/**
+	 * @param decorations
+	 *            the decorations to set
+	 */
+	public void setDecorations(Map<Integer, Map<Integer, Button>> decorations) {
+		this.decorations = decorations;
+	}
+
+	/**
+	 * 
+	 * @param command
+	 * @return
+	 */
 	public boolean match(Command command) {
 		return Config.commands.stream().filter(cmd -> cmd.match(command, id)).findAny().isPresent();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -82,7 +98,5 @@ public class InventoryObject {
 		return "InventoryObject [categories=" + categories + ", id=" + id + ", name=" + name + ", inventorySize="
 				+ inventorySize + ", decorations=" + decorations + "]";
 	}
-	
-	
 
 }
