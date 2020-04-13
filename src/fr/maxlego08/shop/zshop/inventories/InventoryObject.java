@@ -78,6 +78,14 @@ public class InventoryObject {
 	public void setDecorations(Map<Integer, Map<Integer, Button>> decorations) {
 		this.decorations = decorations;
 	}
+	
+	/**
+	 * @param decorations
+	 *            the decorations to set
+	 */
+	public void setDecorations(Map<Integer, Button> decorations, int id) {
+		this.decorations.put(id, decorations);
+	}
 
 	/**
 	 * 

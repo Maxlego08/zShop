@@ -25,6 +25,7 @@ import fr.maxlego08.shop.zshop.utils.EnumCategory;
 public class InventoryShopConfig extends VInventory {
 
 	private InventoryObject object;
+	private Category category;
 	
 	public InventoryShopConfig() {
 
@@ -37,7 +38,7 @@ public class InventoryShopConfig extends VInventory {
 
 		object = getInventoryObject();
 
-		Category category = (Category) args[0];
+		category = (Category) args[0];
 
 		List<ShopItem> items = main.getItems().getItems(category.getId());
 
@@ -102,7 +103,7 @@ public class InventoryShopConfig extends VInventory {
 				buttons.put(slot, new Button(itemStack));
 			slot++;
 		}
-		
+		object.setDecorations(buttons, category.getId());
 	}
 
 	@Override
