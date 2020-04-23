@@ -4,7 +4,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -221,6 +223,7 @@ public abstract class ZUtils {
 	}
 
 	private static transient Material[] byId;
+	private static transient Map<String, Material> BY_NAME = new HashMap<>();
 
 	static {
 		byId = new Material[0];
@@ -232,13 +235,22 @@ public abstract class ZUtils {
 				byId[material.getId()] = material;
 			}
 		}
+		
+		Material[] var3;
+		int var2 = (var3 = Material.values()).length;
+
+		for (int var1 = 0; var1 < var2; ++var1) {
+			Material material = var3[var1];
+			BY_NAME.put(material.name(), material);
+		}
+		
 	}
 
 	/**
 	 * @param id
 	 * @return the material according to his id
 	 */
-	protected static Material getMaterial(int id) {
+	protected Material getMaterial(int id) {
 		return byId.length > id && id >= 0 ? byId[id] : null;
 	}
 
@@ -674,11 +686,6 @@ public abstract class ZUtils {
 	public String getItemName(ItemStack item) {
 		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName())
 			return item.getItemMeta().getDisplayName();
-		try {
-			if (item.hasItemMeta() && item.getItemMeta().hasLocalizedName())
-				return item.getItemMeta().getLocalizedName();
-		} catch (NoSuchMethodError e) {
-		}
 		String name = item.serialize().get("type").toString().replace("_", " ").toLowerCase();
 		return name.substring(0, 1).toUpperCase() + name.substring(1);
 	}
@@ -718,5 +725,15 @@ public abstract class ZUtils {
 			tmpList.add(list.get(index));
 		return tmpList;
 	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	protected Material getMaterial(String name) {
+		return BY_NAME.get(name.toUpperCase());
+	}
+
 
 }

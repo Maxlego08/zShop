@@ -96,8 +96,8 @@ public class ShopItemManager extends ZUtils implements Items {
 								+ ShopType.ITEM.name() + " !");
 					}
 
-					ItemStack itemStack = itemStackYAMLoader.load(configuration, currentPath + ".item.");
-					ItemStack giveItemStack = itemStackYAMLoader.load(configuration, currentPath + ".giveItem.");
+					ItemStack itemStack = itemStackYAMLoader.load(configuration, currentPath + "item.");
+					ItemStack giveItemStack = itemStackYAMLoader.load(configuration, currentPath + "giveItem.");
 
 					if (itemStack == null) {
 						throw new ItemCreateException("Could load item with id " + itemId + " in category " + categoryId
@@ -137,6 +137,7 @@ public class ShopItemManager extends ZUtils implements Items {
 					// S'il y a une erreur alors il est impossible de charger
 					// l'item
 
+					e.printStackTrace();
 					throw new ItemCreateException("Could load item with id " + itemId + " in category " + categoryId);
 				}
 			}

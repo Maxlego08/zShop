@@ -16,23 +16,48 @@ import fr.maxlego08.shop.exceptions.ItemFlagException;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
+import fr.maxlego08.shop.zcore.utils.enums.XMaterial;
 
 public class ItemStackYAMLoader extends ZUtils implements Loader<ItemStack> {
 
 	@SuppressWarnings("deprecation")
 	public ItemStack load(YamlConfiguration configuration, String path) {
 
-		int id = configuration.getInt(path + "id", 0);
 		int data = configuration.getInt(path + "data", 0);
 		int amount = configuration.getInt(path + "amount", 1);
 		short durability = (short) configuration.getInt(path + "durability", 0);
 
-		if (id == 0)
+		if (configuration.isInt(path + "id") && configuration.getInt(path + "id", 0) == 0)
 			return null;
 
-		Material material = getMaterial(id);
+		if (configuration.get(path + "id") == null)
+			return null;
 
-		ItemStack item = new ItemStack(material, amount, (byte) data);
+		if (configuration.isString(path + "id") && configuration.getString(path + "id", null) == null)
+			return null;
+
+		Material material = configuration.isInt(path + "id") ? getMaterial(configuration.getInt(path + "id", 0))
+				: configuration.isString(path + "id") ? getMaterial(configuration.getString(path + "id")) : null;
+
+		if (material == null && configuration.getString(path + "id") != null) {
+
+			String materialName = configuration.getString(path + "id").toUpperCase();
+			XMaterial xMaterial = XMaterial.matchXMaterial(materialName).get();
+			material = xMaterial.parseMaterial();
+
+		}
+
+		if (material == null) {
+
+			material = Material.getMaterial(configuration.getString(path + "id").toUpperCase());
+			if (material == null) {
+				Logger.info(path + "id => material is null");
+				return null;
+			}
+
+		}
+
+		ItemStack item = data != 0 ? new ItemStack(material, amount, (byte) data) : new ItemStack(material, amount);
 
 		if (durability != 0)
 			item.setDurability(durability);
