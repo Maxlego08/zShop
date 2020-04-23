@@ -25,6 +25,7 @@ public class Config implements Saveable {
 	public static boolean shopPostSellAllEvent = true;
 	public static boolean shopBoostStartEvent = true;
 	public static boolean shopBoostEndEvent = true;
+	public static boolean disableBackButton = false;
 
 	public static boolean logConsole = true;
 	public static boolean broadcastMessageWhenBoostIsCreate = true;

@@ -3,7 +3,7 @@ package fr.maxlego08.shop.event.events;
 import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.event.ShopEvent;
-import fr.maxlego08.shop.zshop.items.ShopItem;
+import fr.maxlego08.shop.zshop.factories.ShopItem;
 
 public class ShopPreBuyEvent extends ShopEvent {
 

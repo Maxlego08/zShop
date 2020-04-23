@@ -13,12 +13,13 @@ import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
+import fr.maxlego08.shop.zshop.factories.ShopItem;
 
 public class ShopItemUnique extends EconomyUtils implements ShopItem {
 
 	private final Economy economy;
 	private final int id;
-	private final int slot;
+	private int slot;
 	private final ItemStack displayItem;
 	private final double buyPrice;
 	private final boolean useConfirm;
@@ -148,6 +149,11 @@ public class ShopItemUnique extends EconomyUtils implements ShopItem {
 	@Override
 	public Economy getEconomyType() {
 		return economy;
+	}
+
+	@Override
+	public void setSlot(int slot) {
+		this.slot = slot;
 	}
 
 }

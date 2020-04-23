@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.zcore.utils.MaterialData;
 import fr.maxlego08.shop.zshop.categories.Category;
-import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.items.ShopItemConsomable;
 
 public interface Items {

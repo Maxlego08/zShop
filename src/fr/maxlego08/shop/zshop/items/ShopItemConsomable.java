@@ -22,13 +22,14 @@ import fr.maxlego08.shop.zcore.utils.builder.TimerBuilder;
 import fr.maxlego08.shop.zshop.boost.BoostItem;
 import fr.maxlego08.shop.zshop.boost.BoostType;
 import fr.maxlego08.shop.zshop.factories.Boost;
+import fr.maxlego08.shop.zshop.factories.ShopItem;
 
 public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 
 	private final Economy economy;
 	private final int id;
 	private final ItemStack itemStack;
-	private final int slot;
+	private int slot;
 	private int tmpSlot;
 	private double sellPrice;
 	private double buyPrice;
@@ -40,6 +41,15 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 
 	protected Boost boost = ZShop.i().getBoost();
 
+	/**
+	 * 
+	 * @param id
+	 * @param itemStack
+	 * @param slot
+	 * @param sellPrice
+	 * @param buyPrice
+	 * @param maxStackSize
+	 */
 	public ShopItemConsomable(int id, ItemStack itemStack, int slot, double sellPrice, double buyPrice,
 			int maxStackSize) {
 		super();
@@ -52,6 +62,20 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 		this.maxStackSize = maxStackSize;
 	}
 
+	/**
+	 * 
+	 * @param economy
+	 * @param id
+	 * @param itemStack
+	 * @param slot
+	 * @param sellPrice
+	 * @param buyPrice
+	 * @param maxStackSize
+	 * @param giveItem
+	 * @param executeSellCommand
+	 * @param executeBuyCommand
+	 * @param commands
+	 */
 	public ShopItemConsomable(Economy economy, int id, ItemStack itemStack, int slot, double sellPrice, double buyPrice,
 			int maxStackSize, boolean giveItem, boolean executeSellCommand, boolean executeBuyCommand,
 			List<String> commands) {
@@ -440,6 +464,91 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 	@Override
 	public Economy getEconomyType() {
 		return economy;
+	}
+
+	@Override
+	public void setSlot(int slot) {
+		this.slot = slot;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((boost == null) ? 0 : boost.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(buyPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((commands == null) ? 0 : commands.hashCode());
+		result = prime * result + ((economy == null) ? 0 : economy.hashCode());
+		result = prime * result + (executeBuyCommand ? 1231 : 1237);
+		result = prime * result + (executeSellCommand ? 1231 : 1237);
+		result = prime * result + (giveItem ? 1231 : 1237);
+		result = prime * result + id;
+		result = prime * result + ((itemStack == null) ? 0 : itemStack.hashCode());
+		result = prime * result + maxStackSize;
+		temp = Double.doubleToLongBits(sellPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + slot;
+		result = prime * result + tmpSlot;
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ShopItemConsomable other = (ShopItemConsomable) obj;
+		if (boost == null) {
+			if (other.boost != null)
+				return false;
+		} else if (!boost.equals(other.boost))
+			return false;
+		if (Double.doubleToLongBits(buyPrice) != Double.doubleToLongBits(other.buyPrice))
+			return false;
+		if (commands == null) {
+			if (other.commands != null)
+				return false;
+		} else if (!commands.equals(other.commands))
+			return false;
+		if (economy != other.economy)
+			return false;
+		if (executeBuyCommand != other.executeBuyCommand)
+			return false;
+		if (executeSellCommand != other.executeSellCommand)
+			return false;
+		if (giveItem != other.giveItem)
+			return false;
+		if (id != other.id)
+			return false;
+		if (itemStack == null) {
+			if (other.itemStack != null)
+				return false;
+		} else if (!itemStack.equals(other.itemStack))
+			return false;
+		if (maxStackSize != other.maxStackSize)
+			return false;
+		if (Double.doubleToLongBits(sellPrice) != Double.doubleToLongBits(other.sellPrice))
+			return false;
+		if (slot != other.slot)
+			return false;
+		if (tmpSlot != other.tmpSlot)
+			return false;
+		return true;
 	}
 
 }

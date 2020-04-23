@@ -10,8 +10,8 @@ import fr.maxlego08.shop.inventory.VInventory;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.save.inventory.ConfigInventoryConfirm;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
+import fr.maxlego08.shop.zshop.factories.ShopItem;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
-import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
 public class InventoryShopConfirm extends VInventory {

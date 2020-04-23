@@ -3,7 +3,7 @@ package fr.maxlego08.shop.command.commands;
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.CommandType;
 import fr.maxlego08.shop.command.VCommand;
-import fr.maxlego08.shop.command.commands.configs.CommandShopConfig;
+import fr.maxlego08.shop.command.commands.configs.CommandConfig;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
@@ -19,7 +19,7 @@ public class CommandShop extends VCommand {
 		this.addSubCommand(new CommandShopAllHand());
 		this.addSubCommand(new CommandShopAll());
 		this.addSubCommand(new CommandShopBoost());
-		this.addSubCommand(new CommandShopConfig());
+		this.addSubCommand(new CommandConfig());
 		this.addSubCommand(new CommandShopDefault());
 		this.setIgnoreParent(true);
 		this.DEBUG = true;

@@ -21,7 +21,7 @@ import fr.maxlego08.shop.zcore.utils.builder.ItemBuilder;
 import fr.maxlego08.shop.zcore.utils.builder.OLDItemBuilder;
 import fr.maxlego08.shop.zcore.utils.enums.Message;
 import fr.maxlego08.shop.zshop.factories.Categories;
-import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
+import fr.maxlego08.shop.zshop.factories.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.utils.ItemStackYAMLoader;
 import fr.maxlego08.shop.zshop.utils.Loader;
 import net.md_5.bungee.api.chat.BaseComponent;

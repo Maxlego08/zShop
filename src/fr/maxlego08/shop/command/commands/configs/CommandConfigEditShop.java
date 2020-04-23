@@ -12,13 +12,15 @@ public class CommandConfigEditShop extends VCommand {
 		this.setConsoleCanUse(false);
 		this.addSubCommand("gui");
 		this.addRequireArg("category");
+		this.addOptionalArg("page");
 		this.setDescription("Edit shop GUI");
 	}
 
 	@Override
 	protected CommandType perform(ZShop main) {
 		String name = argAsString(0);
-		return this.shop.openConfigShop(player, name);
+		int page = argAsInteger(1, 1);
+		return this.shop.openConfigShop(player, name, page);
 	}
 
 }

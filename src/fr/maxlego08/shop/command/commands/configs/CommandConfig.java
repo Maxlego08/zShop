@@ -6,9 +6,9 @@ import fr.maxlego08.shop.command.VCommand;
 import fr.maxlego08.shop.zcore.utils.enums.Message;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 
-public class CommandShopConfig extends VCommand {
+public class CommandConfig extends VCommand {
 
-	public CommandShopConfig() {
+	public CommandConfig() {
 		this.addSubCommand("config");
 		this.setPermission(Permission.SHOP_CONFIG);
 		this.addSubCommand(new CommandConfigCategoriesInformations());
