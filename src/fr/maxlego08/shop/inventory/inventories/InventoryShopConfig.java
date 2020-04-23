@@ -120,7 +120,7 @@ public class InventoryShopConfig extends VInventory {
 								category.getInventorySize(), maxPage, getPage());
 
 						if (this.contains(item, itemConsomables))
-							item.setSlot(slot);
+							item.setSlot(slot + (getPage() - 1 * category.getInventorySize()));
 
 					}
 

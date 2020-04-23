@@ -187,6 +187,7 @@ public class ShopItemManager extends ZUtils implements Items {
 					configuration.set(path + "item.stack", item.getMaxStackSize());
 				configuration.set(path + "buyPrice", item.getSellPrice());
 				configuration.set(path + "sellPrice", item.getBuyPrice());
+				configuration.set(path + "slot", item.getSlot());
 				configuration.set(path + "economy", item.getEconomyType().name());
 				if (item instanceof ShopItemConsomable) {
 					ShopItemConsomable tmpItem = (ShopItemConsomable) item;
