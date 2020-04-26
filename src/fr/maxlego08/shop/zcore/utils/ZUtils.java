@@ -31,6 +31,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
 import fr.maxlego08.shop.ZShop;
+import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.utils.enums.Message;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
@@ -633,15 +634,15 @@ public abstract class ZUtils {
 	}
 
 	protected void message(CommandSender player, Message message) {
-		player.sendMessage(Message.PREFIX.msg() + " " + message.msg());
+		player.sendMessage(Lang.prefix + " " + message.msg());
 	}
 
 	protected void message(CommandSender player, String message) {
-		player.sendMessage(Message.PREFIX.msg() + " " + message);
+		player.sendMessage(Lang.prefix + " " + message);
 	}
 
 	protected void message(CommandSender player, String message, Object... args) {
-		player.sendMessage(Message.PREFIX.msg() + " " + String.format(message, args));
+		player.sendMessage(Lang.prefix + " " + String.format(message, args));
 	}
 
 	protected void messageWO(CommandSender player, Message message) {
@@ -651,9 +652,9 @@ public abstract class ZUtils {
 	protected void messageWO(CommandSender player, Message message, Object... args) {
 		player.sendMessage(String.format(message.msg(), args));
 	}
-
+	
 	protected void message(CommandSender player, Message message, Object... args) {
-		player.sendMessage(Message.PREFIX.msg() + " " + String.format(message.msg(), args));
+		player.sendMessage(Lang.prefix + " " + String.format(message.msg(), args));
 	}
 
 	protected boolean hasPermission(Permissible permissible, Permission permission) {
