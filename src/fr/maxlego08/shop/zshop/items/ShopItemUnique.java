@@ -150,4 +150,14 @@ public class ShopItemUnique extends EconomyUtils implements ShopItem {
 		return economy;
 	}
 
+	@Override
+	public boolean isSellable() {
+		return false;
+	}
+
+	@Override
+	public boolean isBuyable() {
+		return true;
+	}
+
 }

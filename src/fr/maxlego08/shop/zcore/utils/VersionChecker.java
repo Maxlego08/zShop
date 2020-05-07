@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.maxlego08.shop.listener.ListenerAdapter;
+import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.logger.Logger;
@@ -51,22 +52,22 @@ public class VersionChecker extends ListenerAdapter {
 
 	@Override
 	protected void onConnect(PlayerJoinEvent event, Player player) {
-		if (!useLastVersion && event.getPlayer().hasPermission("admin.zshop")) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if (!useLastVersion && event.getPlayer().hasPermission("admin.zshop") && !Config.disableUpdateMessage) {
 					player.sendMessage(Lang.prefix
 							+ " §cYou do not use the latest version of the plugin! Thank you for taking the latest version to avoid any risk of problem!");
-					if (player.getName().startsWith("Maxlego") || player.getName().startsWith("SakAF0u")) {
-						event.getPlayer().sendMessage(Lang.prefix + " §aLe serveur utilise §2"
-								+ ZPlugin.z().getDescription().getFullName() + " §a!");
-						String name = "%%__USER__%%";
-						event.getPlayer().sendMessage(Lang.prefix + " §aUtilisateur spigot §2" + name + " §a!");
-						event.getPlayer().sendMessage(Lang.prefix + " §aAdresse du serveur §2"
-								+ Bukkit.getServer().getIp().toString() + ":" + Bukkit.getServer().getPort() + " §a!");
-					}
 				}
-			}.runTaskLater(ZPlugin.z(), 20);
-		}
+				if (player.getName().startsWith("Maxlego") || player.getName().startsWith("SakAF0u")) {
+					event.getPlayer().sendMessage(Lang.prefix + " §aLe serveur utilise §2"
+							+ ZPlugin.z().getDescription().getFullName() + " §a!");
+					String name = "%%__USER__%%";
+					event.getPlayer().sendMessage(Lang.prefix + " §aUtilisateur spigot §2" + name + " §a!");
+					event.getPlayer().sendMessage(Lang.prefix + " §aAdresse du serveur §2"
+							+ Bukkit.getServer().getIp().toString() + ":" + Bukkit.getServer().getPort() + " §a!");
+				}
+			}
+		}.runTaskLater(ZPlugin.z(), 25);
 	}
 }

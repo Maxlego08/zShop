@@ -28,6 +28,7 @@ import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
 import fr.maxlego08.shop.zshop.inventories.Inventories;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
+import fr.maxlego08.shop.zshop.items.Economy;
 import fr.maxlego08.shop.zshop.items.ShopItem;
 import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
@@ -115,6 +116,7 @@ public class ShopManager extends ZUtils implements Shop {
 
 		double price = 0;
 		Map<ItemStack, Integer> map = new HashMap<ItemStack, Integer>();
+		Economy eco = null;
 
 		// On parcours l'inventaire du joueur
 		for (ItemStack is : player.getInventory().getContents()) {
@@ -125,8 +127,13 @@ public class ShopManager extends ZUtils implements Shop {
 				// Si on trouve un item alors on peut continuer
 				if (tmpSellItems.size() != 0) {
 					ShopItem item = tmpSellItems.get(0);
+
 					// on initialise les variables temporaire
 					double tmpPrice = item.getSellPrice();
+
+					if (!item.isSellable())
+						continue;
+
 					int tmpAmount = is.getAmount();
 					// On multiplie par le nombre d'item
 					tmpPrice *= tmpAmount;
@@ -134,6 +141,7 @@ public class ShopManager extends ZUtils implements Shop {
 					price += tmpPrice;
 					// on ajoute l'item et le nombre d'item dans la map
 					map.put(is, tmpAmount + map.getOrDefault(is, 0));
+					eco = item.getEconomyType();
 					// On retire l'item de l'inventaire du joueur
 				}
 			}
@@ -169,8 +177,10 @@ public class ShopManager extends ZUtils implements Shop {
 		// On donne l'argent au mec
 		depositMoney(player, price);
 		// On envoie le message
-		message(player,
-				Lang.sellHandAll.replace("%item%", builder.toString()).replace("%price%", String.valueOf(price)));
+
+		String str = Lang.sellHandAll.replace("%item%", builder.toString());
+		str = str.replace("%currency%", eco.toCurrency());
+		message(player, str.replace("%price%", String.valueOf(price)));
 
 		// On call l'event
 		if (Config.shopPostSellAllEvent) {
@@ -237,7 +247,7 @@ public class ShopManager extends ZUtils implements Shop {
 
 	@Override
 	public CommandType openConfigShop(Player player, String str) {
-		
+
 		CommandManager commandManager = plugin.getCommandManager();
 		for (VCommand command : commandManager.getCommands())
 			if (command.getSubCommands().contains(str.toLowerCase()))
@@ -248,15 +258,16 @@ public class ShopManager extends ZUtils implements Shop {
 		if (category == null)
 			return CommandType.SYNTAX_ERROR;
 
-		if (category.getType().equals(ShopType.ITEM)){
+		if (category.getType().equals(ShopType.ITEM)) {
 			message(player, Lang.shopConfigError);
 			return CommandType.SUCCESS;
 		}
-		
-		this.openShop(player, EnumCategory.CONFIG, 1, 1, Permission.SHOP_OPEN.getPermission(category.getId()), category);
+
+		this.openShop(player, EnumCategory.CONFIG, 1, 1, Permission.SHOP_OPEN.getPermission(category.getId()),
+				category);
 
 		return CommandType.SUCCESS;
-		
+
 	}
 
 }
