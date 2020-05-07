@@ -306,10 +306,20 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 		ItemStack itemStack = this.itemStack.clone();
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<String>();
-		List<String> tmpLore = Lang.displayItemLore.stream()
-				.map(string -> string.replace("%buyPrice%", getBuyPriceAsString())
-						.replace("%currency%", economy.toCurrency()).replace("%sellPrice%", getSellPriceAsString()))
-				.collect(Collectors.toList());
+		List<String> tmpLore = Lang.displayItemLore.stream().map(string -> {
+
+			String str = string.replace("%buyPrice%", getBuyPriceAsString());
+			
+			if (!str.equals(string)) 
+				str = str.replace("%currency%", isBuyable() ? economy.toCurrency() : "");
+			
+			str = str.replace("%sellPrice%", getSellPriceAsString());
+			if (!str.equals(string)) 
+				str = str.replace("%currency%", isSellable() ? economy.toCurrency() : "");
+			
+			return str;
+
+		}).collect(Collectors.toList());
 		lore.addAll(tmpLore);
 
 		List<String> tmpLore2 = new ArrayList<>();
@@ -338,25 +348,25 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 	}
 
 	private String getSellPriceAsString() {
-		if (boost.isBoost(itemStack)) {
+		if (boost.isBoost(itemStack) && isSellable()) {
 			BoostItem boostItem = boost.getBoost(itemStack);
 			if (boostItem.getBoostType().equals(BoostType.SELL))
 				return Lang.boostItemSell.replace("%currency%", economy.toCurrency())
 						.replace("%defaultPrice%", String.valueOf(sellPrice))
 						.replace("%newPrice%", format(sellPrice * boostItem.getModifier()));
 		}
-		return String.valueOf(sellPrice);
+		return isSellable() ? String.valueOf(sellPrice) : Lang.canSell;
 	}
 
 	private String getBuyPriceAsString() {
-		if (boost.isBoost(itemStack)) {
+		if (boost.isBoost(itemStack) && isBuyable()) {
 			BoostItem boostItem = boost.getBoost(itemStack);
 			if (boostItem.getBoostType().equals(BoostType.BUY))
 				return Lang.boostItemBuy.replace("%currency%", economy.toCurrency())
 						.replace("%defaultPrice%", String.valueOf(buyPrice))
 						.replace("%newPrice%", format(buyPrice * boostItem.getModifier()));
 		}
-		return String.valueOf(buyPrice);
+		return isBuyable() ? String.valueOf(buyPrice) : Lang.canBuy;
 	}
 
 	@Override
@@ -440,6 +450,16 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 	@Override
 	public Economy getEconomyType() {
 		return economy;
+	}
+
+	@Override
+	public boolean isSellable() {
+		return sellPrice != 0;
+	}
+
+	@Override
+	public boolean isBuyable() {
+		return buyPrice != 0;
 	}
 
 }

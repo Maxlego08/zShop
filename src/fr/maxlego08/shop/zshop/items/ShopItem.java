@@ -27,6 +27,10 @@ public interface ShopItem{
 	
 	public boolean useConfirm();
 	
+	public boolean isSellable();
+	
+	public boolean isBuyable();
+	
 	public Economy getEconomyType();
 	
 	public enum ShopType{
