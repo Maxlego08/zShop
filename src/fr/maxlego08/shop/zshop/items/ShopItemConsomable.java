@@ -21,6 +21,7 @@ import fr.maxlego08.shop.zcore.utils.builder.TimerBuilder;
 import fr.maxlego08.shop.zshop.boost.BoostItem;
 import fr.maxlego08.shop.zshop.boost.BoostType;
 import fr.maxlego08.shop.zshop.factories.Boost;
+import fr.maxlego08.shop.zshop.factories.ShopItem;
 import fr.maxlego08.shop.zshop.utils.Action;
 import fr.maxlego08.shop.zshop.utils.ShopAction;
 
@@ -483,6 +484,11 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 	@Override
 	public boolean isBuyable() {
 		return buyPrice != 0;
+	}
+
+	@Override
+	public void setSlot(int slot) {
+		this.slot = slot;
 	}
 
 }

@@ -119,8 +119,11 @@ public class InventoryShopConfig extends VInventory {
 						List<ShopItemConsomable> itemConsomables = plugin.getItems().shorItems(items,
 								category.getInventorySize(), maxPage, getPage());
 
-						if (this.contains(item, itemConsomables))
-							item.setSlot(slot + (getPage() - 1 * category.getInventorySize()));
+						if (this.contains(item, itemConsomables)) {
+							int newSlot = slot + ((getPage() - 1) * category.getInventorySize());
+
+							item.setSlot(newSlot < 0 ? 0 : newSlot);
+						}
 
 					}
 
@@ -129,7 +132,9 @@ public class InventoryShopConfig extends VInventory {
 			}
 		}
 		object.setDecorations(buttons, category.getId());
+
 		plugin.getItems().save("items");
+		plugin.getInventory().save();
 	}
 
 	public ShopItem searchItem(ItemStack itemStack) {

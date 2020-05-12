@@ -12,6 +12,7 @@ import fr.maxlego08.shop.event.events.ShopPreBuyEvent;
 import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.LoggerManager;
+import fr.maxlego08.shop.zshop.factories.ShopItem;
 import fr.maxlego08.shop.zshop.utils.Action;
 import fr.maxlego08.shop.zshop.utils.ShopAction;
 
@@ -159,6 +160,11 @@ public class ShopItemUnique extends EconomyUtils implements ShopItem {
 	@Override
 	public boolean isBuyable() {
 		return true;
+	}
+
+	@Override
+	public void setSlot(int slot) {
+		this.slot = slot;
 	}
 
 }
