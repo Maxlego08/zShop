@@ -26,7 +26,7 @@ public class InventoryShopConfig extends VInventory {
 
 	private InventoryObject object;
 	private Category category;
-	
+
 	public InventoryShopConfig() {
 
 		this.disableClick = false;
@@ -98,12 +98,14 @@ public class InventoryShopConfig extends VInventory {
 
 		Map<Integer, Button> buttons = new HashMap<Integer, Button>();
 		int slot = 0;
-		for(ItemStack itemStack : event.getInventory().getContents()){
+		for (ItemStack itemStack : event.getInventory().getContents()) {
 			if (itemStack != null)
 				buttons.put(slot, new Button(itemStack));
 			slot++;
-		}
+		} 
 		object.setDecorations(buttons, category.getId());
+		plugin.getInventory().save();
+		plugin.getItems().save("items");
 	}
 
 	@Override
