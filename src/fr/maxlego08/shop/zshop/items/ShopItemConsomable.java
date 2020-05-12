@@ -16,12 +16,13 @@ import fr.maxlego08.shop.event.events.ShopPreBuyEvent;
 import fr.maxlego08.shop.event.events.ShopPreSellEvent;
 import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
-import fr.maxlego08.shop.zcore.logger.Logger;
-import fr.maxlego08.shop.zcore.logger.Logger.LogType;
+import fr.maxlego08.shop.zcore.logger.LoggerManager;
 import fr.maxlego08.shop.zcore.utils.builder.TimerBuilder;
 import fr.maxlego08.shop.zshop.boost.BoostItem;
 import fr.maxlego08.shop.zshop.boost.BoostType;
 import fr.maxlego08.shop.zshop.factories.Boost;
+import fr.maxlego08.shop.zshop.utils.Action;
+import fr.maxlego08.shop.zshop.utils.ShopAction;
 
 public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 
@@ -149,10 +150,9 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 						.replace("%item%", currentItem.getType().name().toLowerCase().replace("_", " "))
 						.replace("%price%", format(currentPrice)));
 
-		if (Config.logConsole)
-			Logger.info(player.getName() + " vient d'acheter x" + amount + " "
-					+ currentItem.getType().name().toLowerCase().replace("_", " ") + " pour " + format(currentPrice)
-					+ economy.toCurrency(), LogType.INFO);
+		// Log
+		ShopAction shopAction = new ShopAction(Action.BOUGHT, player, currentItem, amount, currentPrice, economy);
+		LoggerManager.log(shopAction);
 
 		if (Config.shopPostBuyEvent) {
 			ShopPostBuyEvent shopPostBuyEvent = new ShopPostBuyEvent(this, player, amount, currentBuyPrice);
@@ -243,9 +243,9 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 						.replace("%amount%", String.valueOf(realAmount)).replace("%item%", getItemName(itemStack))
 						.replace("%price%", format(price)));
 
-		if (Config.logConsole)
-			Logger.info(player.getName() + " just sold x" + realAmount + " " + getItemName(itemStack) + " for "
-					+ format(price) + economy.toCurrency(), LogType.INFO);
+		// Log
+		ShopAction action = new ShopAction(Action.SELL, player, itemStack, realAmount, price, economy);
+		LoggerManager.log(action);
 
 		/**
 		 * Appel de l'event
@@ -309,14 +309,14 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 		List<String> tmpLore = Lang.displayItemLore.stream().map(string -> {
 
 			String str = string.replace("%buyPrice%", getBuyPriceAsString());
-			
-			if (!str.equals(string)) 
+
+			if (!str.equals(string))
 				str = str.replace("%currency%", isBuyable() ? economy.toCurrency() : "");
-			
+
 			str = str.replace("%sellPrice%", getSellPriceAsString());
-			if (!str.equals(string)) 
+			if (!str.equals(string))
 				str = str.replace("%currency%", isSellable() ? economy.toCurrency() : "");
-			
+
 			return str;
 
 		}).collect(Collectors.toList());

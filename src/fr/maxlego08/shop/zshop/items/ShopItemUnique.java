@@ -11,8 +11,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import fr.maxlego08.shop.event.events.ShopPreBuyEvent;
 import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
-import fr.maxlego08.shop.zcore.logger.Logger;
-import fr.maxlego08.shop.zcore.logger.Logger.LogType;
+import fr.maxlego08.shop.zcore.logger.LoggerManager;
+import fr.maxlego08.shop.zshop.utils.Action;
+import fr.maxlego08.shop.zshop.utils.ShopAction;
 
 public class ShopItemUnique extends EconomyUtils implements ShopItem {
 
@@ -102,9 +103,9 @@ public class ShopItemUnique extends EconomyUtils implements ShopItem {
 						.replace("%amount%", String.valueOf(amount)).replace("%item%", itemName)
 						.replace("%price%", format(tmpPrice)));
 
-		if (Config.logConsole)
-			Logger.info(player.getName() + " vient d'acheter x" + amount + " " + itemName + " pour " + format(tmpPrice)
-					+ economy.toCurrency(), LogType.INFO);
+		// Log
+		ShopAction action = new ShopAction(Action.BOUGHT, player, getDisplayItem(), amount, tmpPrice, economy);
+		LoggerManager.log(action);
 	}
 
 	@Override

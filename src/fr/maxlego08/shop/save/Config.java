@@ -26,8 +26,10 @@ public class Config implements Saveable {
 	public static boolean shopBoostStartEvent = true;
 	public static boolean shopBoostEndEvent = true;
 	public static boolean disableUpdateMessage = false;
+	public static boolean useLogConsole = true;
+	public static boolean useLogInFile = false;
+	public static long poolFileWriter = 10000;
 
-	public static boolean logConsole = true;
 	public static boolean broadcastMessageWhenBoostIsCreate = true;
 
 	public static List<Command> commands = Arrays.asList(new Command("vip", Arrays.asList("getspawnereasly"), 2));
@@ -37,6 +39,8 @@ public class Config implements Saveable {
 	public static ConfigInventoryConfirm confirmInventory = new ConfigInventoryConfirm();
 
 	private static transient Config i = new Config();
+
+
 
 	static {
 

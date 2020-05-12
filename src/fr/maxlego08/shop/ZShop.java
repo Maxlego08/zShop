@@ -11,6 +11,7 @@ import fr.maxlego08.shop.listener.listener.CitizenListener;
 import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
+import fr.maxlego08.shop.zcore.logger.LoggerManager;
 import fr.maxlego08.shop.zcore.utils.Metrics;
 import fr.maxlego08.shop.zcore.utils.VersionChecker;
 import fr.maxlego08.shop.zshop.ShopManager;
@@ -61,6 +62,8 @@ public class ZShop extends ZPlugin {
 		getServer().getServicesManager().register(Items.class, items, this, ServicePriority.High);
 		getServer().getServicesManager().register(Boost.class, boost, this, ServicePriority.High);
 
+		new LoggerManager(this);
+		
 		VersionChecker versionChecker = new VersionChecker();
 		versionChecker.getLastVersion();
 
