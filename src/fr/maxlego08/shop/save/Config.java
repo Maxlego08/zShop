@@ -25,6 +25,7 @@ public class Config implements Saveable {
 	public static boolean shopPostSellAllEvent = true;
 	public static boolean shopBoostStartEvent = true;
 	public static boolean shopBoostEndEvent = true;
+	public static boolean disableBackButton = false;
 	public static boolean disableUpdateMessage = false;
 	public static boolean useLogConsole = true;
 	public static boolean useLogInFile = false;
@@ -46,7 +47,7 @@ public class Config implements Saveable {
 
 		citizens.put("Michel", 1);
 		citizens.put("Kevin", 2);
-		citizens.put("§3C§dol§eor", 3);
+		citizens.put("ï¿½3Cï¿½dolï¿½eor", 3);
 		citizens.put("Shop", -1);
 
 	}

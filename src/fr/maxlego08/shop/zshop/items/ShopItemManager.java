@@ -24,7 +24,8 @@ import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.enums.Message;
 import fr.maxlego08.shop.zshop.categories.Category;
 import fr.maxlego08.shop.zshop.factories.Items;
-import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
+import fr.maxlego08.shop.zshop.factories.ShopItem;
+import fr.maxlego08.shop.zshop.factories.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.utils.ItemStackYAMLoader;
 import fr.maxlego08.shop.zshop.utils.Loader;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -186,6 +187,7 @@ public class ShopItemManager extends ZUtils implements Items {
 					configuration.set(path + "item.stack", item.getMaxStackSize());
 				configuration.set(path + "buyPrice", item.getSellPrice());
 				configuration.set(path + "sellPrice", item.getBuyPrice());
+				configuration.set(path + "slot", item.getSlot());
 				configuration.set(path + "economy", item.getEconomyType().name());
 				if (item instanceof ShopItemConsomable) {
 					ShopItemConsomable tmpItem = (ShopItemConsomable) item;
@@ -195,7 +197,8 @@ public class ShopItemManager extends ZUtils implements Items {
 					configuration.set(path + "commands", tmpItem.getCommands());
 				} else {
 					ShopItemUnique tmpItem = (ShopItemUnique) item;
-					stackYAMLoader.save(tmpItem.getItem(), configuration, path + "giveItem.");
+					if (tmpItem.getItem() != null)
+						stackYAMLoader.save(tmpItem.getItem(), configuration, path + "giveItem.");
 				}
 			});
 		});

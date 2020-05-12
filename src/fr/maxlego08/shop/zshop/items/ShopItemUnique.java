@@ -19,7 +19,7 @@ public class ShopItemUnique extends EconomyUtils implements ShopItem {
 
 	private final Economy economy;
 	private final int id;
-	private final int slot;
+	private int slot;
 	private final ItemStack displayItem;
 	private final double buyPrice;
 	private final boolean useConfirm;

@@ -10,13 +10,14 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.inventory.ItemButton;
 import fr.maxlego08.shop.inventory.VInventory;
+import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zcore.utils.inventory.Pagination;
 import fr.maxlego08.shop.zshop.categories.Category;
+import fr.maxlego08.shop.zshop.factories.ShopItem;
+import fr.maxlego08.shop.zshop.factories.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
-import fr.maxlego08.shop.zshop.items.ShopItem;
-import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.items.ShopItemConsomable;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
@@ -133,8 +134,9 @@ public class InventoryShopCategory extends VInventory {
 				}));
 		}
 
-		addItem(category.getBackButtonSlot(), new ItemButton(Lang.backButton.getInitButton()).setClick(event -> main
-				.getShop().openShop(player, EnumCategory.DEFAULT, 0, object.getId(), Permission.SHOP_USE)));
+		if (!Config.disableBackButton)
+			addItem(category.getBackButtonSlot(), new ItemButton(Lang.backButton.getInitButton()).setClick(event -> main
+					.getShop().openShop(player, EnumCategory.DEFAULT, 0, object.getId(), Permission.SHOP_USE)));
 
 		return true;
 	}

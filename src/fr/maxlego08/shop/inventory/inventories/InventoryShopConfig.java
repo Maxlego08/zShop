@@ -12,13 +12,14 @@ import org.bukkit.inventory.ItemStack;
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.inventory.ItemButton;
 import fr.maxlego08.shop.inventory.VInventory;
+import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zcore.utils.inventory.Button;
 import fr.maxlego08.shop.zshop.categories.Category;
+import fr.maxlego08.shop.zshop.factories.ShopItem;
+import fr.maxlego08.shop.zshop.factories.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
-import fr.maxlego08.shop.zshop.items.ShopItem;
-import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.items.ShopItemConsomable;
 import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
@@ -26,6 +27,8 @@ public class InventoryShopConfig extends VInventory {
 
 	private InventoryObject object;
 	private Category category;
+	private List<ShopItem> items;
+	private int maxPage;
 
 	public InventoryShopConfig() {
 
@@ -40,15 +43,15 @@ public class InventoryShopConfig extends VInventory {
 
 		category = (Category) args[0];
 
-		List<ShopItem> items = main.getItems().getItems(category.getId());
+		items = main.getItems().getItems(category.getId());
 
 		int pageSize = items.size() < (category.getInventorySize() - 9) ? items.size()
 				: (category.getInventorySize() - 9);
 
-		int maxPage = main.getItems().getMaxPage(items, category, pageSize);
+		maxPage = main.getItems().getMaxPage(items, category, pageSize);
 
 		/**
-		 * Création du nom de l'inventaire en fonction de son type
+		 * Crï¿½ation du nom de l'inventaire en fonction de son type
 		 */
 		String inventoryName = category.isItem() ? Lang.shopInventoryItem : Lang.shopInventoryUniqueItem;
 
@@ -88,7 +91,8 @@ public class InventoryShopConfig extends VInventory {
 				addItem(category.getNexButtonSlot(), new ItemButton(Lang.nextButton.getInitButton()));
 		}
 
-		addItem(category.getBackButtonSlot(), new ItemButton(Lang.backButton.getInitButton()));
+		if (!Config.disableBackButton)
+			addItem(category.getBackButtonSlot(), new ItemButton(Lang.backButton.getInitButton()));
 
 		return true;
 	}
@@ -97,15 +101,43 @@ public class InventoryShopConfig extends VInventory {
 	protected void onClose(InventoryCloseEvent event, ZShop plugin, Player player) {
 
 		Map<Integer, Button> buttons = new HashMap<Integer, Button>();
-		int slot = 0;
+		int slot = -1;
+
 		for (ItemStack itemStack : event.getInventory().getContents()) {
-			if (itemStack != null)
-				buttons.put(slot, new Button(itemStack));
 			slot++;
-		} 
+			if (itemStack != null) {
+
+				ShopItem item = searchItem(itemStack);
+
+				if (item != null) {
+
+					if (slot == item.getSlot())
+						continue;
+
+					if (category.getType().equals(ShopType.ITEM_SLOT)) {
+
+						List<ShopItemConsomable> itemConsomables = plugin.getItems().shorItems(items,
+								category.getInventorySize(), maxPage, getPage());
+
+						if (this.contains(item, itemConsomables))
+							item.setSlot(slot + (getPage() - 1 * category.getInventorySize()));
+
+					}
+
+				} else
+					buttons.put(slot, new Button(itemStack));
+			}
+		}
 		object.setDecorations(buttons, category.getId());
-		plugin.getInventory().save();
 		plugin.getItems().save("items");
+	}
+
+	public ShopItem searchItem(ItemStack itemStack) {
+		return items.stream().filter(item -> item.getDisplayItem().isSimilar(itemStack)).findAny().orElse(null);
+	}
+
+	public boolean contains(ShopItem item, List<ShopItemConsomable> items) {
+		return items.stream().filter(i -> i.equals(item)).findAny().isPresent();
 	}
 
 	@Override

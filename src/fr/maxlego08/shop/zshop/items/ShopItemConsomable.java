@@ -29,7 +29,7 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 	private final Economy economy;
 	private final int id;
 	private final ItemStack itemStack;
-	private final int slot;
+	private int slot;
 	private int tmpSlot;
 	private double sellPrice;
 	private double buyPrice;
@@ -41,6 +41,15 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 
 	protected Boost boost = ZShop.i().getBoost();
 
+	/**
+	 * 
+	 * @param id
+	 * @param itemStack
+	 * @param slot
+	 * @param sellPrice
+	 * @param buyPrice
+	 * @param maxStackSize
+	 */
 	public ShopItemConsomable(int id, ItemStack itemStack, int slot, double sellPrice, double buyPrice,
 			int maxStackSize) {
 		super();
@@ -53,6 +62,20 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 		this.maxStackSize = maxStackSize;
 	}
 
+	/**
+	 * 
+	 * @param economy
+	 * @param id
+	 * @param itemStack
+	 * @param slot
+	 * @param sellPrice
+	 * @param buyPrice
+	 * @param maxStackSize
+	 * @param giveItem
+	 * @param executeSellCommand
+	 * @param executeBuyCommand
+	 * @param commands
+	 */
 	public ShopItemConsomable(Economy economy, int id, ItemStack itemStack, int slot, double sellPrice, double buyPrice,
 			int maxStackSize, boolean giveItem, boolean executeSellCommand, boolean executeBuyCommand,
 			List<String> commands) {
@@ -172,31 +195,31 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 	public void performSell(Player player, int amount) {
 		int item = 0;
 
-		// On définie le nombre d'item dans l'inventaire du joueur
+		// On dï¿½finie le nombre d'item dans l'inventaire du joueur
 		for (ItemStack is : player.getInventory().getContents()) {
 			if (is != null && is.isSimilar(itemStack)) {
 				item += is.getAmount();
 			}
 		}
 
-		// On verif si le joueur à bien l'item
+		// On verif si le joueur ï¿½ bien l'item
 		if (item <= 0) {
 			player.sendMessage(Lang.prefix + " " + Lang.notItems);
 			return;
 		}
 
-		// On verif que le joueur ne veut pas vendre plus qu'il possède
+		// On verif que le joueur ne veut pas vendre plus qu'il possï¿½de
 		if (item < amount) {
 			player.sendMessage(Lang.prefix + " " + Lang.notEnouhtItems);
 			return;
 		}
 
-		// On définie le nombre d'item a vendre en fonction du nombre d'item que
+		// On dï¿½finie le nombre d'item a vendre en fonction du nombre d'item que
 		// le joueur peut vendre
 		item = amount == 0 ? item : item < amount ? amount : amount > item ? item : amount;
 		int realAmount = item;
 
-		// On créer le prix
+		// On crï¿½er le prix
 		double currentSellPrice = getSellPrice();
 		double price = realAmount * currentSellPrice;
 

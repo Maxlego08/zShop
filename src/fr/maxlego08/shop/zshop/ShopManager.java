@@ -26,6 +26,8 @@ import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zshop.categories.Category;
 import fr.maxlego08.shop.zshop.factories.Items;
 import fr.maxlego08.shop.zshop.factories.Shop;
+import fr.maxlego08.shop.zshop.factories.ShopItem;
+import fr.maxlego08.shop.zshop.factories.ShopItem.ShopType;
 import fr.maxlego08.shop.zshop.inventories.Inventories;
 import fr.maxlego08.shop.zshop.inventories.InventoryObject;
 import fr.maxlego08.shop.zshop.items.Economy;
@@ -122,7 +124,7 @@ public class ShopManager extends ZUtils implements Shop {
 		for (ItemStack is : player.getInventory().getContents()) {
 			// On verif si l'item est pas null
 			if (is != null) {
-				// On récup les items en vente en fonction du type de l'itme
+				// On rï¿½cup les items en vente en fonction du type de l'itme
 				List<ShopItem> tmpSellItems = items.getItems(is);
 				// Si on trouve un item alors on peut continuer
 				if (tmpSellItems.size() != 0) {
@@ -159,7 +161,7 @@ public class ShopManager extends ZUtils implements Shop {
 
 		}
 
-		// On créer le message pour donner les items vendu
+		// On crï¿½er le message pour donner les items vendu
 		StringBuilder builder = new StringBuilder();
 		AtomicInteger atomicInteger = new AtomicInteger();
 		for (Entry<ItemStack, Integer> e : map.entrySet()) {
@@ -222,7 +224,7 @@ public class ShopManager extends ZUtils implements Shop {
 		if (obj != null)
 			this.openShop(player, EnumCategory.DEFAULT, 0, obj.getId(), Permission.SHOP_DEFAULT);
 		else {
-			message(player, "§cPlease contact an administrator for he perform command §f'§6/shop reload§f'");
+			message(player, "ï¿½cPlease contact an administrator for he perform command ï¿½f'ï¿½6/shop reloadï¿½f'");
 		}
 
 	}

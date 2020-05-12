@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
-import fr.maxlego08.shop.zshop.items.ShopItem.ShopType;
+import fr.maxlego08.shop.zshop.factories.ShopItem.ShopType;
 
 public class Category extends ZUtils {
 
