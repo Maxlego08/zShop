@@ -1,5 +1,9 @@
 package fr.maxlego08.shop.command.commands.configs;
 
+import java.util.List;
+
+import org.bukkit.command.CommandSender;
+
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.CommandType;
 import fr.maxlego08.shop.command.VCommand;
@@ -14,6 +18,7 @@ public class CommandConfigEditShop extends VCommand {
 		this.addRequireArg("category");
 		this.addOptionalArg("page");
 		this.setDescription("Edit shop GUI");
+		this.setTabCompletor();
 	}
 
 	@Override
@@ -21,6 +26,11 @@ public class CommandConfigEditShop extends VCommand {
 		String name = argAsString(0);
 		int page = argAsInteger(1, 1);
 		return this.shop.openConfigShop(player, name, page);
+	}
+
+	@Override
+	public List<String> toTab(ZShop plugin, CommandSender sender2, String[] args) {
+		return super.generateListContains(plugin.getCategories().toTabCompleter(), args[2]);
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -177,24 +178,22 @@ public class CategoryManager extends ZUtils implements Categories {
 
 		categories.put(1, (new Category(1, 0, 1, ShopType.ITEM_SLOT, "§aBlocks",
 				new ItemBuilder(Material.GRASS, "§aBlocks").build(), 54, 49, 48, 50)));
-		
+
 		categories.put(2, (new Category(2, 1, 1, ShopType.ITEM_SLOT, "§eFarm",
 				new ItemBuilder(Material.WHEAT, "§eFarm").build(), 36, 31, 30, 32)));
-		
+
 		categories.put(3, (new Category(3, 2, 1, ShopType.ITEM, "§eMobs",
 				new ItemBuilder(Material.ROTTEN_FLESH, "§eMobs").build(), 54, 49, 48, 50)));
-		
+
 		categories.put(4, (new Category(4, 3, 1, ShopType.ITEM, "§eFoods",
 				new ItemBuilder(Material.COOKED_BEEF, "§eFoods").build(), 54, 49, 48, 50)));
-		
+
 		categories.put(5, (new Category(5, 4, 1, ShopType.ITEM, "§eRedstones",
 				new ItemBuilder(Material.REDSTONE, "§eRedstones").build(), 54, 49, 48, 50)));
-		
+
 		categories.put(6, (new Category(6, 5, 1, ShopType.ITEM, "§eOres",
 				new ItemBuilder(Material.IRON_INGOT, "§eOres").build(), 54, 49, 48, 50)));
-		
-		
-		
+
 		categories.put(7, (new Category(7, 23, 1, ShopType.UNIQUE_ITEM, "§eRanks",
 				OLDItemBuilder.getCreatedItem(Material.DIAMOND_CHESTPLATE, 1, "§cRanks"), 54, 49, 48, 50)));
 		categories.put(8, (new Category(8, 21, 1, ShopType.ITEM, "§3Spawners",
@@ -220,6 +219,14 @@ public class CategoryManager extends ZUtils implements Categories {
 		for (int i : id)
 			integers.add(i);
 		return getCategories(integers);
+	}
+
+	@Override
+	public List<String> toTabCompleter() {
+
+		List<Category> categories = new ArrayList<>(this.categories.values());
+		return categories.stream().map(category -> removeColor(category.getName())).collect(Collectors.toList());
+		
 	}
 
 }

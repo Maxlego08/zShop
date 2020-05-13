@@ -458,7 +458,21 @@ public abstract class VCommand extends Arguments {
 		for (String str : defaultList)
 			if (startWith.length() == 0 || str.toLowerCase().startsWith(startWith.toLowerCase()))
 				newList.add(str);
-		return newList;
+		return newList.size() == 0 ? null : newList;
+	}
+	
+	/**
+	 * 
+	 * @param defaultList
+	 * @param startWith
+	 * @return
+	 */
+	protected List<String> generateListContains(List<String> defaultList, String startWith) {
+		List<String> newList = new ArrayList<>();
+		for (String str : defaultList)
+			if (startWith.length() == 0 || str.toLowerCase().contains(startWith.toLowerCase()))
+				newList.add(str);
+		return newList.size() == 0 ? null : newList;
 	}
 
 	public String getFirst() {

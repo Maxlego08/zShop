@@ -20,6 +20,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -236,7 +237,7 @@ public abstract class ZUtils {
 				byId[material.getId()] = material;
 			}
 		}
-		
+
 		Material[] var3;
 		int var2 = (var3 = Material.values()).length;
 
@@ -244,7 +245,7 @@ public abstract class ZUtils {
 			Material material = var3[var1];
 			BY_NAME.put(material.name(), material);
 		}
-		
+
 	}
 
 	/**
@@ -652,7 +653,7 @@ public abstract class ZUtils {
 	protected void messageWO(CommandSender player, Message message, Object... args) {
 		player.sendMessage(String.format(message.msg(), args));
 	}
-	
+
 	protected void message(CommandSender player, Message message, Object... args) {
 		player.sendMessage(Lang.prefix + " " + String.format(message.msg(), args));
 	}
@@ -736,5 +737,10 @@ public abstract class ZUtils {
 		return BY_NAME.get(name.toUpperCase());
 	}
 
+	public String removeColor(String message) {
+		for (ChatColor color : ChatColor.values())
+			message = message.replace("§" + color.getChar(), "").replace("&" + color.getChar(), "");
+		return message;
+	}
 
 }

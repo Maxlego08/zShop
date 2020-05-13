@@ -25,8 +25,18 @@ public interface Categories{
 	 */
 	Category getCategory(int id);
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	List<Category> getCategories(int... id);
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	List<Category> getCategories(List<Integer> id);
 	
 	/**
@@ -35,6 +45,12 @@ public interface Categories{
 	 */
 	Category getCategory(String name);
 
+	/**
+	 * 
+	 * @return
+	 */
+	List<String> toTabCompleter();
+	
 	/**
 	 * @param commandSender
 	 */
