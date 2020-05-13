@@ -21,7 +21,7 @@ public class CommandShopReload extends VCommand {
 		categories.load();
 		inventories.load();
 		
-		main.getInventoryManager().updateAllPlayer();
+		main.getInventoryManager().update();
 		
 		message(sender, "§aReload !");
 		

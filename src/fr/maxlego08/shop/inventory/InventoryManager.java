@@ -1,7 +1,9 @@
 package fr.maxlego08.shop.inventory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -107,8 +109,13 @@ public class InventoryManager extends ListenerAdapter {
 	}
 
 	public void createInventory(VInventory parent, Player player) {
-		VInventory clonedInventory = parent.clone();
 
+		if (parent == null){
+			player.sendMessage(Lang.prefix + " §cLe parent est null !");
+			return;
+		}
+		
+		VInventory clonedInventory = parent.clone();
 		if (clonedInventory == null) {
 			player.sendMessage(Lang.prefix + " §cLe clone de l'inventaire est null !");
 			return;
@@ -191,13 +198,17 @@ public class InventoryManager extends ListenerAdapter {
 		return inventories.getOrDefault(id, null);
 	}
 
+	public void update() {
+		List<VInventory> inventories = new ArrayList<>(this.playerInventories.values());
+		this.playerInventories.clear();
+		inventories.forEach(i -> createInventory(i, i.getPlayer()));
+	}
 	/**
 	 * @param id
 	 */
 	public void updateAllPlayer(int... id) {
-		if (id.length == 0)
-			for (EnumCategory category : EnumCategory.values())
-				updateAllPlayer(category.getInventoryID());
+		if (id.length == 0) {
+		}
 		for (int currentId : id)
 			updateAllPlayer(currentId);
 	}
