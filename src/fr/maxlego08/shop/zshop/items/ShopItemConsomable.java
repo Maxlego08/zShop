@@ -463,10 +463,18 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param sellPrice
+	 */
 	public void setSellPrice(double sellPrice) {
 		this.sellPrice = sellPrice;
 	}
 
+	/**
+	 * 
+	 * @param buyPrice
+	 */
 	public void setBuyPrice(double buyPrice) {
 		this.buyPrice = buyPrice;
 	}
@@ -489,6 +497,16 @@ public class ShopItemConsomable extends EconomyUtils implements ShopItem {
 	@Override
 	public void setSlot(int slot) {
 		this.slot = slot;
+	}
+
+	@Override
+	public double getDefaultSellPrice() {
+		return sellPrice;
+	}
+
+	@Override
+	public double getDefaultBuyPrice() {
+		return buyPrice;
 	}
 
 }

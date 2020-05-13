@@ -99,6 +99,19 @@ public interface ShopItem {
 	 */
 	boolean isBuyable();
 
+	/**
+	 * 
+	 * @return
+	 */
+
+	double getDefaultSellPrice();
+
+	/**
+	 * 
+	 * @return
+	 */
+	double getDefaultBuyPrice();
+
 	public enum ShopType {
 
 		ITEM, ITEM_SLOT, UNIQUE_ITEM,
