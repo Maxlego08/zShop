@@ -167,4 +167,14 @@ public class ShopItemUnique extends EconomyUtils implements ShopItem {
 		this.slot = slot;
 	}
 
+	@Override
+	public double getDefaultSellPrice() {
+		return 0;
+	}
+
+	@Override
+	public double getDefaultBuyPrice() {
+		return buyPrice;
+	}
+
 }
