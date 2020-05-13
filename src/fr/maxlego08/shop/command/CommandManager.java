@@ -3,6 +3,7 @@ package fr.maxlego08.shop.command;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -11,6 +12,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -25,7 +27,7 @@ import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.enums.Message;
 
-public class CommandManager extends ZUtils implements CommandExecutor {
+public class CommandManager extends ZUtils implements CommandExecutor, TabCompleter {
 
 	private final ZShop main;
 	private final List<VCommand> commands = new ArrayList<VCommand>();
@@ -38,15 +40,15 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 
 		addCommand("shop", new CommandShop());
 
-
 		main.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 		this.commandChecking();
 	}
 
-	public void registerCommandsPost(){
-		Config.commands.forEach(command -> registerCommand(command.getName(), new CommandShopCustom(command.getAliases()), command.getAliases()));
+	public void registerCommandsPost() {
+		Config.commands.forEach(command -> registerCommand(command.getName(),
+				new CommandShopCustom(command.getAliases()), command.getAliases()));
 	}
-	
+
 	public VCommand addCommand(VCommand command) {
 		commands.add(command);
 		return command;
@@ -55,6 +57,7 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 	public VCommand addCommand(String string, VCommand command) {
 		commands.add(command.addSubCommand(string));
 		ZPlugin.z().getCommand(string).setExecutor(this);
+		ZPlugin.z().getCommand(string).setTabCompleter(this);
 		return command;
 	}
 
@@ -73,6 +76,7 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 			PluginCommand command = constructor.newInstance(string, ZPlugin.z());
 
 			command.setExecutor(this);
+			command.setTabCompleter(this);
 			command.setAliases(aliases);
 
 			commands.add(vCommand.addSubCommand(string));
@@ -155,12 +159,6 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 			return CommandType.DEFAULT;
 		}
 		if (command.getPermission() == null || hasPermission(sender, command.getPermission())) {
-			// if (command.getInventory() != null && sender instanceof Player) {
-			// IIventory iIventory = command.getInventory();
-			// main.getInventoryManager().createInventory(iIventory.getId(),
-			// command.getPlayer(), iIventory.getPage(),
-			// iIventory.getArgs());
-			// }
 			CommandType returnType = command.prePerform(main, sender, cmd, strings);
 			if (returnType == CommandType.SYNTAX_ERROR)
 				message(sender, Lang.syntaxeError.replace("%command%", command.getSyntaxe()));
@@ -219,6 +217,59 @@ public class CommandManager extends ZUtils implements CommandExecutor {
 				ZPlugin.z().getPluginLoader().disablePlugin(ZPlugin.z());
 			}
 		});
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String str, String[] args) {
+
+		for (VCommand command : commands) {
+
+			if (command.getSubCommands().contains(cmd.getName().toLowerCase())) {
+				if (args.length == 1 && command.getParent() == null) {
+					return proccessTab(sender, command, args);
+				}
+			} else {
+				String[] newArgs = Arrays.copyOf(args, args.length - 1);
+				if (newArgs.length >= 1 && command.getParent() != null
+						&& canExecute(newArgs, cmd.getName().toLowerCase(), command)) {
+					return proccessTab(sender, command, args);
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param sender
+	 * @param command
+	 * @param args
+	 * @return
+	 */
+	private List<String> proccessTab(CommandSender sender, VCommand command, String[] args) {
+
+		CommandType type = command.getTabCompleter();
+		if (type.equals(CommandType.DEFAULT)) {
+
+			String startWith = args[args.length - 1];
+
+			List<String> tabCompleter = new ArrayList<>();
+			for (VCommand vCommand : commands) {
+				if ((vCommand.getParent() != null && vCommand.getParent() == command)) {
+					String cmd = vCommand.getSubCommands().get(0);
+					if (vCommand.getPermission() == null
+							|| sender.hasPermission(vCommand.getPermission().getPermission()))
+						if (startWith.length() == 0 || cmd.startsWith(startWith))
+							tabCompleter.add(cmd);
+				}
+			}
+			return tabCompleter.size() == 0 ? null : tabCompleter;
+
+		} else if (type.equals(CommandType.SUCCESS))
+			return command.toTab(plugin, sender, args);
+
+		return null;
 	}
 
 }

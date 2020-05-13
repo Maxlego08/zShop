@@ -46,7 +46,8 @@ public abstract class VCommand extends Arguments {
 	protected Categories categories;
 	protected Inventories inventories;
 	protected Command command;
-	
+	protected CommandType tabCompleter = CommandType.DEFAULT;
+
 	/**
 	 * If this variable is false the command will not be able to use this
 	 * command
@@ -91,11 +92,22 @@ public abstract class VCommand extends Arguments {
 	protected void setShowHelp(boolean showHelp) {
 		this.showHelp = showHelp;
 	}
-	
+
 	public boolean isShowHelp() {
 		return showHelp;
 	}
-	
+
+	public CommandType getTabCompleter() {
+		return tabCompleter;
+	}
+
+	/*
+	 * 
+	 */
+	protected void setTabCompletor() {
+		this.tabCompleter = CommandType.SUCCESS;
+	}
+
 	/**
 	 * @return the permission
 	 */
@@ -351,7 +363,7 @@ public abstract class VCommand extends Arguments {
 		categories = main.getCategories();
 		inventories = main.getInventory();
 		command = commands;
-		
+
 		parentCount = parentCount(0);
 		argsMaxLength = requireArgs.size() + optionalArgs.size() + parentCount;
 		argsMinLength = requireArgs.size() + parentCount;
@@ -412,6 +424,45 @@ public abstract class VCommand extends Arguments {
 	public String toString() {
 		return "VCommand [permission=" + permission + ", subCommands=" + subCommands + ", consoleCanUse="
 				+ consoleCanUse + ", description=" + description + "]";
+	}
+
+	/**
+	 * 
+	 * @param plugin
+	 * @param sender2
+	 * @param args
+	 * @return
+	 */
+	public List<String> toTab(ZShop plugin, CommandSender sender2, String[] args) {
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param startWith
+	 * @param strings
+	 * @return
+	 */
+	protected List<String> generateList(String startWith, String... strings) {
+		return generateList(Arrays.asList(strings), startWith);
+	}
+
+	/**
+	 * 
+	 * @param defaultList
+	 * @param startWith
+	 * @return
+	 */
+	protected List<String> generateList(List<String> defaultList, String startWith) {
+		List<String> newList = new ArrayList<>();
+		for (String str : defaultList)
+			if (startWith.length() == 0 || str.toLowerCase().startsWith(startWith.toLowerCase()))
+				newList.add(str);
+		return newList;
+	}
+
+	public String getFirst() {
+		return subCommands.get(0);
 	}
 
 }
