@@ -22,7 +22,7 @@ public class ShopItemUnique extends EconomyUtils implements ShopItem {
 	private final int id;
 	private int slot;
 	private final ItemStack displayItem;
-	private final double buyPrice;
+	private double buyPrice;
 	private final boolean useConfirm;
 	private final List<String> commands;
 	private final ItemStack giveItem;
@@ -175,6 +175,15 @@ public class ShopItemUnique extends EconomyUtils implements ShopItem {
 	@Override
 	public double getDefaultBuyPrice() {
 		return buyPrice;
+	}
+
+	@Override
+	public void setBuyPrice(double price) {
+		this.buyPrice = price;
+	}
+
+	@Override
+	public void setSellPrice(double price) {
 	}
 
 }

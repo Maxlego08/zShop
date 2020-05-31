@@ -93,7 +93,7 @@ public class ZShop extends ZPlugin {
 		new Metrics(this);
 
 		postEnable();
-
+		
 	}
 
 	public boolean setupAuction() {

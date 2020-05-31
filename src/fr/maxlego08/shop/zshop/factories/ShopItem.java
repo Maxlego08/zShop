@@ -112,6 +112,18 @@ public interface ShopItem {
 	 */
 	double getDefaultBuyPrice();
 
+	/**
+	 * 
+	 * @param price
+	 */
+	void setBuyPrice(double price);
+	
+	/**
+	 * 
+	 * @param price
+	 */
+	void setSellPrice(double price);
+	
 	public enum ShopType {
 
 		ITEM, ITEM_SLOT, UNIQUE_ITEM,

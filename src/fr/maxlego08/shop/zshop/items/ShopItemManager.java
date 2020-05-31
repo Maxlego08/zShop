@@ -162,7 +162,7 @@ public class ShopItemManager extends ZUtils implements Items {
 	public void save(String fileName) {
 
 		if (items == null)
-			throw new IllegalArgumentException("La liste des items est null !");
+			throw new IllegalArgumentException("The list of items is null!");
 
 		File file = new File(plugin.getDataFolder() + File.separator + fileName + ".yml");
 		if (file.exists())
@@ -185,18 +185,24 @@ public class ShopItemManager extends ZUtils implements Items {
 						configuration, path + "item.");
 				if (item.getMaxStackSize() != 64)
 					configuration.set(path + "item.stack", item.getMaxStackSize());
-				
+
 				configuration.set(path + "buyPrice", item.getDefaultBuyPrice());
 				configuration.set(path + "sellPrice", item.getDefaultSellPrice());
-				
-				configuration.set(path + "slot", item.getSlot());
-				configuration.set(path + "economy", item.getEconomyType().name());
+
+				if (item.getSlot() != 0)
+					configuration.set(path + "slot", item.getSlot());
+				if (!item.getEconomyType().equals(Economy.VAULT))
+					configuration.set(path + "economy", item.getEconomyType().name());
 				if (item instanceof ShopItemConsomable) {
 					ShopItemConsomable tmpItem = (ShopItemConsomable) item;
-					configuration.set(path + "give", tmpItem.isGiveItem());
-					configuration.set(path + "executeSellCommand", tmpItem.isExecuteSellCommand());
-					configuration.set(path + "executeBuyCommand", tmpItem.isExecuteBuyCommand());
-					configuration.set(path + "commands", tmpItem.getCommands());
+					if (!tmpItem.isGiveItem())
+						configuration.set(path + "give", tmpItem.isGiveItem());
+					if (!tmpItem.isExecuteSellCommand())
+						configuration.set(path + "executeSellCommand", tmpItem.isExecuteSellCommand());
+					if (!tmpItem.isExecuteBuyCommand())
+						configuration.set(path + "executeBuyCommand", tmpItem.isExecuteBuyCommand());
+					if (tmpItem.getCommands().size() > 0)
+						configuration.set(path + "commands", tmpItem.getCommands());
 				} else {
 					ShopItemUnique tmpItem = (ShopItemUnique) item;
 					if (tmpItem.getItem() != null)
@@ -248,7 +254,7 @@ public class ShopItemManager extends ZUtils implements Items {
 		ShopItem shopItem = new ShopItemConsomable(category.getId(), itemStack, slot, sellPrice, buyPrice,
 				maxStackSize);
 		items.get(category.getId()).add(shopItem);
-		this.save("items");
+		this.save();
 		message(sender, Lang.configAddItemSuccess.replace("%item%", getItemName(itemStack)).replace("%category%",
 				category.getName()));
 
@@ -287,7 +293,7 @@ public class ShopItemManager extends ZUtils implements Items {
 
 		items.get(category.getId()).remove(item);
 
-		this.save("items");
+		this.save();
 		message(sender, Lang.configRemoveItemSuccess.replace("%item%", getItemName(itemStack)).replace("%category%",
 				category.getName()));
 
@@ -301,7 +307,7 @@ public class ShopItemManager extends ZUtils implements Items {
 			return;
 		}
 
-		ShopItemConsomable item = (ShopItemConsomable) getItem(category, id);
+		ShopItem item = getItem(category, id);
 
 		if (item == null) {
 			message(sender, Lang.configEditError);
@@ -317,7 +323,7 @@ public class ShopItemManager extends ZUtils implements Items {
 				Lang.configEditSuccess.replace("%price%", format(price)).replace("%item%", getItemName(item.getItem()))
 						.replace("%type%", isSell ? Lang.boostSell : Lang.boostBuy));
 
-		schedule(1, () -> save("items"));
+		schedule(1, () -> this.save());
 
 	}
 
@@ -437,6 +443,11 @@ public class ShopItemManager extends ZUtils implements Items {
 		if (size == 0 || size == items.size())
 			return 1;
 		return (items.size() / size) + 1;
+	}
+
+	@Override
+	public void save() {
+		this.save("items");
 	}
 
 }

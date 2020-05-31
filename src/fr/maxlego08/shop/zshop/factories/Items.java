@@ -106,12 +106,18 @@ public interface Items {
 	void load();
 
 	/**
-	 * Save items
+	 * Allows you to save the items according to a file name, you do not need to put the file extension
+	 * @param fileName
 	 */
 	void save(String fileName);
+	
+	/**
+	 * Save the items.yml file
+	 */
+	void save();
 
 	/**
-	 * Add item
+	 * Allows you to add an item for sale
 	 * @param sender
 	 * @param category
 	 * @param sellPrice
@@ -147,7 +153,10 @@ public interface Items {
 	void updatePrice(CommandSender sender, boolean isSell, Category category, int id, double price);
 	
 	/**
+	 * 
+	 * @param category
 	 * @param itemId
+	 * @return
 	 */
 	ShopItem getItem(Category category, int itemId);
 	
