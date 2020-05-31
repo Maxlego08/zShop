@@ -80,13 +80,19 @@ public class BoostManager extends ZUtils implements Boost {
 
 	@Override
 	public boolean isBoost(ItemStack itemStack) {
+		if (itemStack == null)
+			return false;
 		updateBoost();
-		return boosts.containsKey(encode(itemStack));
+		String key = encode(itemStack);
+		return key == null ? false : boosts.containsKey(key);
 	}
 
 	@Override
 	public BoostItem getBoost(ItemStack itemStack) {
-		return boosts.get(encode(itemStack));
+		if (itemStack == null)
+			return null;
+		String key = encode(itemStack);
+		return key == null ? null : boosts.get(key);
 	}
 
 	@Override

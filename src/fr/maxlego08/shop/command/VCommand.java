@@ -297,6 +297,7 @@ public abstract class VCommand extends Arguments {
 	 */
 	public VCommand addSubCommand(VCommand command) {
 		command.setParent(this);
+		
 		ZShop.i().getCommandManager().addCommand(command);
 		subVCommands.add(command);
 		return this;
