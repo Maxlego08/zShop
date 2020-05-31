@@ -61,7 +61,7 @@ public class ShopManager extends ZUtils implements Shop {
 			category = event.getCategory();
 		}
 
-		if (permission != null && !player.hasPermission(permission)) {
+		if (permission != null && !player.hasPermission(permission) && !player.hasPermission("zshop.open.*")) {
 			message(player, Lang.noPermission);
 			return;
 		}
@@ -122,7 +122,7 @@ public class ShopManager extends ZUtils implements Shop {
 		for (ItemStack is : player.getInventory().getContents()) {
 			// On verif si l'item est pas null
 			if (is != null) {
-				// On rï¿½cup les items en vente en fonction du type de l'itme
+				// On r§cup les items en vente en fonction du type de l'itme
 				List<ShopItem> tmpSellItems = items.getItems(is);
 				// Si on trouve un item alors on peut continuer
 				if (tmpSellItems.size() != 0) {
@@ -159,7 +159,7 @@ public class ShopManager extends ZUtils implements Shop {
 
 		}
 
-		// On crï¿½er le message pour donner les items vendu
+		// On cr§er le message pour donner les items vendu
 		StringBuilder builder = new StringBuilder();
 		AtomicInteger atomicInteger = new AtomicInteger();
 		for (Entry<ItemStack, Integer> e : map.entrySet()) {
@@ -222,7 +222,7 @@ public class ShopManager extends ZUtils implements Shop {
 		if (obj != null)
 			this.openShop(player, EnumCategory.DEFAULT, 0, obj.getId(), Permission.SHOP_DEFAULT);
 		else {
-			message(player, "ï¿½cPlease contact an administrator for he perform command ï¿½f'ï¿½6/shop reloadï¿½f'");
+			message(player, "§cPlease contact an administrator for he perform command §f'§6/shop reload§f'");
 		}
 
 	}
