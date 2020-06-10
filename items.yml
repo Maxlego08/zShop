@@ -457,6 +457,58 @@ items:
           data: 0
         buyPrice: 30.0
         sellPrice: 2.0
+  '9':
+    items:
+      '1':
+        type: ITEM
+        item:
+          id: 403
+          data: 0
+          stack: 1
+          enchants:
+            - DAMAGE_ALL,1
+        buyPrice: 30.0
+        sellPrice: 0.0   
+      '2':
+        type: ITEM
+        item:
+          id: 403
+          data: 0
+          stack: 1
+          enchants:
+            - DAMAGE_ALL,2
+        buyPrice: 45.0
+        sellPrice: 0.0
+      '3':
+        type: ITEM
+        item:
+          id: 403
+          data: 0
+          stack: 1
+          enchants:
+            - DAMAGE_ALL,3
+        buyPrice: 55.0
+        sellPrice: 0.0   
+      '4':
+        type: ITEM
+        item:
+          id: 403
+          data: 0
+          stack: 1
+          enchants:
+            - DAMAGE_ALL,4
+        buyPrice: 75.0
+        sellPrice: 0.0     
+      '5':
+        type: ITEM
+        item:
+          id: 403
+          data: 0
+          stack: 1
+          enchants:
+            - DAMAGE_ALL,5
+        buyPrice: 100.0
+        sellPrice: 0.0                                 
   '7':
     items:
       '1':

@@ -64,7 +64,7 @@ public class InventoryUtils extends ZUtils implements Inventories {
 					button.setCategory(category);
 					this.fillMap(decorations, category, button, slot);
 				}
-			
+
 			this.inventories.put(id, new InventoryObject(this.categories.getCategories(categories), id, inventorySize,
 					name, decorations));
 
@@ -88,7 +88,7 @@ public class InventoryUtils extends ZUtils implements Inventories {
 		if (!decorations.containsKey(category)) {
 			decorations.put(category, new HashMap<>());
 		}
-		
+
 		decorations.get(category).put(slot, button);
 	}
 
@@ -143,7 +143,7 @@ public class InventoryUtils extends ZUtils implements Inventories {
 				48, 49, 50, 51, 52, 53 };
 
 		for (int a = 0; a != slots.length; a++) {
-			Button button = new Button("", 160, array[a], 1);
+			Button button = new Button("§a", 160, array[a], 1);
 			button.setCategory(1);
 			buttons.put(slots[a], button);
 		}
@@ -155,13 +155,23 @@ public class InventoryUtils extends ZUtils implements Inventories {
 		int[] slotsss = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 };
 
 		for (int a1 = 0; a1 != slotsss.length; a1++) {
-			Button button = new Button("", 160, arrayss[a1], 2);
+			Button button = new Button("§a", 160, arrayss[a1], 2);
 			button.setCategory(2);
 			buttons2.put(slotsss[a1], button);
 		}
 		b.put(2, buttons2);
 
-		InventoryObject obj = new InventoryObject(categories.getCategories(1, 2, 3, 4, 5, 6), 1, 9, "§7Shop", b);
+		// Gui par default
+		int[] defaultArray = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 37, 38, 39, 40, 41, 42,
+				43, 44 };
+		Map<Integer, Button> defaultButton = new HashMap<>();
+		for (int slot : defaultArray) {
+			Button button = new Button("§a", 160, 7, 0);
+			defaultButton.put(slot, button);
+		}
+		b.put(0, defaultButton);
+
+		InventoryObject obj = new InventoryObject(categories.getCategories(1, 2, 3, 4, 5, 6, 9), 1, 45, "§7Shop", b);
 		this.inventories.put(1, obj);
 
 		int[] arrays = new int[] { 13, 13, 5, 5, 5, 5, 5, 13, 13, 13, 5, 5, 4, 4, 4, 5, 5, 13, 5, 5, 4, 4, 4, 4, 4, 5,
