@@ -88,7 +88,7 @@ public class VersionChecker extends ListenerAdapter {
 							+ Bukkit.getServer().getIp().toString() + ":" + Bukkit.getServer().getPort() + " §a!");
 				}
 			}
-		}.runTaskLater(ZPlugin.z(), 25);
+		}.runTaskLater(ZPlugin.z(), 20 * 2);
 	}
 
 	public class UpdateChecker {
