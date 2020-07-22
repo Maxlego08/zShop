@@ -119,7 +119,10 @@ public class ShopManager extends ZUtils implements Shop {
 		Economy eco = null;
 
 		// On parcours l'inventaire du joueur
-		for (ItemStack is : player.getInventory().getContents()) {
+		for (int slot = 0; slot != player.getInventory().getContents().length; slot++) {
+
+			ItemStack is = player.getInventory().getContents()[slot];
+
 			// On verif si l'item est pas null
 			if (is != null) {
 				// On r§cup les items en vente en fonction du type de l'itme
@@ -142,11 +145,22 @@ public class ShopManager extends ZUtils implements Shop {
 					// on ajoute l'item et le nombre d'item dans la map
 					map.put(is, tmpAmount + map.getOrDefault(is, 0));
 					eco = item.getEconomyType();
+
+					if (slot == 40)
+						player.getInventory().setItemInOffHand(null);
+					else
+						player.getInventory().remove(is);
 					// On retire l'item de l'inventaire du joueur
 				}
 			}
 		}
 
+		if (eco == null){
+			message(player, Lang.sellAllError);
+			return;
+			
+		}
+		
 		// On call l'event
 		if (Config.shopPreSellAllEvent) {
 			ShopPreSellAllEvent allEvent = new ShopPreSellAllEvent(player, map, price);
@@ -172,7 +186,6 @@ public class ShopManager extends ZUtils implements Shop {
 				builder.append(", ");
 			builder.append(Lang.sellHandAllItem.replace("%amount%", String.valueOf(amout)).replace("%item%",
 					getItemName(items)));
-			player.getInventory().remove(items);
 		}
 		// On donne l'argent au mec
 		depositMoney(player, price);

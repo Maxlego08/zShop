@@ -1,7 +1,7 @@
 name: zShop
 author: Maxlego08
 main: fr.maxlego08.shop.ZShop
-version: 1.0.3.6
+version: 1.0.3.9
 commands:
   shop:
     aliases: [zshop]

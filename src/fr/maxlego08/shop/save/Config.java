@@ -29,6 +29,7 @@ public class Config implements Saveable {
 	public static boolean disableUpdateMessage = false;
 	public static boolean useLogConsole = true;
 	public static boolean useLogInFile = false;
+	public static boolean enableDebug = false;
 	public static long poolFileWriter = 10000;
 
 	public static boolean broadcastMessageWhenBoostIsCreate = true;

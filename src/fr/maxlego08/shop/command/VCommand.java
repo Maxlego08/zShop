@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.ZShop;
+import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.zcore.utils.Arguments;
 import fr.maxlego08.shop.zcore.utils.enums.Permission;
 import fr.maxlego08.shop.zcore.utils.inventory.IIventory;
@@ -61,7 +62,7 @@ public abstract class VCommand extends Arguments {
 	 */
 	private boolean ignoreParent = false;
 	private boolean ignoreArgs = false;
-	protected boolean DEBUG = false;
+	protected boolean DEBUG = Config.enableDebug;
 
 	/**
 	 * This is the person who executes the command
@@ -396,7 +397,7 @@ public abstract class VCommand extends Arguments {
 		try {
 			return perform(main);
 		} catch (Exception e) {
-			if (DEBUG)
+			if (Config.enableDebug)
 				e.printStackTrace();
 			return CommandType.SYNTAX_ERROR;
 		}
