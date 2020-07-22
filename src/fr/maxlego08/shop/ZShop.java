@@ -65,7 +65,7 @@ public class ZShop extends ZPlugin {
 		new LoggerManager(this);
 		
 		VersionChecker versionChecker = new VersionChecker();
-		versionChecker.getLastVersion();
+		versionChecker.useLastVersion(this);
 
 		/* Add Listener */
 
