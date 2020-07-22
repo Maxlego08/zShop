@@ -23,6 +23,7 @@ import fr.maxlego08.shop.inventory.inventories.InventoryShopConfig;
 import fr.maxlego08.shop.inventory.inventories.InventoryShopConfirm;
 import fr.maxlego08.shop.inventory.inventories.InventoryShopSell;
 import fr.maxlego08.shop.listener.ListenerAdapter;
+import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.logger.Logger;
@@ -104,17 +105,18 @@ public class InventoryManager extends ListenerAdapter {
 		} catch (Exception e) {
 			player.sendMessage(
 					Lang.prefix + " §cAn internal error occurred while opening the inventory with the id " + id);
-			e.printStackTrace();
+			if (Config.enableDebug)
+				e.printStackTrace();
 		}
 	}
 
 	public void createInventory(VInventory parent, Player player) {
 
-		if (parent == null){
+		if (parent == null) {
 			player.sendMessage(Lang.prefix + " §cLe parent est null !");
 			return;
 		}
-		
+
 		VInventory clonedInventory = parent.clone();
 		if (clonedInventory == null) {
 			player.sendMessage(Lang.prefix + " §cLe clone de l'inventaire est null !");
@@ -203,6 +205,7 @@ public class InventoryManager extends ListenerAdapter {
 		this.playerInventories.clear();
 		inventories.forEach(i -> createInventory(i, i.getPlayer()));
 	}
+
 	/**
 	 * @param id
 	 */

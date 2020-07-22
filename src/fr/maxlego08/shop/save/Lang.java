@@ -32,6 +32,7 @@ public class Lang implements Saveable {
 	public static String notEnouhtPlace = "§cYour inventory is ful";
 	public static String notItems = "§cYou do not have this item in your inventory.";
 	public static String and = "and";
+	public static String sellAllError = "§cYou don't have any item to sell.";
 	public static String sellHandAll = "§aYou just sold §6%item% §afor §6%price%§a%currency%.";
 	public static String sellHandAllItem = "§ax§e%amount% §2%item%§a";
 	public static String sellHandEmpty = "§cUnable to find an item for sale.";
@@ -56,8 +57,7 @@ public class Lang implements Saveable {
 	public static String configRemoveItemError = "§cItem §6%item% §cdoes not exist in the shop!";
 	public static String configEditError = "§cUnable to find the item!";
 	public static String configEditSuccess = "§aYou just changed the price §6%type% §afor the item §6%item% §aat §6%price%§a$.";
-	
-	public static List<String> displayItemLore = new ArrayList<String>();
+		public static List<String> displayItemLore = new ArrayList<String>();
 	public static List<String> displayItemLoreBoost = new ArrayList<String>();
 	
 	public static String second = "second";
@@ -101,6 +101,7 @@ public class Lang implements Saveable {
 	}
 	
 	private static transient Lang i = new Lang();
+
 
 	@Override
 	public void save(Persist persist) {
