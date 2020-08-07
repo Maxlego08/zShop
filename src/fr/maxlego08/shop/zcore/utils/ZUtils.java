@@ -1,12 +1,13 @@
 package fr.maxlego08.shop.zcore.utils;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,6 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,24 +27,33 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
+import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
 import fr.maxlego08.shop.ZShop;
-import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
-import fr.maxlego08.shop.zcore.utils.enums.Message;
-import fr.maxlego08.shop.zcore.utils.enums.Permission;
+import fr.maxlego08.shop.zcore.enums.Inventory;
+import fr.maxlego08.shop.zcore.enums.Message;
+import fr.maxlego08.shop.zcore.enums.Permission;
+import fr.maxlego08.shop.zcore.utils.builder.CooldownBuilder;
+import fr.maxlego08.shop.zcore.utils.builder.TimerBuilder;
+import fr.maxlego08.shop.zcore.utils.players.ActionBar;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.HoverEvent.Action;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.economy.Economy;
 
 @SuppressWarnings("deprecation")
-public abstract class ZUtils {
+public abstract class ZUtils extends MessageUtils{
 
 	private static transient List<String> teleportPlayers = new ArrayList<String>();
-	protected transient ZShop plugin = ZShop.i();
+	protected transient ZShop plugin = (ZShop) ZPlugin.z();
 
 	/**
 	 * @param location
@@ -71,9 +82,12 @@ public abstract class ZUtils {
 		float x = Float.parseFloat(a[1]);
 		float y = Float.parseFloat(a[2]);
 		float z = Float.parseFloat(a[3]);
-		float yaw = Float.parseFloat(a[4]);
-		float pitch = Float.parseFloat(a[5]);
-		return new Location(w, x, y, z, yaw, pitch);
+		if (a.length == 6) {
+			float yaw = Float.parseFloat(a[4]);
+			float pitch = Float.parseFloat(a[5]);
+			return new Location(w, x, y, z, yaw, pitch);
+		}
+		return new Location(w, x, y, z);
 	}
 
 	/**
@@ -225,7 +239,6 @@ public abstract class ZUtils {
 	}
 
 	private static transient Material[] byId;
-	private static transient Map<String, Material> BY_NAME = new HashMap<>();
 
 	static {
 		byId = new Material[0];
@@ -237,15 +250,6 @@ public abstract class ZUtils {
 				byId[material.getId()] = material;
 			}
 		}
-
-		Material[] var3;
-		int var2 = (var3 = Material.values()).length;
-
-		for (int var1 = 0; var1 < var2; ++var1) {
-			Material material = var3[var1];
-			BY_NAME.put(material.name(), material);
-		}
-
 	}
 
 	/**
@@ -415,9 +419,6 @@ public abstract class ZUtils {
 	 * @return player bank
 	 */
 	protected double getBalance(Player player) {
-		Economy economy = ZPlugin.z().getEconomy();
-		if (economy == null)
-			return 0.0;
 		return economy.getBalance(player);
 	}
 
@@ -565,6 +566,12 @@ public abstract class ZUtils {
 		return economy;
 	}
 
+	/**
+	 * 
+	 * @param player
+	 * @param item
+	 * @param itemStack
+	 */
 	protected void removeItems(Player player, int item, ItemStack itemStack) {
 		for (ItemStack is : player.getInventory().getContents()) {
 			if (is != null && is.isSimilar(itemStack)) {
@@ -579,6 +586,10 @@ public abstract class ZUtils {
 		player.updateInventory();
 	}
 
+	/**
+	 * @param delay
+	 * @param runnable
+	 */
 	protected void schedule(long delay, Runnable runnable) {
 		new Timer().schedule(new TimerTask() {
 
@@ -590,26 +601,60 @@ public abstract class ZUtils {
 		}, delay);
 	}
 
+	/**
+	 * 
+	 * @param string
+	 * @return
+	 */
 	protected String name(String string) {
 		return TextUtil.name(string);
 	}
 
+	/**
+	 * 
+	 * @param items
+	 * @return
+	 */
 	protected int getMaxPage(Collection<?> items) {
 		return (items.size() / 45) + 1;
 	}
 
+	/**
+	 * 
+	 * @param items
+	 * @param a
+	 * @return
+	 */
 	protected int getMaxPage(Collection<?> items, int a) {
 		return (items.size() / a) + 1;
 	}
 
+	/**
+	 * 
+	 * @param value
+	 * @param total
+	 * @return
+	 */
 	protected double percent(double value, double total) {
 		return (double) ((value * 100) / total);
 	}
 
+	/**
+	 * 
+	 * @param total
+	 * @param percent
+	 * @return
+	 */
 	protected double percentNum(double total, double percent) {
 		return (double) (total * (percent / 100));
 	}
 
+	/**
+	 * 
+	 * @param delay
+	 * @param count
+	 * @param runnable
+	 */
 	protected void schedule(long delay, int count, Runnable runnable) {
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			int tmpCount = 0;
@@ -634,34 +679,62 @@ public abstract class ZUtils {
 		}, 0, delay);
 	}
 
-	protected void message(CommandSender player, Message message) {
-		player.sendMessage(Lang.prefix + " " + message.msg());
+	/**
+	 * 
+	 * @param player
+	 * @param inventoryId
+	 */
+	protected void createInventory(Player player, Inventory inventory) {
+		createInventory(player, inventory, 1);
 	}
 
-	protected void message(CommandSender player, String message) {
-		player.sendMessage(Lang.prefix + " " + message);
+	/**
+	 * 
+	 * @param player
+	 * @param inventoryId
+	 * @param page
+	 */
+	protected void createInventory(Player player, Inventory inventory, int page) {
+		createInventory(player, inventory, page, new Object() {
+		});
 	}
 
-	protected void message(CommandSender player, String message, Object... args) {
-		player.sendMessage(Lang.prefix + " " + String.format(message, args));
+	/**
+	 * 
+	 * @param player
+	 * @param inventoryId
+	 * @param page
+	 * @param objects
+	 */
+	protected void createInventory(Player player, Inventory inventory, int page, Object... objects) {
+		plugin.getInventoryManager().createInventory(inventory, player, page, objects);
 	}
 
-	protected void messageWO(CommandSender player, Message message) {
-		player.sendMessage(message.msg());
+	/**
+	 * 
+	 * @param player
+	 * @param inventory
+	 * @param page
+	 * @param objects
+	 */
+	protected void createInventory(Player player, int inventory, int page, Object... objects) {
+		plugin.getInventoryManager().createInventory(inventory, player, page, objects);
 	}
 
-	protected void messageWO(CommandSender player, Message message, Object... args) {
-		player.sendMessage(String.format(message.msg(), args));
-	}
-
-	protected void message(CommandSender player, Message message, Object... args) {
-		player.sendMessage(Lang.prefix + " " + String.format(message.msg(), args));
-	}
-
+	/**
+	 * 
+	 * @param permissible
+	 * @param permission
+	 * @return
+	 */
 	protected boolean hasPermission(Permissible permissible, Permission permission) {
 		return permissible.hasPermission(permission.getPermission());
 	}
 
+	/**
+	 * @param delay
+	 * @param runnable
+	 */
 	protected void scheduleFix(long delay, BiConsumer<TimerTask, Boolean> runnable) {
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -676,6 +749,11 @@ public abstract class ZUtils {
 		}, delay, delay);
 	}
 
+	/**
+	 * 
+	 * @param element
+	 * @return
+	 */
 	protected <T> T randomElement(List<T> element) {
 		if (element.size() == 0)
 			return null;
@@ -685,35 +763,60 @@ public abstract class ZUtils {
 		return element.get(random.nextInt(element.size() - 1));
 	}
 
-	public String getItemName(ItemStack item) {
+	/**
+	 * 
+	 * @param item
+	 * @return
+	 */
+	protected String getItemName(ItemStack item) {
 		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName())
 			return item.getItemMeta().getDisplayName();
 		String name = item.serialize().get("type").toString().replace("_", " ").toLowerCase();
 		return name.substring(0, 1).toUpperCase() + name.substring(1);
 	}
 
-	public String color(String message) {
+	/**
+	 * 
+	 * @param message
+	 * @return
+	 */
+	protected String color(String message) {
 		return message.replace("&", "§");
 	}
 
+	/**
+	 * 
+	 * @param message
+	 * @return
+	 */
 	public String colorReverse(String message) {
 		return message.replace("§", "&");
 	}
 
-	protected String itemName(ItemStack item) {
-		return item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName()
-				: TextUtil.getMaterialLowerAndMajAndSpace(item.getType());
-	}
-
-	public List<String> color(List<String> messages) {
+	/**
+	 * 
+	 * @param messages
+	 * @return
+	 */
+	protected List<String> color(List<String> messages) {
 		return messages.stream().map(message -> color(message)).collect(Collectors.toList());
 	}
 
+	/**
+	 * 
+	 * @param messages
+	 * @return
+	 */
 	public List<String> colorReverse(List<String> messages) {
 		return messages.stream().map(message -> colorReverse(message)).collect(Collectors.toList());
 	}
 
-	public ItemFlag getFlag(String flagString) {
+	/**
+	 * 
+	 * @param flagString
+	 * @return
+	 */
+	protected ItemFlag getFlag(String flagString) {
 		for (ItemFlag flag : ItemFlag.values()) {
 			if (flag.name().equalsIgnoreCase(flagString))
 				return flag;
@@ -721,6 +824,11 @@ public abstract class ZUtils {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param list
+	 * @return
+	 */
 	protected <T> List<T> reverse(List<T> list) {
 		List<T> tmpList = new ArrayList<>();
 		for (int index = list.size() - 1; index != -1; index--)
@@ -730,17 +838,338 @@ public abstract class ZUtils {
 
 	/**
 	 * 
-	 * @param name
+	 * @param price
 	 * @return
 	 */
-	protected Material getMaterial(String name) {
-		return BY_NAME.get(name.toUpperCase());
+	protected String price(long price) {
+		return String.format("%,d", price);
 	}
 
+	/**
+	 * Permet de générer un string
+	 * 
+	 * @param length
+	 * @return
+	 */
+	protected String generateRandomString(int length) {
+		int leftLimit = 97; // letter 'a'
+		int rightLimit = 122; // letter 'z'
+		int targetStringLength = 5;
+		Random random = new Random();
+		StringBuilder buffer = new StringBuilder(targetStringLength);
+		for (int i = 0; i < targetStringLength; i++) {
+			int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1));
+			buffer.append((char) randomLimitedInt);
+		}
+		String generatedString = buffer.toString();
+		return generatedString;
+	}
+
+	/**
+	 * 
+	 * @param message
+	 * @return
+	 */
+	protected TextComponent buildTextComponent(String message) {
+		return new TextComponent(message);
+	}
+
+	/**
+	 * 
+	 * @param message
+	 * @return
+	 */
+	protected TextComponent setHoverMessage(TextComponent component, String... messages) {
+		BaseComponent[] list = new BaseComponent[messages.length];
+		for (int a = 0; a != messages.length; a++)
+			list[a] = new TextComponent(messages[a] + (messages.length - 1 == a ? "" : "\n"));
+		component.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, list));
+		return component;
+	}
+
+	/**
+	 * 
+	 * @param message
+	 * @return
+	 */
+	protected TextComponent setHoverMessage(TextComponent component, List<String> messages) {
+		BaseComponent[] list = new BaseComponent[messages.size()];
+		for (int a = 0; a != messages.size(); a++)
+			list[a] = new TextComponent(messages.get(a) + (messages.size() - 1 == a ? "" : "\n"));
+		component.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, list));
+		return component;
+	}
+
+	/**
+	 * 
+	 * @param component
+	 * @param action
+	 * @param command
+	 * @return
+	 */
+	protected TextComponent setClickAction(TextComponent component, net.md_5.bungee.api.chat.ClickEvent.Action action,
+			String command) {
+		component.setClickEvent(new ClickEvent(action, command));
+		return component;
+	}
+
+	/**
+	 * Permet de retirer les items d'un inventaire en fonction d'un item stack
+	 * et d'un nombre
+	 * 
+	 * @param inventory
+	 * @param removeItemStack
+	 * @param amount
+	 */
+	protected void removeItems(org.bukkit.inventory.Inventory inventory, ItemStack removeItemStack, int amount) {
+		for (ItemStack itemStack : inventory.getContents()) {
+			if (itemStack != null && itemStack.isSimilar(itemStack) && amount > 0) {
+				int currentAmount = itemStack.getAmount() - amount;
+				amount -= itemStack.getAmount();
+				if (currentAmount <= 0)
+					inventory.removeItem(itemStack);
+				else
+					itemStack.setAmount(currentAmount);
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	protected String getDisplayBalence(double value) {
+		if (value < 10000)
+			return format(value, "#.#");
+		else if (value < 1000000)
+			return String.valueOf(Integer.valueOf((int) (value / 1000))) + "k ";
+		else if (value < 1000000000)
+			return String.valueOf(format((value / 1000) / 1000, "#.#")) + "m ";
+		else if (value < 1000000000000l)
+			return String.valueOf(Integer.valueOf((int) (((value / 1000) / 1000) / 1000))) + "M ";
+		else
+			return "to much";
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	protected String getDisplayBalence(long value) {
+		if (value < 10000)
+			return format(value, "#.#");
+		else if (value < 1000000)
+			return String.valueOf(Integer.valueOf((int) (value / 1000))) + "k ";
+		else if (value < 1000000000)
+			return String.valueOf(format((value / 1000) / 1000, "#.#")) + "m ";
+		else if (value < 1000000000000l)
+			return String.valueOf(Integer.valueOf((int) (((value / 1000) / 1000) / 1000))) + "M ";
+		else
+			return "to much";
+	}
+
+	/**
+	 * Permet de conter le nombre d'item
+	 * 
+	 * @param inventory
+	 * @param material
+	 * @return
+	 */
+	protected int count(org.bukkit.inventory.Inventory inventory, Material material) {
+		int count = 0;
+		for (ItemStack itemStack : inventory.getContents())
+			if (itemStack != null && itemStack.getType().equals(material))
+				count += itemStack.getAmount();
+		return count;
+	}
+
+	protected Enchantment enchantFromString(String str) {
+		for (Enchantment enchantment : Enchantment.values())
+			if (enchantment.getName().equalsIgnoreCase(str))
+				return enchantment;
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param direction
+	 * @return
+	 */
+	protected BlockFace getClosestFace(float direction) {
+
+		direction = direction % 360;
+
+		if (direction < 0)
+			direction += 360;
+
+		direction = Math.round(direction / 45);
+
+		switch ((int) direction) {
+		case 0:
+			return BlockFace.WEST;
+		case 1:
+			return BlockFace.NORTH_WEST;
+		case 2:
+			return BlockFace.NORTH;
+		case 3:
+			return BlockFace.NORTH_EAST;
+		case 4:
+			return BlockFace.EAST;
+		case 5:
+			return BlockFace.SOUTH_EAST;
+		case 6:
+			return BlockFace.SOUTH;
+		case 7:
+			return BlockFace.SOUTH_WEST;
+		default:
+			return BlockFace.WEST;
+		}
+	}
+
+	/**
+	 * 
+	 * @param price
+	 * @return
+	 */
+	protected String betterPrice(long price) {
+		String betterPrice = "";
+		String[] splitPrice = String.valueOf(price).split("");
+		int current = 0;
+		for (int a = splitPrice.length - 1; a > -1; a--) {
+			current++;
+			if (current > 3) {
+				betterPrice += ".";
+				current = 1;
+			}
+			betterPrice += splitPrice[a];
+		}
+		StringBuilder builder = new StringBuilder().append(betterPrice);
+		builder.reverse();
+		return builder.toString();
+	}
+
+	/**
+	 * 
+	 * @param enchantment
+	 * @param itemStack
+	 * @return
+	 */
+	protected boolean hasEnchant(Enchantment enchantment, ItemStack itemStack) {
+		return itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchants()
+				&& itemStack.getItemMeta().hasEnchant(enchantment);
+	}
+
+	/**
+	 * 
+	 * @param player
+	 * @param cooldown
+	 * @return
+	 */
+	protected String timerFormat(Player player, String cooldown) {
+		return TimerBuilder.getStringTime(CooldownBuilder.getCooldownPlayer(cooldown, player) / 1000);
+	}
+
+	/**
+	 * 
+	 * @param player
+	 * @param cooldown
+	 * @return
+	 */
+	protected boolean isCooldown(Player player, String cooldown) {
+		return isCooldown(player, cooldown, 0);
+	}
+
+	/**
+	 * 
+	 * @param player
+	 * @param cooldown
+	 * @param timer
+	 * @return
+	 */
+	protected boolean isCooldown(Player player, String cooldown, int timer) {
+		if (CooldownBuilder.isCooldown(cooldown, player)) {
+			ActionBar.sendActionBar(player,
+					String.format("§cVous devez attendre encore §6%s §cavant de pouvoir faire cette action.",
+							timerFormat(player, cooldown)));
+			return true;
+		}
+		if (timer > 0)
+			CooldownBuilder.addCooldown(cooldown, player, timer);
+		return false;
+	}
+
+	/**
+	 * @param list
+	 * @return
+	 */
+	protected String toList(Stream<String> list) {
+		return toList(list.collect(Collectors.toList()), "§e", "§6");
+	}
+
+	/**
+	 * @param list
+	 * @return
+	 */
+	protected String toList(List<String> list) {
+		return toList(list, "§e", "§6§n");
+	}
+
+	/**
+	 * @param list
+	 * @param color
+	 * @param color2
+	 * @return
+	 */
+	protected String toList(List<String> list, String color, String color2) {
+		if (list == null || list.size() == 0)
+			return null;
+		if (list.size() == 1)
+			return list.get(0);
+		String str = "";
+		for (int a = 0; a != list.size(); a++) {
+			if (a == list.size() - 1 && a != 0)
+				str += color + " et " + color2;
+			else if (a != 0)
+				str += color + ", " + color2;
+			str += list.get(a);
+		}
+		return str;
+	}
+
+	/**
+	 * 
+	 * @param message
+	 * @return
+	 */
 	public String removeColor(String message) {
 		for (ChatColor color : ChatColor.values())
 			message = message.replace("§" + color.getChar(), "").replace("&" + color.getChar(), "");
 		return message;
+	}
+
+	/**
+	 * 
+	 * @param l
+	 * @return
+	 */
+	public String format(long l) {
+		return format(l, ' ');
+	}
+
+	/**
+	 * 
+	 * @param l
+	 * @param c
+	 * @return
+	 */
+	public String format(long l, char c) {
+		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+		DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+		symbols.setGroupingSeparator(c);
+		formatter.setDecimalFormatSymbols(symbols);
+		return formatter.format(l);
 	}
 
 }

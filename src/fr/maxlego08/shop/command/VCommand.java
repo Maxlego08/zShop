@@ -4,20 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.ZShop;
-import fr.maxlego08.shop.save.Config;
-import fr.maxlego08.shop.zcore.utils.Arguments;
-import fr.maxlego08.shop.zcore.utils.enums.Permission;
-import fr.maxlego08.shop.zcore.utils.inventory.IIventory;
-import fr.maxlego08.shop.zshop.factories.Boost;
-import fr.maxlego08.shop.zshop.factories.Categories;
-import fr.maxlego08.shop.zshop.factories.Items;
-import fr.maxlego08.shop.zshop.factories.Shop;
-import fr.maxlego08.shop.zshop.inventories.Inventories;
+import fr.maxlego08.shop.zcore.enums.Message;
+import fr.maxlego08.shop.zcore.enums.Permission;
+import fr.maxlego08.shop.zcore.utils.commands.Arguments;
+import fr.maxlego08.shop.zcore.utils.commands.CommandType;
+import fr.maxlego08.shop.zcore.utils.commands.Tab;
 
 public abstract class VCommand extends Arguments {
 
@@ -30,7 +25,7 @@ public abstract class VCommand extends Arguments {
 	/**
 	 * Mother command of this command
 	 */
-	private VCommand parent;
+	protected VCommand parent;
 
 	/**
 	 * Are all sub commands used
@@ -41,20 +36,11 @@ public abstract class VCommand extends Arguments {
 	private List<String> requireArgs = new ArrayList<String>();
 	private List<String> optionalArgs = new ArrayList<String>();
 
-	protected Shop shop;
-	protected Items items;
-	protected Boost boost;
-	protected Categories categories;
-	protected Inventories inventories;
-	protected Command command;
-	protected CommandType tabCompleter = CommandType.DEFAULT;
-
 	/**
 	 * If this variable is false the command will not be able to use this
 	 * command
 	 */
 	private boolean consoleCanUse = true;
-	private boolean showHelp = true;
 
 	/**
 	 * This variable allows to run the main class of the command even with
@@ -62,18 +48,15 @@ public abstract class VCommand extends Arguments {
 	 */
 	private boolean ignoreParent = false;
 	private boolean ignoreArgs = false;
-	protected boolean DEBUG = Config.enableDebug;
+	protected boolean DEBUG = false;
+	protected boolean runAsync = false;
+	protected CommandType tabCompleter = CommandType.DEFAULT;
 
 	/**
 	 * This is the person who executes the command
 	 */
 	public CommandSender sender;
 	public Player player;
-
-	/**
-	 * Allows you to directly open an inventory when running the command
-	 */
-	private IIventory inventory;
 
 	private String syntaxe;
 
@@ -85,29 +68,6 @@ public abstract class VCommand extends Arguments {
 	//
 	// GETTER
 	//
-
-	protected void setIgnoreParent(boolean ignoreParent) {
-		this.ignoreParent = ignoreParent;
-	}
-
-	protected void setShowHelp(boolean showHelp) {
-		this.showHelp = showHelp;
-	}
-
-	public boolean isShowHelp() {
-		return showHelp;
-	}
-
-	public CommandType getTabCompleter() {
-		return tabCompleter;
-	}
-
-	/*
-	 * 
-	 */
-	protected void setTabCompletor() {
-		this.tabCompleter = CommandType.SUCCESS;
-	}
 
 	/**
 	 * @return the permission
@@ -173,13 +133,10 @@ public abstract class VCommand extends Arguments {
 	 * @return the syntaxe
 	 */
 	public String getSyntaxe() {
-		if (syntaxe == null)
+		if (syntaxe == null) {
 			syntaxe = generateDefaultSyntaxe("");
+		}
 		return syntaxe;
-	}
-
-	public IIventory getInventory() {
-		return inventory;
 	}
 
 	public boolean isIgnoreArgs() {
@@ -190,9 +147,28 @@ public abstract class VCommand extends Arguments {
 		return description == null ? "no description" : description;
 	}
 
+	public CommandType getTabCompleter() {
+		return tabCompleter;
+	}
+
+	/*
+	 * 
+	 */
+	protected void setTabCompletor() {
+		this.tabCompleter = CommandType.SUCCESS;
+	}
+
 	//
 	// SETTER
 	//
+
+	public void setIgnoreArgs(boolean ignoreArgs) {
+		this.ignoreArgs = ignoreArgs;
+	}
+
+	public void setIgnoreParent(boolean ignoreParent) {
+		this.ignoreParent = ignoreParent;
+	}
 
 	/**
 	 * @param syntaxe
@@ -200,20 +176,6 @@ public abstract class VCommand extends Arguments {
 	 */
 	protected VCommand setSyntaxe(String syntaxe) {
 		this.syntaxe = syntaxe;
-		return this;
-	}
-
-	/**
-	 * Permet de créer un inventaire, doit être mis dans le constructeur de la
-	 * commande
-	 * 
-	 * @param id
-	 * @param page
-	 * @param objects
-	 * @return
-	 */
-	public VCommand createInventory(int id, int page, Object... objects) {
-		inventory = new IIventory(id, page, objects);
 		return this;
 	}
 
@@ -275,6 +237,25 @@ public abstract class VCommand extends Arguments {
 		this.ignoreArgs = true;
 	}
 
+	/**
+	 * Mettre la description de la commande
+	 * 
+	 * @param description
+	 * @return
+	 */
+	protected VCommand setDescription(Message description) {
+		this.description = description.getMessage();
+		return this;
+	}
+
+	/**
+	 * 
+	 * @return first command
+	 */
+	public String getFirst() {
+		return subCommands.get(0);
+	}
+
 	//
 	// OTHER
 	//
@@ -298,9 +279,8 @@ public abstract class VCommand extends Arguments {
 	 */
 	public VCommand addSubCommand(VCommand command) {
 		command.setParent(this);
-		
-		ZShop.i().getCommandManager().addCommand(command);
-		subVCommands.add(command);
+		plugin.getCommandManager().addCommand(command);
+		this.subVCommands.add(command);
 		return this;
 	}
 
@@ -326,12 +306,14 @@ public abstract class VCommand extends Arguments {
 
 		String tmpString = subCommands.get(0);
 
-		if (requireArgs.size() != 0 && syntaxe.equals(""))
+		boolean update = syntaxe.equals("");
+
+		if (requireArgs.size() != 0 && update)
 			for (String requireArg : requireArgs) {
 				requireArg = "<" + requireArg + ">";
 				syntaxe += " " + requireArg;
 			}
-		if (optionalArgs.size() != 0 && syntaxe.equals(""))
+		if (optionalArgs.size() != 0 && update)
 			for (String optionalArg : optionalArgs) {
 				optionalArg = "[<" + optionalArg + ">]";
 				syntaxe += " " + optionalArg;
@@ -355,16 +337,9 @@ public abstract class VCommand extends Arguments {
 		return parent == null ? defaultParent : parent.parentCount(defaultParent + 1);
 	}
 
-	public CommandType prePerform(ZShop main, CommandSender commandSender, Command commands, String[] args) {
+	public CommandType prePerform(ZShop main, CommandSender commandSender, String[] args) {
 
 		// On met à jour le nombre d'argument en fonction du nombre de parent
-
-		shop = main.getShop();
-		items = main.getItems();
-		boost = main.getBoost();
-		categories = main.getCategories();
-		inventories = main.getInventory();
-		command = commands;
 
 		parentCount = parentCount(0);
 		argsMaxLength = requireArgs.size() + optionalArgs.size() + parentCount;
@@ -397,7 +372,7 @@ public abstract class VCommand extends Arguments {
 		try {
 			return perform(main);
 		} catch (Exception e) {
-			if (Config.enableDebug)
+			if (DEBUG)
 				e.printStackTrace();
 			return CommandType.SYNTAX_ERROR;
 		}
@@ -440,6 +415,7 @@ public abstract class VCommand extends Arguments {
 	}
 
 	/**
+	 * Generate list for tab completer
 	 * 
 	 * @param startWith
 	 * @param strings
@@ -450,35 +426,43 @@ public abstract class VCommand extends Arguments {
 	}
 
 	/**
+	 * Generate list for tab completer
+	 * 
+	 * @param startWith
+	 * @param strings
+	 * @return
+	 */
+	protected List<String> generateList(Tab tab, String startWith, String... strings) {
+		return generateList(Arrays.asList(strings), startWith, tab);
+	}
+
+	/**
+	 * Generate list for tab completer
 	 * 
 	 * @param defaultList
 	 * @param startWith
 	 * @return
 	 */
 	protected List<String> generateList(List<String> defaultList, String startWith) {
-		List<String> newList = new ArrayList<>();
-		for (String str : defaultList)
-			if (startWith.length() == 0 || str.toLowerCase().startsWith(startWith.toLowerCase()))
-				newList.add(str);
-		return newList.size() == 0 ? null : newList;
+		return generateList(defaultList, startWith, Tab.START);
 	}
-	
+
 	/**
+	 * Generate list for tab completer
 	 * 
 	 * @param defaultList
 	 * @param startWith
+	 * @param tab
 	 * @return
 	 */
-	protected List<String> generateListContains(List<String> defaultList, String startWith) {
+	protected List<String> generateList(List<String> defaultList, String startWith, Tab tab) {
 		List<String> newList = new ArrayList<>();
 		for (String str : defaultList)
-			if (startWith.length() == 0 || str.toLowerCase().contains(startWith.toLowerCase()))
+			if (startWith.length() == 0
+					|| (tab.equals(Tab.START) ? str.toLowerCase().startsWith(startWith.toLowerCase())
+							: str.toLowerCase().contains(startWith.toLowerCase())))
 				newList.add(str);
 		return newList.size() == 0 ? null : newList;
-	}
-
-	public String getFirst() {
-		return subCommands.get(0);
 	}
 
 }
