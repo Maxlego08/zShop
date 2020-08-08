@@ -1,0 +1,22 @@
+name: "&eMiscellaneous"
+size: 54
+items:
+  previous: #Bouton précédant
+    item:
+      material: ARROW
+      name: "&7Previous page"
+    type: PREVIOUS
+    slot: 49
+  next: #Bouton suivant
+    item:
+      material: ARROW
+      name: "&7Next page"
+    type: NEXT
+    slot: 51
+  back: #Bouton de retour
+    item:
+      material: BARRIER
+      name: "&7Back to previous"
+    type: BACK
+    slot: 50    
+    permission: "zshop.blocks.back"      

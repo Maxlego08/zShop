@@ -66,7 +66,15 @@ public abstract class ZPlugin extends JavaPlugin {
 		if (getPlugin(Plugins.VAULT) != null)
 			economy = getProvider(Economy.class);
 
+		saveDefaultConfig();
+		
 		saveResource("inventories/blocks.yml", false);
+		saveResource("inventories/ores.yml", false);
+		saveResource("inventories/miscellaneous.yml", false);
+		saveResource("inventories/mobs.yml", false);
+		saveResource("inventories/farm.yml", false);
+		saveResource("inventories/redstone.yml", false);
+		saveResource("inventories/foods.yml", false);
 		
 		return true;
 

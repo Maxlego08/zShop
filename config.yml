@@ -1,0 +1,18 @@
+#Liste des commandes
+commands:
+  shop:
+    command: "zshop" #Default commande
+    aliases: #Aliases
+      - "shop"
+      - "myshop" 
+    inventory: "shop" #File name
+    
+#Liste des catégories à charger, le fichier doit être dans le dossier inventories
+categories:    
+ - "ores"
+ - "blocks"
+ - "redstone"
+ - "farm"
+ - "foods"
+ - "miscellaneous"
+ - "mobs"
