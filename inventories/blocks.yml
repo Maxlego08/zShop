@@ -1,0 +1,48 @@
+name: "&eBlocks"
+size: 54
+items:
+  previous: #Bouton précédant
+    item:
+      material: ARROW
+      name: "&7Previous page"
+    type: PREVIOUS
+    slot: 49
+  next: #Bouton suivant
+    item:
+      material: ARROW
+      name: "&7Next page"
+    type: NEXT
+    slot: 51
+  back: #Bouton de retour
+    item:
+      material: BARRIER
+      name: "&7Back to previous"
+    type: BACK
+    slot: 50    
+    permission: "zshop.blocks.back"
+  stone: #item stone, on peut mettre n'importe quoi ici
+    item: #Item
+      material: STONE 
+    type: ITEM #Type du bouton
+    slot: 0  #Slot 
+    buyPrice: 0.0 #Prix d'achat
+    sellPrice: 10.0 #Prix de vente 
+  stone2: #item stone, on peut mettre n'importe quoi ici
+    item: #Item
+      material: STONE 
+    type: ITEM #Type du bouton
+    slot: 1  #Slot 
+    buyPrice: 0.0 #Prix d'achat
+    sellPrice: 10.0 #Prix de vente
+    permission: "zshop.blocks.mystone" #Si le joueur à la permission
+    else: #Si le joueur n'a pas la permission
+      item: #Item
+        material: STONE   
+      buyPrice: 0.0 #Prix d'achat
+      sellPrice: 50.0 #Prix de vente 
+
+  deco: #Déco
+    item:
+      material: STAINED_GLASS_PAINE
+    type: NONE #Ne vas rien faire
+    slot: 3      

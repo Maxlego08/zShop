@@ -8,13 +8,6 @@ import fr.maxlego08.shop.scoreboard.ScoreBoardManager;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.utils.builder.CooldownBuilder;
 
-/**
- * System to create your plugins very simply Projet:
- * https://github.com/Maxlego08/TemplatePlugin
- * 
- * @author Maxlego08
- *
- */
 public class ZShop extends ZPlugin {
 
 	@Override
