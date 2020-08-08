@@ -1,4 +1,4 @@
-package fr.maxlego08.shop.exceptions;
+package fr.maxlego08.shop.api.exceptions;
 
 public class InventoryOpenException extends Exception {
 

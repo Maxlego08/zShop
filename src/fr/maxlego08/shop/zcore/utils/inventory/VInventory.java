@@ -1,4 +1,4 @@
-package fr.maxlego08.shop.inventory;
+package fr.maxlego08.shop.zcore.utils.inventory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,11 +12,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
-import fr.maxlego08.shop.exceptions.InventoryOpenException;
+import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.builder.ItemBuilder;
-import fr.maxlego08.shop.zcore.utils.inventory.InventoryResult;
-import fr.maxlego08.shop.zcore.utils.inventory.ItemButton;
 
 public abstract class VInventory extends ZUtils implements Cloneable {
 
@@ -193,7 +191,7 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 		return guiName;
 	}
 
-	protected InventoryResult preOpenInventory(ZShop main, Player player, int page, Object... args)
+	public InventoryResult preOpenInventory(ZShop main, Player player, int page, Object... args)
 			throws InventoryOpenException {
 
 		this.page = page;
@@ -207,12 +205,11 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 	public abstract InventoryResult openInventory(ZShop main, Player player, int page, Object... args)
 			throws InventoryOpenException;
 
-	protected abstract void onClose(InventoryCloseEvent event, ZShop plugin, Player player);
-
-	protected abstract void onDrag(InventoryDragEvent event, ZShop plugin, Player player);
+	public abstract void onClose(InventoryCloseEvent event, ZShop plugin, Player player);
+	public abstract void onDrag(InventoryDragEvent event, ZShop plugin, Player player);
 
 	@Override
-	protected VInventory clone() {
+	public VInventory clone() {
 		try {
 			return (VInventory) getClass().newInstance();
 		} catch (InstantiationException e) {

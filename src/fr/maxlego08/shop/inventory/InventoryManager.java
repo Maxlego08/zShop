@@ -11,8 +11,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
-import fr.maxlego08.shop.exceptions.InventoryAlreadyExistException;
-import fr.maxlego08.shop.exceptions.InventoryOpenException;
+import fr.maxlego08.shop.api.exceptions.InventoryAlreadyExistException;
+import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.listener.ListenerAdapter;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.Inventory;
@@ -21,6 +21,7 @@ import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.inventory.InventoryResult;
 import fr.maxlego08.shop.zcore.utils.inventory.ItemButton;
+import fr.maxlego08.shop.zcore.utils.inventory.VInventory;
 
 public class InventoryManager extends ListenerAdapter {
 

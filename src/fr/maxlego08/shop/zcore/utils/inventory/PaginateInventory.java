@@ -1,4 +1,4 @@
-package fr.maxlego08.shop.inventory;
+package fr.maxlego08.shop.zcore.utils.inventory;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -8,11 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
-import fr.maxlego08.shop.exceptions.InventoryOpenException;
-import fr.maxlego08.shop.zcore.utils.inventory.InventoryResult;
-import fr.maxlego08.shop.zcore.utils.inventory.InventorySize;
-import fr.maxlego08.shop.zcore.utils.inventory.ItemButton;
-import fr.maxlego08.shop.zcore.utils.inventory.Pagination;
+import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 
 public abstract class PaginateInventory<T> extends VInventory {
 

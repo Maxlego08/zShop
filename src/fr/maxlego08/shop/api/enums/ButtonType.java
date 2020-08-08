@@ -5,8 +5,10 @@ public enum ButtonType {
 	NONE,
 	BACK,
 	NEXT,
+	HOME,
 	PREVIOUS,
 	ITEM,
 	ITEM_CONFIRM,
+	INVENTORY,
 	
 }

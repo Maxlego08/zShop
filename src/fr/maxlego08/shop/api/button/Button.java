@@ -4,7 +4,7 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.enums.ButtonType;
 
-public interface IButton {
+public interface Button {
 
 	/**
 	 * 
@@ -17,24 +17,6 @@ public interface IButton {
 	 * @return buttonType
 	 */
 	public ButtonType getType();
-	
-	/**
-	 * 
-	 * @return else button
-	 */
-	public IButton getElseButton();
-	
-	/**
-	 * 
-	 * @return permission
-	 */
-	public String getPermission();
-	
-	/**
-	 * 
-	 * @return true if permission is not null
-	 */
-	public boolean hasPermission();
 	
 	/**
 	 * 

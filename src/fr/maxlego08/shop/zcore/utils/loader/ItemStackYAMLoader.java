@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import fr.maxlego08.shop.exceptions.ItemEnchantException;
-import fr.maxlego08.shop.exceptions.ItemFlagException;
+import fr.maxlego08.shop.api.exceptions.ItemEnchantException;
+import fr.maxlego08.shop.api.exceptions.ItemFlagException;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ItemDecoder;

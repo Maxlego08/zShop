@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.maxlego08.shop.exceptions;
+package fr.maxlego08.shop.api.exceptions;
 
 /**
  * @author Maxlego08
