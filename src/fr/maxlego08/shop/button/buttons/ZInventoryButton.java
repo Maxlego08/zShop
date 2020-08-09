@@ -9,7 +9,7 @@ import fr.maxlego08.shop.api.inventory.Inventory;
 
 public class ZInventoryButton extends ZPermissibleButton implements InventoryButton {
 
-	private final Inventory inventory;
+	protected Inventory inventory;
 
 	/**
 	 * @param type

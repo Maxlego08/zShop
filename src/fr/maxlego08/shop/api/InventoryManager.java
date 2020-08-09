@@ -14,7 +14,7 @@ public interface InventoryManager {
 	/**
 	 * Load inventories
 	 */
-	public void loadInventories();
+	public void loadInventories() throws Exception;
 	
 	/**
 	 * Save inventories

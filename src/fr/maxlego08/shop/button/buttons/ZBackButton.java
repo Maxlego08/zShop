@@ -35,4 +35,9 @@ public class ZBackButton extends ZInventoryButton implements BackButton {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public void setBack(Inventory inventory) {
+		super.inventory = inventory;
+	}
+
 }

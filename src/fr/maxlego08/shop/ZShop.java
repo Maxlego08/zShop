@@ -1,14 +1,16 @@
 package fr.maxlego08.shop;
 
+import org.bukkit.plugin.ServicePriority;
+
 import fr.maxlego08.shop.command.CommandManager;
+import fr.maxlego08.shop.inventory.InventoryLoader;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.listener.AdapterListener;
-import fr.maxlego08.shop.save.Config;
-import fr.maxlego08.shop.scoreboard.ScoreBoardManager;
 import fr.maxlego08.shop.zcore.ZPlugin;
-import fr.maxlego08.shop.zcore.utils.builder.CooldownBuilder;
 
 public class ZShop extends ZPlugin {
+
+	private fr.maxlego08.shop.api.InventoryManager inventory = new InventoryLoader(this);
 
 	@Override
 	public void onEnable() {
@@ -19,18 +21,30 @@ public class ZShop extends ZPlugin {
 
 		if (!isEnabled())
 			return;
+
 		inventoryManager = InventoryManager.getInstance();
 
-		scoreboardManager = new ScoreBoardManager(1000);
-		
+		/* Register provider */
+		getServer().getServicesManager().register(fr.maxlego08.shop.api.InventoryManager.class, inventory, this,
+				ServicePriority.High);
+
+		/* Load inventories */
+		try {
+			inventory.loadInventories();
+		} catch (Exception e) {
+			e.printStackTrace();
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+
 		/* Add Listener */
 
 		addListener(new AdapterListener(this));
 		addListener(inventoryManager);
 
 		/* Add Saver */
-		addSave(Config.getInstance());
-		addSave(new CooldownBuilder());
+		// addSave(Config.getInstance());
+		// addSave(new CooldownBuilder());
 
 		getSavers().forEach(saver -> saver.load(getPersist()));
 
@@ -39,13 +53,22 @@ public class ZShop extends ZPlugin {
 
 	@Override
 	public void onDisable() {
-
+		
+		if (!isLoaded) {
+			getLog().log("=== IMPOSSIBLE TO SWITCH OFF THE PLUGIN PROPERLY ===");
+			return;
+		}
+		
 		preDisable();
 
 		getSavers().forEach(saver -> saver.save(getPersist()));
 
 		postDisable();
 
+	}
+
+	public fr.maxlego08.shop.api.InventoryManager getInventory() {
+		return inventory;
 	}
 
 }

@@ -10,10 +10,30 @@ public interface Inventory {
 
 	/**
 	 * 
+	 * @return inventory size
+	 */
+	public int size();
+	
+	/**
+	 * 
+	 * @return inventory name
+	 */
+	public String getName();
+	
+	/**
+	 * 
+	 * @param replace
+	 * @param newChar
+	 * @return inventory name
+	 */
+	public String getName(String replace, String newChar);
+	
+	/**
+	 * 
 	 * @param button type
 	 * @return buttons list
 	 */
-	public <T extends Button> List<T> getButtons(T type);
+	public <T extends Button> List<T> getButtons(Class<T> type);
 	
 	/**
 	 * 
@@ -26,5 +46,6 @@ public interface Inventory {
 	 * @param player
 	 */
 	public void open(Player player);
+
 	
 }

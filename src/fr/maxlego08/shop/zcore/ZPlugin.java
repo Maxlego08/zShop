@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.zcore;
 
+import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,6 +42,7 @@ public abstract class ZPlugin extends JavaPlugin {
 	private List<Saveable> savers = new ArrayList<>();
 	private List<ListenerAdapter> listenerAdapters = new ArrayList<>();
 	private Economy economy = null;
+	protected boolean isLoaded = false;
 
 	protected CommandManager commandManager;
 	protected InventoryManager inventoryManager;
@@ -67,15 +68,22 @@ public abstract class ZPlugin extends JavaPlugin {
 			economy = getProvider(Economy.class);
 
 		saveDefaultConfig();
-		
-		saveResource("inventories/blocks.yml", false);
-		saveResource("inventories/ores.yml", false);
-		saveResource("inventories/miscellaneous.yml", false);
-		saveResource("inventories/mobs.yml", false);
-		saveResource("inventories/farm.yml", false);
-		saveResource("inventories/redstone.yml", false);
-		saveResource("inventories/foods.yml", false);
-		
+
+		if (!new File(getDataFolder() + "/inventories/blocks.yml").exists())
+			saveResource("inventories/blocks.yml", false);
+		if (!new File(getDataFolder() + "/inventories/ores.yml").exists())
+			saveResource("inventories/ores.yml", false);
+		if (!new File(getDataFolder() + "/inventories/miscellaneous.yml").exists())
+			saveResource("inventories/miscellaneous.yml", false);
+		if (!new File(getDataFolder() + "/inventories/mobs.yml").exists())
+			saveResource("inventories/mobs.yml", false);
+		if (!new File(getDataFolder() + "/inventories/farm.yml").exists())
+			saveResource("inventories/farm.yml", false);
+		if (!new File(getDataFolder() + "/inventories/redstone.yml").exists())
+			saveResource("inventories/redstone.yml", false);
+		if (!new File(getDataFolder() + "/inventories/foods.yml").exists())
+			saveResource("inventories/foods.yml", false);
+
 		return true;
 
 	}
@@ -88,6 +96,8 @@ public abstract class ZPlugin extends JavaPlugin {
 		if (commandManager != null)
 			commandManager.registerCommands();
 
+		isLoaded = true;
+		
 		log.log("=== ENABLE DONE <&>7(<&>6" + Math.abs(enableTime - System.currentTimeMillis()) + "ms<&>7) <&>e===");
 
 	}
