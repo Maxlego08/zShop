@@ -24,4 +24,16 @@ public interface Button {
 	 */
 	public int getSlot();
 	
+	/**
+	 * Set tmp slot
+	 * @param slot
+	 */
+	public void setTmpSlot(int slot);
+	
+	/**
+	 * 
+	 * @return tmp slot
+	 */
+	public int getTmpSlot();
+	
 }

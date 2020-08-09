@@ -47,5 +47,18 @@ public interface Inventory {
 	 */
 	public void open(Player player);
 
+	/**
+	 * 
+	 * @param page
+	 * @return
+	 */
+	public List<Button> sortButtons(int page);
+	
+	/**
+	 * 
+	 * @return int
+	 */
+	public int getMaxPage();
+
 	
 }

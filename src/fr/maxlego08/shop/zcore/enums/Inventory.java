@@ -2,7 +2,7 @@ package fr.maxlego08.shop.zcore.enums;
 
 public enum Inventory {
 
-	INVENTORY_TEST(1),
+	INVENTORY_DEFAULT(1),
 	
 	;
 	

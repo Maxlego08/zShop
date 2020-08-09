@@ -10,6 +10,7 @@ public class ZButton implements Button {
 	private final ButtonType type;
 	private final ItemStack itemStack;
 	private final int slot;
+	private int tmpSlot;
 
 	/**
 	 * @param type
@@ -36,6 +37,26 @@ public class ZButton implements Button {
 	@Override
 	public int getSlot() {
 		return slot;
+	}
+
+	@Override
+	public void setTmpSlot(int slot) {
+		this.tmpSlot = slot;
+	}
+
+	@Override
+	public int getTmpSlot() {
+		return tmpSlot;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ZButton [type=" + type + ", itemStack=" + itemStack + ", slot=" + slot + "]";
 	}
 
 }

@@ -12,6 +12,7 @@ import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.CommandObject;
 import fr.maxlego08.shop.command.commands.CommandInventory;
+import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 
 public class ZShopManager extends YamlUtils implements ShopManager {
@@ -55,8 +56,12 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	@Override
 	public void open(Player player, Command command) {
 
-		System.out.println("je vais open " + command);
+		Inventory inventory = command.getInventory();
 		
+		InventoryManager inventoryManager = plugin.getInventoryManager();
+		inventoryManager.createInventory(fr.maxlego08.shop.zcore.enums.Inventory.INVENTORY_DEFAULT, player, 1,
+				inventory, null);
+
 	}
 
 }

@@ -61,8 +61,8 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 	 * @return this
 	 */
 	protected VInventory createInventory(String name, int size) {
-		guiName = name;
-		this.inventory = Bukkit.createInventory(null, size, name);
+		guiName = color(name);
+		this.inventory = Bukkit.createInventory(null, size, guiName);
 		return this;
 	}
 
