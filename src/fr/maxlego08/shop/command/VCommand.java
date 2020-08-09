@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.zcore.enums.Message;
-import fr.maxlego08.shop.zcore.enums.Permission;
 import fr.maxlego08.shop.zcore.utils.commands.Arguments;
 import fr.maxlego08.shop.zcore.utils.commands.CommandType;
 import fr.maxlego08.shop.zcore.utils.commands.Tab;
@@ -20,7 +19,7 @@ public abstract class VCommand extends Arguments {
 	 * Permission used for the command, if it is a null then everyone can
 	 * execute the command
 	 */
-	private Permission permission;
+	private String permission;
 
 	/**
 	 * Mother command of this command
@@ -72,7 +71,7 @@ public abstract class VCommand extends Arguments {
 	/**
 	 * @return the permission
 	 */
-	public Permission getPermission() {
+	public String getPermission() {
 		return permission;
 	}
 
@@ -183,7 +182,7 @@ public abstract class VCommand extends Arguments {
 	 * @param permission
 	 *            the permission to set
 	 */
-	protected VCommand setPermission(Permission permission) {
+	protected VCommand setPermission(String permission) {
 		this.permission = permission;
 		return this;
 	}

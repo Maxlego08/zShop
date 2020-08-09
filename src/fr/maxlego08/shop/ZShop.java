@@ -2,6 +2,7 @@ package fr.maxlego08.shop;
 
 import org.bukkit.plugin.ServicePriority;
 
+import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.inventory.InventoryLoader;
 import fr.maxlego08.shop.inventory.InventoryManager;
@@ -11,6 +12,7 @@ import fr.maxlego08.shop.zcore.ZPlugin;
 public class ZShop extends ZPlugin {
 
 	private fr.maxlego08.shop.api.InventoryManager inventory = new InventoryLoader(this);
+	private ShopManager shopManager;
 
 	@Override
 	public void onEnable() {
@@ -31,6 +33,17 @@ public class ZShop extends ZPlugin {
 		/* Load inventories */
 		try {
 			inventory.loadInventories();
+		} catch (Exception e) {
+			e.printStackTrace();
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+		
+		shopManager = new ZShopManager(this);
+		
+		/* Load Commands */
+		try {
+			shopManager.loadCommands();
 		} catch (Exception e) {
 			e.printStackTrace();
 			getServer().getPluginManager().disablePlugin(this);
@@ -69,6 +82,10 @@ public class ZShop extends ZPlugin {
 
 	public fr.maxlego08.shop.api.InventoryManager getInventory() {
 		return inventory;
+	}
+	
+	public ShopManager getShopManager() {
+		return shopManager;
 	}
 
 }

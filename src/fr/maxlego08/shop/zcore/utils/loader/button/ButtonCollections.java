@@ -26,7 +26,6 @@ public class ButtonCollections implements Loader<List<Button>> {
 		Loader<Button> loader = new ButtonLoader();
 		for (String tmpPath : section.getKeys(false)) {
 			Button button = loader.load(configuration, "items." + tmpPath + ".", name);
-			System.out.println(button);
 			buttons.add(button);
 		}
 

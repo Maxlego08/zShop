@@ -14,6 +14,7 @@ import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.exceptions.CategoriesNotFoundException;
 import fr.maxlego08.shop.api.exceptions.InventoryFileNotFoundException;
 import fr.maxlego08.shop.api.exceptions.InventorySizeException;
+import fr.maxlego08.shop.api.exceptions.NameAlreadyExistException;
 import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.zcore.utils.loader.button.ButtonCollections;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
@@ -43,29 +44,8 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 		List<String> stringCategories = config.getStringList("categories");
 
-		for (String stringCategory : stringCategories) {
-
-			String lowerCategory = stringCategory.toLowerCase();
-			YamlConfiguration configuration = getConfig("inventories/" + lowerCategory + ".yml");
-
-			if (configuration == null)
-				throw new InventoryFileNotFoundException("Cannot find the file: inventories/" + lowerCategory + ".yml");
-
-			String name = configuration.getString("name");
-			name = name == null ? "" : name;
-
-			int size = configuration.getInt("size");
-			if (size % 9 != 0)
-				throw new InventorySizeException("Size " + size + " is not valid for inventory " + lowerCategory);
-
-			Loader<List<Button>> loader = new ButtonCollections();
-			List<Button> buttons = loader.load(configuration, lowerCategory);
-
-			Inventory inventory = new InventoryObject(name, size, buttons);
-			inventories.put(lowerCategory, inventory);
-			success("Successful loading of the inventory " + lowerCategory + " !");
-
-		}
+		for (String stringCategory : stringCategories)
+			this.loadInventory(stringCategory);
 
 		info("Inventories loading complete.");
 
@@ -74,6 +54,39 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 	@Override
 	public void saveInventories() {
 
+	}
+
+	@Override
+	public Inventory loadInventory(String fileName) throws Exception {
+		
+		if (fileName == null)
+			throw new NullPointerException("Impossible de trouver le string ! Il est null !");
+			 
+		
+		String lowerCategory = fileName.toLowerCase();
+		
+		if (inventories.containsKey(lowerCategory))
+			throw new NameAlreadyExistException("the name " + lowerCategory +" already exist !");
+		
+		YamlConfiguration configuration = getConfig("inventories/" + lowerCategory + ".yml");
+
+		if (configuration == null)
+			throw new InventoryFileNotFoundException("Cannot find the file: inventories/" + lowerCategory + ".yml");
+
+		String name = configuration.getString("name");
+		name = name == null ? "" : name;
+
+		int size = configuration.getInt("size");
+		if (size % 9 != 0)
+			throw new InventorySizeException("Size " + size + " is not valid for inventory " + lowerCategory);
+
+		Loader<List<Button>> loader = new ButtonCollections();
+		List<Button> buttons = loader.load(configuration, lowerCategory);
+
+		Inventory inventory = new InventoryObject(name, size, buttons);
+		inventories.put(lowerCategory, inventory);
+		success("Successful loading of the inventory " + lowerCategory + " !");
+		return inventory;
 	}
 
 }

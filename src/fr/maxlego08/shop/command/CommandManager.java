@@ -62,7 +62,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	 * @param vCommand
 	 * @param aliases
 	 */
-	public void registerCommand(String string, VCommand vCommand, String... aliases) {
+	public void registerCommand(String string, VCommand vCommand, List<String> aliases) {
 		try {
 			Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 			bukkitCommandMap.setAccessible(true);
@@ -74,15 +74,14 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 					Plugin.class);
 			constructor.setAccessible(true);
 
-			List<String> lists = Arrays.asList(aliases);
-
 			PluginCommand command = constructor.newInstance(string, ZPlugin.z());
 			command.setExecutor(this);
 			command.setTabCompleter(this);
-			command.setAliases(lists);
+			command.setAliases(aliases);
 
 			commands.add(vCommand.addSubCommand(string));
-			vCommand.addSubCommand(aliases);
+			for(String cmd : aliases)
+				vCommand.addSubCommand(cmd);
 
 			commandMap.register(command.getName(), ZPlugin.z().getDescription().getName(), command);
 
@@ -266,7 +265,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 				if ((vCommand.getParent() != null && vCommand.getParent() == command)) {
 					String cmd = vCommand.getSubCommands().get(0);
 					if (vCommand.getPermission() == null
-							|| sender.hasPermission(vCommand.getPermission().getPermission()))
+							|| sender.hasPermission(vCommand.getPermission()))
 						if (startWith.length() == 0 || cmd.startsWith(startWith))
 							tabCompleter.add(cmd);
 				}

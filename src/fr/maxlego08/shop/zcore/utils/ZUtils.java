@@ -730,6 +730,16 @@ public abstract class ZUtils extends MessageUtils{
 	protected boolean hasPermission(Permissible permissible, Permission permission) {
 		return permissible.hasPermission(permission.getPermission());
 	}
+	
+	/**
+	 * 
+	 * @param permissible
+	 * @param permission
+	 * @return
+	 */
+	protected boolean hasPermission(Permissible permissible, String permission) {
+		return permissible.hasPermission(permission);
+	}
 
 	/**
 	 * @param delay

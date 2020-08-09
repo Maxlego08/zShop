@@ -1,0 +1,9 @@
+name: "&ezShop"
+size: 9
+items:
+  previous: #Bouton précédant
+    item:
+      material: ARROW
+      name: "&7Previous page"
+    type: PREVIOUS
+    slot: 5    

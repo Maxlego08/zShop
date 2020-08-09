@@ -17,6 +17,13 @@ public interface InventoryManager {
 	public void loadInventories() throws Exception;
 	
 	/**
+	 * 
+	 * @param fileName
+	 * @throws Exception
+	 */
+	public Inventory loadInventory(String fileName) throws Exception;
+	
+	/**
 	 * Save inventories
 	 */
 	public void saveInventories();

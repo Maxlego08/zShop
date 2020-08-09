@@ -3,6 +3,7 @@ package fr.maxlego08.shop.zcore;
 import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -17,7 +18,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import fr.maxlego08.shop.command.CommandManager;
-import fr.maxlego08.shop.command.VCommand;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.listener.ListenerAdapter;
 import fr.maxlego08.shop.scoreboard.ScoreBoardManager;
@@ -69,20 +69,12 @@ public abstract class ZPlugin extends JavaPlugin {
 
 		saveDefaultConfig();
 
-		if (!new File(getDataFolder() + "/inventories/blocks.yml").exists())
-			saveResource("inventories/blocks.yml", false);
-		if (!new File(getDataFolder() + "/inventories/ores.yml").exists())
-			saveResource("inventories/ores.yml", false);
-		if (!new File(getDataFolder() + "/inventories/miscellaneous.yml").exists())
-			saveResource("inventories/miscellaneous.yml", false);
-		if (!new File(getDataFolder() + "/inventories/mobs.yml").exists())
-			saveResource("inventories/mobs.yml", false);
-		if (!new File(getDataFolder() + "/inventories/farm.yml").exists())
-			saveResource("inventories/farm.yml", false);
-		if (!new File(getDataFolder() + "/inventories/redstone.yml").exists())
-			saveResource("inventories/redstone.yml", false);
-		if (!new File(getDataFolder() + "/inventories/foods.yml").exists())
-			saveResource("inventories/foods.yml", false);
+		List<String> files = Arrays.asList("blocks", "ores", "miscellaneous", "mobs", "farm", "redstone", "foods",
+				"shop");
+		
+		for (String file : files)
+			if (!new File(getDataFolder() + "/inventories/" + file + ".yml").exists())
+				saveResource("inventories/" + file + ".yml", false);
 
 		return true;
 
@@ -97,7 +89,7 @@ public abstract class ZPlugin extends JavaPlugin {
 			commandManager.registerCommands();
 
 		isLoaded = true;
-		
+
 		log.log("=== ENABLE DONE <&>7(<&>6" + Math.abs(enableTime - System.currentTimeMillis()) + "ms<&>7) <&>e===");
 
 	}
@@ -257,17 +249,6 @@ public abstract class ZPlugin extends JavaPlugin {
 	 */
 	protected Plugin getPlugin(Plugins plugin) {
 		return Bukkit.getPluginManager().getPlugin(plugin.getName());
-	}
-
-	/**
-	 * Register command
-	 * 
-	 * @param command
-	 * @param vCommand
-	 * @param aliases
-	 */
-	protected void registerCommand(String command, VCommand vCommand, String... aliases) {
-		commandManager.registerCommand(command, vCommand, aliases);
 	}
 
 	/**
