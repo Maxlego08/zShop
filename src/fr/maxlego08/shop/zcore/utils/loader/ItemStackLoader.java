@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.exceptions.ItemEnchantException;
 import fr.maxlego08.shop.api.exceptions.ItemFlagException;
 import fr.maxlego08.shop.zcore.logger.Logger;
@@ -19,10 +20,10 @@ import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ItemDecoder;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 
-public class ItemStackYAMLoader extends ZUtils implements Loader<ItemStack> {
+public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
 	@SuppressWarnings("deprecation")
-	public ItemStack load(YamlConfiguration configuration, String path) {
+	public ItemStack load(YamlConfiguration configuration, String path, Object... args) {
 
 		int id = configuration.getInt(path + "id", 0);
 		int data = configuration.getInt(path + ".data", 0);

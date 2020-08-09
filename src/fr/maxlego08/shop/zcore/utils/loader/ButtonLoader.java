@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.material.MaterialData;
 
+import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.inventory.Button;
 
@@ -13,7 +14,7 @@ import fr.maxlego08.shop.zcore.utils.inventory.Button;
 public class ButtonLoader extends ZUtils implements Loader<Button> {
 
 	@Override
-	public Button load(YamlConfiguration configuration, String path) {
+	public Button load(YamlConfiguration configuration, String path, Object... args) {
 
 		String name = configuration.getString(path + "name") == null ? null
 				: color(configuration.getString(path + "name"));

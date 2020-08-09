@@ -2,14 +2,17 @@ package fr.maxlego08.shop.button.buttons;
 
 import org.bukkit.inventory.ItemStack;
 
+import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.inventory.Inventory;
+import fr.maxlego08.shop.zcore.ZPlugin;
 
 public class ZInventoryButton extends ZPermissibleButton implements InventoryButton {
 
-	protected Inventory inventory;
+	protected String inventory;
+	protected Inventory inventoryInterface;
 
 	/**
 	 * @param type
@@ -17,7 +20,7 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 	 * @param slot
 	 * @param inventory
 	 */
-	public ZInventoryButton(ButtonType type, ItemStack itemStack, int slot, Inventory inventory) {
+	public ZInventoryButton(ButtonType type, ItemStack itemStack, int slot, String inventory) {
 		super(type, itemStack, slot);
 		this.inventory = inventory;
 	}
@@ -32,14 +35,16 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 	 * @param inventory
 	 */
 	public ZInventoryButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, Inventory inventory) {
+			Button elseButton, String inventory) {
 		super(type, itemStack, slot, permission, message, elseButton);
 		this.inventory = inventory;
 	}
 
 	@Override
 	public Inventory getInventory() {
-		return inventory;
+		return inventoryInterface == null
+				? inventoryInterface = ((ZShop) ZPlugin.z()).getInventory().getInventory(inventory)
+				: inventoryInterface;
 	}
 
 }

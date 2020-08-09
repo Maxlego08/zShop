@@ -15,7 +15,7 @@ public class ZBackButton extends ZInventoryButton implements BackButton {
 	 * @param slot
 	 * @param inventory
 	 */
-	public ZBackButton(ButtonType type, ItemStack itemStack, int slot, Inventory inventory) {
+	public ZBackButton(ButtonType type, ItemStack itemStack, int slot, String inventory) {
 		super(type, itemStack, slot, inventory);
 		// TODO Auto-generated constructor stub
 	}
@@ -30,14 +30,14 @@ public class ZBackButton extends ZInventoryButton implements BackButton {
 	 * @param inventory
 	 */
 	public ZBackButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, Inventory inventory) {
+			Button elseButton, String inventory) {
 		super(type, itemStack, slot, permission, message, elseButton, inventory);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void setBack(Inventory inventory) {
-		super.inventory = inventory;
+		super.inventoryInterface = inventory;
 	}
 
 }

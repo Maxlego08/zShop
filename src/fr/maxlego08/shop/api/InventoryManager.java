@@ -1,6 +1,6 @@
 package fr.maxlego08.shop.api;
 
-import org.bukkit.inventory.Inventory;
+import fr.maxlego08.shop.api.inventory.Inventory;
 
 public interface InventoryManager {
 
