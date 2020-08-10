@@ -22,6 +22,8 @@ public class ButtonLoader implements Loader<Button> {
 		Loader<ItemStack> loaderItemStack = new ItemStackLoader();
 		ButtonType type = ButtonType.from(configuration.getString(path + "type"), (String) args[0], path + "type");
 		int slot = configuration.getInt(path + "slot");
+		slot = slot < 0 ? 0 : slot;
+		
 		ItemStack itemStack = loaderItemStack.load(configuration, path + "item.");
 
 		// Permission
@@ -42,10 +44,9 @@ public class ButtonLoader implements Loader<Button> {
 
 		switch (type) {
 		case BACK:
-			String inventory = configuration.getString(path + "inventory");
-			return new ZBackButton(type, itemStack, slot, inventory);
+			return new ZBackButton(type, itemStack, slot, null);
 		case HOME:
-			inventory = configuration.getString(path + "inventory");
+			String inventory = configuration.getString(path + "inventory");
 			return new ZHomeButton(type, itemStack, slot, inventory);
 		case INVENTORY:
 			inventory = configuration.getString(path + "inventory");

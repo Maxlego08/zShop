@@ -36,4 +36,24 @@ public enum ButtonType {
 				+ inventoryName + " (" + real + ")");
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isPermament() {
+		switch (this) {
+		case INVENTORY:
+		case ITEM:
+		case ITEM_CONFIRM:
+		case NONE:
+		default:
+			return false;
+		case BACK:
+		case HOME:
+		case NEXT:
+		case PREVIOUS:
+			return true;
+		}
+	}
+
 }

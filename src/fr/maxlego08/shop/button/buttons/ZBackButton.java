@@ -36,8 +36,19 @@ public class ZBackButton extends ZInventoryButton implements BackButton {
 	}
 
 	@Override
-	public void setBack(Inventory inventory) {
+	public void setBackInventory(Inventory inventory) {
 		super.inventoryInterface = inventory;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ZBackButton [inventory=" + inventory + ", inventoryInterface=" + inventoryInterface + "]";
+	}
+	
+	
+
+	
 }

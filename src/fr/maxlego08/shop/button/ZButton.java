@@ -41,7 +41,10 @@ public class ZButton implements Button {
 
 	@Override
 	public void setTmpSlot(int slot) {
-		this.tmpSlot = slot;
+		if (type.isPermament())
+			this.tmpSlot = this.slot;
+		else
+			this.tmpSlot = slot;
 	}
 
 	@Override

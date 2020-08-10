@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.inventory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,7 @@ public class InventoryObject implements Inventory {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Button> List<T> getButtons(Class<T> type) {
-		return buttons.stream().filter(e -> e.getClass().isAssignableFrom(type.getClass())).map(e -> (T) e)
+		return buttons.stream().filter(e -> type.isAssignableFrom(e.getClass())).map(e -> (T) e)
 				.collect(Collectors.toList());
 	}
 
@@ -61,12 +62,18 @@ public class InventoryObject implements Inventory {
 
 	@Override
 	public List<Button> sortButtons(int page) {
+		List<Button> buttons = new ArrayList<Button>();
 		for (Button button : this.buttons) {
+
 			int slot = button.getSlot() - ((page - 1) * size);
-			if (slot >= 0 && slot <= size)
+
+			if ((slot >= 0 && slot <= size) || button.getType().isPermament()) {
 				button.setTmpSlot(slot);
+				buttons.add(button);
+			}
+
 		}
-		return this.buttons;
+		return buttons;
 	}
 
 	@Override

@@ -8,6 +8,6 @@ public interface BackButton extends InventoryButton {
 	 * Set back inventory
 	 * @param inventory
 	 */
-	public void setBack(Inventory inventory);
+	public void setBackInventory(Inventory inventory);
 	
 }

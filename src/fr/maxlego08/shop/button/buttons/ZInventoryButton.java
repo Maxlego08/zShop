@@ -42,9 +42,21 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 
 	@Override
 	public Inventory getInventory() {
+		if (getType() == ButtonType.BACK)
+			return inventoryInterface;
 		return inventoryInterface == null
 				? inventoryInterface = ((ZShop) ZPlugin.z()).getInventory().getInventory(inventory)
 				: inventoryInterface;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ZInventoryButton [inventory=" + inventory + ", inventoryInterface=" + inventoryInterface + "]";
+	}
+
+	
+	
 }

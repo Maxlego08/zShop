@@ -13,6 +13,7 @@ import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.exceptions.CategoriesNotFoundException;
 import fr.maxlego08.shop.api.exceptions.InventoryFileNotFoundException;
+import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
 import fr.maxlego08.shop.api.exceptions.InventorySizeException;
 import fr.maxlego08.shop.api.exceptions.NameAlreadyExistException;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -29,7 +30,12 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 	@Override
 	public Inventory getInventory(String name) {
-		return inventories.getOrDefault(name.toLowerCase(), null);
+		if (name == null)
+			throw new InventoryNotFoundException("Unable to find the inventory with name null");
+		Inventory inventory =  inventories.getOrDefault(name.toLowerCase(), null);
+		if (inventory == null)
+			throw new InventoryNotFoundException("Unable to find the inventory " + name);
+		return inventory;
 	}
 
 	@Override
@@ -66,7 +72,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		String lowerCategory = fileName.toLowerCase();
 		
 		if (inventories.containsKey(lowerCategory))
-			throw new NameAlreadyExistException("the name " + lowerCategory +" already exist !");
+			throw new NameAlreadyExistException("the name " + lowerCategory +" already exist ! (Simply remove it from the list of categories in the config.yml file.)");
 		
 		YamlConfiguration configuration = getConfig("inventories/" + lowerCategory + ".yml");
 

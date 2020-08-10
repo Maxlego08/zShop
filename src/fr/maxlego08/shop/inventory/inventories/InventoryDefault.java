@@ -10,6 +10,8 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.button.Button;
+import fr.maxlego08.shop.api.button.buttons.BackButton;
+import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
@@ -31,12 +33,25 @@ public class InventoryDefault extends VInventory {
 		inventory = (Inventory) args[0];
 		oldInventory = (Inventory) args[1];
 
+		int maxPage = inventory.getMaxPage();
+
+		// Gestion des boutons
+		inventory.getButtons(BackButton.class).forEach(button -> {
+			button.setBackInventory(oldInventory == null ? inventory : oldInventory);
+		});
+		
 		List<Button> buttons = inventory.sortButtons(page);
 
-		createInventory(inventory.getName(), inventory.size());
+		// Gestion du nom de l'inventaire
+		String inventoryName = inventory.getName();
+		inventoryName = inventoryName.replace("%page%", String.valueOf(page));
+		inventoryName = inventoryName.replace("%maxPage%", String.valueOf(maxPage));
+
+		createInventory(inventoryName, inventory.size());
 
 		for (Button button : buttons)
-			addItem(button.getTmpSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
+			addItem(button.getTmpSlot(), button.getItemStack())
+					.setClick(clickEvent(main, player, page, maxPage, button));
 
 		return InventoryResult.SUCCESS;
 	}
@@ -51,16 +66,32 @@ public class InventoryDefault extends VInventory {
 
 	}
 
-	private Consumer<InventoryClickEvent> clickEvent(ZShop main, Player player, int page, Button button) {
+	/**
+	 * 
+	 * @param main
+	 * @param player
+	 * @param page
+	 * @param maxPage
+	 * @param button
+	 * @return
+	 */
+	private Consumer<InventoryClickEvent> clickEvent(ZShop main, Player player, int page, int maxPage, Button button) {
 		return event -> {
 			switch (button.getType()) {
 			case NEXT:
-				createInventory(player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory, oldInventory);
+				if (page != maxPage)
+					createInventory(player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory, oldInventory);
 				break;
 			case PREVIOUS:
-				createInventory(player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory, oldInventory);
+				if (page != 1)
+					createInventory(player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory, oldInventory);
 				break;
-
+			case INVENTORY:
+			case HOME:
+			case BACK:
+				InventoryButton inventoryButton = button.toButton(InventoryButton.class);
+				createInventory(player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(), inventory);
+				break;
 			default:
 				break;
 			}
