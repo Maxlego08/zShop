@@ -1,9 +1,26 @@
-name: "&ezShop"
-size: 9
+name: "&ezShop &8(&b%page%&f/&3%maxPage%&8)"
+size: 54
 items:
+  1: #Bouton précédant
+    item:
+      material: 1
+    type: INVENTORY
+    inventory: "blocks"
+    slot: 0
+  2: #Bouton précédant
+    item:
+      material: 2
+    type: NONE
+    slot: 898
+  next: #Bouton précédant
+    item:
+      material: 262
+      name: "&7Next page"
+    type: NEXT
+    slot: 50
   previous: #Bouton précédant
     item:
-      material: ARROW
+      material: 262
       name: "&7Previous page"
     type: PREVIOUS
-    slot: 5    
+    slot: 48          

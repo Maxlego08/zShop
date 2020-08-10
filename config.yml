@@ -6,11 +6,18 @@ commands:
       - "shop"
       - "myshop" 
     inventory: "shop" #File name
+
+  blocks:
+    command: "blocks" #Default commande
+    aliases: #Aliases
+      - "block"
+      - "b" 
+    inventory: "blocks" #File name    
     
-#Liste des catégories à charger, le fichier doit être dans le dossier inventories
+#Liste des catégories à charger, le fichier doit être dans le dossier inventories.
+# Vous ne devez pas mettre une catégories qui est déjà chargé !
 categories:    
  - "ores"
- - "blocks"
  - "redstone"
  - "farm"
  - "foods"

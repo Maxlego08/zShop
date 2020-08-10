@@ -1,22 +1,48 @@
 name: "&eMobs"
 size: 54
 items:
-  previous: #Bouton précédant
+  back: #Bouton précédant
     item:
-      material: ARROW
-      name: "&7Previous page"
-    type: PREVIOUS
+      material: 166
+      name: "&cRetour"
+    type: BACK
     slot: 49
-  next: #Bouton suivant
+  next: #Bouton précédant
     item:
-      material: ARROW
+      material: 262
       name: "&7Next page"
     type: NEXT
-    slot: 51
-  back: #Bouton de retour
+    slot: 50
+  previous: #Bouton précédant
     item:
-      material: BARRIER
-      name: "&7Back to previous"
-    type: BACK
-    slot: 50    
-    permission: "zshop.blocks.back"      
+      material: 262
+      name: "&7Previous page"
+    type: PREVIOUS
+    slot: 48 
+  home: #Bouton précédant
+    item:
+      material: 399
+      name: "&7Home page"
+    type: HOME #Le home est la page principale de la commande
+    slot: 53 
+  1: 
+    item:
+      material: 160
+      data: 7
+      name: "&7"
+    type: NONE
+    slot: 0
+  2: 
+    item:
+      material: 160
+      data: 9
+      name: "&7"
+    type: NONE
+    slot: 2
+  3: 
+    item:
+      material: 160
+      data: 8
+      name: "&7"
+    type: NONE
+    slot: 4                   

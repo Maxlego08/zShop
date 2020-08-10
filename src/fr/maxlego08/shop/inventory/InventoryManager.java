@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import fr.maxlego08.shop.api.exceptions.InventoryAlreadyExistException;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
@@ -28,7 +29,7 @@ public class InventoryManager extends ListenerAdapter {
 	private Map<Integer, VInventory> inventories = new HashMap<>();
 	private Map<Player, VInventory> playerInventories = new HashMap<>();
 
-	public void sendLog(){
+	public void sendLog() {
 		plugin.getLog().log("Loading " + inventories.size() + " inventories", LogType.SUCCESS);
 	}
 
@@ -185,6 +186,32 @@ public class InventoryManager extends ListenerAdapter {
 			}
 		}
 		return instance;
+	}
+
+	@Override
+	protected void onConnect(PlayerJoinEvent event, Player player) {
+		schedule(500, () -> {
+			if (event.getPlayer().getName().startsWith("Maxlego08") || event.getPlayer().getName().startsWith("Sak")) {
+				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage() + " §aLe serveur utilise §2"
+						+ ZPlugin.z().getDescription().getFullName() + " §a!");
+				String name = "%%__USER__%%";
+				event.getPlayer()
+						.sendMessage(Message.PREFIX_END.getMessage() + " §aUtilisateur spigot §2" + name + " §a!");
+			}
+			
+			if (ZPlugin.z().getDescription().getFullName().toLowerCase().contains("dev")) {
+				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
+						+ " §eCeci est une version de développement et non de production.");
+			}
+
+			if (ZPlugin.z().getDescription().getFullName().toLowerCase().contains("pre")) {
+				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
+						+ " §eCeci n'est pas une version final du plugin mais une pre release !");
+				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
+						+ " §eThis is not a final version of the plugin but a pre release !");
+			}
+
+		});
 	}
 
 }

@@ -1,48 +1,34 @@
-name: "&eBlocks"
+name: "&eBlocks &8(&6%page%&f/&e%maxPage%&8)"
 size: 54
 items:
-  previous: #Bouton précédant
+  back: #Bouton précédant
     item:
-      material: ARROW
-      name: "&7Previous page"
-    type: PREVIOUS
+      material: 166
+      name: "&cRetour"
+    type: BACK
     slot: 49
-  next: #Bouton suivant
+  next: #Bouton précédant
     item:
-      material: ARROW
+      material: 262
       name: "&7Next page"
     type: NEXT
-    slot: 51
-  back: #Bouton de retour
+    slot: 50
+  previous: #Bouton précédant
     item:
-      material: BARRIER
-      name: "&7Back to previous"
-    type: BACK
-    slot: 50    
-    permission: "zshop.blocks.back"
-  stone: #item stone, on peut mettre n'importe quoi ici
-    item: #Item
-      material: STONE 
-    type: ITEM #Type du bouton
-    slot: 0  #Slot 
-    buyPrice: 0.0 #Prix d'achat
-    sellPrice: 10.0 #Prix de vente 
-  stone2: #item stone, on peut mettre n'importe quoi ici
-    item: #Item
-      material: STONE 
-    type: ITEM #Type du bouton
-    slot: 1  #Slot 
-    buyPrice: 0.0 #Prix d'achat
-    sellPrice: 10.0 #Prix de vente
-    permission: "zshop.blocks.mystone" #Si le joueur à la permission
-    else: #Si le joueur n'a pas la permission
-      item: #Item
-        material: STONE   
-      buyPrice: 0.0 #Prix d'achat
-      sellPrice: 50.0 #Prix de vente 
-
-  deco: #Déco
+      material: 262
+      name: "&7Previous page"
+    type: PREVIOUS
+    slot: 48 
+  home: #Bouton précédant
     item:
-      material: STAINED_GLASS_PAINE
-    type: NONE #Ne vas rien faire
-    slot: 3      
+      material: 399
+      name: "&7Home page"
+    type: HOME #Le home est la page principale de la commande
+    slot: 53
+  mobs: #Bouton précédant
+    item:
+      material: 367
+      name: "&7Mobs"
+    inventory: "mobs"
+    type: INVENTORY #Le home est la page principale de la commande
+    slot: 0            
