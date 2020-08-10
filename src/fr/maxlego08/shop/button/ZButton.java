@@ -59,4 +59,10 @@ public class ZButton implements Button {
 		return "ZButton [type=" + type + ", itemStack=" + itemStack + ", slot=" + slot + "]";
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Button> T toButton(Class<T> classz) {
+		return (T) this;
+	}
+
 }

@@ -36,7 +36,7 @@ import org.bukkit.permissions.Permissible;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.zcore.ZPlugin;
-import fr.maxlego08.shop.zcore.enums.Inventory;
+import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.enums.Permission;
 import fr.maxlego08.shop.zcore.utils.builder.CooldownBuilder;
@@ -684,7 +684,7 @@ public abstract class ZUtils extends MessageUtils{
 	 * @param player
 	 * @param inventoryId
 	 */
-	protected void createInventory(Player player, Inventory inventory) {
+	protected void createInventory(Player player, EnumInventory inventory) {
 		createInventory(player, inventory, 1);
 	}
 
@@ -694,7 +694,7 @@ public abstract class ZUtils extends MessageUtils{
 	 * @param inventoryId
 	 * @param page
 	 */
-	protected void createInventory(Player player, Inventory inventory, int page) {
+	protected void createInventory(Player player, EnumInventory inventory, int page) {
 		createInventory(player, inventory, page, new Object() {
 		});
 	}
@@ -706,7 +706,7 @@ public abstract class ZUtils extends MessageUtils{
 	 * @param page
 	 * @param objects
 	 */
-	protected void createInventory(Player player, Inventory inventory, int page, Object... objects) {
+	protected void createInventory(Player player, EnumInventory inventory, int page, Object... objects) {
 		plugin.getInventoryManager().createInventory(inventory, player, page, objects);
 	}
 

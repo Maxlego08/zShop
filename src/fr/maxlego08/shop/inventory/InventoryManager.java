@@ -15,7 +15,7 @@ import fr.maxlego08.shop.api.exceptions.InventoryAlreadyExistException;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.listener.ListenerAdapter;
 import fr.maxlego08.shop.zcore.ZPlugin;
-import fr.maxlego08.shop.zcore.enums.Inventory;
+import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
@@ -32,14 +32,14 @@ public class InventoryManager extends ListenerAdapter {
 		plugin.getLog().log("Loading " + inventories.size() + " inventories", LogType.SUCCESS);
 	}
 
-	public void addInventory(Inventory inv, VInventory inventory) {
+	public void addInventory(EnumInventory inv, VInventory inventory) {
 		if (!inventories.containsKey(inv.getId()))
 			inventories.put(inv.getId(), inventory);
 		else
 			throw new InventoryAlreadyExistException("Inventory with id " + inv.getId() + " already exist !");
 	}
 
-	public void createInventory(Inventory inv, Player player, int page, Object... objects) {
+	public void createInventory(EnumInventory inv, Player player, int page, Object... objects) {
 		createInventory(inv.getId(), player, page, objects);
 	}
 

@@ -62,7 +62,6 @@ public class InventoryObject implements Inventory {
 	@Override
 	public List<Button> sortButtons(int page) {
 		for (Button button : this.buttons) {
-			System.out.println(button);
 			int slot = button.getSlot() - ((page - 1) * size);
 			if (slot >= 0 && slot <= size)
 				button.setTmpSlot(slot);

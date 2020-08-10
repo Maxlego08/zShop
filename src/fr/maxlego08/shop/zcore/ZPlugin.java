@@ -21,7 +21,7 @@ import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.listener.ListenerAdapter;
 import fr.maxlego08.shop.scoreboard.ScoreBoardManager;
-import fr.maxlego08.shop.zcore.enums.Inventory;
+import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.gson.LocationAdapter;
@@ -257,7 +257,7 @@ public abstract class ZPlugin extends JavaPlugin {
 	 * @param inventory
 	 * @param vInventory
 	 */
-	protected void registerInventory(Inventory inventory, VInventory vInventory) {
+	protected void registerInventory(EnumInventory inventory, VInventory vInventory) {
 		inventoryManager.addInventory(inventory, vInventory);
 	}
 

@@ -9,7 +9,7 @@ import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.inventory.inventories.InventoryDefault;
 import fr.maxlego08.shop.listener.AdapterListener;
 import fr.maxlego08.shop.zcore.ZPlugin;
-import fr.maxlego08.shop.zcore.enums.Inventory;
+import fr.maxlego08.shop.zcore.enums.EnumInventory;
 
 public class ZShop extends ZPlugin {
 
@@ -52,7 +52,7 @@ public class ZShop extends ZPlugin {
 			return;
 		}
 
-		this.registerInventory(Inventory.INVENTORY_DEFAULT, new InventoryDefault());
+		this.registerInventory(EnumInventory.INVENTORY_DEFAULT, new InventoryDefault());
 		
 		/* Add Listener */
 

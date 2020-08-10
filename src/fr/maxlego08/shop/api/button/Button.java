@@ -36,4 +36,11 @@ public interface Button {
 	 */
 	public int getTmpSlot();
 	
+	/**
+	 * 
+	 * @param classz
+	 * @return
+	 */
+	public <T extends Button> T toButton(Class<T> classz);
+	
 }
