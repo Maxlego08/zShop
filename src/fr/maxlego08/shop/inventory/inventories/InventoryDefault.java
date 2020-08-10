@@ -11,7 +11,9 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.BackButton;
+import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
+import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
@@ -22,24 +24,26 @@ public class InventoryDefault extends VInventory {
 
 	private Inventory inventory;
 	private Inventory oldInventory;
+	private Command command;
 
 	@Override
 	public InventoryResult openInventory(ZShop main, Player player, int page, Object... args)
 			throws InventoryOpenException {
 
-		if (args.length != 2)
+		if (args.length != 3)
 			throw new InventoryOpenException("Pas assez d'argument pour ouvrir l'inventaire");
 
 		inventory = (Inventory) args[0];
 		oldInventory = (Inventory) args[1];
+		command = (Command) args[2];
 
 		int maxPage = inventory.getMaxPage();
 
-		// Gestion des boutons
 		inventory.getButtons(BackButton.class).forEach(button -> {
 			button.setBackInventory(oldInventory == null ? inventory : oldInventory);
 		});
-		
+		inventory.getButtons(HomeButton.class).forEach(button -> button.setBackInventory(command.getInventory()));
+
 		List<Button> buttons = inventory.sortButtons(page);
 
 		// Gestion du nom de l'inventaire
@@ -80,17 +84,20 @@ public class InventoryDefault extends VInventory {
 			switch (button.getType()) {
 			case NEXT:
 				if (page != maxPage)
-					createInventory(player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory, oldInventory);
+					createInventory(player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory, oldInventory,
+							command);
 				break;
 			case PREVIOUS:
 				if (page != 1)
-					createInventory(player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory, oldInventory);
+					createInventory(player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory, oldInventory,
+							command);
 				break;
 			case INVENTORY:
 			case HOME:
 			case BACK:
 				InventoryButton inventoryButton = button.toButton(InventoryButton.class);
-				createInventory(player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(), inventory);
+				createInventory(player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(), inventory,
+						command);
 				break;
 			default:
 				break;

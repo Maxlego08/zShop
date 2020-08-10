@@ -6,7 +6,7 @@ import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 
-public class ZHomeButton extends ZInventoryButton implements HomeButton {
+public class ZHomeButton extends ZBackButton implements HomeButton {
 
 	/**
 	 * @param type

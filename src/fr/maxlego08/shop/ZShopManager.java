@@ -57,10 +57,10 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	public void open(Player player, Command command) {
 
 		Inventory inventory = command.getInventory();
-		
+
 		InventoryManager inventoryManager = plugin.getInventoryManager();
 		inventoryManager.createInventory(fr.maxlego08.shop.zcore.enums.EnumInventory.INVENTORY_DEFAULT, player, 1,
-				inventory, null);
+				inventory, null, command);
 
 	}
 
