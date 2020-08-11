@@ -214,4 +214,12 @@ public class InventoryManager extends ListenerAdapter {
 		});
 	}
 
+	public void close() {
+		Iterator<VInventory> iterator = this.playerInventories.values().iterator();
+		while (iterator.hasNext()) {
+			VInventory inventory = iterator.next();
+			inventory.getPlayer().closeInventory();
+		}
+	}
+
 }

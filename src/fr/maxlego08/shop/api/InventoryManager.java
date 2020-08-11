@@ -27,5 +27,10 @@ public interface InventoryManager {
 	 * Save inventories
 	 */
 	public void saveInventories();
+
+	/**
+	 * Delete all inventory
+	 */
+	public void delete();
 	
 }

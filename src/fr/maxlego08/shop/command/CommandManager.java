@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import fr.maxlego08.shop.ZShop;
+import fr.maxlego08.shop.command.commands.zshop.CommandZShopPlugin;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.logger.Logger;
@@ -34,7 +35,9 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	}
 
 	public void registerCommands() {
-
+		
+		this.registerCommand("zshoplugin", new CommandZShopPlugin(), Arrays.asList("zpl", "zshopp"));
+		
 		main.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 		this.commandChecking();
 	}

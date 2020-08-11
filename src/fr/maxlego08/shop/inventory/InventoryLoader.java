@@ -95,4 +95,9 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		return inventory;
 	}
 
+	@Override
+	public void delete() {
+		inventories.clear();
+	}
+
 }
