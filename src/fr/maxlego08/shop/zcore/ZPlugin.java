@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,12 +20,9 @@ import com.google.gson.GsonBuilder;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.listener.ListenerAdapter;
-import fr.maxlego08.shop.scoreboard.ScoreBoardManager;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
-import fr.maxlego08.shop.zcore.utils.gson.LocationAdapter;
-import fr.maxlego08.shop.zcore.utils.gson.PotionEffectAdapter;
 import fr.maxlego08.shop.zcore.utils.inventory.VInventory;
 import fr.maxlego08.shop.zcore.utils.plugins.Plugins;
 import fr.maxlego08.shop.zcore.utils.storage.Persist;
@@ -37,7 +34,6 @@ public abstract class ZPlugin extends JavaPlugin {
 	private final Logger log = new Logger(this.getDescription().getFullName());
 	private Gson gson;
 	private Persist persist;
-	private static ZPlugin plugin;
 	private long enableTime;
 	private List<Saveable> savers = new ArrayList<>();
 	private List<ListenerAdapter> listenerAdapters = new ArrayList<>();
@@ -46,11 +42,9 @@ public abstract class ZPlugin extends JavaPlugin {
 
 	protected CommandManager commandManager;
 	protected InventoryManager inventoryManager;
-	protected ScoreBoardManager scoreboardManager;
 
-	public ZPlugin() {
-		plugin = this;
-	}
+	private PlayerPoints playerPoints;
+	private PlayerPointsAPI playerPointsAPI;
 
 	protected boolean preEnable() {
 
@@ -69,15 +63,35 @@ public abstract class ZPlugin extends JavaPlugin {
 
 		saveDefaultConfig();
 
+		this.hookPlayerPoints();
+
 		List<String> files = Arrays.asList("blocks", "ores", "miscellaneous", "mobs", "farm", "redstone", "foods",
 				"shop");
-		
+
 		for (String file : files)
 			if (!new File(getDataFolder() + "/inventories/" + file + ".yml").exists())
 				saveResource("inventories/" + file + ".yml", false);
 
 		return true;
 
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected void hookPlayerPoints() {
+		try {
+			final Plugin plugin = (Plugin) this.getServer().getPluginManager().getPlugin("PlayerPoints");
+			if (plugin == null)
+				return;
+			playerPoints = PlayerPoints.class.cast(plugin);
+			if (playerPoints != null) {
+				playerPointsAPI = playerPoints.getAPI();
+				log.log("PlayerPoint plugin detection performed successfully", LogType.SUCCESS);
+			} else
+				log.log("Impossible de charger player point !", LogType.SUCCESS);
+		} catch (Exception e) {
+		}
 	}
 
 	protected void postEnable() {
@@ -114,9 +128,7 @@ public abstract class ZPlugin extends JavaPlugin {
 	 */
 	public GsonBuilder getGsonBuilder() {
 		return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls()
-				.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-				.registerTypeAdapter(PotionEffect.class, new PotionEffectAdapter())
-				.registerTypeAdapter(Location.class, new LocationAdapter());
+				.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
 	}
 
 	/**
@@ -181,10 +193,6 @@ public abstract class ZPlugin extends JavaPlugin {
 		return savers;
 	}
 
-	public static ZPlugin z() {
-		return plugin;
-	}
-
 	/**
 	 * 
 	 * @param classz
@@ -226,13 +234,6 @@ public abstract class ZPlugin extends JavaPlugin {
 	}
 
 	/**
-	 * @return the scoreboardManager
-	 */
-	public ScoreBoardManager getScoreboardManager() {
-		return scoreboardManager;
-	}
-
-	/**
 	 * 
 	 * @param pluginName
 	 * @return
@@ -259,6 +260,14 @@ public abstract class ZPlugin extends JavaPlugin {
 	 */
 	protected void registerInventory(EnumInventory inventory, VInventory vInventory) {
 		inventoryManager.addInventory(inventory, vInventory);
+	}
+
+	public PlayerPoints getPlayerPoints() {
+		return playerPoints;
+	}
+
+	public PlayerPointsAPI getPlayerPointsAPI() {
+		return playerPointsAPI;
 	}
 
 }

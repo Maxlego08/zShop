@@ -3,6 +3,7 @@ package fr.maxlego08.shop.zcore.utils.loader.button;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.enums.ButtonType;
@@ -16,6 +17,16 @@ import fr.maxlego08.shop.zcore.utils.loader.ItemStackLoader;
 
 public class ButtonLoader implements Loader<Button> {
 
+	private final ZShop plugin;
+
+	/**
+	 * @param plugin
+	 */
+	public ButtonLoader(ZShop plugin) {
+		super();
+		this.plugin = plugin;
+	}
+
 	@Override
 	public Button load(YamlConfiguration configuration, String path, Object... args) throws Exception {
 
@@ -23,7 +34,7 @@ public class ButtonLoader implements Loader<Button> {
 		ButtonType type = ButtonType.from(configuration.getString(path + "type"), (String) args[0], path + "type");
 		int slot = configuration.getInt(path + "slot");
 		slot = slot < 0 ? 0 : slot;
-		
+
 		ItemStack itemStack = loaderItemStack.load(configuration, path + "item.");
 
 		// Permission
@@ -44,13 +55,13 @@ public class ButtonLoader implements Loader<Button> {
 
 		switch (type) {
 		case BACK:
-			return new ZBackButton(type, itemStack, slot, null);
+			return new ZBackButton(plugin, type, itemStack, slot, null);
 		case HOME:
 			String inventory = configuration.getString(path + "inventory");
-			return new ZHomeButton(type, itemStack, slot, inventory);
+			return new ZHomeButton(plugin, type, itemStack, slot, inventory);
 		case INVENTORY:
 			inventory = configuration.getString(path + "inventory");
-			return new ZInventoryButton(type, itemStack, slot, inventory);
+			return new ZInventoryButton(plugin, type, itemStack, slot, inventory);
 		case ITEM:
 		case ITEM_CONFIRM:
 			double sellPrice = configuration.getDouble(path + "sellPrice", 0.0);

@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.InventoryManager;
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
@@ -22,8 +22,11 @@ import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 
 public class InventoryLoader extends YamlUtils implements InventoryManager {
 
-	public InventoryLoader(JavaPlugin plugin) {
+	private final ZShop plugin;
+	
+	public InventoryLoader(ZShop plugin) {
 		super(plugin);
+		this.plugin = plugin;
 	}
 
 	private final Map<String, Inventory> inventories = new HashMap<String, Inventory>();
@@ -86,7 +89,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		if (size % 9 != 0)
 			throw new InventorySizeException("Size " + size + " is not valid for inventory " + lowerCategory);
 
-		Loader<List<Button>> loader = new ButtonCollections();
+		Loader<List<Button>> loader = new ButtonCollections(plugin);
 		List<Button> buttons = loader.load(configuration, lowerCategory);
 
 		Inventory inventory = new InventoryObject(name, size, buttons);

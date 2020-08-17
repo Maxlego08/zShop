@@ -29,4 +29,10 @@ public interface ShopManager {
 	 */
 	public void closeInventory();
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public IEconomy getIEconomy();
+	
 }

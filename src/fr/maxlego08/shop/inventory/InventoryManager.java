@@ -12,10 +12,10 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.exceptions.InventoryAlreadyExistException;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.listener.ListenerAdapter;
-import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.logger.Logger;
@@ -26,8 +26,17 @@ import fr.maxlego08.shop.zcore.utils.inventory.VInventory;
 
 public class InventoryManager extends ListenerAdapter {
 
-	private Map<Integer, VInventory> inventories = new HashMap<>();
-	private Map<Player, VInventory> playerInventories = new HashMap<>();
+	private final ZShop plugin;
+	private final Map<Integer, VInventory> inventories = new HashMap<>();
+	private final Map<Player, VInventory> playerInventories = new HashMap<>();
+
+	/**
+	 * @param plugin
+	 */
+	public InventoryManager(ZShop plugin) {
+		super();
+		this.plugin = plugin;
+	}
 
 	public void sendLog() {
 		plugin.getLog().log("Loading " + inventories.size() + " inventories", LogType.SUCCESS);
@@ -152,7 +161,7 @@ public class InventoryManager extends ListenerAdapter {
 				.collect(Collectors.toList()).iterator();
 		while (iterator.hasNext()) {
 			VInventory inventory = iterator.next();
-			Bukkit.getScheduler().runTask(ZPlugin.z(), () -> createInventory(inventory, inventory.getPlayer()));
+			Bukkit.getScheduler().runTask(plugin, () -> createInventory(inventory, inventory.getPlayer()));
 		}
 	}
 
@@ -168,43 +177,23 @@ public class InventoryManager extends ListenerAdapter {
 		}
 	}
 
-	/**
-	 * static Singleton instance.
-	 */
-	private static volatile InventoryManager instance;
-
-	/**
-	 * Return a singleton instance of InventoryManager.
-	 */
-	public static InventoryManager getInstance() {
-		// Double lock for thread safety.
-		if (instance == null) {
-			synchronized (InventoryManager.class) {
-				if (instance == null) {
-					instance = new InventoryManager();
-				}
-			}
-		}
-		return instance;
-	}
-
 	@Override
 	protected void onConnect(PlayerJoinEvent event, Player player) {
 		schedule(500, () -> {
 			if (event.getPlayer().getName().startsWith("Maxlego08") || event.getPlayer().getName().startsWith("Sak")) {
 				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage() + " §aLe serveur utilise §2"
-						+ ZPlugin.z().getDescription().getFullName() + " §a!");
+						+ plugin.getDescription().getFullName() + " §a!");
 				String name = "%%__USER__%%";
 				event.getPlayer()
 						.sendMessage(Message.PREFIX_END.getMessage() + " §aUtilisateur spigot §2" + name + " §a!");
 			}
-			
-			if (ZPlugin.z().getDescription().getFullName().toLowerCase().contains("dev")) {
+
+			if (plugin.getDescription().getFullName().toLowerCase().contains("dev")) {
 				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
 						+ " §eCeci est une version de développement et non de production.");
 			}
 
-			if (ZPlugin.z().getDescription().getFullName().toLowerCase().contains("pre")) {
+			if (plugin.getDescription().getFullName().toLowerCase().contains("pre")) {
 				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
 						+ " §eCeci n'est pas une version final du plugin mais une pre release !");
 				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()

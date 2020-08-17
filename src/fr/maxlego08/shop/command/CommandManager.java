@@ -18,7 +18,6 @@ import org.bukkit.plugin.Plugin;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.commands.zshop.CommandZShopPlugin;
-import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
@@ -27,18 +26,18 @@ import fr.maxlego08.shop.zcore.utils.commands.CommandType;
 
 public class CommandManager extends ZUtils implements CommandExecutor, TabCompleter {
 
-	private final ZShop main;
+	private final ZShop plugin;
 	private final List<VCommand> commands = new ArrayList<VCommand>();
 
 	public CommandManager(ZShop template) {
-		this.main = template;
+		this.plugin = template;
 	}
 
 	public void registerCommands() {
-		
-		this.registerCommand("zshoplugin", new CommandZShopPlugin(), Arrays.asList("zpl", "zshopp"));
-		
-		main.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
+
+		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl", "zshopp"));
+
+		plugin.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 		this.commandChecking();
 	}
 
@@ -54,13 +53,14 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	 */
 	public VCommand addCommand(String string, VCommand command) {
 		commands.add(command.addSubCommand(string));
-		ZPlugin.z().getCommand(string).setExecutor(this);
-		ZPlugin.z().getCommand(string).setTabCompleter(this);
+		plugin.getCommand(string).setExecutor(this);
+		plugin.getCommand(string).setTabCompleter(this);
 		return command;
 	}
 
 	/**
 	 * Register command whitout plugin.yml
+	 * 
 	 * @param string
 	 * @param vCommand
 	 * @param aliases
@@ -77,16 +77,16 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 					Plugin.class);
 			constructor.setAccessible(true);
 
-			PluginCommand command = constructor.newInstance(string, ZPlugin.z());
+			PluginCommand command = constructor.newInstance(string, plugin);
 			command.setExecutor(this);
 			command.setTabCompleter(this);
 			command.setAliases(aliases);
 
 			commands.add(vCommand.addSubCommand(string));
-			for(String cmd : aliases)
+			for (String cmd : aliases)
 				vCommand.addSubCommand(cmd);
 
-			commandMap.register(command.getName(), ZPlugin.z().getDescription().getName(), command);
+			commandMap.register(command.getName(), plugin.getDescription().getName(), command);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -166,15 +166,15 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 		if (command.getPermission() == null || hasPermission(sender, command.getPermission())) {
 
 			if (command.runAsync) {
-				Bukkit.getScheduler().runTask(main, () -> {
-					CommandType returnType = command.prePerform(main, sender, strings);
+				Bukkit.getScheduler().runTask(plugin, () -> {
+					CommandType returnType = command.prePerform(plugin, sender, strings);
 					if (returnType == CommandType.SYNTAX_ERROR)
 						message(sender, Message.COMMAND_SYNTAXE_ERROR, command.getSyntaxe());
 				});
 				return CommandType.DEFAULT;
 			}
 
-			CommandType returnType = command.prePerform(main, sender, strings);
+			CommandType returnType = command.prePerform(plugin, sender, strings);
 			if (returnType == CommandType.SYNTAX_ERROR)
 				message(sender, Message.COMMAND_SYNTAXE_ERROR, command.getSyntaxe());
 			return returnType;
@@ -222,11 +222,10 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			if (command.sameSubCommands()) {
 				Logger.info(command.toString() + " command to an argument similar to its parent command !",
 						LogType.ERROR);
-				ZPlugin.z().getPluginLoader().disablePlugin(ZPlugin.z());
+				plugin.getPluginLoader().disablePlugin(plugin);
 			}
 		});
 	}
-	
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String str, String[] args) {
@@ -267,8 +266,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			for (VCommand vCommand : commands) {
 				if ((vCommand.getParent() != null && vCommand.getParent() == command)) {
 					String cmd = vCommand.getSubCommands().get(0);
-					if (vCommand.getPermission() == null
-							|| sender.hasPermission(vCommand.getPermission()))
+					if (vCommand.getPermission() == null || sender.hasPermission(vCommand.getPermission()))
 						if (startWith.length() == 0 || cmd.startsWith(startWith))
 							tabCompleter.add(cmd);
 				}

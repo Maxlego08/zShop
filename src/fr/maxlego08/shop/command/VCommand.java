@@ -15,6 +15,16 @@ import fr.maxlego08.shop.zcore.utils.commands.Tab;
 
 public abstract class VCommand extends Arguments {
 
+	private final CommandManager commandManager;
+
+	/**
+	 * @param commandManager
+	 */
+	public VCommand(CommandManager commandManager) {
+		super();
+		this.commandManager = commandManager;
+	}
+
 	/**
 	 * Permission used for the command, if it is a null then everyone can
 	 * execute the command
@@ -278,7 +288,7 @@ public abstract class VCommand extends Arguments {
 	 */
 	public VCommand addSubCommand(VCommand command) {
 		command.setParent(this);
-		plugin.getCommandManager().addCommand(command);
+		commandManager.addCommand(command);
 		this.subVCommands.add(command);
 		return this;
 	}

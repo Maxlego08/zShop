@@ -79,25 +79,26 @@ public class InventoryDefault extends VInventory {
 	 * @param button
 	 * @return
 	 */
-	private Consumer<InventoryClickEvent> clickEvent(ZShop main, Player player, int page, int maxPage, Button button) {
+	private Consumer<InventoryClickEvent> clickEvent(ZShop plugin, Player player, int page, int maxPage,
+			Button button) {
 		return event -> {
 			switch (button.getType()) {
 			case NEXT:
 				if (page != maxPage)
-					createInventory(player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory, oldInventory,
+					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory, oldInventory,
 							command);
 				break;
 			case PREVIOUS:
 				if (page != 1)
-					createInventory(player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory, oldInventory,
+					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory, oldInventory,
 							command);
 				break;
 			case INVENTORY:
 			case HOME:
 			case BACK:
 				InventoryButton inventoryButton = button.toButton(InventoryButton.class);
-				createInventory(player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(), inventory,
-						command);
+				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
+						inventory, command);
 				break;
 			default:
 				break;

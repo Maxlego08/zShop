@@ -6,11 +6,22 @@ import java.util.List;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.exceptions.ButtonsNotFoundException;
 
 public class ButtonCollections implements Loader<List<Button>> {
+
+	private final ZShop plugin;
+
+	/**
+	 * @param plugin
+	 */
+	public ButtonCollections(ZShop plugin) {
+		super();
+		this.plugin = plugin;
+	}
 
 	@Override
 	public List<Button> load(YamlConfiguration configuration, String name, Object... args) throws Exception {
@@ -23,7 +34,7 @@ public class ButtonCollections implements Loader<List<Button>> {
 
 		ConfigurationSection section = configuration.getConfigurationSection("items.");
 
-		Loader<Button> loader = new ButtonLoader();
+		Loader<Button> loader = new ButtonLoader(plugin);
 		for (String tmpPath : section.getKeys(false)) {
 			Button button = loader.load(configuration, "items." + tmpPath + ".", name);
 			buttons.add(button);

@@ -26,7 +26,7 @@ public class ZShop extends ZPlugin {
 		if (!isEnabled())
 			return;
 
-		inventoryManager = InventoryManager.getInstance();
+		inventoryManager = new InventoryManager(this);
 
 		/* Register provider */
 		getServer().getServicesManager().register(fr.maxlego08.shop.api.InventoryManager.class, inventory, this,

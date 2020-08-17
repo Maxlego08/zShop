@@ -33,8 +33,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.enums.Message;
@@ -47,13 +47,11 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.milkbowl.vault.economy.Economy;
 
 @SuppressWarnings("deprecation")
-public abstract class ZUtils extends MessageUtils{
+public abstract class ZUtils extends MessageUtils {
 
 	private static transient List<String> teleportPlayers = new ArrayList<String>();
-	protected transient ZShop plugin = (ZShop) ZPlugin.z();
 
 	/**
 	 * @param location
@@ -410,162 +408,6 @@ public abstract class ZUtils extends MessageUtils{
 		return decimalFormat.format(decimal);
 	}
 
-	private transient Economy economy = ZPlugin.z().getEconomy();
-
-	/**
-	 * Player bank
-	 * 
-	 * @param player
-	 * @return player bank
-	 */
-	protected double getBalance(Player player) {
-		return economy.getBalance(player);
-	}
-
-	/**
-	 * Player has money
-	 * 
-	 * @param player
-	 * @param int
-	 *            value
-	 * @return player has value in his bank
-	 */
-	protected boolean hasMoney(Player player, int value) {
-		return hasMoney(player, (double) value);
-	}
-
-	/**
-	 * Player has money
-	 * 
-	 * @param player
-	 * @param float
-	 *            value
-	 * @return player has value in his bank
-	 */
-	protected boolean hasMoney(Player player, float value) {
-		return hasMoney(player, (double) value);
-	}
-
-	/**
-	 * Player has money
-	 * 
-	 * @param player
-	 * @param long
-	 *            value
-	 * @return player has value in his bank
-	 */
-	protected boolean hasMoney(Player player, long value) {
-		return hasMoney(player, (double) value);
-	}
-
-	/**
-	 * Player has money
-	 * 
-	 * @param player
-	 * @param double
-	 *            value
-	 * @return player has value in his bank
-	 */
-	protected boolean hasMoney(Player player, double value) {
-		return getBalance(player) >= value;
-	}
-
-	/**
-	 * Deposit player money
-	 * 
-	 * @param player
-	 * @param double
-	 *            value
-	 */
-	protected void depositMoney(Player player, double value) {
-		economy.depositPlayer(player, value);
-	}
-
-	/**
-	 * Deposit player money
-	 * 
-	 * @param player
-	 * @param long
-	 *            value
-	 */
-	protected void depositMoney(Player player, long value) {
-		economy.depositPlayer(player, (double) value);
-	}
-
-	/**
-	 * Deposit player money
-	 * 
-	 * @param player
-	 * @param int
-	 *            value
-	 */
-	protected void depositMoney(Player player, int value) {
-		economy.depositPlayer(player, (double) value);
-	}
-
-	/**
-	 * Deposit player money
-	 * 
-	 * @param player
-	 * @param float
-	 *            value
-	 */
-	protected void depositMoney(Player player, float value) {
-		economy.depositPlayer(player, (double) value);
-	}
-
-	/**
-	 * With draw player money
-	 * 
-	 * @param player
-	 * @param double
-	 *            value
-	 */
-	protected void withdrawMoney(Player player, double value) {
-		economy.withdrawPlayer(player, value);
-	}
-
-	/**
-	 * With draw player money
-	 * 
-	 * @param player
-	 * @param long
-	 *            value
-	 */
-	protected void withdrawMoney(Player player, long value) {
-		economy.withdrawPlayer(player, (double) value);
-	}
-
-	/**
-	 * With draw player money
-	 * 
-	 * @param player
-	 * @param int
-	 *            value
-	 */
-	protected void withdrawMoney(Player player, int value) {
-		economy.withdrawPlayer(player, (double) value);
-	}
-
-	/**
-	 * With draw player money
-	 * 
-	 * @param player
-	 * @param float
-	 *            value
-	 */
-	protected void withdrawMoney(Player player, float value) {
-		economy.withdrawPlayer(player, (double) value);
-	}
-
-	/**
-	 * 
-	 * @return {@link Economy}
-	 */
-	protected Economy getEconomy() {
-		return economy;
-	}
-
 	/**
 	 * 
 	 * @param player
@@ -655,14 +497,14 @@ public abstract class ZUtils extends MessageUtils{
 	 * @param count
 	 * @param runnable
 	 */
-	protected void schedule(long delay, int count, Runnable runnable) {
+	protected void schedule(JavaPlugin plugin, long delay, int count, Runnable runnable) {
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			int tmpCount = 0;
 
 			@Override
 			public void run() {
 
-				if (!ZPlugin.z().isEnabled()) {
+				if (!plugin.isEnabled()) {
 					cancel();
 					return;
 				}
@@ -673,7 +515,7 @@ public abstract class ZUtils extends MessageUtils{
 				}
 
 				tmpCount++;
-				Bukkit.getScheduler().runTask(ZPlugin.z(), runnable);
+				Bukkit.getScheduler().runTask(plugin, runnable);
 
 			}
 		}, 0, delay);
@@ -683,30 +525,11 @@ public abstract class ZUtils extends MessageUtils{
 	 * 
 	 * @param player
 	 * @param inventoryId
-	 */
-	protected void createInventory(Player player, EnumInventory inventory) {
-		createInventory(player, inventory, 1);
-	}
-
-	/**
-	 * 
-	 * @param player
-	 * @param inventoryId
-	 * @param page
-	 */
-	protected void createInventory(Player player, EnumInventory inventory, int page) {
-		createInventory(player, inventory, page, new Object() {
-		});
-	}
-
-	/**
-	 * 
-	 * @param player
-	 * @param inventoryId
 	 * @param page
 	 * @param objects
 	 */
-	protected void createInventory(Player player, EnumInventory inventory, int page, Object... objects) {
+	protected void createInventory(ZPlugin plugin, Player player, EnumInventory inventory, int page,
+			Object... objects) {
 		plugin.getInventoryManager().createInventory(inventory, player, page, objects);
 	}
 
@@ -717,7 +540,7 @@ public abstract class ZUtils extends MessageUtils{
 	 * @param page
 	 * @param objects
 	 */
-	protected void createInventory(Player player, int inventory, int page, Object... objects) {
+	protected void createInventory(ZPlugin plugin, Player player, int inventory, int page, Object... objects) {
 		plugin.getInventoryManager().createInventory(inventory, player, page, objects);
 	}
 
@@ -730,7 +553,7 @@ public abstract class ZUtils extends MessageUtils{
 	protected boolean hasPermission(Permissible permissible, Permission permission) {
 		return permissible.hasPermission(permission.getPermission());
 	}
-	
+
 	/**
 	 * 
 	 * @param permissible
@@ -745,16 +568,16 @@ public abstract class ZUtils extends MessageUtils{
 	 * @param delay
 	 * @param runnable
 	 */
-	protected void scheduleFix(long delay, BiConsumer<TimerTask, Boolean> runnable) {
+	protected void scheduleFix(JavaPlugin plugin, long delay, BiConsumer<TimerTask, Boolean> runnable) {
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				if (!ZPlugin.z().isEnabled()) {
+				if (!plugin.isEnabled()) {
 					cancel();
 					runnable.accept(this, false);
 					return;
 				}
-				Bukkit.getScheduler().runTask(ZPlugin.z(), () -> runnable.accept(this, true));
+				Bukkit.getScheduler().runTask(plugin, () -> runnable.accept(this, true));
 			}
 		}, delay, delay);
 	}

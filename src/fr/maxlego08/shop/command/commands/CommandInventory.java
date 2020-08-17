@@ -2,6 +2,7 @@ package fr.maxlego08.shop.command.commands;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.command.Command;
+import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.VCommand;
 import fr.maxlego08.shop.zcore.utils.commands.CommandType;
 
@@ -12,8 +13,8 @@ public class CommandInventory extends VCommand {
 	/**
 	 * @param command
 	 */
-	public CommandInventory(Command command) {
-		super();
+	public CommandInventory(CommandManager commandManager, Command command) {
+		super(commandManager);
 		this.command = command;
 		this.setPermission(command.getPermission());
 		this.setDescription(command.getDescription());
@@ -21,10 +22,8 @@ public class CommandInventory extends VCommand {
 	}
 
 	@Override
-	protected CommandType perform(ZShop main) {
-		
+	protected CommandType perform(ZShop plugin) {
 		plugin.getShopManager().open(player, command);
-		
 		return CommandType.SUCCESS;
 	}
 

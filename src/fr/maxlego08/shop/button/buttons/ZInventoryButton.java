@@ -7,12 +7,12 @@ import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.inventory.Inventory;
-import fr.maxlego08.shop.zcore.ZPlugin;
 
 public class ZInventoryButton extends ZPermissibleButton implements InventoryButton {
 
 	protected String inventory;
 	protected Inventory inventoryInterface;
+	private final ZShop plugin;
 
 	/**
 	 * @param type
@@ -20,9 +20,10 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 	 * @param slot
 	 * @param inventory
 	 */
-	public ZInventoryButton(ButtonType type, ItemStack itemStack, int slot, String inventory) {
+	public ZInventoryButton(ZShop plugin, ButtonType type, ItemStack itemStack, int slot, String inventory) {
 		super(type, itemStack, slot);
 		this.inventory = inventory;
+		this.plugin = plugin;
 	}
 
 	/**
@@ -34,10 +35,11 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 	 * @param elseButton
 	 * @param inventory
 	 */
-	public ZInventoryButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
+	public ZInventoryButton(ZShop plugin,ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, String inventory) {
 		super(type, itemStack, slot, permission, message, elseButton);
 		this.inventory = inventory;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 		if (getType() == ButtonType.BACK)
 			return inventoryInterface;
 		return inventoryInterface == null
-				? inventoryInterface = ((ZShop) ZPlugin.z()).getInventory().getInventory(inventory)
+				? inventoryInterface = plugin.getInventory().getInventory(inventory)
 				: inventoryInterface;
 	}
 

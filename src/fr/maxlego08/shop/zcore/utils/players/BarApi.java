@@ -9,12 +9,13 @@ import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.utils.interfaces.StringConsumer;
 
 public class BarApi {
 
+	private final JavaPlugin plugin;
 	private String message;
 	private BarColor color = BarColor.BLUE;
 	private BarStyle style = BarStyle.SOLID;
@@ -25,21 +26,30 @@ public class BarApi {
 	private boolean personnal = false;
 	private Player player;
 
-	public BarApi(String message, BarColor color, BarStyle style, BarFlag... flags) {
+	public BarApi(JavaPlugin plugin, String message, BarColor color, BarStyle style, BarFlag... flags) {
 		super();
 		this.message = message;
 		this.color = color;
 		this.style = style;
 		this.flags = flags;
+		this.plugin = plugin;
 	}
 
-	public BarApi() {
-		// TODO Auto-generated constructor stub
+	/**
+	 * 
+	 * @param plugin
+	 */
+	public BarApi(JavaPlugin plugin) {
+		this.plugin = plugin;
 	}
 
-	public BarApi(String message) {
+	/*
+	 * 
+	 */
+	public BarApi(JavaPlugin plugin, String message) {
 		super();
 		this.message = message;
+		this.plugin = plugin;
 	}
 
 	public BarApi delay(long delay) {
@@ -139,7 +149,7 @@ public class BarApi {
 			@Override
 			public void run() {
 
-				if (!ZPlugin.z().isEnabled()) {
+				if (!plugin.isEnabled()) {
 					cancel();
 					return;
 				}

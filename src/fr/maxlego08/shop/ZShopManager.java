@@ -10,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -22,10 +23,12 @@ import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 public class ZShopManager extends YamlUtils implements ShopManager {
 
 	private final ZShop plugin;
+	private final IEconomy economy;
 
 	public ZShopManager(ZShop plugin) {
 		super(plugin);
 		this.plugin = plugin;
+		this.economy = new ZEconomy(plugin);
 	}
 
 	@Override
@@ -49,7 +52,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			Inventory inventory = plugin.getInventory().loadInventory(stringInventory);
 
 			Command command = new CommandObject(stringCommand, aliases, inventory, permission, description);
-			commandManager.registerCommand(stringCommand, new CommandInventory(command), aliases);
+			commandManager.registerCommand(stringCommand, new CommandInventory(plugin.getCommandManager(), command), aliases);
 
 			success("Register command /" + stringCommand);
 
@@ -79,7 +82,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		info("Closure of all inventories...");
 		closeInventory();
-		
+
 		info("Deleting commands...");
 		FileConfiguration configuration = getConfig();
 
@@ -95,14 +98,13 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 				unRegisterBukkitCommand(command);
 
 		}
-		
+
 		info("Deleting inventories...");
 		plugin.getInventory().delete();
-		
+
 		info("Reload config file");
 		plugin.reloadConfig();
-		
-		
+
 		/* Load inventories */
 		try {
 			plugin.getInventory().loadInventories();
@@ -111,7 +113,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			plugin.getServer().getPluginManager().disablePlugin(plugin);
 			return;
 		}
-		
+
 		/* Load Commands */
 		try {
 			loadCommands();
@@ -120,7 +122,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			plugin.getServer().getPluginManager().disablePlugin(plugin);
 			return;
 		}
-		
+
 		ms = System.currentTimeMillis() - ms;
 		info("Reload done (" + ms + " ms)");
 
@@ -157,6 +159,11 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	@Override
 	public void closeInventory() {
 		plugin.getInventoryManager().close();
+	}
+
+	@Override
+	public IEconomy getIEconomy() {
+		return economy;
 	}
 
 }

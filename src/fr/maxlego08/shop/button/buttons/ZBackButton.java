@@ -2,6 +2,7 @@ package fr.maxlego08.shop.button.buttons;
 
 import org.bukkit.inventory.ItemStack;
 
+import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.BackButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
@@ -15,8 +16,8 @@ public class ZBackButton extends ZInventoryButton implements BackButton {
 	 * @param slot
 	 * @param inventory
 	 */
-	public ZBackButton(ButtonType type, ItemStack itemStack, int slot, String inventory) {
-		super(type, itemStack, slot, inventory);
+	public ZBackButton(ZShop plugin, ButtonType type, ItemStack itemStack, int slot, String inventory) {
+		super(plugin, type, itemStack, slot, inventory);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -29,9 +30,9 @@ public class ZBackButton extends ZInventoryButton implements BackButton {
 	 * @param elseButton
 	 * @param inventory
 	 */
-	public ZBackButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
+	public ZBackButton(ZShop plugin,ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, String inventory) {
-		super(type, itemStack, slot, permission, message, elseButton, inventory);
+		super(plugin, type, itemStack, slot, permission, message, elseButton, inventory);
 		// TODO Auto-generated constructor stub
 	}
 

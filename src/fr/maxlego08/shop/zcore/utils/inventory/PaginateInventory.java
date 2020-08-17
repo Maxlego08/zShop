@@ -44,7 +44,7 @@ public abstract class PaginateInventory<T> extends VInventory {
 	}
 
 	@Override
-	public InventoryResult openInventory(ZShop main, Player player, int page, Object... args)
+	public InventoryResult openInventory(ZShop plugin, Player player, int page, Object... args)
 			throws InventoryOpenException {
 
 		if (defaultSlot > inventorySize || nextSlot > inventorySize || previousSlot > inventorySize
@@ -74,10 +74,10 @@ public abstract class PaginateInventory<T> extends VInventory {
 
 		if (getPage() != 1)
 			addItem(previousSlot, Material.ARROW, "§f» §7Page précédente")
-					.setClick(event -> createInventory(player, getId(), getPage() - 1, args));
+					.setClick(event -> createInventory(plugin, player, getId(), getPage() - 1, args));
 		if (getPage() != getMaxPage(collections))
 			addItem(nextSlot, Material.ARROW, "§f» §7Page suivante")
-					.setClick(event -> createInventory(player, getId(), getPage() + 1, args));
+					.setClick(event -> createInventory(plugin, player, getId(), getPage() + 1, args));
 
 		postOpenInventory();
 
