@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.api.button.Button;
+import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 import fr.maxlego08.shop.api.inventory.Inventory;
 
 public class InventoryObject implements Inventory {
@@ -61,15 +62,15 @@ public class InventoryObject implements Inventory {
 	}
 
 	@Override
-	public List<Button> sortButtons(int page) {
-		List<Button> buttons = new ArrayList<Button>();
+	public List<PermissibleButton> sortButtons(int page) {
+		List<PermissibleButton> buttons = new ArrayList<PermissibleButton>();
 		for (Button button : this.buttons) {
 
 			int slot = button.getSlot() - ((page - 1) * size);
 
 			if ((slot >= 0 && slot <= size) || button.getType().isPermament()) {
 				button.setTmpSlot(slot);
-				buttons.add(button);
+				buttons.add(button.toButton(PermissibleButton.class));
 			}
 
 		}

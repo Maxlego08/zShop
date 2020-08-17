@@ -4,8 +4,9 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.enums.ButtonType;
+import fr.maxlego08.shop.zcore.utils.ZUtils;
 
-public class ZButton implements Button {
+public class ZButton extends ZUtils implements Button {
 
 	private final ButtonType type;
 	private final ItemStack itemStack;

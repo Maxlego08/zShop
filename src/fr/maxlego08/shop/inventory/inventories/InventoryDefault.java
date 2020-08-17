@@ -9,10 +9,10 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
 import fr.maxlego08.shop.ZShop;
-import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.BackButton;
 import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
+import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -44,7 +44,7 @@ public class InventoryDefault extends VInventory {
 		});
 		inventory.getButtons(HomeButton.class).forEach(button -> button.setBackInventory(command.getInventory()));
 
-		List<Button> buttons = inventory.sortButtons(page);
+		List<PermissibleButton> buttons = inventory.sortButtons(page);
 
 		// Gestion du nom de l'inventaire
 		String inventoryName = inventory.getName();
@@ -53,9 +53,26 @@ public class InventoryDefault extends VInventory {
 
 		createInventory(inventoryName, inventory.size());
 
-		for (Button button : buttons)
-			addItem(button.getTmpSlot(), button.getItemStack())
-					.setClick(clickEvent(main, player, page, maxPage, button));
+		for (PermissibleButton button : buttons) {
+
+			if (button.hasPermission()) {
+
+				if (!player.hasPermission(button.getPermission()) && button.hasElseButton()) {
+
+					addItem(button.getTmpSlot(), button.getElseButton().getItemStack())
+							.setClick(clickEvent(main, player, page, maxPage, button));
+
+				} else
+
+					addItem(button.getTmpSlot(), button.getItemStack())
+							.setClick(clickEvent(main, player, page, maxPage, button));
+
+			} else
+
+				addItem(button.getTmpSlot(), button.getItemStack())
+						.setClick(clickEvent(main, player, page, maxPage, button));
+
+		}
 
 		return InventoryResult.SUCCESS;
 	}
@@ -80,9 +97,27 @@ public class InventoryDefault extends VInventory {
 	 * @return
 	 */
 	private Consumer<InventoryClickEvent> clickEvent(ZShop plugin, Player player, int page, int maxPage,
-			Button button) {
+			PermissibleButton button) {
 		return event -> {
-			switch (button.getType()) {
+
+			PermissibleButton finalButton = button;
+
+			if (finalButton.hasPermission()) {
+
+				if (!player.hasPermission(finalButton.getPermission())) {
+
+					if (finalButton.hasMessage())
+						message(player, finalButton.getMessage());
+
+					if (button.hasElseButton())
+						finalButton = finalButton.getElseButton().toButton(PermissibleButton.class);
+					else
+						return;
+
+				}
+			}
+			
+			switch (finalButton.getType()) {
 			case NEXT:
 				if (page != maxPage)
 					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory, oldInventory,
@@ -96,7 +131,7 @@ public class InventoryDefault extends VInventory {
 			case INVENTORY:
 			case HOME:
 			case BACK:
-				InventoryButton inventoryButton = button.toButton(InventoryButton.class);
+				InventoryButton inventoryButton = finalButton.toButton(InventoryButton.class);
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
 						inventory, command);
 				break;

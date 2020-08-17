@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.api.button.Button;
+import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 
 public interface Inventory {
 
@@ -52,7 +53,7 @@ public interface Inventory {
 	 * @param page
 	 * @return
 	 */
-	public List<Button> sortButtons(int page);
+	public List<PermissibleButton> sortButtons(int page);
 	
 	/**
 	 * 

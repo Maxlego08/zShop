@@ -25,7 +25,7 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 		super(type, itemStack, slot);
 		this.permission = permission;
 		this.elseButton = elseButton;
-		this.message = message;
+		this.message = color(message);
 	}
 
 	/**
@@ -70,6 +70,17 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 	@Override
 	public boolean hasMessage() {
 		return message != null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ZPermissibleButton [permission=" + permission + ", message=" + message + ", elseButton=" + elseButton
+				+ "] => " + super.toString();
 	}
 
 }

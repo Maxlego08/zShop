@@ -55,13 +55,13 @@ public class ButtonLoader implements Loader<Button> {
 
 		switch (type) {
 		case BACK:
-			return new ZBackButton(plugin, type, itemStack, slot, null);
+			return new ZBackButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, null);
 		case HOME:
 			String inventory = configuration.getString(path + "inventory");
-			return new ZHomeButton(plugin, type, itemStack, slot, inventory);
+			return new ZHomeButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, inventory);
 		case INVENTORY:
 			inventory = configuration.getString(path + "inventory");
-			return new ZInventoryButton(plugin, type, itemStack, slot, inventory);
+			return new ZInventoryButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, inventory);
 		case ITEM:
 		case ITEM_CONFIRM:
 			double sellPrice = configuration.getDouble(path + "sellPrice", 0.0);
