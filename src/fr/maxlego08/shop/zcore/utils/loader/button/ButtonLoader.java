@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
+import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.enums.ButtonType;
@@ -18,13 +19,16 @@ import fr.maxlego08.shop.zcore.utils.loader.ItemStackLoader;
 public class ButtonLoader implements Loader<Button> {
 
 	private final ZShop plugin;
+	private final IEconomy economy;
 
 	/**
 	 * @param plugin
+	 * @param economy
 	 */
-	public ButtonLoader(ZShop plugin) {
+	public ButtonLoader(ZShop plugin, IEconomy economy) {
 		super();
 		this.plugin = plugin;
+		this.economy = economy;
 	}
 
 	@Override
@@ -67,8 +71,8 @@ public class ButtonLoader implements Loader<Button> {
 			double sellPrice = configuration.getDouble(path + "sellPrice", 0.0);
 			double buyPrice = configuration.getDouble(path + "buyPrice", 0.0);
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
-			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, sellPrice, buyPrice,
-					economy);
+			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, this.economy, sellPrice,
+					buyPrice, economy);
 		case NEXT:
 		case NONE:
 		case PREVIOUS:

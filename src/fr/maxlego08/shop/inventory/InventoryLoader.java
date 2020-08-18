@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import fr.maxlego08.shop.ZShop;
+import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.InventoryManager;
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
@@ -23,10 +24,17 @@ import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 	private final ZShop plugin;
-	
-	public InventoryLoader(ZShop plugin) {
+	private final IEconomy economy;
+
+	/**
+	 * @param plugin
+	 * @param plugin2
+	 * @param economy
+	 */
+	public InventoryLoader(ZShop plugin, IEconomy economy) {
 		super(plugin);
 		this.plugin = plugin;
+		this.economy = economy;
 	}
 
 	private final Map<String, Inventory> inventories = new HashMap<String, Inventory>();
@@ -35,7 +43,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 	public Inventory getInventory(String name) {
 		if (name == null)
 			throw new InventoryNotFoundException("Unable to find the inventory with name null");
-		Inventory inventory =  inventories.getOrDefault(name.toLowerCase(), null);
+		Inventory inventory = inventories.getOrDefault(name.toLowerCase(), null);
 		if (inventory == null)
 			throw new InventoryNotFoundException("Unable to find the inventory " + name);
 		return inventory;
@@ -67,16 +75,16 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 	@Override
 	public Inventory loadInventory(String fileName) throws Exception {
-		
+
 		if (fileName == null)
 			throw new NullPointerException("Impossible de trouver le string ! Il est null !");
-			 
-		
+
 		String lowerCategory = fileName.toLowerCase();
-		
+
 		if (inventories.containsKey(lowerCategory))
-			throw new NameAlreadyExistException("the name " + lowerCategory +" already exist ! (Simply remove it from the list of categories in the config.yml file.)");
-		
+			throw new NameAlreadyExistException("the name " + lowerCategory
+					+ " already exist ! (Simply remove it from the list of categories in the config.yml file.)");
+
 		YamlConfiguration configuration = getConfig("inventories/" + lowerCategory + ".yml");
 
 		if (configuration == null)
@@ -89,7 +97,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		if (size % 9 != 0)
 			throw new InventorySizeException("Size " + size + " is not valid for inventory " + lowerCategory);
 
-		Loader<List<Button>> loader = new ButtonCollections(plugin);
+		Loader<List<Button>> loader = new ButtonCollections(plugin, economy);
 		List<Button> buttons = loader.load(configuration, lowerCategory);
 
 		Inventory inventory = new InventoryObject(name, size, buttons);

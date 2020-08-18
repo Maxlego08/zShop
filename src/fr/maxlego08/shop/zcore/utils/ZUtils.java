@@ -35,6 +35,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.maxlego08.shop.save.Config;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.enums.Message;
@@ -393,7 +394,7 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return formatting current duplicate
 	 */
 	protected String format(double decimal) {
-		return format(decimal, "#.##");
+		return format(decimal, Config.priceFormat);
 	}
 
 	/**

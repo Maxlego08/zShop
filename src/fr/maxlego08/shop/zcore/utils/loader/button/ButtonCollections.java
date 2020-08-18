@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import fr.maxlego08.shop.ZShop;
+import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.exceptions.ButtonsNotFoundException;
@@ -14,13 +15,16 @@ import fr.maxlego08.shop.api.exceptions.ButtonsNotFoundException;
 public class ButtonCollections implements Loader<List<Button>> {
 
 	private final ZShop plugin;
+	private final IEconomy economy;
 
 	/**
 	 * @param plugin
+	 * @param economy
 	 */
-	public ButtonCollections(ZShop plugin) {
+	public ButtonCollections(ZShop plugin, IEconomy economy) {
 		super();
 		this.plugin = plugin;
+		this.economy = economy;
 	}
 
 	@Override
@@ -34,7 +38,7 @@ public class ButtonCollections implements Loader<List<Button>> {
 
 		ConfigurationSection section = configuration.getConfigurationSection("items.");
 
-		Loader<Button> loader = new ButtonLoader(plugin);
+		Loader<Button> loader = new ButtonLoader(plugin, economy);
 		for (String tmpPath : section.getKeys(false)) {
 			Button button = loader.load(configuration, "items." + tmpPath + ".", name);
 			buttons.add(button);

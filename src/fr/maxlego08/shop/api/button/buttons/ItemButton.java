@@ -2,6 +2,7 @@ package fr.maxlego08.shop.api.button.buttons;
 
 import org.bukkit.entity.Player;
 
+import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.enums.Economy;
 
 public interface ItemButton extends PermissibleButton {
@@ -41,6 +42,12 @@ public interface ItemButton extends PermissibleButton {
 	 * @return
 	 */
 	public boolean needToConfirm();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public IEconomy getIEconomy();
 	
 	/**
 	 * Buy item

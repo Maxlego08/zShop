@@ -2,6 +2,7 @@ package fr.maxlego08.shop;
 
 import org.bukkit.plugin.ServicePriority;
 
+import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.inventory.InventoryLoader;
@@ -13,7 +14,8 @@ import fr.maxlego08.shop.zcore.enums.EnumInventory;
 
 public class ZShop extends ZPlugin {
 
-	private fr.maxlego08.shop.api.InventoryManager inventory = new InventoryLoader(this);
+	private final IEconomy economy = new ZEconomy(this);
+	private final fr.maxlego08.shop.api.InventoryManager inventory = new InventoryLoader(this, economy);
 	private ShopManager shopManager;
 
 	@Override
@@ -40,9 +42,9 @@ public class ZShop extends ZPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		
-		shopManager = new ZShopManager(this);
-		
+
+		shopManager = new ZShopManager(this, economy);
+
 		/* Load Commands */
 		try {
 			shopManager.loadCommands();
@@ -53,7 +55,7 @@ public class ZShop extends ZPlugin {
 		}
 
 		this.registerInventory(EnumInventory.INVENTORY_DEFAULT, new InventoryDefault());
-		
+
 		/* Add Listener */
 
 		addListener(new AdapterListener(this));
@@ -70,12 +72,12 @@ public class ZShop extends ZPlugin {
 
 	@Override
 	public void onDisable() {
-		
+
 		if (!isLoaded) {
 			getLog().log("=== IMPOSSIBLE TO SWITCH OFF THE PLUGIN PROPERLY ===");
 			return;
 		}
-		
+
 		preDisable();
 
 		getSavers().forEach(saver -> saver.save(getPersist()));
@@ -87,7 +89,7 @@ public class ZShop extends ZPlugin {
 	public fr.maxlego08.shop.api.InventoryManager getInventory() {
 		return inventory;
 	}
-	
+
 	public ShopManager getShopManager() {
 		return shopManager;
 	}

@@ -25,10 +25,10 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	private final ZShop plugin;
 	private final IEconomy economy;
 
-	public ZShopManager(ZShop plugin) {
+	public ZShopManager(ZShop plugin, IEconomy economy) {
 		super(plugin);
 		this.plugin = plugin;
-		this.economy = new ZEconomy(plugin);
+		this.economy = economy;
 	}
 
 	@Override

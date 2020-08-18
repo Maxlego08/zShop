@@ -3,17 +3,20 @@ package fr.maxlego08.shop.button.buttons;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.Economy;
+import fr.maxlego08.shop.save.Lang;
 
 public class ZItemButton extends ZPermissibleButton implements ItemButton {
 
+	private final IEconomy iEconomy;
 	private final double sellPrice;
 	private final double buyPrice;
 	private final Economy economy;
-	
+
 	/**
 	 * @param type
 	 * @param itemStack
@@ -21,29 +24,15 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	 * @param permission
 	 * @param message
 	 * @param elseButton
+	 * @param iEconomy
 	 * @param sellPrice
 	 * @param buyPrice
 	 * @param economy
 	 */
 	public ZItemButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, double sellPrice, double buyPrice, Economy economy) {
+			Button elseButton, IEconomy iEconomy, double sellPrice, double buyPrice, Economy economy) {
 		super(type, itemStack, slot, permission, message, elseButton);
-		this.sellPrice = sellPrice;
-		this.buyPrice = buyPrice;
-		this.economy = economy;
-	}
-
-	/**
-	 * @param type
-	 * @param itemStack
-	 * @param slot
-	 * @param sellPrice
-	 * @param buyPrice
-	 * @param economy
-	 */
-	public ZItemButton(ButtonType type, ItemStack itemStack, int slot, double sellPrice, double buyPrice,
-			Economy economy) {
-		super(type, itemStack, slot);
+		this.iEconomy = iEconomy;
 		this.sellPrice = sellPrice;
 		this.buyPrice = buyPrice;
 		this.economy = economy;
@@ -80,14 +69,95 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	}
 
 	@Override
+	public IEconomy getIEconomy() {
+		return iEconomy;
+	}
+
+	@Override
 	public void buy(Player player, int amount) {
-		// TODO Auto-generated method stub
+
+		double currentPrice = this.buyPrice * amount;
+
+		if (currentPrice < 0)
+			return;
+
+		if (!iEconomy.hasMoney(economy, player, currentPrice)) {
+			message(player, Lang.notEnouhtMoney);
+			return;
+		}
+
+		if (hasInventoryFull(player)) {
+			message(player, Lang.notEnouhtPlace);
+			return;
+		}
+
+		iEconomy.withdrawMoney(economy, player, currentPrice);
+
+		ItemStack itemStack = super.getItemStack().clone();
+		itemStack.setAmount(amount);
+
+		give(player, itemStack);
+
+		String message = Lang.buyItem;
+		message = message.replace("%curreny%", economy.getCurrenry());
+		message = message.replace("%amount%", String.valueOf(amount));
+		message = message.replace("%item%", getItemName(itemStack));
+		message = message.replace("%price%", format(currentPrice));
+
+		message(player, message);
 
 	}
 
 	@Override
 	public void sell(Player player, int amount) {
-		// TODO Auto-generated method stub
+
+		ItemStack itemStack = super.getItemStack().clone();
+		int item = 0;
+
+		for (ItemStack is : player.getInventory().getContents())
+			if (is != null && is.isSimilar(itemStack))
+				item += is.getAmount();
+
+		if (item <= 0) {
+			message(player, Lang.notItems);
+			return;
+		}
+
+		item = amount == 0 ? item : item < amount ? amount : amount > item ? item : amount;
+		int realAmount = item;
+
+		double currentPrice = this.sellPrice * amount;
+
+		int slot = 0;
+
+		// On retire ensuite les items de l'inventaire du joueur
+		for (ItemStack is : player.getInventory().getContents()) {
+
+			if (is != null && is.isSimilar(itemStack) && item > 0) {
+
+				int currentAmount = is.getAmount() - item;
+				item -= is.getAmount();
+
+				if (currentAmount <= 0) {
+					if (slot == 40)
+						player.getInventory().setItemInOffHand(null);
+					else
+						player.getInventory().removeItem(is);
+				} else
+					is.setAmount(currentAmount);
+			}
+			slot++;
+		}
+
+		this.iEconomy.depositMoney(economy, player, currentPrice);
+
+		String message = Lang.sellItem;
+		message = message.replace("%curreny%", economy.getCurrenry());
+		message = message.replace("%amount%", String.valueOf(amount));
+		message = message.replace("%item%", getItemName(itemStack));
+		message = message.replace("%price%", format(currentPrice));
+
+		message(player, message);
 
 	}
 

@@ -3,6 +3,7 @@ package fr.maxlego08.shop.zcore.utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.utils.players.ActionBar;
 
@@ -14,7 +15,7 @@ public class MessageUtils {
 	 * @param message
 	 */
 	protected void message(CommandSender player, Message message) {
-		player.sendMessage(Message.PREFIX.msg() + " " + message.msg());
+		player.sendMessage(Lang.prefix + " " + message.msg());
 	}
 
 	/**
@@ -23,7 +24,7 @@ public class MessageUtils {
 	 * @param message
 	 */
 	protected void message(CommandSender player, String message) {
-		player.sendMessage(Message.PREFIX.msg() + " " + message);
+		player.sendMessage(Lang.prefix + " " + message);
 	}
 
 	/**
@@ -52,7 +53,7 @@ public class MessageUtils {
 	 * @param args
 	 */
 	protected void message(CommandSender player, Message message, Object... args) {
-		player.sendMessage(Message.PREFIX.msg() + " " + String.format(message.msg(), args));
+		player.sendMessage(Lang.prefix + " " + String.format(message.msg(), args));
 	}
 
 	/**
@@ -64,5 +65,5 @@ public class MessageUtils {
 	protected void actionMessage(Player player, Message message, Object... args) {
 		ActionBar.sendActionBar(player, String.format(message.msg(), args));
 	}
-	
+
 }

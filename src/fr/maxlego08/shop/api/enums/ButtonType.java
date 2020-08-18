@@ -18,7 +18,9 @@ public enum ButtonType {
 
 	ITEM_CONFIRM,
 
-	INVENTORY,;
+	INVENTORY,
+	
+	;
 
 	/**
 	 * 

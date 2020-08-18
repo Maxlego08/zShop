@@ -5,13 +5,12 @@ import fr.maxlego08.shop.zcore.utils.storage.Saveable;
 
 public class Config implements Saveable {
 
-	public static String version = "0.0.0.1";
-	public static boolean useItemFallEvent = false;
-	
 	/**
 	 * static Singleton instance.
 	 */
 	private static volatile Config instance;
+
+	public static String priceFormat = "#.##";
 
 	/**
 	 * Private constructor for singleton.

@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.CommandButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
@@ -21,29 +22,16 @@ public class ZCommandButton extends ZItemButton implements CommandButton {
 	 * @param permission
 	 * @param message
 	 * @param elseButton
+	 * @param iEconomy
 	 * @param sellPrice
 	 * @param buyPrice
 	 * @param economy
 	 * @param commands
 	 */
 	public ZCommandButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, double sellPrice, double buyPrice, Economy economy, List<String> commands) {
-		super(type, itemStack, slot, permission, message, elseButton, sellPrice, buyPrice, economy);
-		this.commands = commands;
-	}
-
-	/**
-	 * @param type
-	 * @param itemStack
-	 * @param slot
-	 * @param sellPrice
-	 * @param buyPrice
-	 * @param economy
-	 * @param commands
-	 */
-	public ZCommandButton(ButtonType type, ItemStack itemStack, int slot, double sellPrice, double buyPrice,
-			Economy economy, List<String> commands) {
-		super(type, itemStack, slot, sellPrice, buyPrice, economy);
+			Button elseButton, IEconomy iEconomy, double sellPrice, double buyPrice, Economy economy,
+			List<String> commands) {
+		super(type, itemStack, slot, permission, message, elseButton, iEconomy, sellPrice, buyPrice, economy);
 		this.commands = commands;
 	}
 
@@ -56,15 +44,15 @@ public class ZCommandButton extends ZItemButton implements CommandButton {
 	public int count() {
 		return commands.size();
 	}
-	
+
 	@Override
 	public void buy(Player player, int amount) {
-		
+
 	}
-	
+
 	@Override
 	public void sell(Player player, int amount) {
-		
+
 	}
 
 }
