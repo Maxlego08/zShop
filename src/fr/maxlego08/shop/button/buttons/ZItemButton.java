@@ -153,7 +153,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 
 		String message = Lang.sellItem;
 		message = message.replace("%curreny%", economy.getCurrenry());
-		message = message.replace("%amount%", String.valueOf(amount));
+		message = message.replace("%amount%", String.valueOf(realAmount));
 		message = message.replace("%item%", getItemName(itemStack));
 		message = message.replace("%price%", format(currentPrice));
 

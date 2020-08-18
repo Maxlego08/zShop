@@ -66,7 +66,7 @@ public abstract class ZPlugin extends JavaPlugin {
 		this.hookPlayerPoints();
 
 		List<String> files = Arrays.asList("blocks", "ores", "miscellaneous", "mobs", "farm", "redstone", "foods",
-				"shop");
+				"shop", "sell", "buy");
 
 		for (String file : files)
 			if (!new File(getDataFolder() + "/inventories/" + file + ".yml").exists())

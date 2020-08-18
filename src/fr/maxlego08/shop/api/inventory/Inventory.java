@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
+import fr.maxlego08.shop.api.enums.InventoryType;
 
 public interface Inventory {
 
@@ -14,6 +15,13 @@ public interface Inventory {
 	 * @return inventory size
 	 */
 	public int size();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public InventoryType getType();
+	
 	
 	/**
 	 * 

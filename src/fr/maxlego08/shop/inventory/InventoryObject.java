@@ -8,22 +8,26 @@ import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
+import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.inventory.Inventory;
 
 public class InventoryObject implements Inventory {
 
 	private final String name;
+	private final InventoryType type;
 	private final int size;
 	private final List<Button> buttons;
 
 	/**
 	 * @param name
+	 * @param type
 	 * @param size
-	 * @param button
+	 * @param buttons
 	 */
-	public InventoryObject(String name, int size, List<Button> buttons) {
+	public InventoryObject(String name, InventoryType type, int size, List<Button> buttons) {
 		super();
 		this.name = name;
+		this.type = type;
 		this.size = size;
 		this.buttons = buttons;
 	}
@@ -85,4 +89,9 @@ public class InventoryObject implements Inventory {
 		return (maxSlot / size) + 1;
 	}
 
+	@Override
+	public InventoryType getType() {
+		return type;
+	}
+	
 }

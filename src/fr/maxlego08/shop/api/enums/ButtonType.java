@@ -20,6 +20,15 @@ public enum ButtonType {
 
 	INVENTORY,
 	
+	BUY_CONFIRM,
+	
+	SELL_CONFIRM,
+	
+	ADD,
+	
+	REMOVE,
+	
+	
 	;
 
 	/**

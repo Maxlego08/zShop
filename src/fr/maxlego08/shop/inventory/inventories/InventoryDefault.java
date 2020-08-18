@@ -15,6 +15,7 @@ import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
+import fr.maxlego08.shop.api.exceptions.InventoryTypeException;
 import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.utils.inventory.InventoryResult;
@@ -34,6 +35,10 @@ public class InventoryDefault extends VInventory {
 			throw new InventoryOpenException("Pas assez d'argument pour ouvrir l'inventaire");
 
 		inventory = (Inventory) args[0];
+		
+		if (!inventory.getType().isBuy())
+			throw new InventoryTypeException("Cannot open default inventory with type " + inventory.getType());
+		
 		oldInventory = (Inventory) args[1];
 		command = (Command) args[2];
 

@@ -12,6 +12,7 @@ import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.InventoryManager;
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
+import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.exceptions.CategoriesNotFoundException;
 import fr.maxlego08.shop.api.exceptions.InventoryFileNotFoundException;
 import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
@@ -90,6 +91,8 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		if (configuration == null)
 			throw new InventoryFileNotFoundException("Cannot find the file: inventories/" + lowerCategory + ".yml");
 
+		InventoryType type = InventoryType.form(configuration.getString("type"));
+		
 		String name = configuration.getString("name");
 		name = name == null ? "" : name;
 
@@ -100,7 +103,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		Loader<List<Button>> loader = new ButtonCollections(plugin, economy);
 		List<Button> buttons = loader.load(configuration, lowerCategory);
 
-		Inventory inventory = new InventoryObject(name, size, buttons);
+		Inventory inventory = new InventoryObject(name, type, size, buttons);
 		inventories.put(lowerCategory, inventory);
 		success("Successful loading of the inventory " + lowerCategory + " !");
 		return inventory;

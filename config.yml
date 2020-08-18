@@ -14,8 +14,8 @@ commands:
       - "b" 
     inventory: "blocks" #File name    
     
-#Liste des catégories à charger, le fichier doit être dans le dossier inventories.
-# Vous ne devez pas mettre une catégories qui est déjà chargé !
+#Liste des cat�gories à charger, le fichier doit être dans le dossier inventories.
+# Vous ne devez pas mettre une cat�gories qui est d�j� chargé !
 categories:    
  - "ores"
  - "redstone"
