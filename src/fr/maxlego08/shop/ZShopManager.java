@@ -12,7 +12,9 @@ import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
+import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.command.Command;
+import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.CommandObject;
@@ -164,6 +166,13 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	@Override
 	public IEconomy getIEconomy() {
 		return economy;
+	}
+
+	@Override
+	public void open(Player player, Command command, ItemButton button, int page, Inventory inventory,
+			InventoryType type) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

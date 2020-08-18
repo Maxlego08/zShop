@@ -25,15 +25,23 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 	@SuppressWarnings("deprecation")
 	public ItemStack load(YamlConfiguration configuration, String path, Object... args) {
 
-		int id = configuration.getInt(path + "material", 0);
 		int data = configuration.getInt(path + ".data", 0);
 		int amount = configuration.getInt(path + ".amount", 1);
 		short durability = (short) configuration.getInt(path + ".durability", 0);
 
-		if (id == 0)
-			return null;
+		Material material = null;
 
-		Material material = getMaterial(id);
+		try {
+			material = getMaterial(configuration.getInt(path + "material", 0));
+		} catch (Exception e) {
+		}
+		try {
+			material = Material.valueOf(configuration.getString(path + "material").toUpperCase());
+		} catch (Exception e) {
+		}
+
+		if (material == null)
+			throw new NullPointerException("Impossible de trouver le material pour l'item " + path);
 
 		ItemStack item = new ItemStack(material, amount, (byte) data);
 

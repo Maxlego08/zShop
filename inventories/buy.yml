@@ -1,3 +1,11 @@
 name: "&ePurchase"
 size: 54
+type: BUY
 items:
+  back:
+    item:
+      material: STAINED_GLASS_PANE
+      data: 14
+      name: "&cRetour"
+    type: BACK
+    slot: 39

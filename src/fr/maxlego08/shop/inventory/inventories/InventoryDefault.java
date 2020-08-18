@@ -12,6 +12,7 @@ import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.button.buttons.BackButton;
 import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
+import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
@@ -35,10 +36,10 @@ public class InventoryDefault extends VInventory {
 			throw new InventoryOpenException("Pas assez d'argument pour ouvrir l'inventaire");
 
 		inventory = (Inventory) args[0];
-		
-		if (!inventory.getType().isBuy())
+
+		if (!inventory.getType().isDefault())
 			throw new InventoryTypeException("Cannot open default inventory with type " + inventory.getType());
-		
+
 		oldInventory = (Inventory) args[1];
 		command = (Command) args[2];
 
@@ -65,17 +66,26 @@ public class InventoryDefault extends VInventory {
 				if (!player.hasPermission(button.getPermission()) && button.hasElseButton()) {
 
 					addItem(button.getTmpSlot(), button.getElseButton().getItemStack())
-							.setClick(clickEvent(main, player, page, maxPage, button));
+							.setClick(clickEvent(main, player, page, maxPage, button))
+							.setLeftClick(leftClick(main, player, page, maxPage, button))
+							.setRightClick(rightClick(main, player, page, maxPage, button))
+							.setMiddleClick(middleClick(main, player, page, maxPage, button));
 
 				} else
 
 					addItem(button.getTmpSlot(), button.getItemStack())
-							.setClick(clickEvent(main, player, page, maxPage, button));
+							.setClick(clickEvent(main, player, page, maxPage, button))
+							.setLeftClick(leftClick(main, player, page, maxPage, button))
+							.setRightClick(rightClick(main, player, page, maxPage, button))
+							.setMiddleClick(middleClick(main, player, page, maxPage, button));
 
 			} else
 
 				addItem(button.getTmpSlot(), button.getItemStack())
-						.setClick(clickEvent(main, player, page, maxPage, button));
+						.setClick(clickEvent(main, player, page, maxPage, button))
+						.setLeftClick(leftClick(main, player, page, maxPage, button))
+						.setRightClick(rightClick(main, player, page, maxPage, button))
+						.setMiddleClick(middleClick(main, player, page, maxPage, button));
 
 		}
 
@@ -121,7 +131,7 @@ public class InventoryDefault extends VInventory {
 
 				}
 			}
-			
+
 			switch (finalButton.getType()) {
 			case NEXT:
 				if (page != maxPage)
@@ -133,6 +143,8 @@ public class InventoryDefault extends VInventory {
 					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory, oldInventory,
 							command);
 				break;
+			case ITEM:
+				break;
 			case INVENTORY:
 			case HOME:
 			case BACK:
@@ -142,6 +154,95 @@ public class InventoryDefault extends VInventory {
 				break;
 			default:
 				break;
+			}
+		};
+	}
+
+	private Consumer<InventoryClickEvent> middleClick(ZShop plugin, Player player, int page, int maxPage,
+			PermissibleButton button) {
+		return event -> {
+
+			PermissibleButton finalButton = button;
+
+			if (finalButton.hasPermission()) {
+
+				if (!player.hasPermission(finalButton.getPermission())) {
+
+					if (finalButton.hasMessage())
+						message(player, finalButton.getMessage());
+
+					if (button.hasElseButton())
+						finalButton = finalButton.getElseButton().toButton(PermissibleButton.class);
+					else
+						return;
+
+				}
+			}
+
+			switch (finalButton.getType()) {
+			default:
+				break;
+			
+			}
+			
+		};
+	}
+
+	private Consumer<InventoryClickEvent> rightClick(ZShop plugin, Player player, int page, int maxPage,
+			PermissibleButton button) {
+		return event -> {
+			PermissibleButton finalButton = button;
+
+			if (finalButton.hasPermission()) {
+
+				if (!player.hasPermission(finalButton.getPermission())) {
+
+					if (finalButton.hasMessage())
+						message(player, finalButton.getMessage());
+
+					if (button.hasElseButton())
+						finalButton = finalButton.getElseButton().toButton(PermissibleButton.class);
+					else
+						return;
+
+				}
+			}
+
+			switch (finalButton.getType()) {
+			default:
+				break;
+			
+			}
+		};
+	}
+
+	private Consumer<InventoryClickEvent> leftClick(ZShop plugin, Player player, int page, int maxPage,
+			PermissibleButton button) {
+		return event -> {
+			PermissibleButton finalButton = button;
+
+			if (finalButton.hasPermission()) {
+
+				if (!player.hasPermission(finalButton.getPermission())) {
+
+					if (finalButton.hasMessage())
+						message(player, finalButton.getMessage());
+
+					if (button.hasElseButton())
+						finalButton = finalButton.getElseButton().toButton(PermissibleButton.class);
+					else
+						return;
+
+				}
+			}
+
+			switch (finalButton.getType()) {
+			case ITEM:
+				plugin.getShopManager();
+				break;
+			default:
+				break;
+			
 			}
 		};
 	}

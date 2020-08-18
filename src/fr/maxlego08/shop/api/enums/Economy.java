@@ -6,20 +6,19 @@ import fr.maxlego08.shop.api.events.EconomyCurrencyEvent;
 import fr.maxlego08.shop.save.Lang;
 
 public enum Economy {
-	
 
-	VAULT, 
-	
-	PLAYERPOINT, 
-	
+	VAULT,
+
+	PLAYERPOINT,
+
 	TOKENMANAGER,
-	
-	MYSQLTOKEN, 
-	
-	CUSTOM, 
-	
+
+	MYSQLTOKEN,
+
+	CUSTOM,
+
 	ICECORE,
-	
+
 	;
 
 	/**
@@ -28,6 +27,8 @@ public enum Economy {
 	 * @return
 	 */
 	public static Economy get(String string) {
+		if (string == null)
+			return Economy.VAULT;
 		for (Economy e : values())
 			if (e.name().equalsIgnoreCase(string))
 				return e;

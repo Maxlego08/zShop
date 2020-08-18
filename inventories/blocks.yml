@@ -1,31 +1,31 @@
 name: "&eBlocks &8(&6%page%&f/&e%maxPage%&8)"
 size: 54
 items:
-  back: #Bouton précédant
+  back: 
     item:
       material: 166
       name: "&cRetour"
     type: BACK
     slot: 49
-  next: #Bouton précédant
+  next: 
     item:
       material: 262
       name: "&7Next page"
     type: NEXT
     slot: 50
-  previous: #Bouton précédant
+  previous: 
     item:
       material: 262
       name: "&7Previous page"
     type: PREVIOUS
     slot: 48 
-  home: #Bouton précédant
+  home: 
     item:
       material: 399
       name: "&7Home page"
     type: HOME #Le home est la page principale de la commande
     slot: 53
-  mobs: #Bouton précédant
+  mobs: 
     item:
       material: 367
       name: "&7Mobs"
