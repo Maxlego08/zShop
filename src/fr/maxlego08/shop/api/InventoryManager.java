@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.api;
 
+import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.inventory.Inventory;
 
 public interface InventoryManager {
@@ -10,6 +11,13 @@ public interface InventoryManager {
 	 * @return inventory
 	 */
 	public Inventory getInventory(String name);
+	
+	/**
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public Inventory getInventory(InventoryType type);
 	
 	/**
 	 * Load inventories

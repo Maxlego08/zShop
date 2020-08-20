@@ -1,5 +1,7 @@
 package fr.maxlego08.shop.zcore.utils.loader.button;
 
+import java.util.List;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,6 +16,7 @@ import fr.maxlego08.shop.button.buttons.ZHomeButton;
 import fr.maxlego08.shop.button.buttons.ZInventoryButton;
 import fr.maxlego08.shop.button.buttons.ZItemButton;
 import fr.maxlego08.shop.button.buttons.ZPermissibleButton;
+import fr.maxlego08.shop.button.buttons.ZShowButton;
 import fr.maxlego08.shop.zcore.utils.loader.ItemStackLoader;
 
 public class ButtonLoader implements Loader<Button> {
@@ -66,13 +69,17 @@ public class ButtonLoader implements Loader<Button> {
 		case INVENTORY:
 			inventory = configuration.getString(path + "inventory");
 			return new ZInventoryButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, inventory);
+		case SHOW_ITEM:
+			List<String> lore = configuration.getStringList(path + "lore");
+			return new ZShowButton(type, itemStack, slot, lore);
 		case ITEM:
 		case ITEM_CONFIRM:
 			double sellPrice = configuration.getDouble(path + "sellPrice", 0.0);
 			double buyPrice = configuration.getDouble(path + "buyPrice", 0.0);
+			int maxStack = configuration.getInt(path + "maxStack", 64);
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, this.economy, sellPrice,
-					buyPrice, economy);
+					buyPrice, economy, maxStack);
 		case NEXT:
 		case NONE:
 		case PREVIOUS:

@@ -15,6 +15,7 @@ import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 import fr.maxlego08.shop.api.command.Command;
+import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.exceptions.InventoryTypeException;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -182,9 +183,9 @@ public class InventoryDefault extends VInventory {
 			switch (finalButton.getType()) {
 			default:
 				break;
-			
+
 			}
-			
+
 		};
 	}
 
@@ -211,7 +212,7 @@ public class InventoryDefault extends VInventory {
 			switch (finalButton.getType()) {
 			default:
 				break;
-			
+
 			}
 		};
 	}
@@ -238,11 +239,12 @@ public class InventoryDefault extends VInventory {
 
 			switch (finalButton.getType()) {
 			case ITEM:
-				plugin.getShopManager();
+				plugin.getShopManager().open(player, this.command, button.toButton(ItemButton.class), page,
+						this.inventory, InventoryType.BUY);
 				break;
 			default:
 				break;
-			
+
 			}
 		};
 	}

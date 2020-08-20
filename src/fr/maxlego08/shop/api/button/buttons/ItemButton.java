@@ -32,6 +32,12 @@ public interface ItemButton extends PermissibleButton {
 	public boolean canBuy();
 	
 	/**
+	 * Get max stack amount
+	 * @return max stack item
+	 */
+	public int getMaxStack();
+	
+	/**
 	 * 
 	 * @return economy
 	 */

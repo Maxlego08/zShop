@@ -15,11 +15,13 @@ import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
 import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.CommandObject;
 import fr.maxlego08.shop.command.commands.CommandInventory;
 import fr.maxlego08.shop.inventory.InventoryManager;
+import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 
 public class ZShopManager extends YamlUtils implements ShopManager {
@@ -54,7 +56,8 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			Inventory inventory = plugin.getInventory().loadInventory(stringInventory);
 
 			Command command = new CommandObject(stringCommand, aliases, inventory, permission, description);
-			commandManager.registerCommand(stringCommand, new CommandInventory(plugin.getCommandManager(), command), aliases);
+			commandManager.registerCommand(stringCommand, new CommandInventory(plugin.getCommandManager(), command),
+					aliases);
 
 			success("Register command /" + stringCommand);
 
@@ -171,8 +174,28 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	@Override
 	public void open(Player player, Command command, ItemButton button, int page, Inventory inventory,
 			InventoryType type) {
-		// TODO Auto-generated method stub
+
+		Inventory typeInventory = plugin.getInventory().getInventory(type);
+
+		if (typeInventory == null)
+			throw new InventoryNotFoundException("Cannot find the inventory with the type " + type);
 		
+		switch (type) {
+		case BUY:
+			plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_BUY, player, 1, typeInventory, button,
+					inventory, page);
+			break;
+		case CONFIRM:
+
+			break;
+
+		case SELL:
+
+			break;
+		default:
+			break;
+		}
+
 	}
 
 }

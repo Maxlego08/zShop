@@ -28,6 +28,12 @@ public enum ButtonType {
 	
 	REMOVE,
 	
+	SET_TO_ONE,
+	
+	SET_TO_MAX,
+	
+	SHOW_ITEM,
+	
 	
 	;
 

@@ -26,6 +26,8 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 	private final ZShop plugin;
 	private final IEconomy economy;
+	private final Map<InventoryType, Inventory> typeInventories = new HashMap<>();
+	private final Map<String, Inventory> inventories = new HashMap<String, Inventory>();
 
 	/**
 	 * @param plugin
@@ -38,7 +40,6 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		this.economy = economy;
 	}
 
-	private final Map<String, Inventory> inventories = new HashMap<String, Inventory>();
 
 	@Override
 	public Inventory getInventory(String name) {
@@ -105,6 +106,10 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 		Inventory inventory = new InventoryObject(name, type, size, buttons);
 		inventories.put(lowerCategory, inventory);
+		
+		if (type != InventoryType.DEFAULT)
+			typeInventories.put(type, inventory);
+		
 		success("Successful loading of the inventory " + lowerCategory + " !");
 		return inventory;
 	}
@@ -112,6 +117,11 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 	@Override
 	public void delete() {
 		inventories.clear();
+	}
+
+	@Override
+	public Inventory getInventory(InventoryType type) {
+		return typeInventories.getOrDefault(type, null);
 	}
 
 }

@@ -15,6 +15,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	private final IEconomy iEconomy;
 	private final double sellPrice;
 	private final double buyPrice;
+	private final int maxStack;
 	private final Economy economy;
 
 	/**
@@ -30,12 +31,13 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	 * @param economy
 	 */
 	public ZItemButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, IEconomy iEconomy, double sellPrice, double buyPrice, Economy economy) {
+			Button elseButton, IEconomy iEconomy, double sellPrice, double buyPrice, Economy economy, int maxStack) {
 		super(type, itemStack, slot, permission, message, elseButton);
 		this.iEconomy = iEconomy;
 		this.sellPrice = sellPrice;
 		this.buyPrice = buyPrice;
 		this.economy = economy;
+		this.maxStack = maxStack;
 	}
 
 	@Override
@@ -159,6 +161,11 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 
 		message(player, message);
 
+	}
+
+	@Override
+	public int getMaxStack() {
+		return maxStack;
 	}
 
 }
