@@ -182,20 +182,19 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		
 		switch (type) {
 		case BUY:
+		case SELL:
 			plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_BUY, player, 1, typeInventory, button,
-					inventory, page);
+					inventory, page, command, type);
 			break;
 		case CONFIRM:
-
-			break;
-
-		case SELL:
-
+			plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_CONFIRM, player, 1, typeInventory, button,
+					inventory, page, command);
 			break;
 		default:
 			break;
 		}
 
 	}
+
 
 }

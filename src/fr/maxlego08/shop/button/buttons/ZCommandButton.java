@@ -30,8 +30,8 @@ public class ZCommandButton extends ZItemButton implements CommandButton {
 	 */
 	public ZCommandButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, IEconomy iEconomy, double sellPrice, double buyPrice, Economy economy,
-			List<String> commands, int maxStack) {
-		super(type, itemStack, slot, permission, message, elseButton, iEconomy, sellPrice, buyPrice, economy, maxStack);
+			List<String> commands, int maxStack, List<String> lore) {
+		super(type, itemStack, slot, permission, message, elseButton, iEconomy, sellPrice, buyPrice, economy, maxStack, lore);
 		this.commands = commands;
 	}
 

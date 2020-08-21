@@ -7,7 +7,7 @@ import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.inventory.InventoryLoader;
 import fr.maxlego08.shop.inventory.InventoryManager;
-import fr.maxlego08.shop.inventory.inventories.InventoryBuy;
+import fr.maxlego08.shop.inventory.inventories.InventoryShop;
 import fr.maxlego08.shop.inventory.inventories.InventoryDefault;
 import fr.maxlego08.shop.listener.AdapterListener;
 import fr.maxlego08.shop.zcore.ZPlugin;
@@ -16,8 +16,8 @@ import fr.maxlego08.shop.zcore.enums.EnumInventory;
 public class ZShop extends ZPlugin {
 
 	private final IEconomy economy = new ZEconomy(this);
+	private ShopManager shopManager = new ZShopManager(this, economy);
 	private final fr.maxlego08.shop.api.InventoryManager inventory = new InventoryLoader(this, economy);
-	private ShopManager shopManager;
 
 	@Override
 	public void onEnable() {
@@ -44,8 +44,6 @@ public class ZShop extends ZPlugin {
 			return;
 		}
 
-		shopManager = new ZShopManager(this, economy);
-
 		/* Load Commands */
 		try {
 			shopManager.loadCommands();
@@ -56,7 +54,7 @@ public class ZShop extends ZPlugin {
 		}
 
 		this.registerInventory(EnumInventory.INVENTORY_DEFAULT, new InventoryDefault());
-		this.registerInventory(EnumInventory.INVENTORY_BUY, new InventoryBuy());
+		this.registerInventory(EnumInventory.INVENTORY_BUY, new InventoryShop());
 
 		/* Add Listener */
 

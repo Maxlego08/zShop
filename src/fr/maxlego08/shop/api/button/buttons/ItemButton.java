@@ -1,6 +1,9 @@
 package fr.maxlego08.shop.api.button.buttons;
 
+import java.util.List;
+
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.enums.Economy;
@@ -54,6 +57,19 @@ public interface ItemButton extends PermissibleButton {
 	 * @return
 	 */
 	public IEconomy getIEconomy();
+	
+	/**
+	 * Get item lore
+	 * @return lore
+	 */
+	public List<String> getLore();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ItemStack createItemStack();
+	
 	
 	/**
 	 * Buy item

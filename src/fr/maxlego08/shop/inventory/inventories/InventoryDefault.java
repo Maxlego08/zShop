@@ -66,7 +66,7 @@ public class InventoryDefault extends VInventory {
 
 				if (!player.hasPermission(button.getPermission()) && button.hasElseButton()) {
 
-					addItem(button.getTmpSlot(), button.getElseButton().getItemStack())
+					addItem(button.getTmpSlot(), button.getElseButton().getCustomItemStack())
 							.setClick(clickEvent(main, player, page, maxPage, button))
 							.setLeftClick(leftClick(main, player, page, maxPage, button))
 							.setRightClick(rightClick(main, player, page, maxPage, button))
@@ -74,7 +74,7 @@ public class InventoryDefault extends VInventory {
 
 				} else
 
-					addItem(button.getTmpSlot(), button.getItemStack())
+					addItem(button.getTmpSlot(), button.getCustomItemStack())
 							.setClick(clickEvent(main, player, page, maxPage, button))
 							.setLeftClick(leftClick(main, player, page, maxPage, button))
 							.setRightClick(rightClick(main, player, page, maxPage, button))
@@ -82,7 +82,7 @@ public class InventoryDefault extends VInventory {
 
 			} else
 
-				addItem(button.getTmpSlot(), button.getItemStack())
+				addItem(button.getTmpSlot(), button.getCustomItemStack())
 						.setClick(clickEvent(main, player, page, maxPage, button))
 						.setLeftClick(leftClick(main, player, page, maxPage, button))
 						.setRightClick(rightClick(main, player, page, maxPage, button))
@@ -180,7 +180,12 @@ public class InventoryDefault extends VInventory {
 				}
 			}
 
+
 			switch (finalButton.getType()) {
+			case ITEM:
+				ItemButton itemButton = button.toButton(ItemButton.class);
+				itemButton.sell(player, 0);
+				break;
 			default:
 				break;
 
@@ -210,6 +215,10 @@ public class InventoryDefault extends VInventory {
 			}
 
 			switch (finalButton.getType()) {
+			case ITEM:
+				plugin.getShopManager().open(player, this.command, button.toButton(ItemButton.class), page,
+						this.inventory, InventoryType.SELL);
+				break;
 			default:
 				break;
 

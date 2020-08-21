@@ -69,4 +69,9 @@ public class ZButton extends ZUtils implements Button {
 		return (T) this;
 	}
 
+	@Override
+	public ItemStack getCustomItemStack() {
+		return this.itemStack;
+	}
+
 }

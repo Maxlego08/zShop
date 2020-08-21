@@ -11,6 +11,7 @@ import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.Economy;
+import fr.maxlego08.shop.button.buttons.ZAddRemoveButton;
 import fr.maxlego08.shop.button.buttons.ZBackButton;
 import fr.maxlego08.shop.button.buttons.ZHomeButton;
 import fr.maxlego08.shop.button.buttons.ZInventoryButton;
@@ -61,6 +62,10 @@ public class ButtonLoader implements Loader<Button> {
 		Button button = null;
 
 		switch (type) {
+		case ADD:
+		case REMOVE:
+			int amount = configuration.getInt(path + "amount", 1);
+			return new ZAddRemoveButton(type, itemStack, slot, amount);
 		case BACK:
 			return new ZBackButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, null);
 		case HOME:
@@ -77,9 +82,14 @@ public class ButtonLoader implements Loader<Button> {
 			double sellPrice = configuration.getDouble(path + "sellPrice", 0.0);
 			double buyPrice = configuration.getDouble(path + "buyPrice", 0.0);
 			int maxStack = configuration.getInt(path + "maxStack", 64);
+			List<String> currentLore = configuration.getStringList(path + "lore");
+			
+			if (currentLore.size() == 0)
+				currentLore = plugin.getInventory().getLore();
+			
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, this.economy, sellPrice,
-					buyPrice, economy, maxStack);
+					buyPrice, economy, maxStack, currentLore);
 		case NEXT:
 		case NONE:
 		case PREVIOUS:

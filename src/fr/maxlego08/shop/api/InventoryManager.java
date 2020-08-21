@@ -1,5 +1,7 @@
 package fr.maxlego08.shop.api;
 
+import java.util.List;
+
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.inventory.Inventory;
 
@@ -40,5 +42,7 @@ public interface InventoryManager {
 	 * Delete all inventory
 	 */
 	public void delete();
+
+	public List<String> getLore();
 	
 }

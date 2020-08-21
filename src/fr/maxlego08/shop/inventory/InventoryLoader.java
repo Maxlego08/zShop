@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.inventory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 	private final IEconomy economy;
 	private final Map<InventoryType, Inventory> typeInventories = new HashMap<>();
 	private final Map<String, Inventory> inventories = new HashMap<String, Inventory>();
+	private List<String> defaultLore = new ArrayList<String>();
 
 	/**
 	 * @param plugin
@@ -58,6 +60,9 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 		FileConfiguration config = super.getConfig();
 
+		defaultLore.clear();
+		defaultLore = config.getStringList("defaultItemLore");
+		
 		if (!config.contains("categories"))
 			throw new CategoriesNotFoundException("Cannot find the list of categories !");
 
@@ -122,6 +127,12 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 	@Override
 	public Inventory getInventory(InventoryType type) {
 		return typeInventories.getOrDefault(type, null);
+	}
+
+
+	@Override
+	public List<String> getLore() {
+		return defaultLore;
 	}
 
 }

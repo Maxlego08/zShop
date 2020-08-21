@@ -36,4 +36,8 @@ public enum InventoryType {
 		return this == DEFAULT;
 	}
 
+	public boolean isShop() {
+		return (isBuy() || isSell());
+	}
+
 }

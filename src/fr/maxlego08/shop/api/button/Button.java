@@ -14,6 +14,13 @@ public interface Button {
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public ItemStack getCustomItemStack();
+	
+	
+	/**
+	 * 
 	 * @return buttonType
 	 */
 	public ButtonType getType();
