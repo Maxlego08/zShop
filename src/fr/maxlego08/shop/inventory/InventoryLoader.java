@@ -60,7 +60,8 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 		FileConfiguration config = super.getConfig();
 
-		defaultLore.clear();
+		this.delete();
+		
 		defaultLore = config.getStringList("defaultItemLore");
 		
 		if (!config.contains("categories"))
@@ -121,7 +122,9 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 	@Override
 	public void delete() {
+		defaultLore.clear();
 		inventories.clear();
+		typeInventories.clear();
 	}
 
 	@Override

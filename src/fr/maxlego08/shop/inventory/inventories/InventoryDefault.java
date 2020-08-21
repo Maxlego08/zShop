@@ -180,11 +180,11 @@ public class InventoryDefault extends VInventory {
 				}
 			}
 
-
 			switch (finalButton.getType()) {
 			case ITEM:
 				ItemButton itemButton = button.toButton(ItemButton.class);
-				itemButton.sell(player, 0);
+				if (itemButton.canSell())
+					itemButton.sell(player, 0);
 				break;
 			default:
 				break;
@@ -216,8 +216,10 @@ public class InventoryDefault extends VInventory {
 
 			switch (finalButton.getType()) {
 			case ITEM:
-				plugin.getShopManager().open(player, this.command, button.toButton(ItemButton.class), page,
-						this.inventory, InventoryType.SELL);
+				ItemButton itemButton = button.toButton(ItemButton.class);
+				if (itemButton.canSell())
+					plugin.getShopManager().open(player, this.command, itemButton, page, this.inventory,
+							InventoryType.SELL);
 				break;
 			default:
 				break;
@@ -248,8 +250,10 @@ public class InventoryDefault extends VInventory {
 
 			switch (finalButton.getType()) {
 			case ITEM:
-				plugin.getShopManager().open(player, this.command, button.toButton(ItemButton.class), page,
-						this.inventory, InventoryType.BUY);
+				ItemButton itemButton = button.toButton(ItemButton.class);
+				if (itemButton.canBuy())
+					plugin.getShopManager().open(player, this.command, itemButton, page, this.inventory,
+							InventoryType.BUY);
 				break;
 			default:
 				break;

@@ -45,6 +45,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		this.economy = economy;
 		this.maxStack = maxStack;
 		this.lore = lore;
+		
 	}
 
 	@Override
@@ -193,13 +194,20 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		ItemStack itemStack = super.getItemStack().clone();
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		List<String> lore = new ArrayList<String>();
+
 		if (itemMeta.hasLore())
 			lore.addAll(itemMeta.getLore());
-		this.lore.forEach(str -> {
-			str = str.replace("%buyPrice%", String.valueOf(getBuyPrice()));
-			str = str.replace("%sellPrice%", String.valueOf(getSellPrice()));
-			str = str.replace("%currency%", this.economy.getCurrenry());
+
+		this.lore.forEach(string -> {
+
+			String str = string.replace("%buyPrice%", this.getBuyPriceAsString(1));
+			if (!str.equals(string))
+				str = str.replace("%currency%", this.canBuy() ? this.economy.getCurrenry() : "");
+			str = str.replace("%sellPrice%", this.getSellPriceAsString(1));
+			if (!str.equals(string))
+				str = str.replace("%currency%", this.canSell() ? this.economy.getCurrenry() : "");
 			str = str.replace("&", "§");
+
 			lore.add(str);
 		});
 		itemMeta.setLore(lore);
@@ -211,5 +219,15 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	public ItemStack getCustomItemStack() {
 		return this.createItemStack();
 	}
-	
+
+	@Override
+	public String getSellPriceAsString(int amount) {
+		return this.canSell() ? String.valueOf(sellPrice * amount) : Lang.canSell;
+	}
+
+	@Override
+	public String getBuyPriceAsString(int amount) {
+		return this.canBuy() ? String.valueOf(buyPrice * amount) : Lang.canBuy;
+	}
+
 }

@@ -58,6 +58,10 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 		return command;
 	}
 
+	public void clear(){
+		this.commands.clear();
+	}
+	
 	/**
 	 * Register command whitout plugin.yml
 	 * 

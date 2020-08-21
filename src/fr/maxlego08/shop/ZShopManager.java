@@ -43,6 +43,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		ConfigurationSection section = config.getConfigurationSection("commands.");
 
 		CommandManager commandManager = plugin.getCommandManager();
+		commandManager.clear();
 		for (String key : section.getKeys(false)) {
 
 			String path = "commands." + key + ".";

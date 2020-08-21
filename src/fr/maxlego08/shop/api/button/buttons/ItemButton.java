@@ -70,6 +70,17 @@ public interface ItemButton extends PermissibleButton {
 	 */
 	public ItemStack createItemStack();
 	
+	/**
+	 * 
+	 * @return sell price as string
+	 */
+	public String getSellPriceAsString(int amount);
+	
+	/**
+	 * 
+	 * @return buy price as string
+	 */
+	public String getBuyPriceAsString(int amount);
 	
 	/**
 	 * Buy item
