@@ -19,6 +19,7 @@ public class CommandInventory extends VCommand {
 		this.setPermission(command.getPermission());
 		this.setDescription(command.getDescription());
 		this.setConsoleCanUse(false);
+		this.DEBUG = true;
 	}
 
 	@Override

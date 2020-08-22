@@ -684,7 +684,7 @@ public abstract class ZUtils extends MessageUtils {
 	}
 
 	/**
-	 * Permet de générer un string
+	 * Permet de g§n§rer un string
 	 * 
 	 * @param length
 	 * @return

@@ -27,9 +27,10 @@ import fr.maxlego08.shop.zcore.utils.inventory.ZButton;
 public class InventoryDefault extends VInventory {
 
 	private Inventory inventory;
-	private Inventory oldInventory;
+	private List<Inventory> oldInventories;
 	private Command command;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public InventoryResult openInventory(ZShop main, Player player, int page, Object... args)
 			throws InventoryOpenException {
@@ -42,14 +43,21 @@ public class InventoryDefault extends VInventory {
 		if (!inventory.getType().isDefault())
 			throw new InventoryTypeException("Cannot open default inventory with type " + inventory.getType());
 
-		oldInventory = (Inventory) args[1];
+		oldInventories = (List<Inventory>) args[1];
 		command = (Command) args[2];
 
 		int maxPage = inventory.getMaxPage();
 
-		inventory.getButtons(BackButton.class).forEach(button -> {
-			button.setBackInventory(oldInventory == null ? inventory : oldInventory);
-		});
+		int size = oldInventories.size() - 1;
+
+		if (size >= 0) {
+			Inventory oldInventory = oldInventories.get(size);
+
+			inventory.getButtons(BackButton.class).forEach(button -> {
+				button.setBackInventory(oldInventory == null ? inventory : oldInventory);
+			});
+		}
+
 		inventory.getButtons(HomeButton.class).forEach(button -> button.setBackInventory(command.getInventory()));
 
 		List<PermissibleButton> buttons = inventory.sortButtons(page);
@@ -141,22 +149,30 @@ public class InventoryDefault extends VInventory {
 			switch (finalButton.getType()) {
 			case NEXT:
 				if (page != maxPage)
-					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory, oldInventory,
-							command);
+					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory,
+							oldInventories, command);
 				break;
 			case PREVIOUS:
 				if (page != 1)
-					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory, oldInventory,
-							command);
+					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory,
+							oldInventories, command);
 				break;
 			case ITEM:
 				break;
 			case INVENTORY:
-			case HOME:
-			case BACK:
+				this.oldInventories.add(inventory);
 				InventoryButton inventoryButton = finalButton.toButton(InventoryButton.class);
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
-						inventory, command);
+						oldInventories, command);
+				break;
+
+			case HOME:
+			case BACK:
+				inventoryButton = finalButton.toButton(InventoryButton.class);
+				Inventory currentInventory = inventoryButton.getInventory();
+				this.oldInventories.remove(currentInventory);
+				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, currentInventory, oldInventories,
+						command);
 				break;
 			default:
 				break;
@@ -222,9 +238,11 @@ public class InventoryDefault extends VInventory {
 			switch (finalButton.getType()) {
 			case ITEM:
 				ItemButton itemButton = button.toButton(ItemButton.class);
-				if (itemButton.canSell())
-					plugin.getShopManager().open(player, this.command, itemButton, page, this.inventory,
+				if (itemButton.canSell()) {
+					this.oldInventories.add(this.inventory);
+					plugin.getShopManager().open(player, this.command, itemButton, page, this.oldInventories,
 							InventoryType.SELL);
+				}
 				break;
 			default:
 				break;
@@ -256,9 +274,11 @@ public class InventoryDefault extends VInventory {
 			switch (finalButton.getType()) {
 			case ITEM:
 				ItemButton itemButton = button.toButton(ItemButton.class);
-				if (itemButton.canBuy())
-					plugin.getShopManager().open(player, this.command, itemButton, page, this.inventory,
+				if (itemButton.canBuy()) {
+					this.oldInventories.add(this.inventory);
+					plugin.getShopManager().open(player, this.command, itemButton, page, this.oldInventories,
 							InventoryType.BUY);
+				}
 				break;
 			default:
 				break;

@@ -1,5 +1,7 @@
 package fr.maxlego08.shop.api;
 
+import java.util.List;
+
 import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
@@ -26,12 +28,12 @@ public interface ShopManager {
 	 * 
 	 */
 	public void reload();
-	
+
 	/**
 	 * Close players inventory
 	 */
 	public void closeInventory();
-	
+
 	/**
 	 * 
 	 * @return
@@ -46,6 +48,7 @@ public interface ShopManager {
 	 * @param page
 	 * @param inventory
 	 */
-	public void open(Player player, Command command, ItemButton button, int page, Inventory inventory, InventoryType type);
-	
+	public void open(Player player, Command command, ItemButton button, int page, List<Inventory> oldInventories,
+			InventoryType type);
+
 }

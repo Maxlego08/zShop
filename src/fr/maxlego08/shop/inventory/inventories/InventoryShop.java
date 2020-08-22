@@ -33,7 +33,7 @@ import fr.maxlego08.shop.zcore.utils.inventory.VInventory;
 public class InventoryShop extends VInventory {
 
 	private Inventory inventory;
-	private Inventory oldInventory;
+	private List<Inventory> oldInventories;
 	private Command command;
 	private ItemButton button;
 	private int oldPage;
@@ -41,13 +41,14 @@ public class InventoryShop extends VInventory {
 	private InventoryType type;
 	private List<ShowButton> shows = new ArrayList<>();
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public InventoryResult openInventory(ZShop main, Player player, int page, Object... args)
 			throws InventoryOpenException {
 
 		this.inventory = (Inventory) args[0];
 		this.button = (ItemButton) args[1];
-		this.oldInventory = (Inventory) args[2];
+		this.oldInventories = (List<Inventory>) args[2];
 		this.oldPage = (Integer) args[3];
 		this.command = (Command) args[4];
 		this.type = (InventoryType) args[5];
@@ -59,6 +60,15 @@ public class InventoryShop extends VInventory {
 
 		createInventory(inventory.getName(), inventory.size());
 
+		Inventory oldInventory = null;
+
+		int size = oldInventories.size() - 1;
+
+		if (size >= 0)
+			oldInventory = oldInventories.get(size);
+
+		final Inventory finalInventory = oldInventory;
+
 		Collection<Button> buttons = inventory.getButtons();
 
 		buttons.forEach(button -> {
@@ -66,8 +76,8 @@ public class InventoryShop extends VInventory {
 			if (button.getType().equals(ButtonType.HOME))
 				button.toButton(HomeButton.class).setBackInventory(command.getInventory());
 
-			if (button.getType().equals(ButtonType.BACK))
-				button.toButton(BackButton.class).setBackInventory(oldInventory);
+			if (button.getType().equals(ButtonType.BACK) && finalInventory != null)
+				button.toButton(BackButton.class).setBackInventory(finalInventory);
 
 			if (button.getType().equals(ButtonType.SHOW_ITEM)) {
 
@@ -132,15 +142,21 @@ public class InventoryShop extends VInventory {
 				amount = 1;
 				this.itemRender();
 				break;
-			case INVENTORY:
 			case HOME:
 				InventoryButton inventoryButton = currentButton.toButton(InventoryButton.class);
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
-						inventory, command);
+						new ArrayList<>(), command);
+			case INVENTORY:
+				inventoryButton = currentButton.toButton(InventoryButton.class);
+				oldInventories.remove(inventoryButton.getInventory());
+				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, oldPage,
+						inventoryButton.getInventory(), oldInventories, command);
+				break;
 			case BACK:
 				inventoryButton = currentButton.toButton(InventoryButton.class);
+				oldInventories.remove(inventoryButton.getInventory());
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, oldPage,
-						inventoryButton.getInventory(), inventory, command);
+						inventoryButton.getInventory(), oldInventories, command);
 				break;
 			default:
 				break;

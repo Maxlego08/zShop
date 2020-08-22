@@ -21,9 +21,9 @@ categories:
  - "blocks"
 
 defaultItemLore:
-  - "&fÂ» &2Buying price&7: &a%buyPrice%%currency%"
-  - "&fÂ» &2Selling price&7: &a%sellPrice%%currency%"
+  - "&f» &2Buying price&7: &a%buyPrice%%currency%"
+  - "&f» &2Selling price&7: &a%sellPrice%%currency%"
   - ""
-  - "&fÂ» &7Left click to buy"
-  - "&fÂ» &7Click wheel to sell everything"
-  - "&fÂ» &7Right click to sell"
+  - "&f» &7Left click to buy"
+  - "&f» &7Click wheel to sell everything"
+  - "&f» &7Right click to sell"

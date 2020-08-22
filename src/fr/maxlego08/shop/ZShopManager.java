@@ -1,6 +1,7 @@
 package fr.maxlego08.shop;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		InventoryManager inventoryManager = plugin.getInventoryManager();
 		inventoryManager.createInventory(fr.maxlego08.shop.zcore.enums.EnumInventory.INVENTORY_DEFAULT, player, 1,
-				inventory, null, command);
+				inventory, new ArrayList<>(), command);
 
 	}
 
@@ -173,7 +174,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	}
 
 	@Override
-	public void open(Player player, Command command, ItemButton button, int page, Inventory inventory,
+	public void open(Player player, Command command, ItemButton button, int page, List<Inventory> oldInventories,
 			InventoryType type) {
 
 		Inventory typeInventory = plugin.getInventory().getInventory(type);
@@ -181,15 +182,17 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		if (typeInventory == null)
 			throw new InventoryNotFoundException("Cannot find the inventory with the type " + type);
 		
+		
+		
 		switch (type) {
 		case BUY:
 		case SELL:
 			plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_BUY, player, 1, typeInventory, button,
-					inventory, page, command, type);
+					oldInventories, page, command, type);
 			break;
 		case CONFIRM:
 			plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_CONFIRM, player, 1, typeInventory, button,
-					inventory, page, command);
+					oldInventories, page, command);
 			break;
 		default:
 			break;
