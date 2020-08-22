@@ -147,16 +147,18 @@ public class InventoryShop extends VInventory {
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
 						new ArrayList<>(), command);
 			case INVENTORY:
+				
 				inventoryButton = currentButton.toButton(InventoryButton.class);
-				oldInventories.remove(inventoryButton.getInventory());
+				oldInventories.add(this.inventory);
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, oldPage,
-						inventoryButton.getInventory(), oldInventories, command);
+						inventoryButton.getInventory(), this.oldInventories, this.command, this.button, this.type);
+				
 				break;
 			case BACK:
 				inventoryButton = currentButton.toButton(InventoryButton.class);
 				oldInventories.remove(inventoryButton.getInventory());
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, oldPage,
-						inventoryButton.getInventory(), oldInventories, command);
+						inventoryButton.getInventory(), this.oldInventories, this.command, this.button, this.type);
 				break;
 			default:
 				break;

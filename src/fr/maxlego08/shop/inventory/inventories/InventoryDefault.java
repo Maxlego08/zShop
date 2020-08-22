@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.inventory.inventories;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -20,6 +21,8 @@ import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.exceptions.InventoryTypeException;
 import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
+import fr.maxlego08.shop.zcore.logger.Logger;
+import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.inventory.InventoryResult;
 import fr.maxlego08.shop.zcore.utils.inventory.VInventory;
 import fr.maxlego08.shop.zcore.utils.inventory.ZButton;
@@ -35,7 +38,7 @@ public class InventoryDefault extends VInventory {
 	public InventoryResult openInventory(ZShop main, Player player, int page, Object... args)
 			throws InventoryOpenException {
 
-		if (args.length != 3)
+		if (args.length < 3)
 			throw new InventoryOpenException("Pas assez d'argument pour ouvrir l'inventaire");
 
 		inventory = (Inventory) args[0];
@@ -157,22 +160,67 @@ public class InventoryDefault extends VInventory {
 					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory,
 							oldInventories, command);
 				break;
-			case ITEM:
-				break;
 			case INVENTORY:
 				this.oldInventories.add(inventory);
 				InventoryButton inventoryButton = finalButton.toButton(InventoryButton.class);
-				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
-						oldInventories, command);
-				break;
+				Inventory toInventory = inventoryButton.getInventory();
 
+				if (!toInventory.getType().isDefault()) {
+
+					message(player, "§cUnable to navigate to the §f" + toInventory.getName()
+							+ "inventory §c, please contact an administrator to correct the problem.");
+
+					Logger.info("Player " + player.getName() + " wanted to go to the " + toInventory.getName()
+							+ " inventory but the inventory type is incorrect.", LogType.ERROR);
+
+					return;
+				}
+
+				if (args.length == 5) {
+
+					InventoryType type = (InventoryType) args[4];
+					ItemButton itemButton = (ItemButton) args[3];
+
+					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, toInventory, oldInventories,
+							command, itemButton, type);
+				} else
+
+					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, toInventory, oldInventories,
+							command);
+				break;
 			case HOME:
+				inventoryButton = finalButton.toButton(InventoryButton.class);
+				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
+						new ArrayList<>(), command);
+				break;
 			case BACK:
+
 				inventoryButton = finalButton.toButton(InventoryButton.class);
 				Inventory currentInventory = inventoryButton.getInventory();
 				this.oldInventories.remove(currentInventory);
-				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, currentInventory, oldInventories,
-						command);
+
+				if (currentInventory.getType().isShop()) {
+
+					InventoryType type = (InventoryType) args[4];
+					ItemButton itemButton = (ItemButton) args[3];
+
+					plugin.getShopManager().open(player, command, itemButton, maxPage, oldInventories, type);
+
+				} else {
+
+					if (args.length == 5) {
+
+						InventoryType type = (InventoryType) args[4];
+						ItemButton itemButton = (ItemButton) args[3];
+
+						createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, currentInventory,
+								oldInventories, command, itemButton, type);
+					} else
+
+						createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, currentInventory,
+								oldInventories, command);
+
+				}
 				break;
 			default:
 				break;
@@ -239,6 +287,14 @@ public class InventoryDefault extends VInventory {
 			case ITEM:
 				ItemButton itemButton = button.toButton(ItemButton.class);
 				if (itemButton.canSell()) {
+
+					if (args.length == 5) {
+						message(player,
+								"§cYou cannot access a shop inventory if you have already opened an inventory of type SELL or BUY. Contact an administrator to correct the problem.");
+						player.closeInventory();
+						return;
+					}
+
 					this.oldInventories.add(this.inventory);
 					plugin.getShopManager().open(player, this.command, itemButton, page, this.oldInventories,
 							InventoryType.SELL);
@@ -275,6 +331,14 @@ public class InventoryDefault extends VInventory {
 			case ITEM:
 				ItemButton itemButton = button.toButton(ItemButton.class);
 				if (itemButton.canBuy()) {
+
+					if (args.length == 5) {
+						message(player,
+								"§cYou cannot access a shop inventory if you have already opened an inventory of type SELL or BUY. Contact an administrator to correct the problem.");
+						player.closeInventory();
+						return;
+					}
+
 					this.oldInventories.add(this.inventory);
 					plugin.getShopManager().open(player, this.command, itemButton, page, this.oldInventories,
 							InventoryType.BUY);
