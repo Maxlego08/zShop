@@ -12,17 +12,19 @@ public class ZButton extends ZUtils implements Button {
 	private final ItemStack itemStack;
 	private final int slot;
 	private int tmpSlot;
+	private boolean isPermanent;
 
 	/**
 	 * @param type
 	 * @param itemStack
 	 * @param slot
 	 */
-	public ZButton(ButtonType type, ItemStack itemStack, int slot) {
+	public ZButton(ButtonType type, ItemStack itemStack, int slot, boolean isPermanent) {
 		super();
 		this.type = type;
 		this.itemStack = itemStack;
 		this.slot = slot;
+		this.isPermanent = isPermanent;
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class ZButton extends ZUtils implements Button {
 
 	@Override
 	public void setTmpSlot(int slot) {
-		if (type.isPermament())
+		if (this.isPermament())
 			this.tmpSlot = this.slot;
 		else
 			this.tmpSlot = slot;
@@ -72,6 +74,16 @@ public class ZButton extends ZUtils implements Button {
 	@Override
 	public ItemStack getCustomItemStack() {
 		return this.itemStack;
+	}
+
+	@Override
+	public boolean isClickable() {
+		return type.isClickable();
+	}
+
+	@Override
+	public boolean isPermament() {
+		return isPermanent;
 	}
 
 }

@@ -15,8 +15,8 @@ public class ZHomeButton extends ZBackButton implements HomeButton {
 	 * @param slot
 	 * @param inventory
 	 */
-	public ZHomeButton(ZShop plugin, ButtonType type, ItemStack itemStack, int slot, String inventory) {
-		super(plugin, type, itemStack, slot, inventory);
+	public ZHomeButton(ZShop plugin, ButtonType type, ItemStack itemStack, int slot, String inventory, boolean isPermanent) {
+		super(plugin, type, itemStack, slot, inventory, isPermanent);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -30,8 +30,8 @@ public class ZHomeButton extends ZBackButton implements HomeButton {
 	 * @param inventory
 	 */
 	public ZHomeButton(ZShop plugin, ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, String inventory) {
-		super(plugin, type, itemStack, slot, permission, message, elseButton, inventory);
+			Button elseButton, String inventory, boolean isPermanent) {
+		super(plugin, type, itemStack, slot, permission, message, elseButton, inventory, isPermanent);
 		// TODO Auto-generated constructor stub
 	}
 

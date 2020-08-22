@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.zcore.utils.builder.ItemBuilder;
 
-public class ItemButton {
+public class ZButton {
 
 	private final ItemStack displayItem;
 	private Consumer<InventoryClickEvent> onClick;
@@ -18,33 +18,33 @@ public class ItemButton {
 	private Consumer<InventoryClickEvent> onLeftClick;
 	private Consumer<InventoryClickEvent> onRightClick;
 
-	public ItemButton(ItemStack displayItem) {
+	public ZButton(ItemStack displayItem) {
 		super();
 		this.displayItem = displayItem;
 	}
 
-	public ItemButton(Material material, int id, String name, String... lore) {
+	public ZButton(Material material, int id, String name, String... lore) {
 		this(new ItemBuilder(material, id, 1, name, Arrays.asList(lore), null, null).build());
 	}
 
-	public ItemButton(Material material, String name, String... lore) {
+	public ZButton(Material material, String name, String... lore) {
 		this(new ItemBuilder(material, name).setLore(lore).build());
 	}
 
-	public ItemButton(Material material) {
+	public ZButton(Material material) {
 		this(new ItemBuilder(material).build());
 	}
 
-	public ItemButton(Material material, String name) {
+	public ZButton(Material material, String name) {
 		this(new ItemBuilder(material, name).build());
 	}
 
-	public ItemButton setClick(Consumer<InventoryClickEvent> onClick) {
+	public ZButton setClick(Consumer<InventoryClickEvent> onClick) {
 		this.onClick = onClick;
 		return this;
 	}
 
-	public ItemButton setMiddleClick(Consumer<InventoryClickEvent> onMiddleClick) {
+	public ZButton setMiddleClick(Consumer<InventoryClickEvent> onMiddleClick) {
 		this.onMiddleClick = onMiddleClick;
 		return this;
 	}
@@ -53,7 +53,7 @@ public class ItemButton {
 	 * @param onLeftClick
 	 *            the onLeftClick to set
 	 */
-	public ItemButton setLeftClick(Consumer<InventoryClickEvent> onLeftClick) {
+	public ZButton setLeftClick(Consumer<InventoryClickEvent> onLeftClick) {
 		this.onLeftClick = onLeftClick;
 		return this;
 	}
@@ -62,7 +62,7 @@ public class ItemButton {
 	 * @param onRightClick
 	 *            the onRightClick to set
 	 */
-	public ItemButton setRightClick(Consumer<InventoryClickEvent> onRightClick) {
+	public ZButton setRightClick(Consumer<InventoryClickEvent> onRightClick) {
 		this.onRightClick = onRightClick;
 		return this;
 	}

@@ -1,22 +1,105 @@
 name: "&eMiscellaneous"
 size: 54
 items:
-  previous: #Bouton précédant
+  back:
     item:
-      material: ARROW
-      name: "&7Previous page"
-    type: PREVIOUS
+      material: 166
+      name: "&cBack"
+    type: BACK
     slot: 49
-  next: #Bouton suivant
+  next:
     item:
-      material: ARROW
+      material: 262
       name: "&7Next page"
     type: NEXT
-    slot: 51
-  back: #Bouton de retour
+    slot: 50
+  previous:
     item:
-      material: BARRIER
-      name: "&7Back to previous"
-    type: BACK
-    slot: 50    
-    permission: "zshop.blocks.back"      
+      material: 262
+      name: "&7Previous page"
+    type: PREVIOUS
+    slot: 48
+  1:            
+    item:
+      material: BEACON
+    buyPrice: 2.0
+    sellPrice: 0.0
+    type: ITEM 
+    slot: 0
+  2:            
+    item:
+      material: 325
+    buyPrice: 10.0
+    sellPrice: 0.0
+    maxStack: 16
+    type: ITEM 
+    slot: 1
+  3:            
+    item:
+      material: 326
+    buyPrice: 10.0
+    sellPrice: 0.0
+    maxStack: 1
+    type: ITEM 
+    slot: 2
+  4:            
+    item:
+      material: 327
+    buyPrice: 10.0
+    sellPrice: 0.0
+    maxStack: 1
+    type: ITEM 
+    slot: 3
+  5:            
+    item:
+      material: BOOK
+    buyPrice: 10.0
+    sellPrice: 0.5
+    type: ITEM 
+    slot: 4
+  6:            
+    item:
+      material: 417
+    buyPrice: 100.0
+    sellPrice: 0.0
+    type: ITEM 
+    slot: 5
+  7:            
+    item:
+      material: 418
+    buyPrice: 10.0
+    sellPrice: 0.0
+    type: ITEM 
+    slot: 6
+  8:       
+    item:
+      material: 419
+    buyPrice: 10.0
+    sellPrice: 0.0
+    type: ITEM 
+    slot: 7 
+  9:       
+    item:
+      material: ENCHANTED_BOOK
+      enchants:
+        - PROTECTION_ENVIRONMENTAL,4      
+    buyPrice: 100.0
+    sellPrice: 0.0
+    maxStack: 1
+    type: ITEM 
+    slot: 8
+  10:       
+    item:
+      material: 397
+      data: 1
+    buyPrice: 10000.0
+    sellPrice: 0.0
+    type: ITEM 
+    slot: 9
+  11:       
+    item:
+      material: ENDER_CHEST
+    buyPrice: 100.0
+    sellPrice: 0.0
+    type: ITEM 
+    slot: 10          

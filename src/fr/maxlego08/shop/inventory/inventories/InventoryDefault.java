@@ -22,6 +22,7 @@ import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.utils.inventory.InventoryResult;
 import fr.maxlego08.shop.zcore.utils.inventory.VInventory;
+import fr.maxlego08.shop.zcore.utils.inventory.ZButton;
 
 public class InventoryDefault extends VInventory {
 
@@ -66,28 +67,32 @@ public class InventoryDefault extends VInventory {
 
 				if (!player.hasPermission(button.getPermission()) && button.hasElseButton()) {
 
-					addItem(button.getTmpSlot(), button.getElseButton().getCustomItemStack())
-							.setClick(clickEvent(main, player, page, maxPage, button))
+					ZButton zButton = addItem(button.getTmpSlot(), button.getElseButton().getCustomItemStack());
+
+					if (button.isClickable())
+						zButton.setClick(clickEvent(main, player, page, maxPage, button))
+								.setLeftClick(leftClick(main, player, page, maxPage, button))
+								.setRightClick(rightClick(main, player, page, maxPage, button))
+								.setMiddleClick(middleClick(main, player, page, maxPage, button));
+
+				} else {
+
+					ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack());
+					if (button.isClickable())
+						zButton.setClick(clickEvent(main, player, page, maxPage, button))
+								.setLeftClick(leftClick(main, player, page, maxPage, button))
+								.setRightClick(rightClick(main, player, page, maxPage, button))
+								.setMiddleClick(middleClick(main, player, page, maxPage, button));
+				}
+			} else {
+
+				ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack());
+				if (button.isClickable())
+					zButton.setClick(clickEvent(main, player, page, maxPage, button))
 							.setLeftClick(leftClick(main, player, page, maxPage, button))
 							.setRightClick(rightClick(main, player, page, maxPage, button))
 							.setMiddleClick(middleClick(main, player, page, maxPage, button));
-
-				} else
-
-					addItem(button.getTmpSlot(), button.getCustomItemStack())
-							.setClick(clickEvent(main, player, page, maxPage, button))
-							.setLeftClick(leftClick(main, player, page, maxPage, button))
-							.setRightClick(rightClick(main, player, page, maxPage, button))
-							.setMiddleClick(middleClick(main, player, page, maxPage, button));
-
-			} else
-
-				addItem(button.getTmpSlot(), button.getCustomItemStack())
-						.setClick(clickEvent(main, player, page, maxPage, button))
-						.setLeftClick(leftClick(main, player, page, maxPage, button))
-						.setRightClick(rightClick(main, player, page, maxPage, button))
-						.setMiddleClick(middleClick(main, player, page, maxPage, button));
-
+			}
 		}
 
 		return InventoryResult.SUCCESS;

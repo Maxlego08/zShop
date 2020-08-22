@@ -21,7 +21,7 @@ import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.inventory.InventoryResult;
-import fr.maxlego08.shop.zcore.utils.inventory.ItemButton;
+import fr.maxlego08.shop.zcore.utils.inventory.ZButton;
 import fr.maxlego08.shop.zcore.utils.inventory.VInventory;
 
 public class InventoryManager extends ListenerAdapter {
@@ -99,7 +99,7 @@ public class InventoryManager extends ListenerAdapter {
 			if (event.getView() != null && gui.getPlayer().equals(player)
 					&& event.getView().getTitle().equals(gui.getGuiName())) {
 				event.setCancelled(true);
-				ItemButton button = gui.getItems().getOrDefault(event.getSlot(), null);
+				ZButton button = gui.getItems().getOrDefault(event.getSlot(), null);
 				if (button != null)
 					button.onClick(event);
 			}

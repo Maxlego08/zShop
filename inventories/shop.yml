@@ -1,26 +1,234 @@
-name: "&ezShop &8(&b%page%&f/&3%maxPage%&8)"
-size: 54
+name: "&eShop"
+size: 45
 items:
-  1: #Bouton précédant
+  1: 
     item:
-      material: 1
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 0
+  2: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 1
+  3: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 2
+  4: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 3
+  5: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 4
+  6: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 5
+  7: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 6
+  8: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 7
+  9: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 8
+  10: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 9
+  11: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 17
+  12: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 18
+  13: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 26
+  14: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 27
+  15: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 35
+  16: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 36
+  17: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 37
+  18: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 38
+  19: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 39                                                                          
+  20: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 40
+  21: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 41
+  22: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 42
+  23: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 43
+  24: 
+    item:
+      material: STAINED_GLASS_PANE
+      name: "&e"
+      data: 8
+    type: NONE
+    slot: 44
+  block: 
+    item:
+      material: GRASS
+      name: "&aBlocks"
+      lore:
+        - "&7Click to access the blocks"
     type: INVENTORY
     inventory: "blocks"
-    slot: 0
-  2: #Bouton précédant
+    slot: 20
+  farm: 
     item:
-      material: 2
-    type: NONE
-    slot: 898
-  next: #Bouton précédant
+      material: CARROT_ITEM
+      name: "&aFarm"
+      lore:
+        - "&7Click to access the farm"
+    type: INVENTORY
+    inventory: "farm"
+    slot: 21
+  ores: 
     item:
-      material: 262
-      name: "&7Next page"
-    type: NEXT
-    slot: 50
-  previous: #Bouton précédant
+      material: DIAMOND
+      name: "&aOres"
+      lore:
+        - "&7Click to access the ores"
+    type: INVENTORY
+    inventory: "ores"
+    slot: 22
+  foods: 
     item:
-      material: 262
-      name: "&7Previous page"
-    type: PREVIOUS
-    slot: 48          
+      material: APPLE
+      name: "&aFoods"
+      lore:
+        - "&7Click to access the foods"
+    type: INVENTORY
+    inventory: "foods"
+    slot: 23
+  redstone: 
+    item:
+      material: REDSTONE
+      name: "&aRedstone"
+      lore:
+        - "&7Click to access the redstone"
+    type: INVENTORY
+    inventory: "redstone"
+    slot: 24
+  miscellaneous: 
+    item:
+      material: ENDER_CHEST
+      name: "&aMiscellaneous"
+      lore:
+        - "&7Click to access the miscellaneous"
+    type: INVENTORY
+    inventory: "miscellaneous"
+    slot: 25
+  mobs: 
+    item:
+      material: ROTTEN_FLESH
+      name: "&aMobs"
+      lore:
+        - "&7Click to access the mobs"
+    type: INVENTORY
+    inventory: "mobs"
+    slot: 19                                    

@@ -20,7 +20,7 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 
 	protected int id;
 	protected ZShop plugin;
-	protected Map<Integer, ItemButton> items = new HashMap<Integer, ItemButton>();
+	protected Map<Integer, ZButton> items = new HashMap<Integer, ZButton>();
 	protected Player player;
 	protected int page;
 	protected Object[] args;
@@ -78,7 +78,7 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 	 * @param item
 	 * @return
 	 */
-	public ItemButton addItem(int slot, Material material, String name) {
+	public ZButton addItem(int slot, Material material, String name) {
 		return addItem(slot, new ItemBuilder(material, name).build());
 	}
 
@@ -88,7 +88,7 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 	 * @param item
 	 * @return
 	 */
-	public ItemButton addItem(int slot, ItemBuilder item) {
+	public ZButton addItem(int slot, ItemBuilder item) {
 		return addItem(slot, item.build());
 	}
 
@@ -98,11 +98,11 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 	 * @param item
 	 * @return
 	 */
-	public ItemButton addItem(int slot, ItemStack item) {
+	public ZButton addItem(int slot, ItemStack item) {
 		// Pour éviter les erreurs, on crée un inventaire
 		createDefaultInventory();
 
-		ItemButton button = new ItemButton(item);
+		ZButton button = new ZButton(item);
 		this.items.put(slot, button);
 		this.inventory.setItem(slot, item);
 		return button;
@@ -129,7 +129,7 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 	 * 
 	 * @return
 	 */
-	public Map<Integer, ItemButton> getItems() {
+	public Map<Integer, ZButton> getItems() {
 		return items;
 	}
 

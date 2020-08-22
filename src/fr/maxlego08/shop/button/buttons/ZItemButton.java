@@ -37,8 +37,8 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	 */
 	public ZItemButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, IEconomy iEconomy, double sellPrice, double buyPrice, Economy economy, int maxStack,
-			List<String> lore) {
-		super(type, itemStack, slot, permission, message, elseButton);
+			List<String> lore, Boolean isPermanent) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent);
 		this.iEconomy = iEconomy;
 		this.sellPrice = sellPrice;
 		this.buyPrice = buyPrice;
@@ -193,6 +193,10 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 
 		ItemStack itemStack = super.getItemStack().clone();
 		ItemMeta itemMeta = itemStack.getItemMeta();
+		
+		if (itemMeta == null)
+			return itemStack;
+		
 		List<String> lore = new ArrayList<String>();
 
 		if (itemMeta.hasLore())

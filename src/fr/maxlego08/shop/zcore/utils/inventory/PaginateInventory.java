@@ -66,8 +66,8 @@ public abstract class PaginateInventory<T> extends VInventory {
 				: pagination.paginate(collections, paginationSize, page);
 
 		tmpList.forEach(tmpItem -> {
-			ItemButton button = addItem(slotChange(slot.getAndIncrement()), buildItem(tmpItem));
-			ItemButton itemButton = createButton(button);
+			ZButton button = addItem(slotChange(slot.getAndIncrement()), buildItem(tmpItem));
+			ZButton itemButton = createButton(button);
 			if (!disableClick)
 				itemButton.setClick((event) -> onClick(tmpItem, itemButton));
 		});
@@ -98,7 +98,7 @@ public abstract class PaginateInventory<T> extends VInventory {
 	 * @param button
 	 * @return
 	 */
-	protected ItemButton createButton(ItemButton button) {
+	protected ZButton createButton(ZButton button) {
 		return button;
 	}
 
@@ -114,7 +114,7 @@ public abstract class PaginateInventory<T> extends VInventory {
 	 * @param object
 	 * @param button
 	 */
-	public abstract void onClick(T object, ItemButton button);
+	public abstract void onClick(T object, ZButton button);
 
 	/**
 	 * 

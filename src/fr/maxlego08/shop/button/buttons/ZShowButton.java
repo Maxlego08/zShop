@@ -25,8 +25,8 @@ public class ZShowButton extends ZPermissibleButton implements ShowButton {
 	 * @param elseButton
 	 * @param lore
 	 */
-	public ZShowButton(ButtonType type, ItemStack itemStack, int slot, List<String> lore) {
-		super(type, itemStack, slot);
+	public ZShowButton(ButtonType type, ItemStack itemStack, int slot, List<String> lore, boolean isPermanent) {
+		super(type, itemStack, slot, isPermanent);
 		this.lore = lore;
 	}
 
@@ -56,6 +56,10 @@ public class ZShowButton extends ZPermissibleButton implements ShowButton {
 		itemStack.setAmount(amount);
 		List<String> lore = new ArrayList<>();
 		ItemMeta itemMeta = itemStack.getItemMeta();
+		
+		if (itemMeta == null)
+			return itemStack;
+		
 		if (itemMeta.hasLore())
 			lore.addAll(itemMeta.getLore());
 		lore.addAll(getLore(button, amount, type));

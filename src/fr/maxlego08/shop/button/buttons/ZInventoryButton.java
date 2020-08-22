@@ -20,8 +20,8 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 	 * @param slot
 	 * @param inventory
 	 */
-	public ZInventoryButton(ZShop plugin, ButtonType type, ItemStack itemStack, int slot, String inventory) {
-		super(type, itemStack, slot);
+	public ZInventoryButton(ZShop plugin, ButtonType type, ItemStack itemStack, int slot, String inventory, boolean isPermanent) {
+		super(type, itemStack, slot, isPermanent);
 		this.inventory = inventory;
 		this.plugin = plugin;
 	}
@@ -36,8 +36,8 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 	 * @param inventory
 	 */
 	public ZInventoryButton(ZShop plugin,ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, String inventory) {
-		super(type, itemStack, slot, permission, message, elseButton);
+			Button elseButton, String inventory, boolean isPermanent) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent);
 		this.inventory = inventory;
 		this.plugin = plugin;
 	}

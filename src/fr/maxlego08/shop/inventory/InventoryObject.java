@@ -72,7 +72,7 @@ public class InventoryObject implements Inventory {
 
 			int slot = button.getSlot() - ((page - 1) * size);
 
-			if ((slot >= 0 && slot <= size) || button.getType().isPermament()) {
+			if ((slot >= 0 && slot <= size) || button.isPermament()) {
 				button.setTmpSlot(slot);
 				buttons.add(button.toButton(PermissibleButton.class));
 			}

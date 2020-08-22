@@ -40,8 +40,13 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 		} catch (Exception e) {
 		}
 
-		if (material == null)
-			throw new NullPointerException("Impossible de trouver le material pour l'item " + path);
+		if (material == null) {
+			return null;
+		}
+
+		if (material.equals(Material.AIR)) {
+			return null;
+		}
 
 		ItemStack item = new ItemStack(material, amount, (byte) data);
 
@@ -91,8 +96,9 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 								"an error occurred while loading the enchantment " + enchantString);
 
 					if (material.equals(Material.ENCHANTED_BOOK)) {
+						
 						((EnchantmentStorageMeta) meta).addStoredEnchant(enchantment, level, true);
-
+						
 					} else
 						meta.addEnchant(enchantment, level, true);
 

@@ -35,7 +35,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 
 	public void registerCommands() {
 
-		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl", "zshopp"));
+		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"));
 
 		plugin.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 		this.commandChecking();
@@ -59,7 +59,10 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	}
 
 	public void clear(){
+		
 		this.commands.clear();
+		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"));
+		
 	}
 	
 	/**

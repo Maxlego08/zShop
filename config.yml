@@ -5,17 +5,10 @@ commands:
     aliases: #Aliases
       - "shop"
       - "myshop" 
-    inventory: "shop" #File name
-
-  blocks:
-    command: "blocks" #Default commande
-    aliases: #Aliases
-      - "block"
-      - "b" 
-    inventory: "blocks" #File name    
+    inventory: "shop" #File name 
     
-#Liste des cat�gories à charger, le fichier doit être dans le dossier inventories.
-# Vous ne devez pas mettre une cat�gories qui est d�j� chargé !
+#Liste des cat?gories � charger, le fichier doit �tre dans le dossier inventories.
+# Vous ne devez pas mettre une cat?gories qui est d?j? charg� !
 categories:    
  - "ores"
  - "redstone"
@@ -24,3 +17,13 @@ categories:
  - "miscellaneous"
  - "mobs"
  - "buy"
+ - "sell"
+ - "blocks"
+
+defaultItemLore:
+  - "&f» &2Buying price&7: &a%buyPrice%%currency%"
+  - "&f» &2Selling price&7: &a%sellPrice%%currency%"
+  - ""
+  - "&f» &7Left click to buy"
+  - "&f» &7Click wheel to sell everything"
+  - "&f» &7Right click to sell"

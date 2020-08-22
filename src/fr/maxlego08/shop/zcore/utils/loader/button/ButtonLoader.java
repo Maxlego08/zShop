@@ -11,6 +11,7 @@ import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.Economy;
+import fr.maxlego08.shop.api.exceptions.ButtonCreateItemStackNullPointerException;
 import fr.maxlego08.shop.button.buttons.ZAddRemoveButton;
 import fr.maxlego08.shop.button.buttons.ZBackButton;
 import fr.maxlego08.shop.button.buttons.ZHomeButton;
@@ -41,10 +42,15 @@ public class ButtonLoader implements Loader<Button> {
 		Loader<ItemStack> loaderItemStack = new ItemStackLoader();
 		ButtonType type = ButtonType.from(configuration.getString(path + "type"), (String) args[0], path + "type");
 		int slot = configuration.getInt(path + "slot");
+		boolean isPermanent = configuration.getBoolean(path + "isPermanent", false);
 		slot = slot < 0 ? 0 : slot;
 
 		ItemStack itemStack = loaderItemStack.load(configuration, path + "item.");
 
+		if (itemStack == null && !type.isShow())
+			throw new ButtonCreateItemStackNullPointerException(
+					"Cannot find the itemtack for the button " + path + "item");
+		
 		// Permission
 		String permission = configuration.getString(path + "permission", null);
 		Button elseButton = null;
@@ -65,36 +71,39 @@ public class ButtonLoader implements Loader<Button> {
 		case ADD:
 		case REMOVE:
 			int amount = configuration.getInt(path + "amount", 1);
-			return new ZAddRemoveButton(type, itemStack, slot, amount);
+			return new ZAddRemoveButton(type, itemStack, slot, amount, isPermanent);
 		case BACK:
-			return new ZBackButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, null);
+			return new ZBackButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, null,
+					isPermanent);
 		case HOME:
 			String inventory = configuration.getString(path + "inventory");
-			return new ZHomeButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, inventory);
+			return new ZHomeButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, inventory,
+					isPermanent);
 		case INVENTORY:
 			inventory = configuration.getString(path + "inventory");
-			return new ZInventoryButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, inventory);
+			return new ZInventoryButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, inventory,
+					isPermanent);
 		case SHOW_ITEM:
 			List<String> lore = configuration.getStringList(path + "lore");
-			return new ZShowButton(type, itemStack, slot, lore);
+			return new ZShowButton(type, itemStack, slot, lore, isPermanent);
 		case ITEM:
 		case ITEM_CONFIRM:
 			double sellPrice = configuration.getDouble(path + "sellPrice", 0.0);
 			double buyPrice = configuration.getDouble(path + "buyPrice", 0.0);
 			int maxStack = configuration.getInt(path + "maxStack", 64);
 			List<String> currentLore = configuration.getStringList(path + "lore");
-			
+
 			if (currentLore.size() == 0)
 				currentLore = plugin.getInventory().getLore();
-			
+
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, this.economy, sellPrice,
-					buyPrice, economy, maxStack, currentLore);
+					buyPrice, economy, maxStack, currentLore, isPermanent);
 		case NEXT:
 		case NONE:
 		case PREVIOUS:
 		default:
-			button = new ZPermissibleButton(type, itemStack, slot, permission, elseMessage, elseButton);
+			button = new ZPermissibleButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent);
 		}
 
 		return button;
