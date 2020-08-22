@@ -67,3 +67,10 @@ items:
     slot: 22
     lore:
       - "&eBuy price&8: &b%buyPrice%%currency%"
+  settomax:
+    item:
+      material: BEDROCK
+      name: "&fTest de bouton"
+    type: INVENTORY
+    inventory: "more"
+    slot: 53      

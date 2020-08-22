@@ -7,8 +7,8 @@ commands:
       - "myshop" 
     inventory: "shop" #File name 
     
-#Liste des cat?gories ï¿½ charger, le fichier doit ï¿½tre dans le dossier inventories.
-# Vous ne devez pas mettre une cat?gories qui est d?j? chargï¿½ !
+#Liste des catégories à charger, le fichier doit étre dans le dossier inventories.
+# Vous ne devez pas mettre une catégories qui est déjà chargé !
 categories:    
  - "ores"
  - "redstone"
@@ -19,6 +19,9 @@ categories:
  - "buy"
  - "sell"
  - "blocks"
+ - "more"
+ - "more2"
+ - "confirm"
 
 defaultItemLore:
   - "&f» &2Buying price&7: &a%buyPrice%%currency%"

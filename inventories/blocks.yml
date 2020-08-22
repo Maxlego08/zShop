@@ -160,7 +160,15 @@ items:
   20:            
     item:
       material: HAY_BLOCK
-    buyPrice: 10.0
-    sellPrice: 0.5
-    type: ITEM 
-    slot: 19               
+      name: "&eConfirm item"
+    buyPrice: 15.0
+    sellPrice: 0.0
+    type: ITEM_CONFIRM
+    giveItem: false
+    lore:
+      - "&f> &2Buying price&7: &a%buyPrice%%currency%"
+      - ""
+      - "&f> &7Click to buy and confirm"
+    buyCommands:
+      - "bc %player% just buy %amount% %item% for %price%%currency%"
+    slot: 22               
