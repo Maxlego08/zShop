@@ -293,12 +293,12 @@ public class InventoryDefault extends VInventory {
 				ItemButton itemButton = button.toButton(ItemButton.class);
 				if (itemButton.canSell()) {
 
-					if (args.length == 5) {
+					/*if (args.length == 5) {
 						message(player,
 								"§cYou cannot access a shop inventory if you have already opened an inventory of type SELL or BUY. Contact an administrator to correct the problem.");
 						player.closeInventory();
 						return;
-					}
+					}*/
 
 					this.oldInventories.add(this.inventory);
 					plugin.getShopManager().open(player, this.command, itemButton, page, this.oldInventories,
@@ -337,12 +337,12 @@ public class InventoryDefault extends VInventory {
 				ItemButton itemButton = button.toButton(ItemButton.class);
 				if (itemButton.canBuy()) {
 
-					if (args.length == 5) {
+					/*if (args.length == 5) {
 						message(player,
 								"§cYou cannot access a shop inventory if you have already opened an inventory of type SELL or BUY. Contact an administrator to correct the problem.");
 						player.closeInventory();
 						return;
-					}
+					}*/
 
 					this.oldInventories.add(this.inventory);
 					plugin.getShopManager().open(player, this.command, itemButton, page, this.oldInventories,
