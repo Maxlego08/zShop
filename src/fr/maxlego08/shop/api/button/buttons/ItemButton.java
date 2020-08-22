@@ -96,4 +96,22 @@ public interface ItemButton extends PermissibleButton {
 	 */
 	public void sell(Player player, int amount);
 	
+	/**
+	 * 
+	 * @return commands list
+	 */
+	public List<String> getBuyCommands();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<String> getSellCommands();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean giveItem();
+	
 }

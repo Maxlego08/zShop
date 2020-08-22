@@ -8,6 +8,7 @@ import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.inventory.InventoryLoader;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.inventory.inventories.InventoryShop;
+import fr.maxlego08.shop.inventory.inventories.InventoryConfirm;
 import fr.maxlego08.shop.inventory.inventories.InventoryDefault;
 import fr.maxlego08.shop.listener.AdapterListener;
 import fr.maxlego08.shop.zcore.ZPlugin;
@@ -54,7 +55,8 @@ public class ZShop extends ZPlugin {
 		}
 
 		this.registerInventory(EnumInventory.INVENTORY_DEFAULT, new InventoryDefault());
-		this.registerInventory(EnumInventory.INVENTORY_BUY, new InventoryShop());
+		this.registerInventory(EnumInventory.INVENTORY_SHOP, new InventoryShop());
+		this.registerInventory(EnumInventory.INVENTORY_CONFIRM, new InventoryConfirm());
 
 		/* Add Listener */
 

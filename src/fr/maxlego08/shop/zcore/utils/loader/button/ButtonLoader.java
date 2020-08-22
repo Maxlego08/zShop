@@ -50,7 +50,7 @@ public class ButtonLoader implements Loader<Button> {
 		if (itemStack == null && !type.isShow())
 			throw new ButtonCreateItemStackNullPointerException(
 					"Cannot find the itemtack for the button " + path + "item");
-		
+
 		// Permission
 		String permission = configuration.getString(path + "permission", null);
 		Button elseButton = null;
@@ -91,14 +91,17 @@ public class ButtonLoader implements Loader<Button> {
 			double sellPrice = configuration.getDouble(path + "sellPrice", 0.0);
 			double buyPrice = configuration.getDouble(path + "buyPrice", 0.0);
 			int maxStack = configuration.getInt(path + "maxStack", 64);
+			boolean giveItem = configuration.getBoolean(path + "giveItem", true);
 			List<String> currentLore = configuration.getStringList(path + "lore");
+			List<String> buyCommands = configuration.getStringList(path + "buyCommands");
+			List<String> sellCommands = configuration.getStringList(path + "sellCommands");
 
 			if (currentLore.size() == 0)
 				currentLore = plugin.getInventory().getLore();
 
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, this.economy, sellPrice,
-					buyPrice, economy, maxStack, currentLore, isPermanent);
+					buyPrice, economy, maxStack, currentLore, isPermanent, buyCommands, sellCommands, giveItem);
 		case NEXT:
 		case NONE:
 		case PREVIOUS:

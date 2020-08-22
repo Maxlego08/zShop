@@ -160,6 +160,11 @@ public class InventoryDefault extends VInventory {
 					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory,
 							oldInventories, command);
 				break;
+			case ITEM_CONFIRM:
+				this.oldInventories.add(this.inventory);
+				plugin.getShopManager().open(player, this.command, finalButton.toButton(ItemButton.class), page,
+						this.oldInventories, InventoryType.CONFIRM);
+				break;
 			case INVENTORY:
 				this.oldInventories.add(inventory);
 				InventoryButton inventoryButton = finalButton.toButton(InventoryButton.class);
