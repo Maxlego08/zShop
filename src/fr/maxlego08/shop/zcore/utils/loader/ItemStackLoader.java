@@ -31,13 +31,13 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
 		Material material = null;
 
-		try {
-			material = getMaterial(configuration.getInt(path + "material", 0));
-		} catch (Exception e) {
-		}
-		try {
-			material = Material.valueOf(configuration.getString(path + "material").toUpperCase());
-		} catch (Exception e) {
+		int value = configuration.getInt(path + "material", 0);
+		if (value != 0)
+			material = getMaterial(value);
+
+		if (material == null) {
+			String str = configuration.getString(path + "material");
+			material = Material.getMaterial(str.toUpperCase());
 		}
 
 		if (material == null) {
@@ -96,9 +96,9 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 								"an error occurred while loading the enchantment " + enchantString);
 
 					if (material.equals(Material.ENCHANTED_BOOK)) {
-						
+
 						((EnchantmentStorageMeta) meta).addStoredEnchant(enchantment, level, true);
-						
+
 					} else
 						meta.addEnchant(enchantment, level, true);
 

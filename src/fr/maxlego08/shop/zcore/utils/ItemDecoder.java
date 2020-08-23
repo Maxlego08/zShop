@@ -16,16 +16,16 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 public class ItemDecoder {
 
 	private static volatile Map<ItemStack, String> itemstackSerialized = new HashMap<ItemStack, String>();
-	
+
 	public static String serializeItemStack(ItemStack paramItemStack) {
 
 		if (paramItemStack == null) {
 			return "null";
 		}
-		
+
 		if (itemstackSerialized.containsKey(paramItemStack))
 			return itemstackSerialized.get(paramItemStack);
-		
+
 		ByteArrayOutputStream localByteArrayOutputStream = null;
 		try {
 			Class<?> localClass = getNMSClass("NBTTagCompound");
@@ -114,8 +114,13 @@ public class ItemDecoder {
 		return localClass;
 	}
 
-	public static double version;
-	
+	private static double version;
+
+	public static boolean isNewVersion() {
+		double version = getNMSVersion();
+		return version == 1.13 || version == 1.14 || version == 1.15 || version == 1.16;
+	}
+
 	public static double getNMSVersion() {
 		if (version != 0)
 			return version;

@@ -240,13 +240,15 @@ public abstract class ZUtils extends MessageUtils {
 	private static transient Material[] byId;
 
 	static {
-		byId = new Material[0];
-		for (Material material : Material.values()) {
-			if (byId.length > material.getId()) {
-				byId[material.getId()] = material;
-			} else {
-				byId = Arrays.copyOfRange(byId, 0, material.getId() + 2);
-				byId[material.getId()] = material;
+		if (!ItemDecoder.isNewVersion()){
+			byId = new Material[0];
+			for (Material material : Material.values()) {
+				if (byId.length > material.getId()) {
+					byId[material.getId()] = material;
+				} else {
+					byId = Arrays.copyOfRange(byId, 0, material.getId() + 2);
+					byId[material.getId()] = material;
+				}
 			}
 		}
 	}

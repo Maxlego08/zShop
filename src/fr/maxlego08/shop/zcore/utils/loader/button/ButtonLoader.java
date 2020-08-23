@@ -45,11 +45,13 @@ public class ButtonLoader implements Loader<Button> {
 		boolean isPermanent = configuration.getBoolean(path + "isPermanent", false);
 		slot = slot < 0 ? 0 : slot;
 
+		String name = (String) args[0];
+
 		ItemStack itemStack = loaderItemStack.load(configuration, path + "item.");
 
 		if (itemStack == null && !type.isShow())
 			throw new ButtonCreateItemStackNullPointerException(
-					"Cannot find the itemtack for the button " + path + "item");
+					"Cannot find the itemtack for the button " + path + "item in inventory " + name);
 
 		// Permission
 		String permission = configuration.getString(path + "permission", null);

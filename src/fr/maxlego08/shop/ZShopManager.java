@@ -140,18 +140,12 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		Class<?> clazz = object.getClass();
 		Field objectField = field.equals("commandMap") ? clazz.getDeclaredField(field)
-				: field.equals("knownCommands")
-						? isNewVersion() ? clazz.getSuperclass().getDeclaredField(field) : clazz.getDeclaredField(field)
-						: null;
+				: field.equals("knownCommands") ? ItemDecoder.isNewVersion()
+						? clazz.getSuperclass().getDeclaredField(field) : clazz.getDeclaredField(field) : null;
 		objectField.setAccessible(true);
 		Object result = objectField.get(object);
 		objectField.setAccessible(false);
 		return result;
-	}
-
-	private boolean isNewVersion() {
-		double version = ItemDecoder.getNMSVersion();
-		return version == 1.13 || version == 1.14 || version == 1.15 || version == 1.16;
 	}
 
 	private void unRegisterBukkitCommand(PluginCommand cmd) {
