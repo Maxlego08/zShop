@@ -14,6 +14,7 @@ import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.exceptions.ButtonCreateItemStackNullPointerException;
 import fr.maxlego08.shop.button.buttons.ZAddRemoveButton;
 import fr.maxlego08.shop.button.buttons.ZBackButton;
+import fr.maxlego08.shop.button.buttons.ZButtonSlot;
 import fr.maxlego08.shop.button.buttons.ZHomeButton;
 import fr.maxlego08.shop.button.buttons.ZInventoryButton;
 import fr.maxlego08.shop.button.buttons.ZItemButton;
@@ -104,6 +105,9 @@ public class ButtonLoader implements Loader<Button> {
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, this.economy, sellPrice,
 					buyPrice, economy, maxStack, currentLore, isPermanent, buyCommands, sellCommands, giveItem);
+		case NONE_SLOT:
+			List<Integer> list = configuration.getIntegerList(path + "slots");
+			return new ZButtonSlot(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, list);
 		case NEXT:
 		case NONE:
 		case PREVIOUS:

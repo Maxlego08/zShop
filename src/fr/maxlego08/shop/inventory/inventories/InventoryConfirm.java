@@ -17,6 +17,7 @@ import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.ShowButton;
+import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
@@ -69,6 +70,12 @@ public class InventoryConfirm extends VInventory {
 
 				ShowButton showButton = button.toButton(ShowButton.class);
 				addItem(button.getSlot(), showButton.applyLore(this.button, 1, InventoryType.CONFIRM));
+
+			} else if (button.getType().isSlots()) {
+
+				button.toButton(SlotButton.class).getSlots().forEach(slot -> {
+					addItem(slot, button.getCustomItemStack());
+				});
 
 			} else
 				addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));

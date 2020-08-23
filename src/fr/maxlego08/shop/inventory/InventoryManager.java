@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import fr.maxlego08.shop.ZShop;
@@ -99,6 +100,10 @@ public class InventoryManager extends ListenerAdapter {
 			if (event.getView() != null && gui.getPlayer().equals(player)
 					&& event.getView().getTitle().equals(gui.getGuiName())) {
 				event.setCancelled(true);
+
+				if (event.getClickedInventory().getType().equals(InventoryType.PLAYER))
+					return;
+
 				ZButton button = gui.getItems().getOrDefault(event.getSlot(), null);
 				if (button != null)
 					button.onClick(event);

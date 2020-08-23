@@ -36,7 +36,9 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 			material = getMaterial(value);
 
 		if (material == null) {
-			String str = configuration.getString(path + "material");
+			String str = configuration.getString(path + "material", null);
+			if (str == null)
+				return null;
 			material = Material.getMaterial(str.toUpperCase());
 		}
 

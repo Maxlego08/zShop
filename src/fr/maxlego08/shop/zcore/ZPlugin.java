@@ -1,10 +1,15 @@
 package fr.maxlego08.shop.zcore;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
@@ -23,6 +28,7 @@ import fr.maxlego08.shop.listener.ListenerAdapter;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
+import fr.maxlego08.shop.zcore.utils.ItemDecoder;
 import fr.maxlego08.shop.zcore.utils.inventory.VInventory;
 import fr.maxlego08.shop.zcore.utils.plugins.Plugins;
 import fr.maxlego08.shop.zcore.utils.storage.Persist;
@@ -66,12 +72,18 @@ public abstract class ZPlugin extends JavaPlugin {
 		this.hookPlayerPoints();
 
 		List<String> files = Arrays.asList("blocks", "ores", "miscellaneous", "mobs", "farm", "redstone", "foods",
-				"shop", "sell", "buy", "confirm", "more", "more2");
+				"shop", "sell", "buy", "confirm");
+		boolean isNew = ItemDecoder.isNewVersion();
+		for (String file : files) {
 
-		for (String file : files)
-			if (!new File(getDataFolder() + "/inventories/" + file + ".yml").exists())
-				saveResource("inventories/" + file + ".yml", false);
-
+			if (isNew) {
+				if (!new File(getDataFolder() + "/inventories/1_13/" + file + ".yml").exists())
+					saveResource("inventories/1_13/" + file + ".yml", "inventories/" + file + ".yml", false);
+			} else {
+				if (!new File(getDataFolder() + "/inventories/" + file + ".yml").exists())
+					saveResource("inventories/" + file + ".yml", false);
+			}
+		}
 		return true;
 
 	}
@@ -268,6 +280,47 @@ public abstract class ZPlugin extends JavaPlugin {
 
 	public PlayerPointsAPI getPlayerPointsAPI() {
 		return playerPointsAPI;
+	}
+
+	public void saveResource(String resourcePath, String toPath, boolean replace) {
+		if (resourcePath != null && !resourcePath.equals("")) {
+			resourcePath = resourcePath.replace('\\', '/');
+			InputStream in = this.getResource(resourcePath);
+			if (in == null) {
+				throw new IllegalArgumentException(
+						"The embedded resource '" + resourcePath + "' cannot be found in " + this.getFile());
+			} else {
+				File outFile = new File(getDataFolder(), toPath);
+				int lastIndex = toPath.lastIndexOf(47);
+				File outDir = new File(getDataFolder(), toPath.substring(0, lastIndex >= 0 ? lastIndex : 0));
+				if (!outDir.exists()) {
+					outDir.mkdirs();
+				}
+
+				try {
+					if (outFile.exists() && !replace) {
+						getLogger().log(Level.WARNING, "Could not save " + outFile.getName() + " to " + outFile
+								+ " because " + outFile.getName() + " already exists.");
+					} else {
+						OutputStream out = new FileOutputStream(outFile);
+						byte[] buf = new byte[1024];
+
+						int len;
+						while ((len = in.read(buf)) > 0) {
+							out.write(buf, 0, len);
+						}
+
+						out.close();
+						in.close();
+					}
+				} catch (IOException var10) {
+					getLogger().log(Level.SEVERE, "Could not save " + outFile.getName() + " to " + outFile, var10);
+				}
+
+			}
+		} else {
+			throw new IllegalArgumentException("ResourcePath cannot be null or empty");
+		}
 	}
 
 }

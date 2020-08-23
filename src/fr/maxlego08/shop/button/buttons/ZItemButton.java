@@ -189,6 +189,8 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 			slot++;
 		}
 
+		player.updateInventory();
+		
 		this.iEconomy.depositMoney(economy, player, currentPrice);
 
 		String message = Lang.sellItem;

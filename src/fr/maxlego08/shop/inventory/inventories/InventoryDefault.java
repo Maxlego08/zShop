@@ -15,6 +15,7 @@ import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
+import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
@@ -88,6 +89,30 @@ public class InventoryDefault extends VInventory {
 
 				} else {
 
+					if (button.getType().isSlots()) {
+						button.toButton(SlotButton.class).getSlots().forEach(slot -> {
+							addItem(slot, button.getCustomItemStack());
+						});
+					} else {
+
+						ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack());
+						if (button.isClickable())
+							zButton.setClick(clickEvent(main, player, page, maxPage, button))
+									.setLeftClick(leftClick(main, player, page, maxPage, button))
+									.setRightClick(rightClick(main, player, page, maxPage, button))
+									.setMiddleClick(middleClick(main, player, page, maxPage, button));
+					}
+				}
+			} else {
+
+				if (button.getType().isSlots()) {
+					
+					button.toButton(SlotButton.class).getSlots().forEach(slot -> {
+						addItem(slot, button.getCustomItemStack());
+					});
+					
+				} else {
+
 					ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack());
 					if (button.isClickable())
 						zButton.setClick(clickEvent(main, player, page, maxPage, button))
@@ -95,14 +120,6 @@ public class InventoryDefault extends VInventory {
 								.setRightClick(rightClick(main, player, page, maxPage, button))
 								.setMiddleClick(middleClick(main, player, page, maxPage, button));
 				}
-			} else {
-
-				ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack());
-				if (button.isClickable())
-					zButton.setClick(clickEvent(main, player, page, maxPage, button))
-							.setLeftClick(leftClick(main, player, page, maxPage, button))
-							.setRightClick(rightClick(main, player, page, maxPage, button))
-							.setMiddleClick(middleClick(main, player, page, maxPage, button));
 			}
 		}
 
@@ -293,12 +310,11 @@ public class InventoryDefault extends VInventory {
 				ItemButton itemButton = button.toButton(ItemButton.class);
 				if (itemButton.canSell()) {
 
-					/*if (args.length == 5) {
-						message(player,
-								"§cYou cannot access a shop inventory if you have already opened an inventory of type SELL or BUY. Contact an administrator to correct the problem.");
-						player.closeInventory();
-						return;
-					}*/
+					/*
+					 * if (args.length == 5) { message(player,
+					 * "§cYou cannot access a shop inventory if you have already opened an inventory of type SELL or BUY. Contact an administrator to correct the problem."
+					 * ); player.closeInventory(); return; }
+					 */
 
 					this.oldInventories.add(this.inventory);
 					plugin.getShopManager().open(player, this.command, itemButton, page, this.oldInventories,
@@ -337,12 +353,11 @@ public class InventoryDefault extends VInventory {
 				ItemButton itemButton = button.toButton(ItemButton.class);
 				if (itemButton.canBuy()) {
 
-					/*if (args.length == 5) {
-						message(player,
-								"§cYou cannot access a shop inventory if you have already opened an inventory of type SELL or BUY. Contact an administrator to correct the problem.");
-						player.closeInventory();
-						return;
-					}*/
+					/*
+					 * if (args.length == 5) { message(player,
+					 * "§cYou cannot access a shop inventory if you have already opened an inventory of type SELL or BUY. Contact an administrator to correct the problem."
+					 * ); player.closeInventory(); return; }
+					 */
 
 					this.oldInventories.add(this.inventory);
 					plugin.getShopManager().open(player, this.command, itemButton, page, this.oldInventories,

@@ -1,0 +1,96 @@
+name: "&eShop"
+size: 45
+items:
+  slots:
+    type: NONE_SLOT
+    item:
+      material: GRAY_STAINED_GLASS_PANE
+      name: "&e"
+    slots:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 18
+      - 27
+      - 36
+      - 37
+      - 38
+      - 39
+      - 40
+      - 41
+      - 42
+      - 43
+      - 44
+      - 17
+      - 26
+      - 35
+  block:
+    item:
+      material: GRASS_BLOCK
+      name: "&aBlocks"
+      lore:
+        - "&7Click to access the blocks"
+    type: INVENTORY
+    inventory: "blocks"
+    slot: 20
+  farm:
+    item:
+      material: CARROT
+      name: "&aFarm"
+      lore:
+        - "&7Click to access the farm"
+    type: INVENTORY
+    inventory: "farm"
+    slot: 21
+  ores:
+    item:
+      material: DIAMOND
+      name: "&aOres"
+      lore:
+        - "&7Click to access the ores"
+    type: INVENTORY
+    inventory: "ores"
+    slot: 22
+  foods:
+    item:
+      material: APPLE
+      name: "&aFoods"
+      lore:
+        - "&7Click to access the foods"
+    type: INVENTORY
+    inventory: "foods"
+    slot: 23
+  redstone:
+    item:
+      material: REDSTONE
+      name: "&aRedstone"
+      lore:
+        - "&7Click to access the redstone"
+    type: INVENTORY
+    inventory: "redstone"
+    slot: 24
+  miscellaneous:
+    item:
+      material: ENDER_CHEST
+      name: "&aMiscellaneous"
+      lore:
+        - "&7Click to access the miscellaneous"
+    type: INVENTORY
+    inventory: "miscellaneous"
+    slot: 25
+  mobs:
+    item:
+      material: ROTTEN_FLESH
+      name: "&aMobs"
+      lore:
+        - "&7Click to access the mobs"
+    type: INVENTORY
+    inventory: "mobs"
+    slot: 19

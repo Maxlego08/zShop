@@ -5,6 +5,7 @@ import fr.maxlego08.shop.api.exceptions.ButtonTypeException;
 public enum ButtonType {
 
 	NONE,
+	NONE_SLOT,
 
 	BACK,
 
@@ -59,6 +60,10 @@ public enum ButtonType {
 
 	public boolean isShow() {
 		return this == SHOW_ITEM;
+	}
+
+	public boolean isSlots() {
+		return this == NONE_SLOT;
 	}
 
 }
