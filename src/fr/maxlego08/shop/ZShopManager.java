@@ -23,6 +23,7 @@ import fr.maxlego08.shop.command.CommandObject;
 import fr.maxlego08.shop.command.commands.CommandInventory;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
+import fr.maxlego08.shop.zcore.utils.ItemDecoder;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 
 public class ZShopManager extends YamlUtils implements ShopManager {
@@ -138,17 +139,26 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	private Object getPrivateField(Object object, String field)
 			throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		Class<?> clazz = object.getClass();
-		Field objectField = clazz.getDeclaredField(field);
+		Field objectField = field.equals("commandMap") ? clazz.getDeclaredField(field)
+				: field.equals("knownCommands")
+						? isNewVersion() ? clazz.getSuperclass().getDeclaredField(field) : clazz.getDeclaredField(field)
+						: null;
 		objectField.setAccessible(true);
 		Object result = objectField.get(object);
 		objectField.setAccessible(false);
 		return result;
 	}
 
+	private boolean isNewVersion() {
+		double version = ItemDecoder.getNMSVersion();
+		return version == 1.13 || version == 1.14 || version == 1.15 || version == 1.16;
+	}
+
 	private void unRegisterBukkitCommand(PluginCommand cmd) {
 		try {
 			Object result = getPrivateField(plugin.getServer().getPluginManager(), "commandMap");
 			SimpleCommandMap commandMap = (SimpleCommandMap) result;
+
 			Object map = getPrivateField(commandMap, "knownCommands");
 			@SuppressWarnings("unchecked")
 			HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
@@ -181,9 +191,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		if (typeInventory == null)
 			throw new InventoryNotFoundException("Cannot find the inventory with the type " + type);
-		
-		
-		
+
 		switch (type) {
 		case BUY:
 		case SELL:
@@ -191,14 +199,13 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 					oldInventories, page, command, type);
 			break;
 		case CONFIRM:
-			plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_CONFIRM, player, 1, typeInventory, button,
-					oldInventories, page, command);
+			plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_CONFIRM, player, 1, typeInventory,
+					button, oldInventories, page, command);
 			break;
 		default:
 			break;
 		}
 
 	}
-
 
 }
