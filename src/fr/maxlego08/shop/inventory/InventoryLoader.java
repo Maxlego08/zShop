@@ -103,7 +103,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		String name = configuration.getString("name");
 		name = name == null ? "" : name;
 
-		int size = configuration.getInt("size");
+		int size = configuration.getInt("size", 54);
 		if (size % 9 != 0)
 			throw new InventorySizeException("Size " + size + " is not valid for inventory " + lowerCategory);
 

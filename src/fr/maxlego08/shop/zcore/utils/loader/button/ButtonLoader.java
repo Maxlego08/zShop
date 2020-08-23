@@ -79,11 +79,10 @@ public class ButtonLoader implements Loader<Button> {
 			return new ZBackButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, null,
 					isPermanent);
 		case HOME:
-			String inventory = configuration.getString(path + "inventory");
-			return new ZHomeButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, inventory,
+			return new ZHomeButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, null,
 					isPermanent);
 		case INVENTORY:
-			inventory = configuration.getString(path + "inventory");
+			String inventory = configuration.getString(path + "inventory");
 			return new ZInventoryButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, inventory,
 					isPermanent);
 		case SHOW_ITEM:

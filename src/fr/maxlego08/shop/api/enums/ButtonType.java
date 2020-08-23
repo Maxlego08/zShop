@@ -5,6 +5,7 @@ import fr.maxlego08.shop.api.exceptions.ButtonTypeException;
 public enum ButtonType {
 
 	NONE,
+	
 	NONE_SLOT,
 
 	BACK,
