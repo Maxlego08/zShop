@@ -1,7 +1,7 @@
 package fr.maxlego08.shop.zcore.enums;
 
 public enum Permission {
-	ZSHOP_USE, ZSHOP_RELOAD
+	ZSHOP_USE, ZSHOP_RELOAD, ZSHOP_VERSION
 
 	;
 

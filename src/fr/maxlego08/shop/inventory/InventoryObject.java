@@ -70,9 +70,18 @@ public class InventoryObject implements Inventory {
 		List<PermissibleButton> buttons = new ArrayList<PermissibleButton>();
 		for (Button button : this.buttons) {
 
-			int slot = button.getSlot() - ((page - 1) * size);
-
+			int slot = (button.getSlot() - ((page - 1) * size));
+			
 			if ((slot >= 0 && slot <= size) || button.isPermament()) {
+				
+				if (slot == size){
+					
+					if (page == 1)
+						continue;
+					
+					slot = 0;
+				}
+				
 				button.setTmpSlot(slot);
 				buttons.add(button.toButton(PermissibleButton.class));
 			}
@@ -93,5 +102,5 @@ public class InventoryObject implements Inventory {
 	public InventoryType getType() {
 		return type;
 	}
-	
+
 }

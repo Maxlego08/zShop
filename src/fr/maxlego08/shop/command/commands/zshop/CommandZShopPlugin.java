@@ -13,6 +13,7 @@ public class CommandZShopPlugin extends VCommand {
 
 		this.setPermission(Permission.ZSHOP_USE.getPermission());
 		this.addSubCommand(new CommandZShopReload(commandManager));
+		this.addSubCommand(new CommandZShopVersion(commandManager));
 
 	}
 
