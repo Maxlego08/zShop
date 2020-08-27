@@ -1,0 +1,61 @@
+name: "&ePurchase"
+size: 54
+type: BUY
+items:
+  back:
+    item:
+      material: RED_STAINED_GLASS_PANE
+      name: "&cBack"
+    type: BACK
+    slot: 39
+  accept:
+    item:
+      material: GREEN_STAINED_GLASS_PANE
+      name: "&aBuy"
+    type: BUY_CONFIRM
+    slot: 41
+  settoone:
+    item:
+      material: RED_STAINED_GLASS_PANE
+      name: "&cSet to 1"
+    type: SET_TO_ONE
+    slot: 18
+  removeten:
+    item:
+      material: ORANGE_STAINED_GLASS_PANE
+      name: "&cRemove 10"
+    type: REMOVE
+    amount: 10
+    slot: 19
+  removeone:
+    item:
+      material: YELLOW_STAINED_GLASS_PANE
+      name: "&cRemove 1"
+    type: REMOVE
+    amount: 1
+    slot: 20
+  addone:
+    item:
+      material: YELLOW_STAINED_GLASS_PANE
+      name: "&aAdd 1"
+    type: ADD
+    amount: 1
+    slot: 24
+  addten:
+    item:
+      material: LIME_STAINED_GLASS_PANE
+      name: "&aAdd 10"
+    type: ADD
+    amount: 10
+    slot: 25
+  settomax:
+    item:
+      material: GREEN_STAINED_GLASS_PANE
+      name: "&aSet to %maxStack%"
+    type: SET_TO_MAX
+    slot: 26
+  show:
+    type: SHOW_ITEM
+    slot: 22
+    lore:
+      - "&eBuy price&8: &b%buyPrice%%currency%"

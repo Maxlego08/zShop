@@ -1,0 +1,54 @@
+name: "&eConfirm"
+size: 45
+type: CONFIRM
+items:
+  slots:
+    type: NONE_SLOT
+    item:
+      material: STAINED_GLASS_PANE
+      data: 7
+      name: "&e"
+    slots:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 18
+      - 27
+      - 36
+      - 37
+      - 38
+      - 39
+      - 40
+      - 41
+      - 42
+      - 43
+      - 44
+      - 17
+      - 26
+      - 35
+  show:
+    type: SHOW_ITEM
+    slot: 22
+    lore:
+      - "&eBuy price&8: &b%buyPrice%%currency%"
+  back:
+    item:
+      material: STAINED_GLASS_PANE
+      data: 14
+      name: "&cBack"
+    type: BACK
+    slot: 24
+  accept:
+    item:
+      material: STAINED_GLASS_PANE
+      data: 13
+      name: "&aBuy"
+    type: BUY_CONFIRM
+    slot: 20                                     

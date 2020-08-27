@@ -3,7 +3,6 @@ package fr.maxlego08.shop.save;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.maxlego08.shop.zcore.utils.inventory.Button;
 import fr.maxlego08.shop.zcore.utils.storage.Persist;
 import fr.maxlego08.shop.zcore.utils.storage.Saveable;
 
@@ -69,20 +68,7 @@ public class Lang implements Saveable {
 	public static String currencyPlayerPoint = "£";
 	public static String currencyTokenManager = "T";
 	public static String currencyMySQLToken = "MT";
-	
-	public static Button backButton = new Button("§cBack", 399, 0);
-	public static Button nextButton = new Button("§eNext", 262, 0);
-	public static Button previousButton = new Button("§cPrevious", 262, 0);
-	public static Button buyButton = new Button("§aBuy", 160, 13);
-	public static Button sellButton = new Button("§aSell", 160, 13);
-	public static Button backBuyButton = new Button("§cBack", 160, 14);
-	public static Button resetItemButton = new Button("§cSet to 1", 160, 14);
-	public static Button removeTenItemButton = new Button("§cRemove 10", 160, 1);
-	public static Button removeOneItemButton = new Button("§cRemove 1", 160, 4);
-	public static Button addOneItemButton = new Button("§aAdd 1", 160, 4);
-	public static Button addTenItemButton = new Button("§aAdd 10", 160, 5);
-	public static Button maxItemButton = new Button("§aSet to %max%", 160, 13);
-	public static Button confirmButton = new Button("§aConfirm", 160, 13);
+	public static String currencyIceToken = "*";
 	
 	static{
 		
