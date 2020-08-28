@@ -4,17 +4,23 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.command.Command;
+import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -22,6 +28,7 @@ import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.CommandObject;
 import fr.maxlego08.shop.command.commands.CommandInventory;
 import fr.maxlego08.shop.inventory.InventoryManager;
+import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.utils.ItemDecoder;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
@@ -200,6 +207,110 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			break;
 		}
 
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void sellHand(Player player, int amount) {
+
+		if (player.getItemInHand() == null || player.getItemInHand().getType().isAir()) {
+			message(player, Lang.sellHandAir);
+			return;
+		}
+
+		Optional<ItemButton> optional = getItemButton(player.getItemInHand());
+		if (optional.isPresent())
+			message(player, Lang.sellHandEmpty);
+		else {
+			ItemButton button = optional.get();
+			button.sell(player, amount);
+		}
+
+	}
+
+	@Override
+	public void sellAllHand(Player player) {
+		this.sellHand(player, 0);
+	}
+
+	@Override
+	public void sellAll(Player player) {
+
+		double price = 0;
+		Map<ItemStack, Integer> map = new HashMap<ItemStack, Integer>();
+		Economy economy = null;
+
+		// On parcours l'inventaire du joueur
+		for (int slot = 0; slot != player.getInventory().getContents().length; slot++) {
+
+			ItemStack itemStack = player.getInventory().getContents()[slot];
+
+			// On verif si l'item est pas null
+			if (itemStack != null) {
+
+				Optional<ItemButton> optional = getItemButton(itemStack);
+
+				if (optional.isPresent()) {
+
+					ItemButton button = optional.get();
+
+					double tmpPrice = button.getSellPrice();
+
+					if (tmpPrice <= 0)
+						continue;
+
+					int tmpAmount = itemStack.getAmount();
+					// On multiplie par le nombre d'item
+					tmpPrice *= tmpAmount;
+					// On modifie les varirables
+					price += tmpPrice;
+					// on ajoute l'item et le nombre d'item dans la map
+					map.put(itemStack, tmpAmount + map.getOrDefault(itemStack, 0));
+					economy = button.getEconomy();
+
+					// On retire l'item de l'inventaire du joueur
+					if (slot == 40)
+						player.getInventory().setItemInOffHand(null);
+					else
+						player.getInventory().remove(itemStack);
+
+				}
+
+			}
+		}
+
+		if (economy == null) {
+			message(player, Lang.sellAllError);
+			return;
+
+		}
+
+		StringBuilder builder = new StringBuilder();
+		AtomicInteger atomicInteger = new AtomicInteger();
+		for (Entry<ItemStack, Integer> e : map.entrySet()) {
+			ItemStack items = e.getKey();
+			Integer amout = e.getValue();
+			int tmp = atomicInteger.addAndGet(1);
+			if (tmp == map.size())
+				builder.append(" " + Lang.and + " ");
+			else if (tmp != 1)
+				builder.append(", ");
+			String message = Lang.sellHandAllItem.replace("%amount%", String.valueOf(amout)).replace("%item%",
+					getItemName(items));
+			builder.append(message);
+		}
+
+		this.economy.depositMoney(economy, player, price);
+
+		String str = Lang.sellHandAll.replace("%item%", builder.toString());
+		str = str.replace("%currency%", economy.getCurrenry());
+		message(player, str.replace("%price%", String.valueOf(price)));
+
+	}
+
+	@Override
+	public Optional<ItemButton> getItemButton(ItemStack itemStack) {
+		return plugin.getInventory().getItemButton(itemStack);
 	}
 
 }

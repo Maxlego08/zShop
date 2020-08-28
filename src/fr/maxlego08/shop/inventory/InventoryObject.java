@@ -2,11 +2,14 @@ package fr.maxlego08.shop.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.Button;
+import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -71,8 +74,8 @@ public class InventoryObject implements Inventory {
 		for (Button button : this.buttons) {
 
 			int slot = (button.getSlot() - ((page - 1) * size));
-			
-			if ((slot >= 0 && slot < size) || button.isPermament()) {				
+
+			if ((slot >= 0 && slot < size) || button.isPermament()) {
 				button.setTmpSlot(slot);
 				buttons.add(button.toButton(PermissibleButton.class));
 			}
@@ -92,6 +95,12 @@ public class InventoryObject implements Inventory {
 	@Override
 	public InventoryType getType() {
 		return type;
+	}
+
+	@Override
+	public Optional<ItemButton> getItemButton(ItemStack itemStack) {
+		return getButtons(ItemButton.class).stream().filter(button -> button.getItemStack().isSimilar(itemStack))
+				.findFirst();
 	}
 
 }

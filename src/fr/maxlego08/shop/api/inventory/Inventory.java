@@ -1,10 +1,13 @@
 package fr.maxlego08.shop.api.inventory;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.Button;
+import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 import fr.maxlego08.shop.api.enums.InventoryType;
 
@@ -68,6 +71,13 @@ public interface Inventory {
 	 * @return int
 	 */
 	public int getMaxPage();
+	
+	/**
+	 * Allows to retrieve an itembutton
+	 * @param itemStack
+	 * @return item button
+	 */
+	public Optional<ItemButton> getItemButton(ItemStack itemStack);
 
 	
 }

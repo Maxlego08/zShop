@@ -9,8 +9,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import fr.maxlego08.shop.api.exceptions.InventoryFileNotFoundException;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
+import fr.maxlego08.shop.zcore.utils.ZUtils;
 
-public abstract class YamlUtils {
+public abstract class YamlUtils extends ZUtils{
 
 	protected final JavaPlugin plugin;
 

@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.InventoryManager;
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
+import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.exceptions.CategoriesNotFoundException;
 import fr.maxlego08.shop.api.exceptions.InventoryFileNotFoundException;
@@ -42,7 +45,6 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		this.economy = economy;
 	}
 
-
 	@Override
 	public Inventory getInventory(String name) {
 		if (name == null)
@@ -61,9 +63,9 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		FileConfiguration config = super.getConfig();
 
 		this.delete();
-		
+
 		defaultLore = config.getStringList("defaultItemLore");
-		
+
 		if (!config.contains("categories"))
 			throw new CategoriesNotFoundException("Cannot find the list of categories !");
 
@@ -99,7 +101,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 			throw new InventoryFileNotFoundException("Cannot find the file: inventories/" + lowerCategory + ".yml");
 
 		InventoryType type = InventoryType.form(configuration.getString("type"));
-		
+
 		String name = configuration.getString("name");
 		name = name == null ? "" : name;
 
@@ -112,10 +114,10 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 		Inventory inventory = new InventoryObject(name, type, size, buttons);
 		inventories.put(lowerCategory, inventory);
-		
+
 		if (type != InventoryType.DEFAULT)
 			typeInventories.put(type, inventory);
-		
+
 		success("Successful loading of the inventory " + lowerCategory + " !");
 		return inventory;
 	}
@@ -132,10 +134,19 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		return typeInventories.getOrDefault(type, null);
 	}
 
-
 	@Override
 	public List<String> getLore() {
 		return defaultLore;
+	}
+
+	@Override
+	public Optional<ItemButton> getItemButton(ItemStack itemStack) {
+		for (Inventory inventory : this.inventories.values()) {
+			Optional<ItemButton> optional = inventory.getItemButton(itemStack);
+			if (optional.isPresent())
+				return optional;
+		}
+		return Optional.empty();
 	}
 
 }
