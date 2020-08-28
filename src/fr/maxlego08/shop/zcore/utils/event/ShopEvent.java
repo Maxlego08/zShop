@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.zcore.utils.event;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -16,6 +17,10 @@ public class ShopEvent extends Event {
 
 	public static HandlerList getHandlerList() {
 		return handlers;
+	}
+	
+	public void callEvent(){
+		Bukkit.getPluginManager().callEvent(this);
 	}
 
 }

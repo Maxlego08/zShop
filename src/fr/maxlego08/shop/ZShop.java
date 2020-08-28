@@ -7,12 +7,14 @@ import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.inventory.InventoryLoader;
 import fr.maxlego08.shop.inventory.InventoryManager;
-import fr.maxlego08.shop.inventory.inventories.InventoryShop;
 import fr.maxlego08.shop.inventory.inventories.InventoryConfirm;
 import fr.maxlego08.shop.inventory.inventories.InventoryDefault;
+import fr.maxlego08.shop.inventory.inventories.InventoryShop;
 import fr.maxlego08.shop.listener.AdapterListener;
+import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
+import fr.maxlego08.shop.zcore.utils.VersionChecker;
 
 public class ZShop extends ZPlugin {
 
@@ -35,6 +37,7 @@ public class ZShop extends ZPlugin {
 		/* Register provider */
 		getServer().getServicesManager().register(fr.maxlego08.shop.api.InventoryManager.class, inventory, this,
 				ServicePriority.High);
+		getServer().getServicesManager().register(ShopManager.class, shopManager, this, ServicePriority.High);
 
 		/* Load inventories */
 		try {
@@ -63,8 +66,12 @@ public class ZShop extends ZPlugin {
 		addListener(new AdapterListener(this));
 		addListener(inventoryManager);
 
+		VersionChecker versionChecker = new VersionChecker(this);
+		versionChecker.useLastVersion(this);
+		addListener(versionChecker);
+
 		/* Add Saver */
-		// addSave(Config.getInstance());
+		addSave(new Lang());
 		// addSave(new CooldownBuilder());
 
 		getSavers().forEach(saver -> saver.load(getPersist()));

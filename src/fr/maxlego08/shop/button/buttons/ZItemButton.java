@@ -13,6 +13,8 @@ import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.Economy;
+import fr.maxlego08.shop.api.events.ZShopBuyEvent;
+import fr.maxlego08.shop.api.events.ZShopSellEvent;
 import fr.maxlego08.shop.save.Lang;
 
 public class ZItemButton extends ZPermissibleButton implements ItemButton {
@@ -115,6 +117,16 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 			return;
 		}
 
+		ZShopBuyEvent event = new ZShopBuyEvent(this, player, amount, currentPrice, economy);
+		event.callEvent();
+		
+		if (event.isCancelled())
+			return;
+		
+		Economy economy = event.getEconomy();
+		currentPrice = event.getPrice();
+		amount = event.getAmount();
+		
 		iEconomy.withdrawMoney(economy, player, currentPrice);
 
 		ItemStack itemStack = super.getItemStack().clone();
@@ -170,6 +182,17 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 
 		int slot = 0;
 
+		ZShopSellEvent event = new ZShopSellEvent(this, player, realAmount, currentPrice, economy);
+		event.callEvent();
+		
+		if (event.isCancelled())
+			return;
+		
+		currentPrice = event.getPrice();
+		Economy economy = event.getEconomy();
+		realAmount = event.getAmount();
+		
+		
 		// On retire ensuite les items de l'inventaire du joueur
 		for (ItemStack is : player.getInventory().getContents()) {
 

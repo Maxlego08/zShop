@@ -24,6 +24,7 @@ import fr.maxlego08.shop.api.command.OptionalAction;
 import fr.maxlego08.shop.api.command.OptionalCommand;
 import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.events.ZShopInventoryOpen;
 import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
 import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.command.CommandManager;
@@ -116,6 +117,8 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		info("Closure of all inventories...");
 		closeInventory();
 
+		plugin.getSavers().forEach(saver -> saver.load(plugin.getPersist()));
+		
 		info("Deleting commands...");
 		FileConfiguration configuration = getConfig();
 
@@ -211,6 +214,12 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		if (typeInventory == null)
 			throw new InventoryNotFoundException("Cannot find the inventory with the type " + type);
 
+		ZShopInventoryOpen event = new ZShopInventoryOpen(typeInventory, command, player);
+		event.callEvent();
+		
+		if (event.isCancelled())
+			return;
+		
 		switch (type) {
 		case BUY:
 		case SELL:

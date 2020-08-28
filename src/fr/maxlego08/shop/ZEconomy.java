@@ -48,7 +48,7 @@ public class ZEconomy implements IEconomy {
 			break;
 		case CUSTOM:
 			EconomyDepositEvent event = new EconomyDepositEvent(player, value);
-			Bukkit.getPluginManager().callEvent(event);
+			event.callEvent();
 			break;
 		case ICECORE:
 			IceCore.getInstance().getUser(player)
@@ -76,7 +76,7 @@ public class ZEconomy implements IEconomy {
 			break;
 		case CUSTOM:
 			EconomyWithdrawMoney event = new EconomyWithdrawMoney(player, value);
-			Bukkit.getPluginManager().callEvent(event);
+			event.callEvent();
 			break;
 		case ICECORE:
 			IceCore.getInstance().getUser(player);
@@ -99,7 +99,7 @@ public class ZEconomy implements IEconomy {
 			return plugin.getEconomy().getBalance(player);
 		case CUSTOM:
 			EconomyMoneyEvent event = new EconomyMoneyEvent(player);
-			Bukkit.getPluginManager().callEvent(event);
+			event.callEvent();
 			return event.getMoney();
 		case ICECORE:
 			return IceCore.getInstance().getUser(player).getTokens();

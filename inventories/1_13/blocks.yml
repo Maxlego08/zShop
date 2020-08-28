@@ -6,18 +6,21 @@ items:
       material: BARRIER
       name: "&cBack"
     type: BACK
+    isPermanent: true
     slot: 49
   next:
     item:
       material: ARROW
       name: "&7Next page"
     type: NEXT
+    isPermanent: true
     slot: 50
   previous:
     item:
       material: ARROW
       name: "&7Previous page"
     type: PREVIOUS
+    isPermanent: true
     slot: 48
   1:
     item:
@@ -166,4 +169,4 @@ items:
       - "&f> &7Click to buy and confirm"
     buyCommands:
       - "bc %player% just buy %amount% %item% for %price%%currency%"
-    slot: 22
+    slot: 54

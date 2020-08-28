@@ -1,6 +1,6 @@
 name: zShop
 author: Maxlego08
 main: fr.maxlego08.shop.ZShop
-version: DEV-2.1
+version: 2.0.0.0
 api-version: 1.13
 commands:
