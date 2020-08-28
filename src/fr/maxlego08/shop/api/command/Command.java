@@ -36,4 +36,11 @@ public interface Command {
 	 */
 	public Inventory getInventory();
 	
+	/**
+	 * Get optional command
+	 * @param action
+	 * @return {@link OptionalAction}
+	 */
+	public OptionalCommand getOptionalCommand(OptionalAction action);
+	
 }

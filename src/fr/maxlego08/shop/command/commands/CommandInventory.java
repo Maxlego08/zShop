@@ -2,6 +2,8 @@ package fr.maxlego08.shop.command.commands;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.command.Command;
+import fr.maxlego08.shop.api.command.OptionalAction;
+import fr.maxlego08.shop.api.command.OptionalCommand;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.VCommand;
 import fr.maxlego08.shop.zcore.utils.commands.CommandType;
@@ -20,6 +22,19 @@ public class CommandInventory extends VCommand {
 		this.setDescription(command.getDescription());
 		this.setConsoleCanUse(false);
 		this.DEBUG = true;
+		
+		OptionalCommand optionalCommand = command.getOptionalCommand(OptionalAction.SELL_ALL);
+		if (optionalCommand.isPresent())
+			this.addSubCommand(new CommandSellAll(commandManager, optionalCommand));
+		
+		optionalCommand = command.getOptionalCommand(OptionalAction.SELL_HAND);
+		if (optionalCommand.isPresent())
+			this.addSubCommand(new CommandSellHand(commandManager, optionalCommand));
+		
+		optionalCommand = command.getOptionalCommand(OptionalAction.SELL_HAND_ALL);
+		if (optionalCommand.isPresent())
+			this.addSubCommand(new CommandSellHandAll(commandManager, optionalCommand));
+		
 	}
 
 	@Override

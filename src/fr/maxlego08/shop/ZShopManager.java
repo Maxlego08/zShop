@@ -20,6 +20,8 @@ import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.command.Command;
+import fr.maxlego08.shop.api.command.OptionalAction;
+import fr.maxlego08.shop.api.command.OptionalCommand;
 import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
@@ -65,7 +67,22 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 			Inventory inventory = plugin.getInventory().loadInventory(stringInventory);
 
-			Command command = new CommandObject(stringCommand, aliases, inventory, permission, description);
+			Map<OptionalAction, OptionalCommand> commands = new HashMap<>();
+
+			for (String option : config.getConfigurationSection(key + "option.").getKeys(false)) {
+
+				String tmpKey = key + "option." + option + ".";
+
+				OptionalAction action = OptionalAction.valueOf(config.getString(tmpKey + "action"));
+				String optionPermission = config.getString(tmpKey + "permission", null);
+				String optionDescription = config.getString(tmpKey + "description", null);
+				
+				OptionalCommand command = new OptionalCommand(action, optionPermission, optionDescription);
+				commands.put(action, command);
+
+			}
+
+			Command command = new CommandObject(stringCommand, aliases, inventory, permission, description, commands);
 			commandManager.registerCommand(stringCommand, new CommandInventory(plugin.getCommandManager(), command),
 					aliases);
 
