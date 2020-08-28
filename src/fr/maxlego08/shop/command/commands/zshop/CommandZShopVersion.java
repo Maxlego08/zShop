@@ -24,7 +24,7 @@ public class CommandZShopVersion extends VCommand {
 		sender.sendMessage("§7(§bzShop§7) §aDiscord§7: §2http://discord.groupez.xyz/");
 		sender.sendMessage("§7(§bzShop§7) §aBuy it for §d8€§7: §2https://www.spigotmc.org/resources/74073/");
 		String user = "%%__USER__%%";
-		sender.sendMessage("§7(§bzAuctionHouse§7) §aUser account§7: §2https://www.spigotmc.org/members/" + user);
+		sender.sendMessage("§7(§bzShop§7) §aUser account§7: §2https://www.spigotmc.org/members/" + user);
 		
 		return CommandType.SUCCESS;
 	}
