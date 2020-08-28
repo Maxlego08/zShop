@@ -70,7 +70,8 @@ public class ItemDecoder {
 				localObject2 = localConstructor.newInstance(new Object[] { localObject1 });
 			}
 
-			else if (getNMSVersion() == 1.13D || getNMSVersion() == 1.14D || getNMSVersion() == 1.15D) {
+			else if (getNMSVersion() == 1.13D || getNMSVersion() == 1.14D || getNMSVersion() == 1.15D
+					|| getNMSVersion() == 1.16D) {
 				localObject2 = localClass2.getMethod("a", new Class[] { localClass1 }).invoke(null,
 						new Object[] { localObject1 });
 			} else {
@@ -114,12 +115,7 @@ public class ItemDecoder {
 		return localClass;
 	}
 
-	private static double version;
-
-	public static boolean isNewVersion() {
-		double version = getNMSVersion();
-		return version == 1.13 || version == 1.14 || version == 1.15 || version == 1.16;
-	}
+	public static double version;
 
 	public static double getNMSVersion() {
 		if (version != 0)

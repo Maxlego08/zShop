@@ -1,0 +1,51 @@
+items:
+  #Id de la catégorie
+  '1':
+    items:
+      '1':
+        #Type de l'item, vous avez le choix entre ITEM, ITEM_SLOT et UNIQUE_ITEM
+        #Un item qui sera UNIQUE_ITEM aura un inventaire pour confirmer l'achat et sera invendable. Parfait pour l'achat de grades, kits, spawners etc...
+        #Un item qui sera en ITEM_SLOT sera comme pour le type ITEM mais le slot de l'item sera pris en compte
+        type: ITEM
+        #Ici vous allez pouvoir mettre toutes les informations sur un item
+        item:
+          #l'id de l'item
+          id: 3
+          #Son data (donc le nombre qui est entre parenthèses)
+          data: 0
+          #Vous allez pouvoir changer le nombre d'item avec le amount, par defaut il est à 1
+          amount: 1
+          #Permet de définir le nombre maximum pour le stack de l'item
+          stack: 64
+          #Vous allez pouvoir ajouter un lore avec l'élément 'lore'
+          lore:
+            - "une ligne"
+            - "&cUne ligne rouge"
+            - "&fUne ligne blanche"
+          #Vous allez pouvoir mettre le nom de l'item comme ça
+          name: "&cUn magnifique nom"
+          #Vous allez pouvoir ajouter des enchantements à l'item comme ça
+          enchants:
+            - ENCHANTNAME,ENCHANTLEVEL
+          #Vous allez pouvoir ajouter des items flags comme ça
+          flags:
+            - HIDE_ENCHANTS
+        #Vous pouvez défini le prix d'achat ici, si vous mettez 0 alors l'item ne sera pas achetable
+        buyPrice: 30.0
+        #Vous pouvez défini le prix de vente ici, si vous mettez 0 alors l'item ne sera pas vendable
+        sellPrice: 2.0
+        #Vous allez pouvoir définir le slot de l'item ici
+        slot: 0
+        #Vous allez pouvoir définir l'économie utilisé par l'item. Vous avez: VAULT, PLAYERPOINT, TOKENMANAGER, MYSQLTOKEN, CUSTOM
+        economy: VAULT
+        #Permet de dire si vous voulez donner l'item afficher
+        give: true
+        #Permet de dire si oui ou non les commandes vont s'éxécuter à la vente de l'item
+        executeSellCommand: false
+        #Permet de dire si oui ou non les commandes vont s'éxécuter à l'achat de l'item
+        executeBuyCommand: false
+        #Permet d'afficher l'inventaire de confirmation (uniquement pour le type UNIQUE_ITEM)
+        useConfirm: true
+        #Permet d'ajouter des commandes à exécuter
+        commands:
+          - "bc %player% est trop fort"

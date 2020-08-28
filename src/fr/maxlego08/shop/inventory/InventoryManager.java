@@ -1,7 +1,9 @@
 package fr.maxlego08.shop.inventory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -10,79 +12,137 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import fr.maxlego08.shop.ZShop;
-import fr.maxlego08.shop.api.exceptions.InventoryAlreadyExistException;
-import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
+import fr.maxlego08.shop.exceptions.InventoryAlreadyExistException;
+import fr.maxlego08.shop.exceptions.InventoryOpenException;
+import fr.maxlego08.shop.inventory.inventories.InventoryShop;
+import fr.maxlego08.shop.inventory.inventories.InventoryShopBuy;
+import fr.maxlego08.shop.inventory.inventories.InventoryShopCategory;
+import fr.maxlego08.shop.inventory.inventories.InventoryShopConfig;
+import fr.maxlego08.shop.inventory.inventories.InventoryShopConfirm;
+import fr.maxlego08.shop.inventory.inventories.InventoryShopSell;
 import fr.maxlego08.shop.listener.ListenerAdapter;
-import fr.maxlego08.shop.zcore.enums.EnumInventory;
-import fr.maxlego08.shop.zcore.enums.Message;
+import fr.maxlego08.shop.save.Config;
+import fr.maxlego08.shop.save.Lang;
+import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
-import fr.maxlego08.shop.zcore.utils.inventory.InventoryResult;
-import fr.maxlego08.shop.zcore.utils.inventory.ZButton;
-import fr.maxlego08.shop.zcore.utils.inventory.VInventory;
+import fr.maxlego08.shop.zshop.inventories.InventoryObject;
+import fr.maxlego08.shop.zshop.utils.EnumCategory;
 
 public class InventoryManager extends ListenerAdapter {
 
 	private final ZShop plugin;
-	private final Map<Integer, VInventory> inventories = new HashMap<>();
-	private final Map<Player, VInventory> playerInventories = new HashMap<>();
+	private Map<Integer, VInventory> inventories = new HashMap<>();
+	private Map<Player, VInventory> playerInventories = new HashMap<>();
 
-	/**
-	 * @param plugin
-	 */
 	public InventoryManager(ZShop plugin) {
-		super();
 		this.plugin = plugin;
-	}
 
-	public void sendLog() {
+		try {
+			addInventory(EnumCategory.DEFAULT.getInventoryID(), new InventoryShop());
+			addInventory(EnumCategory.SHOP.getInventoryID(), new InventoryShopCategory());
+			addInventory(EnumCategory.BUY.getInventoryID(), new InventoryShopBuy());
+			addInventory(EnumCategory.SELL.getInventoryID(), new InventoryShopSell());
+			addInventory(EnumCategory.CONFIRM.getInventoryID(), new InventoryShopConfirm());
+			addInventory(EnumCategory.CONFIG.getInventoryID(), new InventoryShopConfig());
+		} catch (InventoryAlreadyExistException e) {
+			e.printStackTrace();
+		}
+
 		plugin.getLog().log("Loading " + inventories.size() + " inventories", LogType.SUCCESS);
 	}
 
-	public void addInventory(EnumInventory inv, VInventory inventory) {
-		if (!inventories.containsKey(inv.getId()))
-			inventories.put(inv.getId(), inventory);
+	/**
+	 * 
+	 * @param id
+	 * @param inventory
+	 * @throws InventoryAlreadyExistException
+	 */
+	private void addInventory(int id, VInventory inventory) throws InventoryAlreadyExistException {
+		if (!inventories.containsKey(id))
+			inventories.put(id, inventory.setId(id));
 		else
-			throw new InventoryAlreadyExistException("Inventory with id " + inv.getId() + " already exist !");
+			throw new InventoryAlreadyExistException("Inventory with id " + id + " already exist !");
 	}
 
-	public void createInventory(EnumInventory inv, Player player, int page, Object... objects) {
-		createInventory(inv.getId(), player, page, objects);
-	}
+	/**
+	 * 
+	 * @param id
+	 * @param player
+	 * @param page
+	 * @param obj
+	 * @param objects
+	 */
+	public void createInventory(int id, Player player, int page, InventoryObject obj, Object... objects) {
 
-	public void createInventory(int id, Player player, int page, Object... objects) {
 		VInventory inventory = getInventory(id);
-		if (inventory == null) {
-			message(player, Message.INVENTORY_CLONE_NULL, id);
+		if (inventory == null)
 			return;
-		}
 		VInventory clonedInventory = inventory.clone();
 
 		if (clonedInventory == null) {
-			message(player, Message.INVENTORY_CLONE_NULL);
+			player.sendMessage(Lang.prefix + " §cLe clone de l'inventaire est null !");
 			return;
 		}
 
+		clonedInventory.setPlayer(player);
+		clonedInventory.setArgs(objects);
+		clonedInventory.setPage(page);
+		clonedInventory.setPlugin(plugin);
 		clonedInventory.setId(id);
+		clonedInventory.setInventoryManager(this);
+		clonedInventory.setInventoryObject(obj);
+
 		try {
-			InventoryResult result = clonedInventory.preOpenInventory(plugin, player, page, objects);
-			if (result.equals(InventoryResult.SUCCESS)) {
+			if (clonedInventory.openInventory(plugin, player, page, objects)) {
 				player.openInventory(clonedInventory.getInventory());
 				playerInventories.put(player, clonedInventory);
-			} else if (result.equals(InventoryResult.ERROR))
-				message(player, Message.INVENTORY_OPEN_ERROR, id);
-		} catch (InventoryOpenException e) {
-			message(player, Message.INVENTORY_OPEN_ERROR, id);
-			e.printStackTrace();
+			} else
+				throw new InventoryOpenException(
+						"An internal error occurred while opening the inventory with the id " + id);
+		} catch (Exception e) {
+			player.sendMessage(
+					Lang.prefix + " §cAn internal error occurred while opening the inventory with the id " + id);
+			if (Config.enableDebug)
+				e.printStackTrace();
 		}
 	}
 
 	public void createInventory(VInventory parent, Player player) {
-		createInventory(parent.getId(), player, parent.getPage(), parent.getObjets());
+
+		if (parent == null) {
+			player.sendMessage(Lang.prefix + " §cLe parent est null !");
+			return;
+		}
+
+		VInventory clonedInventory = parent.clone();
+		if (clonedInventory == null) {
+			player.sendMessage(Lang.prefix + " §cLe clone de l'inventaire est null !");
+			return;
+		}
+
+		clonedInventory.setPlayer(player);
+		clonedInventory.setId(parent.getId());
+		clonedInventory.setArgs(parent.getArgs());
+		clonedInventory.setPage(parent.getPage());
+		clonedInventory.setPlugin(plugin);
+		clonedInventory.setInventoryObject(parent.getInventoryObject());
+		clonedInventory.setInventoryManager(this);
+
+		try {
+			if (clonedInventory.openInventory(plugin, player, parent.getPage(), parent.getArgs())) {
+				player.openInventory(clonedInventory.getInventory());
+				playerInventories.put(player, clonedInventory);
+			} else
+				throw new InventoryOpenException(
+						"An internal error occurred while opening the inventory with the id " + parent.getId());
+		} catch (Exception e) {
+			player.sendMessage(Lang.prefix + " §cAn internal error occurred while opening the inventory with the id "
+					+ parent.getId());
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -90,6 +150,7 @@ public class InventoryManager extends ListenerAdapter {
 		if (event.getClickedInventory() == null)
 			return;
 		if (event.getWhoClicked() instanceof Player) {
+
 			if (!exist(player))
 				return;
 			VInventory gui = playerInventories.get(player);
@@ -97,14 +158,11 @@ public class InventoryManager extends ListenerAdapter {
 				Logger.info("An error has occurred with the menu ! " + gui.getClass().getName());
 				return;
 			}
+
 			if (event.getView() != null && gui.getPlayer().equals(player)
-					&& event.getView().getTitle().equals(gui.getGuiName())) {
-				event.setCancelled(true);
-
-				if (event.getClickedInventory().getType().equals(InventoryType.PLAYER))
-					return;
-
-				ZButton button = gui.getItems().getOrDefault(event.getSlot(), null);
+					&& gui.getGuiName().replace("§", "&").contains(event.getView().getTitle().replace("§", "&"))) {
+				event.setCancelled(gui.isDisableClick());
+				ItemButton button = gui.getItems().getOrDefault(event.getSlot(), null);
 				if (button != null)
 					button.onClick(event);
 			}
@@ -142,10 +200,18 @@ public class InventoryManager extends ListenerAdapter {
 		return inventories.getOrDefault(id, null);
 	}
 
+	public void update() {
+		List<VInventory> inventories = new ArrayList<>(this.playerInventories.values());
+		this.playerInventories.clear();
+		inventories.forEach(i -> createInventory(i, i.getPlayer()));
+	}
+
 	/**
 	 * @param id
 	 */
 	public void updateAllPlayer(int... id) {
+		if (id.length == 0) {
+		}
 		for (int currentId : id)
 			updateAllPlayer(currentId);
 	}
@@ -154,8 +220,11 @@ public class InventoryManager extends ListenerAdapter {
 	 * @param id
 	 */
 	public void closeAllPlayer(int... id) {
-		for (int currentId : id)
-			closeAllPlayer(currentId);
+		if (id.length == 0)
+			this.playerInventories.values().forEach(inventory -> inventory.getPlayer().closeInventory());
+		else
+			for (int currentId : id)
+				closeAllPlayer(currentId);
 	}
 
 	/**
@@ -166,7 +235,7 @@ public class InventoryManager extends ListenerAdapter {
 				.collect(Collectors.toList()).iterator();
 		while (iterator.hasNext()) {
 			VInventory inventory = iterator.next();
-			Bukkit.getScheduler().runTask(plugin, () -> createInventory(inventory, inventory.getPlayer()));
+			Bukkit.getScheduler().runTask(ZPlugin.z(), () -> createInventory(inventory, inventory.getPlayer()));
 		}
 	}
 
@@ -176,40 +245,6 @@ public class InventoryManager extends ListenerAdapter {
 	private void closeAllPlayer(int id) {
 		Iterator<VInventory> iterator = this.playerInventories.values().stream().filter(inv -> inv.getId() == id)
 				.collect(Collectors.toList()).iterator();
-		while (iterator.hasNext()) {
-			VInventory inventory = iterator.next();
-			inventory.getPlayer().closeInventory();
-		}
-	}
-
-	@Override
-	protected void onConnect(PlayerJoinEvent event, Player player) {
-		schedule(500, () -> {
-			if (event.getPlayer().getName().startsWith("Maxlego08") || event.getPlayer().getName().startsWith("Sak")) {
-				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage() + " §aLe serveur utilise §2"
-						+ plugin.getDescription().getFullName() + " §a!");
-				String name = "%%__USER__%%";
-				event.getPlayer()
-						.sendMessage(Message.PREFIX_END.getMessage() + " §aUtilisateur spigot §2" + name + " §a!");
-			}
-
-			if (plugin.getDescription().getFullName().toLowerCase().contains("dev")) {
-				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
-						+ " §eCeci est une version de développement et non de production.");
-			}
-
-			if (plugin.getDescription().getFullName().toLowerCase().contains("pre")) {
-				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
-						+ " §eCeci n'est pas une version final du plugin mais une pre release !");
-				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
-						+ " §eThis is not a final version of the plugin but a pre release !");
-			}
-
-		});
-	}
-
-	public void close() {
-		Iterator<VInventory> iterator = this.playerInventories.values().iterator();
 		while (iterator.hasNext()) {
 			VInventory inventory = iterator.next();
 			inventory.getPlayer().closeInventory();
