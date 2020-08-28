@@ -10,7 +10,7 @@ public class CommandSellHandAll extends VCommand {
 
 	public CommandSellHandAll(CommandManager commandManager, OptionalCommand optionalCommand) {
 		super(commandManager);
-		this.addSubCommand("all");
+		this.addSubCommand("handall");
 		this.setDescription(optionalCommand.getDescription());
 		this.setPermission(optionalCommand.getPermission());
 		this.setConsoleCanUse(false);

@@ -77,7 +77,7 @@ public abstract class ZPlugin extends JavaPlugin {
 		for (String file : files) {
 
 			if (isNew) {
-				if (!new File(getDataFolder() + "/inventories/1_13/" + file + ".yml").exists())
+				if (!new File(getDataFolder() + "/inventories/" + file + ".yml").exists())
 					saveResource("inventories/1_13/" + file + ".yml", "inventories/" + file + ".yml", false);
 			} else {
 				if (!new File(getDataFolder() + "/inventories/" + file + ".yml").exists())
