@@ -47,9 +47,6 @@ public class CommandInventory extends VCommand {
 	@Override
 	protected CommandType perform(ZShop plugin) {
 		plugin.getShopManager().open(player, command);
-
-		message(player, "§cCeci est une version de développement et non de production, à utiliser pour des tests.");
-
 		return CommandType.SUCCESS;
 	}
 

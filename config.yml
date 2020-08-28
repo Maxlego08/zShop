@@ -1,14 +1,36 @@
-#Liste des commandes
+#Commands
+
+#You have here the list of commands, you will be able to create an command and link it to an inventory.
+#You can create a simple inventory for your server, no need to use the menu or chestcommand :D
 commands:
   shop:
     command: "zshop" #Default commande
     aliases: #Aliases
       - "shop"
       - "myshop" 
-    inventory: "shop" #File name 
-    
-#Liste des catégories à charger, le fichier doit étre dans le dossier inventories.
-# Vous ne devez pas mettre une catégories qui est déjà chargé !
+    inventory: "shop" #File name
+    options:  #Option
+      sellall:
+        action: SELL_ALL
+        permission: "zshop.sell.all"
+        description: "My custom command"
+      hand:
+        action: SELL_HAND_ALL
+        permission: "zshop.sell.hand"
+        description: "My custom command"
+      handall:
+        action: SELL_HAND
+        permission: "zshop.sell.hand.all"
+        description: "My custom command"
+  menu:
+    command: "menu" #Default commande
+    aliases: #Aliases
+      - "help"
+      - "aide"
+    inventory: "menu" #File name        
+
+#Here you will put the list of inventories that must be loaded, you must put the name of the file that is in the inventories folder.
+#Be careful, you must not put the name of an inventory that is loaded from an command.
 categories:    
  - "ores"
  - "redstone"
@@ -21,6 +43,7 @@ categories:
  - "blocks"
  - "confirm"
 
+#Default lore for buttons of type item
 defaultItemLore:
   - "&f» &2Buying price&7: &a%buyPrice%%currency%"
   - "&f» &2Selling price&7: &a%sellPrice%%currency%"
