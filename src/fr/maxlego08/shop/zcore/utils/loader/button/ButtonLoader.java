@@ -18,6 +18,7 @@ import fr.maxlego08.shop.button.buttons.ZButtonSlot;
 import fr.maxlego08.shop.button.buttons.ZHomeButton;
 import fr.maxlego08.shop.button.buttons.ZInventoryButton;
 import fr.maxlego08.shop.button.buttons.ZItemButton;
+import fr.maxlego08.shop.button.buttons.ZPerformButton;
 import fr.maxlego08.shop.button.buttons.ZPermissibleButton;
 import fr.maxlego08.shop.button.buttons.ZShowButton;
 import fr.maxlego08.shop.zcore.utils.loader.ItemStackLoader;
@@ -102,8 +103,14 @@ public class ButtonLoader implements Loader<Button> {
 				currentLore = plugin.getInventory().getLore();
 
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
-			return new ZItemButton(plugin.getShopManager(), type, itemStack, slot, permission, elseMessage, elseButton, this.economy, sellPrice,
-					buyPrice, economy, maxStack, currentLore, isPermanent, buyCommands, sellCommands, giveItem);
+			return new ZItemButton(plugin.getShopManager(), type, itemStack, slot, permission, elseMessage, elseButton,
+					this.economy, sellPrice, buyPrice, economy, maxStack, currentLore, isPermanent, buyCommands,
+					sellCommands, giveItem);
+		case PERFORM_COMMAND:
+			List<String> commands = configuration.getStringList(path + "commands");
+			boolean closeInventory = configuration.getBoolean(path + "closeInventory", false);
+			return new ZPerformButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent,
+					commands, closeInventory);
 		case NONE_SLOT:
 			List<Integer> list = configuration.getIntegerList(path + "slots");
 			return new ZButtonSlot(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, list);

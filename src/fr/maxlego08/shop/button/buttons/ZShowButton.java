@@ -66,7 +66,7 @@ public class ZShowButton extends ZPermissibleButton implements ShowButton {
 		lore.addAll(getLore(player, button, amount, type));
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);
-		return itemStack;
+		return papi(itemStack, player);
 	}
 
 }

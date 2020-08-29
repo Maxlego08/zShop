@@ -14,6 +14,7 @@ import fr.maxlego08.shop.api.button.buttons.BackButton;
 import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
+import fr.maxlego08.shop.api.button.buttons.PerformButton;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.command.Command;
@@ -71,7 +72,7 @@ public class InventoryDefault extends VInventory {
 		inventoryName = inventoryName.replace("%page%", String.valueOf(page));
 		inventoryName = inventoryName.replace("%maxPage%", String.valueOf(maxPage));
 
-		createInventory(inventoryName, inventory.size());
+		createInventory(papi(inventoryName, player), inventory.size());
 
 		for (PermissibleButton button : buttons) {
 
@@ -106,11 +107,11 @@ public class InventoryDefault extends VInventory {
 			} else {
 
 				if (button.getType().isSlots()) {
-					
+
 					button.toButton(SlotButton.class).getSlots().forEach(slot -> {
 						addItem(slot, button.getCustomItemStack(player));
 					});
-					
+
 				} else {
 
 					ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack(player));
@@ -214,6 +215,10 @@ public class InventoryDefault extends VInventory {
 				inventoryButton = finalButton.toButton(InventoryButton.class);
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
 						new ArrayList<>(), command);
+				break;
+			case PERFORM_COMMAND:
+				PerformButton performButton = finalButton.toButton(PerformButton.class);
+				performButton.execute(player);
 				break;
 			case BACK:
 

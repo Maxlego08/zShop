@@ -19,6 +19,7 @@ import fr.maxlego08.shop.api.button.buttons.BackButton;
 import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
+import fr.maxlego08.shop.api.button.buttons.PerformButton;
 import fr.maxlego08.shop.api.button.buttons.ShowButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.ButtonType;
@@ -58,7 +59,7 @@ public class InventoryShop extends VInventory {
 		if (!inventory.getType().isShop())
 			throw new InventoryTypeException("Cannot open buy inventory with type " + inventory.getType());
 
-		createInventory(inventory.getName(), inventory.size());
+		createInventory(papi(inventory.getName(), player), inventory.size());
 
 		Inventory oldInventory = null;
 
@@ -159,6 +160,10 @@ public class InventoryShop extends VInventory {
 				oldInventories.remove(inventoryButton.getInventory());
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, oldPage,
 						inventoryButton.getInventory(), this.oldInventories, this.command, this.button, this.type);
+				break;
+			case PERFORM_COMMAND:
+				PerformButton performButton = currentButton.toButton(PerformButton.class);
+				performButton.execute(player);
 				break;
 			default:
 				break;

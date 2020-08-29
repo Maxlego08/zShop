@@ -36,6 +36,8 @@ public enum ButtonType {
 	
 	SHOW_ITEM,
 	
+	PERFORM_COMMAND,
+	
 	
 	;
 

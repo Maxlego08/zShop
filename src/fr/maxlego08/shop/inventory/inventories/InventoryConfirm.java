@@ -46,7 +46,7 @@ public class InventoryConfirm extends VInventory {
 		this.oldPage = (Integer) args[3];
 		this.command = (Command) args[4];
 
-		createInventory(inventory.getName(), inventory.size());
+		createInventory(papi(inventory.getName(), player), inventory.size());
 
 		Inventory oldInventory = null;
 

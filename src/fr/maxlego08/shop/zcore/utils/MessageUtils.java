@@ -1,13 +1,17 @@
 package fr.maxlego08.shop.zcore.utils;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.enums.Message;
-import fr.maxlego08.shop.zcore.utils.players.ActionBar;
+import me.clip.placeholderapi.PlaceholderAPI;
 
-public class MessageUtils {
+public class MessageUtils extends PapiUtils{
+
+	private static boolean usePlaceHolder = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
 
 	/**
 	 * 
@@ -15,7 +19,12 @@ public class MessageUtils {
 	 * @param message
 	 */
 	protected void message(CommandSender player, Message message) {
-		player.sendMessage(Lang.prefix + " " + message.msg());
+		String m = Lang.prefix + " " + message.msg();
+
+		if (usePlaceHolder && player instanceof Player)
+			m = PlaceholderAPI.setPlaceholders((Player) player, m);
+
+		player.sendMessage(m);
 	}
 
 	/**
@@ -24,7 +33,14 @@ public class MessageUtils {
 	 * @param message
 	 */
 	protected void message(CommandSender player, String message, Object... args) {
-		player.sendMessage(Lang.prefix + " " + String.format(message, args));
+
+		String m = Lang.prefix + " " + message;
+		if (args.length > 0)
+			m = Lang.prefix + " " + String.format(message, args);
+
+		if (usePlaceHolder && player instanceof OfflinePlayer)
+			m = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, m);
+		player.sendMessage(m);
 	}
 
 	/**
@@ -33,7 +49,12 @@ public class MessageUtils {
 	 * @param message
 	 */
 	protected void messageWO(CommandSender player, Message message) {
-		player.sendMessage(message.msg());
+		String m = message.msg();
+
+		if (usePlaceHolder && player instanceof Player)
+			m = PlaceholderAPI.setPlaceholders((Player) player, m);
+
+		player.sendMessage(m);
 	}
 
 	/**
@@ -43,7 +64,12 @@ public class MessageUtils {
 	 * @param args
 	 */
 	protected void messageWO(CommandSender player, Message message, Object... args) {
-		player.sendMessage(String.format(message.msg(), args));
+		String m = String.format(message.msg(), args);
+
+		if (usePlaceHolder && player instanceof Player)
+			m = PlaceholderAPI.setPlaceholders((Player) player, m);
+
+		player.sendMessage(m);
 	}
 
 	/**
@@ -53,17 +79,12 @@ public class MessageUtils {
 	 * @param args
 	 */
 	protected void message(CommandSender player, Message message, Object... args) {
-		player.sendMessage(Lang.prefix + " " + String.format(message.msg(), args));
-	}
+		String m = Lang.prefix + " " + String.format(message.msg(), args);
 
-	/**
-	 * 
-	 * @param player
-	 * @param message
-	 * @param args
-	 */
-	protected void actionMessage(Player player, Message message, Object... args) {
-		ActionBar.sendActionBar(player, String.format(message.msg(), args));
+		if (usePlaceHolder && player instanceof Player)
+			m = PlaceholderAPI.setPlaceholders((Player) player, m);
+
+		player.sendMessage(m);
 	}
 
 }

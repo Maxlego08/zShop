@@ -156,7 +156,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 				command = command.replace("%price%", format(currentPrice));
 				command = command.replace("%currency%", this.economy.getCurrenry());
 				command = command.replace("%player%", player.getName());
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), papi(command, player));
 			}
 
 	}
@@ -236,7 +236,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 				command = command.replace("%price%", format(currentPrice));
 				command = command.replace("%currency%", this.economy.getCurrenry());
 				command = command.replace("%player%", player.getName());
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), papi(command, player));
 			}
 
 	}
@@ -305,7 +305,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		});
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);
-		return itemStack;
+		return papi(itemStack, player);
 	}
 
 	@Override
