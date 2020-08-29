@@ -19,6 +19,7 @@ import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ItemDecoder;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
+import me.arcaniax.hdb.api.HeadDatabaseAPI;
 
 public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
@@ -42,15 +43,42 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 			material = Material.getMaterial(str.toUpperCase());
 		}
 
-		if (material == null) {
-			return null;
+		ItemStack item = null;
+
+		String currentMateraial = configuration.getString(path + "material", null);
+
+		if (currentMateraial.startsWith("hdb:")) {
+
+			String idAsString = currentMateraial.replace("hdb:", "");
+			try {
+				int id = Integer.valueOf(idAsString);
+
+				HeadDatabaseAPI api = new HeadDatabaseAPI();
+				
+				item = api.getItemHead(String.valueOf(id));
+				
+			} catch (Exception e) {
+				Logger.info("Impossible to find the head with : " + idAsString, LogType.ERROR);
+				e.printStackTrace();
+			}
+
+		} else {
+
+			if (material == null) {
+				return null;
+			}
+
+			if (material.equals(Material.AIR)) {
+				return null;
+			}
+
+			item = new ItemStack(material, amount, (byte) data);
+
 		}
 
-		if (material.equals(Material.AIR)) {
+		// Si après tout l'item est null alors fuck off
+		if (item == null)
 			return null;
-		}
-
-		ItemStack item = new ItemStack(material, amount, (byte) data);
 
 		if (durability != 0)
 			item.setDurability(durability);

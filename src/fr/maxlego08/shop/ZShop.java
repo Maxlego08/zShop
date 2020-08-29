@@ -1,5 +1,6 @@
 package fr.maxlego08.shop;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 
 import fr.maxlego08.shop.api.IEconomy;
@@ -11,10 +12,13 @@ import fr.maxlego08.shop.inventory.inventories.InventoryConfirm;
 import fr.maxlego08.shop.inventory.inventories.InventoryDefault;
 import fr.maxlego08.shop.inventory.inventories.InventoryShop;
 import fr.maxlego08.shop.listener.AdapterListener;
+import fr.maxlego08.shop.listener.HeadListener;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
+import fr.maxlego08.shop.zcore.utils.Metrics;
 import fr.maxlego08.shop.zcore.utils.VersionChecker;
+import fr.maxlego08.shop.zcore.utils.plugins.Plugins;
 
 public class ZShop extends ZPlugin {
 
@@ -39,23 +43,34 @@ public class ZShop extends ZPlugin {
 				ServicePriority.High);
 		getServer().getServicesManager().register(ShopManager.class, shopManager, this, ServicePriority.High);
 
-		/* Load inventories */
-		try {
-			inventory.loadInventories();
-		} catch (Exception e) {
-			e.printStackTrace();
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
+		Runnable runnable = () -> {
+			/* Load inventories */
+			try {
+				inventory.loadInventories();
+			} catch (Exception e) {
+				e.printStackTrace();
+				getServer().getPluginManager().disablePlugin(this);
+				return;
+			}
 
-		/* Load Commands */
-		try {
-			shopManager.loadCommands();
-		} catch (Exception e) {
-			e.printStackTrace();
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
+			/* Load Commands */
+			try {
+				shopManager.loadCommands();
+			} catch (Exception e) {
+				e.printStackTrace();
+				getServer().getPluginManager().disablePlugin(this);
+				return;
+			}
+		};
+
+		Plugin plugin = getPlugin(Plugins.HEADDATABASE);
+
+		if (plugin != null && plugin.isEnabled()) {
+
+			this.addListener(new HeadListener(runnable));
+
+		} else
+			runnable.run();
 
 		this.registerInventory(EnumInventory.INVENTORY_DEFAULT, new InventoryDefault());
 		this.registerInventory(EnumInventory.INVENTORY_SHOP, new InventoryShop());
@@ -75,6 +90,8 @@ public class ZShop extends ZPlugin {
 		// addSave(new CooldownBuilder());
 
 		getSavers().forEach(saver -> saver.load(getPersist()));
+
+		new Metrics(this);
 
 		postEnable();
 	}

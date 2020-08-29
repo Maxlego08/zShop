@@ -130,4 +130,8 @@ public class ItemDecoder {
 		String var3 = arrayOfString[1];
 		return version = Double.parseDouble(var2 + "." + var3);
 	}
+
+	public static boolean isOneHand() {
+		return getNMSVersion() == 1.7 || getNMSVersion() == 1.8;
+	}
 }

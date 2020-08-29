@@ -21,7 +21,7 @@ public class CommandZShopPlugin extends VCommand {
 	protected CommandType perform(ZShop main) {
 
 		message(sender, "§ezShop");
-		
+
 		return CommandType.SUCCESS;
 	}
 

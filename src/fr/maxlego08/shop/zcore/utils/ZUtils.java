@@ -205,14 +205,21 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return true if the player's inventory is full
 	 */
 	protected boolean hasInventoryFull(Player player) {
+
 		int slot = 0;
-		ItemStack[] arrayOfItemStack;
-		int x = (arrayOfItemStack = player.getInventory().getContents()).length;
-		for (int i = 0; i < x; i++) {
-			ItemStack contents = arrayOfItemStack[i];
-			if ((contents == null))
+		for (int a = 0; a != player.getInventory().getContents().length; a++) {
+
+			ItemStack current = player.getInventory().getContents()[a];
+			if (current == null)
 				slot++;
+
 		}
+
+		slot -= 4;
+
+		if (!ItemDecoder.isOneHand())
+			slot -= 1;
+
 		return slot == 0;
 	}
 
@@ -240,7 +247,7 @@ public abstract class ZUtils extends MessageUtils {
 	private static transient Material[] byId;
 
 	static {
-		if (!ItemDecoder.isNewVersion()){
+		if (!ItemDecoder.isNewVersion()) {
 			byId = new Material[0];
 			for (Material material : Material.values()) {
 				if (byId.length > material.getId()) {

@@ -4,6 +4,7 @@ public enum Plugins {
 
 	VAULT("Vault"),
 	ESSENTIALS("Essentials"),
+	HEADDATABASE("HeadDatabase"),
 	
 	;
 
