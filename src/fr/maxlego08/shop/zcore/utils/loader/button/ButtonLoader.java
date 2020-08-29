@@ -102,7 +102,7 @@ public class ButtonLoader implements Loader<Button> {
 				currentLore = plugin.getInventory().getLore();
 
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
-			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, this.economy, sellPrice,
+			return new ZItemButton(plugin.getShopManager(), type, itemStack, slot, permission, elseMessage, elseButton, this.economy, sellPrice,
 					buyPrice, economy, maxStack, currentLore, isPermanent, buyCommands, sellCommands, giveItem);
 		case NONE_SLOT:
 			List<Integer> list = configuration.getIntegerList(path + "slots");

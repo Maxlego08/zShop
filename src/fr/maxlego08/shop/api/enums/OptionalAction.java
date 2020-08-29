@@ -1,4 +1,4 @@
-package fr.maxlego08.shop.api.command;
+package fr.maxlego08.shop.api.enums;
 
 public enum OptionalAction {
 

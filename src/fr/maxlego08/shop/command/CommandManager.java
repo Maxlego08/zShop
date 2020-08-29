@@ -18,6 +18,7 @@ import org.bukkit.plugin.Plugin;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.commands.zshop.CommandZShopPlugin;
+import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
@@ -58,13 +59,13 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 		return command;
 	}
 
-	public void clear(){
-		
+	public void clear() {
+
 		this.commands.clear();
 		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"));
-		
+
 	}
-	
+
 	/**
 	 * Register command whitout plugin.yml
 	 * 
@@ -116,7 +117,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 					return true;
 			}
 		}
-		message(sender, Message.COMMAND_NO_ARG);
+		message(sender, Lang.commandError);
 		return true;
 	}
 
@@ -176,17 +177,17 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 				Bukkit.getScheduler().runTask(plugin, () -> {
 					CommandType returnType = command.prePerform(plugin, sender, strings);
 					if (returnType == CommandType.SYNTAX_ERROR)
-						message(sender, Message.COMMAND_SYNTAXE_ERROR, command.getSyntaxe());
+						message(sender, Lang.syntaxeError, command.getSyntaxe());
 				});
 				return CommandType.DEFAULT;
 			}
 
 			CommandType returnType = command.prePerform(plugin, sender, strings);
 			if (returnType == CommandType.SYNTAX_ERROR)
-				message(sender, Message.COMMAND_SYNTAXE_ERROR, command.getSyntaxe());
+				message(sender, Lang.syntaxeError, command.getSyntaxe());
 			return returnType;
 		}
-		message(sender, Message.COMMAND_NO_PERMISSION);
+		message(sender, Lang.noPermission);
 		return CommandType.DEFAULT;
 	}
 

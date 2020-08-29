@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -36,14 +37,14 @@ public class ZShowButton extends ZPermissibleButton implements ShowButton {
 	}
 
 	@Override
-	public List<String> getLore(ItemButton button, int amount, InventoryType type) {
+	public List<String> getLore(Player player, ItemButton button, int amount, InventoryType type) {
 		return lore.stream().map(line -> {
-			
+
 			line = line.replace("%sellPrice%",
-					String.valueOf(button.getSellPrice() * (type == InventoryType.SELL ? amount : 1)));
+					String.valueOf(button.getSellPrice(player) * (type == InventoryType.SELL ? amount : 1)));
 			line = line.replace("%buyPrice%",
-					String.valueOf(button.getBuyPrice() * (type == InventoryType.BUY ? amount : 1)));
-			
+					String.valueOf(button.getBuyPrice(player) * (type == InventoryType.BUY ? amount : 1)));
+
 			line = line.replace("%currency%", button.getEconomy().getCurrenry());
 			line = line.replace("&", "§");
 			return line;
@@ -51,18 +52,18 @@ public class ZShowButton extends ZPermissibleButton implements ShowButton {
 	}
 
 	@Override
-	public ItemStack applyLore(ItemButton button, int amount, InventoryType type) {
+	public ItemStack applyLore(Player player, ItemButton button, int amount, InventoryType type) {
 		ItemStack itemStack = button.getItemStack().clone();
 		itemStack.setAmount(amount);
 		List<String> lore = new ArrayList<>();
 		ItemMeta itemMeta = itemStack.getItemMeta();
-		
+
 		if (itemMeta == null)
 			return itemStack;
-		
+
 		if (itemMeta.hasLore())
 			lore.addAll(itemMeta.getLore());
-		lore.addAll(getLore(button, amount, type));
+		lore.addAll(getLore(player, button, amount, type));
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);
 		return itemStack;

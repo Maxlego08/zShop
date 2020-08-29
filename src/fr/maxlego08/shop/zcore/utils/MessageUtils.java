@@ -23,8 +23,8 @@ public class MessageUtils {
 	 * @param player
 	 * @param message
 	 */
-	protected void message(CommandSender player, String message) {
-		player.sendMessage(Lang.prefix + " " + message);
+	protected void message(CommandSender player, String message, Object... args) {
+		player.sendMessage(Lang.prefix + " " + String.format(message, args));
 	}
 
 	/**

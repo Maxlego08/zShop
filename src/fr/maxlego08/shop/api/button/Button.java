@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.api.button;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.enums.ButtonType;
@@ -16,7 +17,7 @@ public interface Button {
 	 * 
 	 * @return
 	 */
-	public ItemStack getCustomItemStack();
+	public ItemStack getCustomItemStack(Player player);
 
 	/**
 	 * 

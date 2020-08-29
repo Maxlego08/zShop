@@ -79,7 +79,7 @@ public class InventoryDefault extends VInventory {
 
 				if (!player.hasPermission(button.getPermission()) && button.hasElseButton()) {
 
-					ZButton zButton = addItem(button.getTmpSlot(), button.getElseButton().getCustomItemStack());
+					ZButton zButton = addItem(button.getTmpSlot(), button.getElseButton().getCustomItemStack(player));
 
 					if (button.isClickable())
 						zButton.setClick(clickEvent(main, player, page, maxPage, button))
@@ -91,11 +91,11 @@ public class InventoryDefault extends VInventory {
 
 					if (button.getType().isSlots()) {
 						button.toButton(SlotButton.class).getSlots().forEach(slot -> {
-							addItem(slot, button.getCustomItemStack());
+							addItem(slot, button.getCustomItemStack(player));
 						});
 					} else {
 
-						ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack());
+						ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack(player));
 						if (button.isClickable())
 							zButton.setClick(clickEvent(main, player, page, maxPage, button))
 									.setLeftClick(leftClick(main, player, page, maxPage, button))
@@ -108,12 +108,12 @@ public class InventoryDefault extends VInventory {
 				if (button.getType().isSlots()) {
 					
 					button.toButton(SlotButton.class).getSlots().forEach(slot -> {
-						addItem(slot, button.getCustomItemStack());
+						addItem(slot, button.getCustomItemStack(player));
 					});
 					
 				} else {
 
-					ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack());
+					ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack(player));
 					if (button.isClickable())
 						zButton.setClick(clickEvent(main, player, page, maxPage, button))
 								.setLeftClick(leftClick(main, player, page, maxPage, button))

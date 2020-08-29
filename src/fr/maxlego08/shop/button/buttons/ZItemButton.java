@@ -2,6 +2,7 @@ package fr.maxlego08.shop.button.buttons;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -9,16 +10,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.maxlego08.shop.api.IEconomy;
+import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.Economy;
+import fr.maxlego08.shop.api.enums.PermissionType;
 import fr.maxlego08.shop.api.events.ZShopBuyEvent;
 import fr.maxlego08.shop.api.events.ZShopSellEvent;
+import fr.maxlego08.shop.api.permission.Permission;
 import fr.maxlego08.shop.save.Lang;
 
 public class ZItemButton extends ZPermissibleButton implements ItemButton {
 
+	private final ShopManager manager;
 	private final IEconomy iEconomy;
 	private final double sellPrice;
 	private final double buyPrice;
@@ -48,9 +53,9 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	 * @param sellCommands
 	 * @param giveItem
 	 */
-	public ZItemButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, IEconomy iEconomy, double sellPrice, double buyPrice, Economy economy, int maxStack,
-			List<String> lore, boolean isPermanent, List<String> buyCommands, List<String> sellCommands,
+	public ZItemButton(ShopManager manager, ButtonType type, ItemStack itemStack, int slot, String permission,
+			String message, Button elseButton, IEconomy iEconomy, double sellPrice, double buyPrice, Economy economy,
+			int maxStack, List<String> lore, boolean isPermanent, List<String> buyCommands, List<String> sellCommands,
 			boolean giveItem) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent);
 		this.iEconomy = iEconomy;
@@ -62,6 +67,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		this.buyCommands = buyCommands;
 		this.sellCommands = sellCommands;
 		this.giveItem = giveItem;
+		this.manager = manager;
 	}
 
 	@Override
@@ -102,7 +108,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	@Override
 	public void buy(Player player, int amount) {
 
-		double currentPrice = this.buyPrice * amount;
+		double currentPrice = this.getBuyPrice(player) * amount;
 
 		if (currentPrice < 0)
 			return;
@@ -119,14 +125,14 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 
 		ZShopBuyEvent event = new ZShopBuyEvent(this, player, amount, currentPrice, economy);
 		event.callEvent();
-		
+
 		if (event.isCancelled())
 			return;
-		
+
 		Economy economy = event.getEconomy();
 		currentPrice = event.getPrice();
 		amount = event.getAmount();
-		
+
 		iEconomy.withdrawMoney(economy, player, currentPrice);
 
 		ItemStack itemStack = super.getItemStack().clone();
@@ -142,9 +148,9 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		message = message.replace("%currency%", this.economy.getCurrenry());
 
 		message(player, message);
-		
+
 		if (buyCommands.size() != 0)
-			for(String command : buyCommands){
+			for (String command : buyCommands) {
 				command = command.replace("%amount%", String.valueOf(amount));
 				command = command.replace("%item%", getItemName(itemStack));
 				command = command.replace("%price%", format(currentPrice));
@@ -178,21 +184,20 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		item = amount == 0 ? item : item < amount ? amount : amount > item ? item : amount;
 		int realAmount = item;
 
-		double currentPrice = this.sellPrice * realAmount;
+		double currentPrice = this.getSellPrice(player) * realAmount;
 
 		int slot = 0;
 
 		ZShopSellEvent event = new ZShopSellEvent(this, player, realAmount, currentPrice, economy);
 		event.callEvent();
-		
+
 		if (event.isCancelled())
 			return;
-		
+
 		currentPrice = event.getPrice();
 		Economy economy = event.getEconomy();
 		realAmount = event.getAmount();
-		
-		
+
 		// On retire ensuite les items de l'inventaire du joueur
 		for (ItemStack is : player.getInventory().getContents()) {
 
@@ -213,7 +218,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		}
 
 		player.updateInventory();
-		
+
 		this.iEconomy.depositMoney(economy, player, currentPrice);
 
 		String message = Lang.sellItem;
@@ -223,9 +228,9 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		message = message.replace("%currency%", this.economy.getCurrenry());
 
 		message(player, message);
-		
+
 		if (sellCommands.size() != 0)
-			for(String command : sellCommands){
+			for (String command : sellCommands) {
 				command = command.replace("%amount%", String.valueOf(amount));
 				command = command.replace("%item%", getItemName(itemStack));
 				command = command.replace("%price%", format(currentPrice));
@@ -247,7 +252,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	}
 
 	@Override
-	public ItemStack createItemStack() {
+	public ItemStack createItemStack(Player player) {
 
 		ItemStack itemStack = super.getItemStack().clone();
 		ItemMeta itemMeta = itemStack.getItemMeta();
@@ -262,11 +267,11 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 
 		this.lore.forEach(string -> {
 
-			String str = string.replace("%buyPrice%", this.getBuyPriceAsString(1));
+			String str = string.replace("%buyPrice%", this.getBuyPriceAsString(player, 1));
 			if (!str.equals(string))
 				str = str.replace("%currency%", this.canBuy() ? this.economy.getCurrenry() : "");
 
-			str = str.replace("%sellPrice%", this.getSellPriceAsString(1));
+			str = str.replace("%sellPrice%", this.getSellPriceAsString(player, 1));
 			if (!str.equals(string))
 				str = str.replace("%currency%", this.canSell() ? this.economy.getCurrenry() : "");
 			str = str.replace("&", "§");
@@ -279,18 +284,18 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	}
 
 	@Override
-	public ItemStack getCustomItemStack() {
-		return this.createItemStack();
+	public ItemStack getCustomItemStack(Player player) {
+		return this.createItemStack(player);
 	}
 
 	@Override
-	public String getSellPriceAsString(int amount) {
-		return this.canSell() ? String.valueOf(sellPrice * amount) : Lang.canSell;
+	public String getSellPriceAsString(Player player, int amount) {
+		return this.canSell() ? String.valueOf(getSellPrice(player) * amount) : Lang.canSell;
 	}
 
 	@Override
-	public String getBuyPriceAsString(int amount) {
-		return this.canBuy() ? String.valueOf(buyPrice * amount) : Lang.canBuy;
+	public String getBuyPriceAsString(Player player, int amount) {
+		return this.canBuy() ? String.valueOf(getBuyPrice(player) * amount) : Lang.canBuy;
 	}
 
 	@Override
@@ -306,6 +311,24 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	@Override
 	public List<String> getSellCommands() {
 		return sellCommands;
+	}
+
+	@Override
+	public double getSellPrice(Player player) {
+		Optional<Permission> optional = manager.getPermission(player, PermissionType.SELL);
+		if (!optional.isPresent())
+			return this.getSellPrice();
+		double sellPrice = this.getSellPrice();
+		return sellPrice + percentNum(sellPrice, optional.get().getPercent());
+	}
+
+	@Override
+	public double getBuyPrice(Player player) {
+		Optional<Permission> optional = manager.getPermission(player, PermissionType.BUY);
+		if (!optional.isPresent())
+			return this.getBuyPrice();
+		double buyPrice = this.getBuyPrice();
+		return buyPrice - percentNum(buyPrice, optional.get().getPercent());
 	}
 
 }

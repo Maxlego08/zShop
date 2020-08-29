@@ -82,7 +82,7 @@ public class InventoryShop extends VInventory {
 			if (button.getType().equals(ButtonType.SHOW_ITEM)) {
 
 				ShowButton showButton = button.toButton(ShowButton.class);
-				addItem(button.getSlot(), showButton.applyLore(this.button, amount, type));
+				addItem(button.getSlot(), showButton.applyLore(this.player, this.button, amount, type));
 				this.shows.add(showButton);
 
 			} else if (button.getType().equals(ButtonType.SET_TO_MAX)) {
@@ -168,7 +168,7 @@ public class InventoryShop extends VInventory {
 
 	private void itemRender() {
 		this.shows.forEach(showButton -> {
-			super.inventory.setItem(showButton.getSlot(), showButton.applyLore(this.button, amount, type));
+			super.inventory.setItem(showButton.getSlot(), showButton.applyLore(this.player, this.button, amount, type));
 		});
 	}
 

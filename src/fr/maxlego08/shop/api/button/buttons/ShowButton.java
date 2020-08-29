@@ -2,6 +2,7 @@ package fr.maxlego08.shop.api.button.buttons;
 
 import java.util.List;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.Button;
@@ -20,13 +21,13 @@ public interface ShowButton extends Button {
 	 * @param button
 	 * @return lore
 	 */
-	public List<String> getLore(ItemButton button, int amount, InventoryType type);
+	public List<String> getLore(Player player, ItemButton button, int amount, InventoryType type);
 	
 	/**
 	 * 
 	 * @param button
 	 * @return
 	 */
-	public ItemStack applyLore(ItemButton button, int amount, InventoryType type);
+	public ItemStack applyLore(Player player, ItemButton button, int amount, InventoryType type);
 	
 }

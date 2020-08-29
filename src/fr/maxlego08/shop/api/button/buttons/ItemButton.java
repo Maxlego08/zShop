@@ -15,93 +15,97 @@ public interface ItemButton extends PermissibleButton {
 	 * @return sell price
 	 */
 	public double getSellPrice();
-	
+
 	/**
 	 * 
 	 * @return buy price
 	 */
 	public double getBuyPrice();
-	
+
 	/**
 	 * 
 	 * @return can sell
 	 */
 	public boolean canSell();
-	
+
 	/**
 	 * 
 	 * @return can buy
 	 */
 	public boolean canBuy();
-	
+
 	/**
 	 * Get max stack amount
+	 * 
 	 * @return max stack item
 	 */
 	public int getMaxStack();
-	
+
 	/**
 	 * 
 	 * @return economy
 	 */
 	public Economy getEconomy();
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	public boolean needToConfirm();
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	public IEconomy getIEconomy();
-	
+
 	/**
 	 * Get item lore
+	 * 
 	 * @return lore
 	 */
 	public List<String> getLore();
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	public ItemStack createItemStack();
-	
+	public ItemStack createItemStack(Player player);
+
 	/**
 	 * 
 	 * @return sell price as string
 	 */
-	public String getSellPriceAsString(int amount);
-	
+	public String getSellPriceAsString(Player player, int amount);
+
 	/**
 	 * 
 	 * @return buy price as string
 	 */
-	public String getBuyPriceAsString(int amount);
-	
+	public String getBuyPriceAsString(Player player, int amount);
+
 	/**
 	 * Buy item
+	 * 
 	 * @param player
 	 * @param amount
 	 */
 	public void buy(Player player, int amount);
-	
+
 	/**
 	 * Sell item
+	 * 
 	 * @param player
 	 * @param amount
 	 */
 	public void sell(Player player, int amount);
-	
+
 	/**
 	 * 
 	 * @return commands list
 	 */
 	public List<String> getBuyCommands();
-	
+
 	/**
 	 * 
 	 * @return
@@ -113,5 +117,17 @@ public interface ItemButton extends PermissibleButton {
 	 * @return
 	 */
 	public boolean giveItem();
-	
+
+	/**
+	 * 
+	 * @return sell price
+	 */
+	public double getSellPrice(Player player);
+
+	/**
+	 * 
+	 * @return buy price
+	 */
+	public double getBuyPrice(Player player);
+
 }

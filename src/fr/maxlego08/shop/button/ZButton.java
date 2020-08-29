@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.button;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.Button;
@@ -72,7 +73,7 @@ public class ZButton extends ZUtils implements Button {
 	}
 
 	@Override
-	public ItemStack getCustomItemStack() {
+	public ItemStack getCustomItemStack(Player player) {
 		return this.itemStack;
 	}
 

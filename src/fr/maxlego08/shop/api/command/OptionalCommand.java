@@ -1,5 +1,7 @@
 package fr.maxlego08.shop.api.command;
 
+import fr.maxlego08.shop.api.enums.OptionalAction;
+
 public class OptionalCommand {
 
 	private final OptionalAction action;

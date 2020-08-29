@@ -2,6 +2,7 @@ package fr.maxlego08.shop;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,17 +21,20 @@ import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.command.Command;
-import fr.maxlego08.shop.api.command.OptionalAction;
 import fr.maxlego08.shop.api.command.OptionalCommand;
 import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.enums.OptionalAction;
+import fr.maxlego08.shop.api.enums.PermissionType;
 import fr.maxlego08.shop.api.events.ZShopInventoryOpen;
 import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
 import fr.maxlego08.shop.api.inventory.Inventory;
+import fr.maxlego08.shop.api.permission.Permission;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.CommandObject;
 import fr.maxlego08.shop.command.commands.CommandInventory;
 import fr.maxlego08.shop.inventory.InventoryManager;
+import fr.maxlego08.shop.permission.ZPermission;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.utils.ItemDecoder;
@@ -40,6 +44,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 	private final ZShop plugin;
 	private final IEconomy economy;
+	private final List<Permission> permissions = new ArrayList<>();
 
 	public ZShopManager(ZShop plugin, IEconomy economy) {
 		super(plugin);
@@ -51,6 +56,37 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	public void loadCommands() throws Exception {
 
 		FileConfiguration config = getConfig();
+
+		permissions.clear();
+
+		if (config.getConfigurationSection("boostSellPermission") != null && config.getBoolean("useSellPermission")) {
+
+			for (String value : config.getConfigurationSection("boostSellPermission.").getKeys(false)) {
+
+				double percent = Double.valueOf(value);
+				String permissionString = config.getString("boostSellPermission." + value);
+				Permission permission = new ZPermission(PermissionType.SELL, percent, permissionString);
+				permissions.add(permission);
+
+			}
+
+		}
+
+		if (config.getConfigurationSection("boostBuyPermission") != null && config.getBoolean("useBuyPermission")) {
+
+			for (String value : config.getConfigurationSection("boostBuyPermission.").getKeys(false)) {
+
+				double percent = Double.valueOf(value);
+				String permissionString = config.getString("boostBuyPermission." + value);
+				Permission permission = new ZPermission(PermissionType.BUY, percent, permissionString);
+				permissions.add(permission);
+
+			}
+
+		}
+
+		System.out.println(permissions);
+		success("Loaded " + permissions.size() + " permissions");
 
 		ConfigurationSection section = config.getConfigurationSection("commands.");
 
@@ -118,7 +154,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		closeInventory();
 
 		plugin.getSavers().forEach(saver -> saver.load(plugin.getPersist()));
-		
+
 		info("Deleting commands...");
 		FileConfiguration configuration = getConfig();
 
@@ -216,10 +252,10 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		ZShopInventoryOpen event = new ZShopInventoryOpen(typeInventory, command, player);
 		event.callEvent();
-		
+
 		if (event.isCancelled())
 			return;
-		
+
 		switch (type) {
 		case BUY:
 		case SELL:
@@ -246,7 +282,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		}
 
 		Optional<ItemButton> optional = getItemButton(player.getItemInHand());
-		
+
 		if (!optional.isPresent())
 			message(player, Lang.sellHandEmpty);
 		else {
@@ -282,7 +318,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 					ItemButton button = optional.get();
 
-					double tmpPrice = button.getSellPrice();
+					double tmpPrice = button.getSellPrice(player);
 
 					if (tmpPrice <= 0)
 						continue;
@@ -339,6 +375,18 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	@Override
 	public Optional<ItemButton> getItemButton(ItemStack itemStack) {
 		return plugin.getInventory().getItemButton(itemStack);
+	}
+
+	@Override
+	public Optional<Permission> getPermission(String permission) {
+		return permissions.stream().filter(perm -> perm.getPermission().equals(permission)).findFirst();
+	}
+
+	@Override
+	public Optional<Permission> getPermission(Player player, PermissionType type) {
+		return permissions.stream()
+				.filter(perm -> player.hasPermission(perm.getPermission()) && perm.getType().equals(type))
+				.sorted(Comparator.comparingDouble(Permission::getPercent).reversed()).findFirst();
 	}
 
 }

@@ -69,12 +69,12 @@ public class InventoryConfirm extends VInventory {
 			if (button.getType().equals(ButtonType.SHOW_ITEM)) {
 
 				ShowButton showButton = button.toButton(ShowButton.class);
-				addItem(button.getSlot(), showButton.applyLore(this.button, 1, InventoryType.CONFIRM));
+				addItem(button.getSlot(), showButton.applyLore(player, this.button, 1, InventoryType.CONFIRM));
 
 			} else if (button.getType().isSlots()) {
 
 				button.toButton(SlotButton.class).getSlots().forEach(slot -> {
-					addItem(slot, button.getCustomItemStack());
+					addItem(slot, button.getCustomItemStack(player));
 				});
 
 			} else

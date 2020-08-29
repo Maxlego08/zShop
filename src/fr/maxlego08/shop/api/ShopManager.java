@@ -9,7 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.enums.PermissionType;
 import fr.maxlego08.shop.api.inventory.Inventory;
+import fr.maxlego08.shop.api.permission.Permission;
 
 public interface ShopManager {
 
@@ -82,5 +84,20 @@ public interface ShopManager {
 	 * @return {@link Optional}
 	 */
 	public Optional<ItemButton> getItemButton(ItemStack itemStack);
+	
+	/**
+	 * 
+	 * @param permission
+	 * @return
+	 */
+	public Optional<Permission> getPermission(String permission);
+	
+	/**
+	 * Get permission
+	 * @param player
+	 * @param type
+	 * @return {@link Permission}
+	 */
+	public Optional<Permission> getPermission(Player player, PermissionType type);
 
 }

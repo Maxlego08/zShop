@@ -2,8 +2,8 @@ package fr.maxlego08.shop.command.commands;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.command.Command;
-import fr.maxlego08.shop.api.command.OptionalAction;
 import fr.maxlego08.shop.api.command.OptionalCommand;
+import fr.maxlego08.shop.api.enums.OptionalAction;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.VCommand;
 import fr.maxlego08.shop.zcore.logger.Logger;

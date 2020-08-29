@@ -51,3 +51,22 @@ defaultItemLore:
   - "&f» &7Left click to buy"
   - "&f» &7Click wheel to sell everything"
   - "&f» &7Right click to sell"
+  
+
+useSellPermission: false  
+useBuyPermission: false  
+  
+#Allows you to have permission to change the selling price, so the price will decrease by x percent.
+boostSellPermission:
+  50.0: "zshop.boost.sell.50"
+  100.0: "zshop.boost.sell.100"
+  150.0: "zshop.boost.sell.150"
+  200.0: "zshop.boost.sell.200"
+  
+
+#Allows you to have permission to change the purchase price, so the price will decrease by x percent.
+boostBuyPermission:
+  50.0: "zshop.boost.buy.50"
+  100.0: "zshop.boost.buy.100"
+  150.0: "zshop.boost.buy.150"
+  200.0: "zshop.boost.buy.200"  

@@ -2,6 +2,7 @@ package fr.maxlego08.shop.api.command;
 
 import java.util.List;
 
+import fr.maxlego08.shop.api.enums.OptionalAction;
 import fr.maxlego08.shop.api.inventory.Inventory;
 
 public interface Command {

@@ -72,7 +72,8 @@ public abstract class ZPlugin extends JavaPlugin {
 		this.hookPlayerPoints();
 
 		List<String> files = Arrays.asList("blocks", "ores", "miscellaneous", "mobs", "farm", "redstone", "foods",
-				"shop", "sell", "buy", "confirm");
+				"shop", "sell", "buy", "confirm", "menu");
+		
 		boolean isNew = ItemDecoder.isNewVersion();
 		for (String file : files) {
 
