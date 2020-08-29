@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.command.PluginCommand;
@@ -38,6 +39,7 @@ import fr.maxlego08.shop.permission.ZPermission;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.utils.ItemDecoder;
+import fr.maxlego08.shop.zcore.utils.TemporyObject;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 
 public class ZShopManager extends YamlUtils implements ShopManager {
@@ -45,6 +47,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	private final ZShop plugin;
 	private final IEconomy economy;
 	private final List<Permission> permissions = new ArrayList<>();
+	private final Map<UUID, TemporyObject> tmpObjects = new HashMap<>();
 
 	public ZShopManager(ZShop plugin, IEconomy economy) {
 		super(plugin);
@@ -85,7 +88,6 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		}
 
-		System.out.println(permissions);
 		success("Loaded " + permissions.size() + " permissions");
 
 		ConfigurationSection section = config.getConfigurationSection("commands.");
@@ -384,9 +386,18 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 	@Override
 	public Optional<Permission> getPermission(Player player, PermissionType type) {
-		return permissions.stream()
-				.filter(perm -> player.hasPermission(perm.getPermission()) && perm.getType().equals(type))
-				.sorted(Comparator.comparingDouble(Permission::getPercent).reversed()).findFirst();
-	}
 
+		if (this.tmpObjects.containsKey(player.getUniqueId())) {
+			TemporyObject object = this.tmpObjects.get(player.getUniqueId());
+			if (!object.isExpired())
+				return object.getPermission();
+		}
+
+		Optional<Permission> optional = permissions.stream()
+				.filter(perm -> perm.getType().equals(type) && player.hasPermission(perm.getPermission()))
+				.sorted(Comparator.comparingDouble(Permission::getPercent).reversed()).findFirst();
+		
+		this.tmpObjects.put(player.getUniqueId(), new TemporyObject(optional));
+		return optional;
+	}
 }

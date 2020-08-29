@@ -260,6 +260,9 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		if (itemMeta == null)
 			return itemStack;
 
+		Optional<Permission> optionalBuy = manager.getPermission(player, PermissionType.BUY);
+		Optional<Permission> optionalSell = manager.getPermission(player, PermissionType.SELL);
+
 		List<String> lore = new ArrayList<String>();
 
 		if (itemMeta.hasLore())
@@ -267,14 +270,36 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 
 		this.lore.forEach(string -> {
 
-			String str = string.replace("%buyPrice%", this.getBuyPriceAsString(player, 1));
+			String str = string.replace("%buyPrice%", this.getBuyPriceAsString(optionalBuy, 1));
 			if (!str.equals(string))
 				str = str.replace("%currency%", this.canBuy() ? this.economy.getCurrenry() : "");
 
-			str = str.replace("%sellPrice%", this.getSellPriceAsString(player, 1));
+			str = str.replace("%sellPrice%", this.getSellPriceAsString(optionalSell, 1));
 			if (!str.equals(string))
 				str = str.replace("%currency%", this.canSell() ? this.economy.getCurrenry() : "");
 			str = str.replace("&", "§");
+
+			if (optionalBuy.isPresent())
+				str = str.replace("%buyPermission%",
+						Lang.buyPermission.replace("%percent%", format(optionalBuy.get().getPercent())));
+			else
+				str = str.replace("%buyPermission%", "");
+
+			if (optionalSell.isPresent())
+				str = str.replace("%sellPermission%",
+						Lang.sellPermission.replace("%percent%", format(optionalSell.get().getPercent())));
+			else
+				str = str.replace("%sellPermission%", "");
+
+			if ((str.contains("%buyPermissionLine%") && !optionalBuy.isPresent())
+					|| (str.contains("%sellPermissionLine%") && !optionalSell.isPresent())) {
+				return;
+			}
+
+			if (str.contains("%buyPermissionLine%") && optionalBuy.isPresent())
+				str = Lang.buyPermissionLine.replace("%percent%", format(optionalSell.get().getPercent()));
+			else if (str.contains("%sellPermissionLine%") && optionalSell.isPresent())
+				str = Lang.sellPermissionLine.replace("%percent%", format(optionalSell.get().getPercent()));
 
 			lore.add(str);
 		});
@@ -313,22 +338,38 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		return sellCommands;
 	}
 
-	@Override
-	public double getSellPrice(Player player) {
-		Optional<Permission> optional = manager.getPermission(player, PermissionType.SELL);
+	public double getSellPrice(Optional<Permission> optional) {
 		if (!optional.isPresent())
 			return this.getSellPrice();
 		double sellPrice = this.getSellPrice();
 		return sellPrice + percentNum(sellPrice, optional.get().getPercent());
 	}
 
-	@Override
-	public double getBuyPrice(Player player) {
-		Optional<Permission> optional = manager.getPermission(player, PermissionType.BUY);
+	public double getBuyPrice(Optional<Permission> optional) {
 		if (!optional.isPresent())
 			return this.getBuyPrice();
 		double buyPrice = this.getBuyPrice();
 		return buyPrice - percentNum(buyPrice, optional.get().getPercent());
+	}
+
+	public String getSellPriceAsString(Optional<Permission> optional, int amount) {
+		return this.canSell() ? String.valueOf(getSellPrice(optional) * amount) : Lang.canSell;
+	}
+
+	public String getBuyPriceAsString(Optional<Permission> optional, int amount) {
+		return this.canBuy() ? String.valueOf(getBuyPrice(optional) * amount) : Lang.canBuy;
+	}
+
+	@Override
+	public double getSellPrice(Player player) {
+		Optional<Permission> optional = manager.getPermission(player, PermissionType.SELL);
+		return this.getSellPrice(optional);
+	}
+
+	@Override
+	public double getBuyPrice(Player player) {
+		Optional<Permission> optional = manager.getPermission(player, PermissionType.BUY);
+		return getBuyPrice(optional);
 	}
 
 }
