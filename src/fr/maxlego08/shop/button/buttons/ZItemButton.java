@@ -279,26 +279,26 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 				str = str.replace("%currency%", this.canSell() ? this.economy.getCurrenry() : "");
 			str = str.replace("&", "§");
 
-			if (optionalBuy.isPresent())
+			if (optionalBuy.isPresent() && this.canBuy())
 				str = str.replace("%buyPermission%",
 						Lang.buyPermission.replace("%percent%", format(optionalBuy.get().getPercent())));
 			else
 				str = str.replace("%buyPermission%", "");
 
-			if (optionalSell.isPresent())
+			if (optionalSell.isPresent() && this.canSell())
 				str = str.replace("%sellPermission%",
 						Lang.sellPermission.replace("%percent%", format(optionalSell.get().getPercent())));
 			else
 				str = str.replace("%sellPermission%", "");
 
-			if ((str.contains("%buyPermissionLine%") && !optionalBuy.isPresent())
-					|| (str.contains("%sellPermissionLine%") && !optionalSell.isPresent())) {
+			if ((str.contains("%buyPermissionLine%") && (!optionalBuy.isPresent() || !this.canBuy()))
+					|| (str.contains("%sellPermissionLine%") && (!optionalBuy.isPresent() || !this.canSell()))) {
 				return;
 			}
 
-			if (str.contains("%buyPermissionLine%") && optionalBuy.isPresent())
+			if (str.contains("%buyPermissionLine%") && optionalBuy.isPresent() && this.canBuy())
 				str = Lang.buyPermissionLine.replace("%percent%", format(optionalSell.get().getPercent()));
-			else if (str.contains("%sellPermissionLine%") && optionalSell.isPresent())
+			else if (str.contains("%sellPermissionLine%") && optionalSell.isPresent() && this.canSell())
 				str = Lang.sellPermissionLine.replace("%percent%", format(optionalSell.get().getPercent()));
 
 			lore.add(str);
