@@ -1,5 +1,7 @@
 package fr.maxlego08.shop.api.command;
 
+import org.bukkit.command.CommandSender;
+
 import fr.maxlego08.shop.api.enums.OptionalAction;
 
 public class OptionalCommand {
@@ -33,6 +35,10 @@ public class OptionalCommand {
 
 	public static OptionalCommand empty(){
 		return new OptionalCommand(null, null, null);
+	}
+
+	public boolean hasPermission(CommandSender sender) {
+		return permission != null && sender.hasPermission(permission);
 	}
 	
 }

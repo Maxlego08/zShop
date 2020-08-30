@@ -20,6 +20,7 @@ public class InventoryObject implements Inventory {
 	private final InventoryType type;
 	private final int size;
 	private final List<Button> buttons;
+	private final String fileName;
 
 	/**
 	 * @param name
@@ -27,12 +28,13 @@ public class InventoryObject implements Inventory {
 	 * @param size
 	 * @param buttons
 	 */
-	public InventoryObject(String name, InventoryType type, int size, List<Button> buttons) {
+	public InventoryObject(String name, InventoryType type, int size, List<Button> buttons, String fileName) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.size = size;
 		this.buttons = buttons;
+		this.fileName = fileName;
 	}
 
 	@Override
@@ -101,6 +103,11 @@ public class InventoryObject implements Inventory {
 	public Optional<ItemButton> getItemButton(ItemStack itemStack) {
 		return getButtons(ItemButton.class).stream().filter(button -> button.getItemStack().isSimilar(itemStack))
 				.findFirst();
+	}
+
+	@Override
+	public String getFileName() {
+		return fileName;
 	}
 
 }

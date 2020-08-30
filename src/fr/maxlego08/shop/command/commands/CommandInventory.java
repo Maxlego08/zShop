@@ -6,12 +6,14 @@ import fr.maxlego08.shop.api.command.OptionalCommand;
 import fr.maxlego08.shop.api.enums.OptionalAction;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.VCommand;
+import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.utils.commands.CommandType;
 
 public class CommandInventory extends VCommand {
 
 	private final Command command;
+	private OptionalCommand categoryCommand;
 
 	/**
 	 * @param command
@@ -42,11 +44,34 @@ public class CommandInventory extends VCommand {
 			Logger.info("Loading the sell hand all for command " + command.getCommand());
 		}
 
+		categoryCommand = command.getOptionalCommand(OptionalAction.CATEGORY);
+		if (categoryCommand.isPresent()) {
+			this.setIgnoreArgs(true);
+			this.setIgnoreParent(true);
+			Logger.info("Loading the category for command " + command.getCommand());
+		}
+
 	}
 
 	@Override
 	protected CommandType perform(ZShop plugin) {
-		plugin.getShopManager().open(player, command);
+
+		if (args.length > 1)
+			return CommandType.SYNTAX_ERROR;
+
+		if (args.length == 0)
+			plugin.getShopManager().open(player, command);
+		else {
+
+			if (!categoryCommand.hasPermission(sender)) {
+				message(sender, Lang.noPermission);
+				return CommandType.SUCCESS;
+			}
+
+			String category = argAsString(0);
+			plugin.getShopManager().open(player, command, category);
+
+		}
 		return CommandType.SUCCESS;
 	}
 

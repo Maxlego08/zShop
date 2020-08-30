@@ -100,4 +100,19 @@ public interface ShopManager {
 	 */
 	public Optional<Permission> getPermission(Player player, PermissionType type);
 
+	/**
+	 * Opens a specific category
+	 * @param player
+	 * @param command
+	 * @param category
+	 */
+	public void open(Player player, Command command, String category);
+	
+	/**
+	 * Get inventory by name
+	 * @param name
+	 * @return {@link Inventory}
+	 */
+	public Optional<Inventory> getInventoryByName(String name);
+
 }

@@ -29,6 +29,8 @@ public class Lang implements Saveable {
 	public static String sellHandAllItem = "§ax§e%amount% §2%item%§a";
 	public static String sellHandEmpty = "§cUnable to find an item for sale.";
 	public static String sellHandAir = "§cYou can't sell air !";
+	public static String categoryEmpty = "§cThe name of the category cannot be null.";
+	public static String categoryDoesntExist = "§cThe §f%name% §ccategory does not exist.";
 
 	public static String buyPermission = "§d%percent%% §bof reduction";
 	public static String sellPermission = "§d%percent%% §bincrease";
@@ -47,6 +49,7 @@ public class Lang implements Saveable {
 	public static String currencyIceToken = "*";
 
 	private static transient Lang i = new Lang();
+
 
 	@Override
 	public void save(Persist persist) {

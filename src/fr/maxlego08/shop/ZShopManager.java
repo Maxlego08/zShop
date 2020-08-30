@@ -138,9 +138,33 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		Inventory inventory = command.getInventory();
 
 		InventoryManager inventoryManager = plugin.getInventoryManager();
-		inventoryManager.createInventory(fr.maxlego08.shop.zcore.enums.EnumInventory.INVENTORY_DEFAULT, player, 1,
-				inventory, new ArrayList<>(), command);
+		inventoryManager.createInventory(EnumInventory.INVENTORY_DEFAULT, player, 1, inventory, new ArrayList<>(),
+				command);
 
+	}
+
+	@Override
+	public void open(Player player, Command command, String category) {
+
+		if (category == null) {
+			message(player, Lang.categoryEmpty);
+			return;
+		}
+
+		Optional<Inventory> optional = getInventoryByName(category);
+
+		if (!optional.isPresent()) {
+			message(player, Lang.categoryDoesntExist.replace("%name%", category));
+			return;
+		}
+
+		Inventory inventory = optional.get();
+
+		List<Inventory> list = new ArrayList<>();
+		list.add(command.getInventory());
+
+		InventoryManager inventoryManager = plugin.getInventoryManager();
+		inventoryManager.createInventory(EnumInventory.INVENTORY_DEFAULT, player, 1, inventory, list, command);
 	}
 
 	@Override
@@ -396,8 +420,14 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		Optional<Permission> optional = permissions.stream()
 				.filter(perm -> perm.getType().equals(type) && player.hasPermission(perm.getPermission()))
 				.sorted(Comparator.comparingDouble(Permission::getPercent).reversed()).findFirst();
-		
+
 		this.tmpObjects.put(player.getUniqueId(), new TemporyObject(optional));
 		return optional;
 	}
+
+	@Override
+	public Optional<Inventory> getInventoryByName(String name) {
+		return plugin.getInventory().getInventoryByName(name);
+	}
+
 }

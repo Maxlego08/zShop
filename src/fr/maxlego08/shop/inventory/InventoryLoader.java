@@ -47,10 +47,20 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 	@Override
 	public Inventory getInventory(String name) {
-		if (name == null)
+		return this.getInventory(name, true);
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @param throwError
+	 * @return
+	 */
+	private Inventory getInventory(String name, boolean throwError) {
+		if (name == null && throwError)
 			throw new InventoryNotFoundException("Unable to find the inventory with name null");
 		Inventory inventory = inventories.getOrDefault(name.toLowerCase(), null);
-		if (inventory == null)
+		if (inventory == null && throwError)
 			throw new InventoryNotFoundException("Unable to find the inventory " + name);
 		return inventory;
 	}
@@ -112,7 +122,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		Loader<List<Button>> loader = new ButtonCollections(plugin, economy);
 		List<Button> buttons = loader.load(configuration, lowerCategory);
 
-		Inventory inventory = new InventoryObject(name, type, size, buttons);
+		Inventory inventory = new InventoryObject(name, type, size, buttons, lowerCategory);
 		inventories.put(lowerCategory, inventory);
 
 		if (type != InventoryType.DEFAULT)
@@ -147,6 +157,14 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 				return optional;
 		}
 		return Optional.empty();
+	}
+
+	@Override
+	public Optional<Inventory> getInventoryByName(String name) {
+		Inventory inventory = getInventory(name, false);
+		if (inventory != null)
+			return Optional.of(inventory);
+		return inventories.values().stream().filter(inv -> inv.getName().toLowerCase().contains(name.toLowerCase())).findFirst();
 	}
 
 }

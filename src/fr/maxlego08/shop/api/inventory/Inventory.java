@@ -78,6 +78,12 @@ public interface Inventory {
 	 * @return item button
 	 */
 	public Optional<ItemButton> getItemButton(ItemStack itemStack);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getFileName();
 
 	
 }
