@@ -16,12 +16,13 @@ import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.enums.PermissionType;
+import fr.maxlego08.shop.api.enums.PlaceholderAction;
 import fr.maxlego08.shop.api.events.ZShopBuyEvent;
 import fr.maxlego08.shop.api.events.ZShopSellEvent;
 import fr.maxlego08.shop.api.permission.Permission;
 import fr.maxlego08.shop.save.Lang;
 
-public class ZItemButton extends ZPermissibleButton implements ItemButton {
+public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 
 	private final ShopManager manager;
 	private final IEconomy iEconomy;
@@ -42,32 +43,36 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 	 * @param permission
 	 * @param message
 	 * @param elseButton
+	 * @param isPermanent
+	 * @param action
+	 * @param placeholder
+	 * @param value
+	 * @param manager
 	 * @param iEconomy
 	 * @param sellPrice
 	 * @param buyPrice
-	 * @param economy
 	 * @param maxStack
+	 * @param economy
 	 * @param lore
-	 * @param isPermanent
 	 * @param buyCommands
 	 * @param sellCommands
 	 * @param giveItem
 	 */
-	public ZItemButton(ShopManager manager, ButtonType type, ItemStack itemStack, int slot, String permission,
-			String message, Button elseButton, IEconomy iEconomy, double sellPrice, double buyPrice, Economy economy,
-			int maxStack, List<String> lore, boolean isPermanent, List<String> buyCommands, List<String> sellCommands,
-			boolean giveItem) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent);
+	public ZItemButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
+			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
+			ShopManager manager, IEconomy iEconomy, double sellPrice, double buyPrice, int maxStack, Economy economy,
+			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value);
+		this.manager = manager;
 		this.iEconomy = iEconomy;
 		this.sellPrice = sellPrice;
 		this.buyPrice = buyPrice;
-		this.economy = economy;
 		this.maxStack = maxStack;
+		this.economy = economy;
 		this.lore = lore;
 		this.buyCommands = buyCommands;
 		this.sellCommands = sellCommands;
 		this.giveItem = giveItem;
-		this.manager = manager;
 	}
 
 	@Override
@@ -305,7 +310,7 @@ public class ZItemButton extends ZPermissibleButton implements ItemButton {
 		});
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);
-		return papi(itemStack, player);
+		return playerHead(papi(itemStack, player), player);
 	}
 
 	@Override

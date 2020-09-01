@@ -74,8 +74,8 @@ public class ZButton extends ZUtils implements Button {
 
 	@Override
 	public ItemStack getCustomItemStack(Player player) {
-		ItemStack itemStack =  this.itemStack.clone();
-		return papi(itemStack, player);
+		ItemStack itemStack = this.itemStack.clone();
+		return super.playerHead(super.papi(itemStack, player), player);
 	}
 
 	@Override

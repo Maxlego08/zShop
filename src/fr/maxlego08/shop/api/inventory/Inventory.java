@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
-import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
+import fr.maxlego08.shop.api.button.buttons.PlaceholderButton;
 import fr.maxlego08.shop.api.enums.InventoryType;
 
 public interface Inventory {
@@ -64,7 +64,7 @@ public interface Inventory {
 	 * @param page
 	 * @return
 	 */
-	public List<PermissibleButton> sortButtons(int page);
+	public List<PlaceholderButton> sortButtons(int page);
 	
 	/**
 	 * 

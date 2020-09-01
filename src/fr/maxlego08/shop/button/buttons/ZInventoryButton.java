@@ -6,9 +6,10 @@ import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
+import fr.maxlego08.shop.api.enums.PlaceholderAction;
 import fr.maxlego08.shop.api.inventory.Inventory;
 
-public class ZInventoryButton extends ZPermissibleButton implements InventoryButton {
+public class ZInventoryButton extends ZPlaceholderButton implements InventoryButton {
 
 	protected String inventory;
 	protected Inventory inventoryInterface;
@@ -18,27 +19,23 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 	 * @param type
 	 * @param itemStack
 	 * @param slot
-	 * @param inventory
-	 */
-	public ZInventoryButton(ZShop plugin, ButtonType type, ItemStack itemStack, int slot, String inventory, boolean isPermanent) {
-		super(type, itemStack, slot, isPermanent);
-		this.inventory = inventory;
-		this.plugin = plugin;
-	}
-
-	/**
-	 * @param type
-	 * @param itemStack
-	 * @param slot
 	 * @param permission
 	 * @param message
 	 * @param elseButton
+	 * @param isPermanent
+	 * @param action
+	 * @param placeholder
+	 * @param value
 	 * @param inventory
+	 * @param inventoryInterface
+	 * @param plugin
 	 */
-	public ZInventoryButton(ZShop plugin,ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, String inventory, boolean isPermanent) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent);
+	public ZInventoryButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
+			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
+			String inventory, Inventory inventoryInterface, ZShop plugin) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value);
 		this.inventory = inventory;
+		this.inventoryInterface = inventoryInterface;
 		this.plugin = plugin;
 	}
 
@@ -46,12 +43,13 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 	public Inventory getInventory() {
 		if (getType() == ButtonType.BACK)
 			return inventoryInterface;
-		return inventoryInterface == null
-				? inventoryInterface = plugin.getInventory().getInventory(inventory)
+		return inventoryInterface == null ? inventoryInterface = plugin.getInventory().getInventory(inventory)
 				: inventoryInterface;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -59,6 +57,4 @@ public class ZInventoryButton extends ZPermissibleButton implements InventoryBut
 		return "ZInventoryButton [inventory=" + inventory + ", inventoryInterface=" + inventoryInterface + "]";
 	}
 
-	
-	
 }

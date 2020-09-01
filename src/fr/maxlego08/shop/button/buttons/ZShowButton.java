@@ -12,8 +12,9 @@ import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.ShowButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.button.ZButton;
 
-public class ZShowButton extends ZPermissibleButton implements ShowButton {
+public class ZShowButton extends ZButton implements ShowButton {
 
 	private final List<String> lore;
 

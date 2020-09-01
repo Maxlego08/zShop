@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
-import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
+import fr.maxlego08.shop.api.button.buttons.PlaceholderButton;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.inventory.Inventory;
 
@@ -71,15 +71,15 @@ public class InventoryObject implements Inventory {
 	}
 
 	@Override
-	public List<PermissibleButton> sortButtons(int page) {
-		List<PermissibleButton> buttons = new ArrayList<PermissibleButton>();
+	public List<PlaceholderButton> sortButtons(int page) {
+		List<PlaceholderButton> buttons = new ArrayList<PlaceholderButton>();
 		for (Button button : this.buttons) {
 
 			int slot = (button.getSlot() - ((page - 1) * size));
 
 			if ((slot >= 0 && slot < size) || button.isPermament()) {
 				button.setTmpSlot(slot);
-				buttons.add(button.toButton(PermissibleButton.class));
+				buttons.add(button.toButton(PlaceholderButton.class));
 			}
 
 		}

@@ -9,8 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.PerformButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
+import fr.maxlego08.shop.api.enums.PlaceholderAction;
 
-public class ZPerformButton extends ZPermissibleButton implements PerformButton {
+public class ZPerformButton extends ZPlaceholderButton implements PerformButton {
 
 	private final List<String> commands;
 	private final boolean closeInventory;
@@ -23,12 +24,16 @@ public class ZPerformButton extends ZPermissibleButton implements PerformButton 
 	 * @param message
 	 * @param elseButton
 	 * @param isPermanent
+	 * @param action
+	 * @param placeholder
+	 * @param value
 	 * @param commands
 	 * @param closeInventory
 	 */
 	public ZPerformButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, boolean isPermanent, List<String> commands, boolean closeInventory) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent);
+			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
+			List<String> commands, boolean closeInventory) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value);
 		this.commands = commands;
 		this.closeInventory = closeInventory;
 	}
@@ -42,7 +47,8 @@ public class ZPerformButton extends ZPermissibleButton implements PerformButton 
 	public void execute(Player player) {
 		if (this.closeInventory())
 			player.closeInventory();
-		papi(new ArrayList<String>(commands), player).forEach(command -> player.performCommand(command.replace("%player%", player.getName())));
+		papi(new ArrayList<String>(commands), player)
+				.forEach(command -> player.performCommand(command.replace("%player%", player.getName())));
 	}
 
 	@Override

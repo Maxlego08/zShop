@@ -16,6 +16,7 @@ import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.PerformButton;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
+import fr.maxlego08.shop.api.button.buttons.PlaceholderButton;
 import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.InventoryType;
@@ -65,7 +66,7 @@ public class InventoryDefault extends VInventory {
 
 		inventory.getButtons(HomeButton.class).forEach(button -> button.setBackInventory(command.getInventory()));
 
-		List<PermissibleButton> buttons = inventory.sortButtons(page);
+		List<PlaceholderButton> buttons = inventory.sortButtons(page);
 
 		// Gestion du nom de l'inventaire
 		String inventoryName = inventory.getName();
@@ -74,19 +75,20 @@ public class InventoryDefault extends VInventory {
 
 		createInventory(papi(inventoryName, player), inventory.size());
 
-		for (PermissibleButton button : buttons) {
+		for (PlaceholderButton button : buttons) {
 
 			if (button.hasPermission()) {
 
-				if (!player.hasPermission(button.getPermission()) && button.hasElseButton()) {
+				if (!button.checkPermission(player) && button.hasElseButton()) {
 
-					ZButton zButton = addItem(button.getTmpSlot(), button.getElseButton().getCustomItemStack(player));
+					PlaceholderButton elseButton = button.getElseButton().toButton(PlaceholderButton.class);
+					ZButton zButton = addItem(button.getTmpSlot(), elseButton.getCustomItemStack(player));
 
-					if (button.isClickable())
-						zButton.setClick(clickEvent(main, player, page, maxPage, button))
-								.setLeftClick(leftClick(main, player, page, maxPage, button))
-								.setRightClick(rightClick(main, player, page, maxPage, button))
-								.setMiddleClick(middleClick(main, player, page, maxPage, button));
+					if (elseButton.isClickable())
+						zButton.setClick(clickEvent(main, player, page, maxPage, elseButton))
+								.setLeftClick(leftClick(main, player, page, maxPage, elseButton))
+								.setRightClick(rightClick(main, player, page, maxPage, elseButton))
+								.setMiddleClick(middleClick(main, player, page, maxPage, elseButton));
 
 				} else {
 
@@ -147,20 +149,20 @@ public class InventoryDefault extends VInventory {
 	 * @return
 	 */
 	private Consumer<InventoryClickEvent> clickEvent(ZShop plugin, Player player, int page, int maxPage,
-			PermissibleButton button) {
+			PlaceholderButton button) {
 		return event -> {
 
-			PermissibleButton finalButton = button;
+			PlaceholderButton finalButton = button;
 
 			if (finalButton.hasPermission()) {
 
-				if (!player.hasPermission(finalButton.getPermission())) {
+				if (!button.checkPermission(player)) {
 
 					if (finalButton.hasMessage())
 						message(player, finalButton.getMessage());
 
 					if (button.hasElseButton())
-						finalButton = finalButton.getElseButton().toButton(PermissibleButton.class);
+						finalButton = finalButton.getElseButton().toButton(PlaceholderButton.class);
 					else
 						return;
 

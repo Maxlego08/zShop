@@ -54,9 +54,9 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 				int id = Integer.valueOf(idAsString);
 
 				HeadDatabaseAPI api = new HeadDatabaseAPI();
-				
+
 				item = api.getItemHead(String.valueOf(id));
-				
+
 			} catch (Exception e) {
 				Logger.info("Impossible to find the head with : " + idAsString, LogType.ERROR);
 				e.printStackTrace();
@@ -97,6 +97,15 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 			meta.setDisplayName(color(displayName));
 
 		List<String> enchants = configuration.getStringList(path + "enchants");
+
+		boolean isGlowing = configuration.getBoolean(path + "glow");
+
+		if (isGlowing && ItemDecoder.getNMSVersion() != 1.7) {
+
+			meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
+			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+		}
 
 		// Permet de charger l'enchantement de l'item
 		if (enchants.size() != 0) {

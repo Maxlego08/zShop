@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.enums.Economy;
 
-public interface ItemButton extends PermissibleButton {
+public interface ItemButton extends PermissibleButton, PlaceholderButton {
 
 	/**
 	 * 

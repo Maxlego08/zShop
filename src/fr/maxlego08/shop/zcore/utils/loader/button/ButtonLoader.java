@@ -11,6 +11,7 @@ import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.Economy;
+import fr.maxlego08.shop.api.enums.PlaceholderAction;
 import fr.maxlego08.shop.api.exceptions.ButtonCreateItemStackNullPointerException;
 import fr.maxlego08.shop.button.buttons.ZAddRemoveButton;
 import fr.maxlego08.shop.button.buttons.ZBackButton;
@@ -19,7 +20,7 @@ import fr.maxlego08.shop.button.buttons.ZHomeButton;
 import fr.maxlego08.shop.button.buttons.ZInventoryButton;
 import fr.maxlego08.shop.button.buttons.ZItemButton;
 import fr.maxlego08.shop.button.buttons.ZPerformButton;
-import fr.maxlego08.shop.button.buttons.ZPermissibleButton;
+import fr.maxlego08.shop.button.buttons.ZPlaceholderButton;
 import fr.maxlego08.shop.button.buttons.ZShowButton;
 import fr.maxlego08.shop.zcore.utils.loader.ItemStackLoader;
 
@@ -59,15 +60,13 @@ public class ButtonLoader implements Loader<Button> {
 		String permission = configuration.getString(path + "permission", null);
 		Button elseButton = null;
 		String elseMessage = configuration.getString(path + "elseMessage", null);
-		if (permission != null && args.length < 2)
-			if (configuration.contains(path + "else"))
-				elseButton = load(configuration, path + "else.", (String) args[0], true);
 
-		if (args.length >= 2) {
-			permission = null;
-			elseButton = null;
-			elseMessage = null;
-		}
+		PlaceholderAction action = PlaceholderAction.from(configuration.getString(path + "action", null));
+		String placeHolder = configuration.getString(path + "placeHolder", null);
+		double value = configuration.getDouble(path + "value", 0.0);
+
+		if (configuration.contains(path + "else"))
+			elseButton = load(configuration, path + "else.", (String) args[0], true);
 
 		Button button = null;
 
@@ -77,15 +76,15 @@ public class ButtonLoader implements Loader<Button> {
 			int amount = configuration.getInt(path + "amount", 1);
 			return new ZAddRemoveButton(type, itemStack, slot, amount, isPermanent);
 		case BACK:
-			return new ZBackButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, null,
-					isPermanent);
+			return new ZBackButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
+					placeHolder, value, null, null, plugin);
 		case HOME:
-			return new ZHomeButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, null,
-					isPermanent);
+			return new ZHomeButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
+					placeHolder, value, null, null, plugin);
 		case INVENTORY:
 			String inventory = configuration.getString(path + "inventory");
-			return new ZInventoryButton(plugin, type, itemStack, slot, permission, elseMessage, elseButton, inventory,
-					isPermanent);
+			return new ZInventoryButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
+					placeHolder, value, inventory, null, plugin);
 		case SHOW_ITEM:
 			List<String> lore = configuration.getStringList(path + "lore");
 			return new ZShowButton(type, itemStack, slot, lore, isPermanent);
@@ -103,22 +102,24 @@ public class ButtonLoader implements Loader<Button> {
 				currentLore = plugin.getInventory().getLore();
 
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
-			return new ZItemButton(plugin.getShopManager(), type, itemStack, slot, permission, elseMessage, elseButton,
-					this.economy, sellPrice, buyPrice, economy, maxStack, currentLore, isPermanent, buyCommands,
-					sellCommands, giveItem);
+			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
+					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
+					currentLore, buyCommands, sellCommands, giveItem);
 		case PERFORM_COMMAND:
 			List<String> commands = configuration.getStringList(path + "commands");
 			boolean closeInventory = configuration.getBoolean(path + "closeInventory", false);
-			return new ZPerformButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent,
-					commands, closeInventory);
+			return new ZPerformButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
+					placeHolder, value, commands, closeInventory);
 		case NONE_SLOT:
 			List<Integer> list = configuration.getIntegerList(path + "slots");
-			return new ZButtonSlot(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, list);
+			return new ZButtonSlot(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
+					placeHolder, value, list);
 		case NEXT:
 		case NONE:
 		case PREVIOUS:
 		default:
-			button = new ZPermissibleButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent);
+			button = new ZPlaceholderButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent,
+					action, placeHolder, value);
 		}
 
 		return button;

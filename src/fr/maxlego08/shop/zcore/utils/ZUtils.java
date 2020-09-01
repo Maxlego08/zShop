@@ -26,12 +26,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -1013,6 +1015,42 @@ public abstract class ZUtils extends MessageUtils {
 		symbols.setGroupingSeparator(c);
 		formatter.setDecimalFormatSymbols(symbols);
 		return formatter.format(l);
+	}
+
+	/**
+	 * 
+	 * @param itemStack
+	 * @param player
+	 * @return itemstack
+	 */
+	public ItemStack playerHead(ItemStack itemStack, OfflinePlayer player) {
+		String name = itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName()
+				? itemStack.getItemMeta().getDisplayName() : null;
+		if (ItemDecoder.isNewVersion()) {
+			if (itemStack.getType().equals(Material.PLAYER_HEAD) && name != null && name.startsWith("HEAD")) {
+				SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+				name = name.replace("HEAD", "");
+				if (name.length() == 0)
+					meta.setDisplayName(null);
+				else
+					meta.setDisplayName(name);
+				meta.setOwningPlayer(player);
+				itemStack.setItemMeta(meta);
+			}
+		} else {
+			if (itemStack.getType().equals(getMaterial(397)) && itemStack.getData().getData() == 3 && name != null
+					&& name.startsWith("HEAD")) {
+				SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+				name = name.replace("HEAD", "");
+				if (name.length() == 0)
+					meta.setDisplayName(null);
+				else
+					meta.setDisplayName(name);
+				meta.setOwner(player.getName());
+				itemStack.setItemMeta(meta);
+			}
+		}
+		return itemStack;
 	}
 
 }

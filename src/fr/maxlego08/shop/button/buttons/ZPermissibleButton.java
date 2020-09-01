@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.button.buttons;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.Button;
@@ -81,6 +82,11 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 	public String toString() {
 		return "ZPermissibleButton [permission=" + permission + ", message=" + message + ", elseButton=" + elseButton
 				+ "] => " + super.toString();
+	}
+
+	@Override
+	public boolean checkPermission(Player player) {
+		return this.getPermission() != null && player.hasPermission(this.getPermission());
 	}
 
 }
