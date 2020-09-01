@@ -214,10 +214,8 @@ public abstract class ZUtils extends MessageUtils {
 
 		}
 
-		slot -= 4;
-
 		if (!ItemDecoder.isOneHand())
-			slot -= 1;
+			slot -= 5;
 
 		return slot == 0;
 	}
