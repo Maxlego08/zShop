@@ -3,6 +3,7 @@ package fr.maxlego08.shop.zcore.utils.loader.button;
 import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
@@ -12,6 +13,7 @@ import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.enums.PlaceholderAction;
+import fr.maxlego08.shop.api.enums.ZSpawnerAction;
 import fr.maxlego08.shop.api.exceptions.ButtonCreateItemStackNullPointerException;
 import fr.maxlego08.shop.button.buttons.ZAddRemoveButton;
 import fr.maxlego08.shop.button.buttons.ZBackButton;
@@ -22,6 +24,7 @@ import fr.maxlego08.shop.button.buttons.ZItemButton;
 import fr.maxlego08.shop.button.buttons.ZPerformButton;
 import fr.maxlego08.shop.button.buttons.ZPlaceholderButton;
 import fr.maxlego08.shop.button.buttons.ZShowButton;
+import fr.maxlego08.shop.button.buttons.ZZSpawnerButton;
 import fr.maxlego08.shop.zcore.utils.loader.ItemStackLoader;
 
 public class ButtonLoader implements Loader<Button> {
@@ -85,11 +88,12 @@ public class ButtonLoader implements Loader<Button> {
 			String inventory = configuration.getString(path + "inventory");
 			return new ZInventoryButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, inventory, null, plugin);
-		case SHOW_ITEM:
+		case SHOW_ITEM: {
 			List<String> lore = configuration.getStringList(path + "lore");
 			return new ZShowButton(type, itemStack, slot, lore, isPermanent);
+		}
 		case ITEM:
-		case ITEM_CONFIRM:
+		case ITEM_CONFIRM: {
 			double sellPrice = configuration.getDouble(path + "sellPrice", 0.0);
 			double buyPrice = configuration.getDouble(path + "buyPrice", 0.0);
 			int maxStack = configuration.getInt(path + "maxStack", 64);
@@ -105,6 +109,31 @@ public class ButtonLoader implements Loader<Button> {
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
 					currentLore, buyCommands, sellCommands, giveItem);
+		}
+		case ZSPAWNER: {
+			
+			double sellPrice = configuration.getDouble(path + "sellPrice", 0.0);
+			double buyPrice = configuration.getDouble(path + "buyPrice", 0.0);
+			int maxStack = configuration.getInt(path + "maxStack", 64);
+			boolean giveItem = configuration.getBoolean(path + "giveItem", true);
+			List<String> currentLore = configuration.getStringList(path + "lore");
+			List<String> buyCommands = configuration.getStringList(path + "buyCommands");
+			List<String> sellCommands = configuration.getStringList(path + "sellCommands");
+
+			if (currentLore.size() == 0)
+				currentLore = plugin.getInventory().getLore();
+
+			Economy economy = Economy.get(configuration.getString(path + "economy", null));
+
+			EntityType entityType = EntityType.valueOf(configuration.getString(path + "entity").toUpperCase());
+			ZSpawnerAction spawnerAction = ZSpawnerAction
+					.valueOf(configuration.getString(path + "zpawnerAction").toUpperCase());
+			int level = configuration.getInt(path + "level", 0);
+
+			return new ZZSpawnerButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
+					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
+					currentLore, buyCommands, sellCommands, giveItem, entityType, spawnerAction, plugin, level);
+		}
 		case PERFORM_COMMAND:
 			List<String> commands = configuration.getStringList(path + "commands");
 			boolean closeInventory = configuration.getBoolean(path + "closeInventory", false);

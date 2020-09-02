@@ -38,6 +38,7 @@ public enum ButtonType {
 	
 	PERFORM_COMMAND,
 	
+	ZSPAWNER,
 	
 	;
 

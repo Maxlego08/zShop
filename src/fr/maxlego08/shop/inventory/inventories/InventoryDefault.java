@@ -181,6 +181,7 @@ public class InventoryDefault extends VInventory {
 							oldInventories, command);
 				break;
 			case ITEM_CONFIRM:
+			case ZSPAWNER:
 				this.oldInventories.add(this.inventory);
 				plugin.getShopManager().open(player, this.command, finalButton.toButton(ItemButton.class), page,
 						this.oldInventories, InventoryType.CONFIRM);

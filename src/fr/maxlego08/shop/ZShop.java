@@ -49,7 +49,7 @@ public class ZShop extends ZPlugin {
 				inventory.loadInventories();
 			} catch (Exception e) {
 				e.printStackTrace();
-				getServer().getPluginManager().disablePlugin(this);
+//				getServer().getPluginManager().disablePlugin(this);
 				return;
 			}
 
@@ -58,7 +58,7 @@ public class ZShop extends ZPlugin {
 				shopManager.loadCommands();
 			} catch (Exception e) {
 				e.printStackTrace();
-				getServer().getPluginManager().disablePlugin(this);
+//				getServer().getPluginManager().disablePlugin(this);
 				return;
 			}
 		};

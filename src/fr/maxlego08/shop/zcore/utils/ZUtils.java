@@ -35,6 +35,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.permissions.Permissible;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.maxlego08.shop.zcore.ZPlugin;
@@ -1051,6 +1053,13 @@ public abstract class ZUtils extends MessageUtils {
 			}
 		}
 		return itemStack;
+	}
+
+	protected <T> T getProvider(Plugin plugin, Class<T> classz) {
+		RegisteredServiceProvider<T> provider = plugin.getServer().getServicesManager().getRegistration(classz);
+		if (provider == null)
+			return null;
+		return provider.getProvider() != null ? (T) provider.getProvider() : null;
 	}
 
 }

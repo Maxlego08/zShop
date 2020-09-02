@@ -208,7 +208,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			plugin.getInventory().loadInventories();
 		} catch (Exception e) {
 			e.printStackTrace();
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
+//			plugin.getServer().getPluginManager().disablePlugin(plugin);
 			return;
 		}
 
@@ -217,7 +217,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			loadCommands();
 		} catch (Exception e) {
 			e.printStackTrace();
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
+//			plugin.getServer().getPluginManager().disablePlugin(plugin);
 			return;
 		}
 
