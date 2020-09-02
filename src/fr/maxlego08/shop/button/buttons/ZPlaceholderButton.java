@@ -57,8 +57,6 @@ public class ZPlaceholderButton extends ZPermissibleButton implements Placeholde
 	@Override
 	public boolean checkPermission(Player player) {
 
-		System.out.println("ici ! " + this.hasPlaceHolder());
-
 		if (!this.hasPlaceHolder())
 
 			return super.checkPermission(player);
