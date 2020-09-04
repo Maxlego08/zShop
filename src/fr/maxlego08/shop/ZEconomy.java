@@ -50,6 +50,10 @@ public class ZEconomy implements IEconomy {
 			EconomyDepositEvent event = new EconomyDepositEvent(player, value);
 			event.callEvent();
 			break;
+		case LEVEL:
+			int level = player.getLevel();
+			player.setLevel((int) (level + value));
+			break;
 		case ICECORE:
 			IceCore.getInstance().getUser(player)
 					.setTokens((int) (IceCore.getInstance().getUser(player).getTokens() + value));
@@ -78,6 +82,10 @@ public class ZEconomy implements IEconomy {
 			EconomyWithdrawMoney event = new EconomyWithdrawMoney(player, value);
 			event.callEvent();
 			break;
+		case LEVEL:
+			int level = player.getLevel();
+			player.setLevel((int) (level - value));
+			break;
 		case ICECORE:
 			IceCore.getInstance().getUser(player);
 			break;
@@ -103,6 +111,8 @@ public class ZEconomy implements IEconomy {
 			return event.getMoney();
 		case ICECORE:
 			return IceCore.getInstance().getUser(player).getTokens();
+		case LEVEL:
+			return player.getLevel();
 		default:
 			return 0.0;
 		}

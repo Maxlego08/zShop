@@ -38,6 +38,7 @@ import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
 
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
@@ -1062,4 +1063,11 @@ public abstract class ZUtils extends MessageUtils {
 		return provider.getProvider() != null ? (T) provider.getProvider() : null;
 	}
 
+	protected PotionEffectType getPotion(String configuration){
+		for(PotionEffectType effectType : PotionEffectType.values())
+			if (effectType.getName().equalsIgnoreCase(configuration))
+				return effectType;
+		return null;
+	}
+	
 }

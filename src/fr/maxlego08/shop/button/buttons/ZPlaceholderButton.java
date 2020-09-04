@@ -70,16 +70,12 @@ public class ZPlaceholderButton extends ZPermissibleButton implements Placeholde
 
 				switch (action) {
 				case LOWER:
-					System.out.println("Lower " + value + " < " + this.value);
 					return value < this.value;
 				case LOWER_OR_EQUAL:
-					System.out.println("LOWER_OR_EQUAL " + value + " <= " + this.value);
 					return value <= this.value;
 				case SUPERIOR:
-					System.out.println("SUPERIOR " + value + " > " + this.value);
 					return value > this.value;
 				case SUPERIOR_OR_EQUAL:
-					System.out.println("Superior or equal " + value + " >= " + this.value);
 					return value >= this.value;
 				default:
 					return super.checkPermission(player);

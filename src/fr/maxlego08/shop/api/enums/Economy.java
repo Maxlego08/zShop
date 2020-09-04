@@ -17,6 +17,8 @@ public enum Economy {
 
 	CUSTOM,
 
+	LEVEL,
+	
 	ICECORE,
 
 	;
@@ -47,6 +49,8 @@ public enum Economy {
 			return Lang.currencyMySQLToken;
 		case ICECORE:
 			return Lang.currencyIceToken;
+		case LEVEL:
+			return Lang.currencyLevel;
 		case CUSTOM:
 			EconomyCurrencyEvent event = new EconomyCurrencyEvent();
 			Bukkit.getPluginManager().callEvent(event);

@@ -84,11 +84,14 @@ public class InventoryDefault extends VInventory {
 					PlaceholderButton elseButton = button.getElseButton().toButton(PlaceholderButton.class);
 					ZButton zButton = addItem(button.getTmpSlot(), elseButton.getCustomItemStack(player));
 
-					if (elseButton.isClickable())
-						zButton.setClick(clickEvent(main, player, page, maxPage, elseButton))
-								.setLeftClick(leftClick(main, player, page, maxPage, elseButton))
-								.setRightClick(rightClick(main, player, page, maxPage, elseButton))
-								.setMiddleClick(middleClick(main, player, page, maxPage, elseButton));
+					if (elseButton.isClickable()) {
+						zButton.setClick(clickEvent(main, player, page, maxPage, elseButton));
+						if (elseButton.getType().isOtherClick()) {
+							zButton.setLeftClick(leftClick(main, player, page, maxPage, elseButton))
+									.setRightClick(rightClick(main, player, page, maxPage, elseButton))
+									.setMiddleClick(middleClick(main, player, page, maxPage, elseButton));
+						}
+					}
 
 				} else {
 
@@ -99,11 +102,14 @@ public class InventoryDefault extends VInventory {
 					} else {
 
 						ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack(player));
-						if (button.isClickable())
-							zButton.setClick(clickEvent(main, player, page, maxPage, button))
-									.setLeftClick(leftClick(main, player, page, maxPage, button))
-									.setRightClick(rightClick(main, player, page, maxPage, button))
-									.setMiddleClick(middleClick(main, player, page, maxPage, button));
+						if (button.isClickable()) {
+							zButton.setClick(clickEvent(main, player, page, maxPage, button));
+							if (button.getType().isOtherClick()) {
+								zButton.setLeftClick(leftClick(main, player, page, maxPage, button))
+										.setRightClick(rightClick(main, player, page, maxPage, button))
+										.setMiddleClick(middleClick(main, player, page, maxPage, button));
+							}
+						}
 					}
 				}
 			} else {
@@ -117,11 +123,14 @@ public class InventoryDefault extends VInventory {
 				} else {
 
 					ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack(player));
-					if (button.isClickable())
-						zButton.setClick(clickEvent(main, player, page, maxPage, button))
-								.setLeftClick(leftClick(main, player, page, maxPage, button))
-								.setRightClick(rightClick(main, player, page, maxPage, button))
-								.setMiddleClick(middleClick(main, player, page, maxPage, button));
+					if (button.isClickable()) {
+						zButton.setClick(clickEvent(main, player, page, maxPage, button));
+						if (button.getType().isOtherClick()) {
+							zButton.setLeftClick(leftClick(main, player, page, maxPage, button))
+									.setRightClick(rightClick(main, player, page, maxPage, button))
+									.setMiddleClick(middleClick(main, player, page, maxPage, button));
+						}
+					}
 				}
 			}
 		}

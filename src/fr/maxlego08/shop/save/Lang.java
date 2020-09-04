@@ -47,8 +47,10 @@ public class Lang implements Saveable {
 	public static String currencyTokenManager = "T";
 	public static String currencyMySQLToken = "MT";
 	public static String currencyIceToken = "*";
+	public static String currencyLevel = "xp";
 
 	private static transient Lang i = new Lang();
+
 
 
 	@Override
