@@ -92,7 +92,7 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 			return;
 
 		if (!super.getIEconomy().hasMoney(getEconomy(), player, currentPrice)) {
-			message(player, Lang.notEnouhtMoney);
+			message(player, this.getEconomy().getDenyMessage());
 			return;
 		}
 

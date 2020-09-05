@@ -104,7 +104,9 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 
 		ZButton button = new ZButton(item);
 		this.items.put(slot, button);
-		this.inventory.setItem(slot, item);
+
+		runAsync(plugin, () -> this.inventory.setItem(slot, item));
+
 		return button;
 	}
 
@@ -206,6 +208,7 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 			throws InventoryOpenException;
 
 	public abstract void onClose(InventoryCloseEvent event, ZShop plugin, Player player);
+
 	public abstract void onDrag(InventoryDragEvent event, ZShop plugin, Player player);
 
 	@Override

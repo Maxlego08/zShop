@@ -20,7 +20,14 @@ public class Lang implements Saveable {
 	public static String sellItem = "§aYou just sold §6x%amount% %item%§a for §6%price%§a%currency% !";
 	public static String buyItem = "§aYou have just bought §6x%amount% %item%§a for §6%price%§a%currency% !";
 	public static String notEnouhtItems = "§cYou do not have enough items in your inventory.";
-	public static String notEnouhtMoney = "§cYou do not have enough money.";
+	
+	public static String notEnouhtMoneyVault = "§cYou do not have enough money.";
+	public static String notEnouhtMoneyPlayerPoint = "§cYou do not have enough points.";
+	public static String notEnouhtMoneyTokenManager = "§cYou do not have enough token.";
+	public static String notEnouhtMoneyMySQLToken = "§cYou do not have enough token.";
+	public static String notEnouhtMoneyIceToken = "§cYou do not have enough token.";
+	public static String notEnouhtMoneyLevel = "§cYou do not have enough level.";
+	
 	public static String notEnouhtPlace = "§cYour inventory is ful";
 	public static String notItems = "§cYou do not have this item in your inventory.";
 	public static String and = "and";

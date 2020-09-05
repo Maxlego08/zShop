@@ -1070,4 +1070,13 @@ public abstract class ZUtils extends MessageUtils {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param runnable
+	 */
+	public void runAsync(Plugin plugin, Runnable runnable){
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
+		
+	}
+	
 }

@@ -119,7 +119,7 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 			return;
 
 		if (!iEconomy.hasMoney(economy, player, currentPrice)) {
-			message(player, Lang.notEnouhtMoney);
+			message(player, this.economy.getDenyMessage());
 			return;
 		}
 

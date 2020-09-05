@@ -28,7 +28,7 @@ public class ZEconomy implements IEconomy {
 
 	@Override
 	public boolean hasMoney(Economy economy, Player player, double price) {
-		return getMoney(economy, player) > price;
+		return getMoney(economy, player) >= price;
 	}
 
 	@Override
