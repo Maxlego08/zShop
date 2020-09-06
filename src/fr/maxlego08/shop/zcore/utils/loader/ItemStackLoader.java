@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
 
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.exceptions.ItemEnchantException;
@@ -21,14 +23,14 @@ import fr.maxlego08.shop.zcore.utils.ItemDecoder;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 
+@SuppressWarnings("deprecation")
 public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
-	@SuppressWarnings("deprecation")
 	public ItemStack load(YamlConfiguration configuration, String path, Object... args) {
 
-		int data = configuration.getInt(path + ".data", 0);
-		int amount = configuration.getInt(path + ".amount", 1);
-		short durability = (short) configuration.getInt(path + ".durability", 0);
+		int data = configuration.getInt(path + "data", 0);
+		int amount = configuration.getInt(path + "amount", 1);
+		short durability = (short) configuration.getInt(path + "durability", 0);
 
 		Material material = null;
 
@@ -64,15 +66,25 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
 		} else {
 
-			if (material == null) {
+			if (material == null || material.equals(Material.AIR))
 				return null;
-			}
-
-			if (material.equals(Material.AIR)) {
-				return null;
-			}
 
 			item = new ItemStack(material, amount, (byte) data);
+
+		}
+
+		if (configuration.contains(path + "url")) {
+
+			item = createSkull(configuration.getString(path + "url"));
+
+		} else if (configuration.contains(path + "potion")) {
+
+			PotionType type = PotionType.valueOf(configuration.getString(path + "potion", "REGEN").toUpperCase());
+			int level = configuration.getInt(path + "level", 1);
+			boolean splash = configuration.getBoolean(path + "splash", false);
+			boolean extended = configuration.getBoolean(path + "extended", false);
+
+			item = new Potion(type, level, splash, extended).toItemStack(amount);
 
 		}
 
@@ -177,7 +189,6 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public void save(ItemStack item, YamlConfiguration configuration, String path) {
 
 		if (item == null) {

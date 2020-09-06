@@ -320,12 +320,12 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 
 	@Override
 	public String getSellPriceAsString(Player player, int amount) {
-		return this.canSell() ? String.valueOf(getSellPrice(player) * amount) : Lang.canSell;
+		return this.canSell() ? format(getSellPrice(player) * amount) : Lang.canSell;
 	}
 
 	@Override
 	public String getBuyPriceAsString(Player player, int amount) {
-		return this.canBuy() ? String.valueOf(getBuyPrice(player) * amount) : Lang.canBuy;
+		return this.canBuy() ? format(getBuyPrice(player) * amount) : Lang.canBuy;
 	}
 
 	@Override
@@ -358,11 +358,11 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 	}
 
 	public String getSellPriceAsString(Optional<Permission> optional, int amount) {
-		return this.canSell() ? String.valueOf(getSellPrice(optional) * amount) : Lang.canSell;
+		return this.canSell() ? format(getSellPrice(optional) * amount) : Lang.canSell;
 	}
 
 	public String getBuyPriceAsString(Optional<Permission> optional, int amount) {
-		return this.canBuy() ? String.valueOf(getBuyPrice(optional) * amount) : Lang.canBuy;
+		return this.canBuy() ? format(getBuyPrice(optional) * amount) : Lang.canBuy;
 	}
 
 	@Override

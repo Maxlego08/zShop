@@ -42,9 +42,9 @@ public class ZShowButton extends ZButton implements ShowButton {
 		return lore.stream().map(line -> {
 
 			line = line.replace("%sellPrice%",
-					String.valueOf(button.getSellPrice(player) * (type == InventoryType.SELL ? amount : 1)));
+					button.getSellPriceAsString(player, (type == InventoryType.SELL ? amount : 1)));
 			line = line.replace("%buyPrice%",
-					String.valueOf(button.getBuyPrice(player) * (type == InventoryType.BUY ? amount : 1)));
+					button.getBuyPriceAsString(player, (type == InventoryType.BUY ? amount : 1)));
 
 			line = line.replace("%currency%", button.getEconomy().getCurrenry());
 			line = line.replace("&", "§");

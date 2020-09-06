@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.zcore.utils;
 
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -11,6 +12,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
@@ -39,6 +41,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
+
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
@@ -416,9 +421,11 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return
 	 */
 	protected String format(double decimal) {
+		if (decimal % 1 == 0)
+			return this.format((long)decimal, ' ');
 		return this.format(decimal, "#.##");
 	}
-
+	
 	/**
 	 * 
 	 * @param player
@@ -1056,6 +1063,17 @@ public abstract class ZUtils extends MessageUtils {
 		return itemStack;
 	}
 
+	/**
+	 * 
+	 * @param itemStack
+	 * @param player
+	 * @return itemstack
+	 */
+	public ItemStack playerHead() {
+		return ItemDecoder.isNewVersion() ? new ItemStack(Material.PLAYER_HEAD)
+				: new ItemStack(getMaterial(397), 1, (byte) 3);
+	}
+
 	protected <T> T getProvider(Plugin plugin, Class<T> classz) {
 		RegisteredServiceProvider<T> provider = plugin.getServer().getServicesManager().getRegistration(classz);
 		if (provider == null)
@@ -1063,20 +1081,54 @@ public abstract class ZUtils extends MessageUtils {
 		return provider.getProvider() != null ? (T) provider.getProvider() : null;
 	}
 
-	protected PotionEffectType getPotion(String configuration){
-		for(PotionEffectType effectType : PotionEffectType.values())
+	protected PotionEffectType getPotion(String configuration) {
+		for (PotionEffectType effectType : PotionEffectType.values())
 			if (effectType.getName().equalsIgnoreCase(configuration))
 				return effectType;
 		return null;
 	}
-	
+
 	/**
 	 * 
 	 * @param runnable
 	 */
-	public void runAsync(Plugin plugin, Runnable runnable){
+	public void runAsync(Plugin plugin, Runnable runnable) {
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
-		
 	}
-	
+
+	protected ItemStack createSkull(String url) {
+
+		ItemStack head = playerHead();
+		if (url.isEmpty())
+			return head;
+
+		SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+		GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+
+		profile.getProperties().put("textures", new Property("textures", url));
+
+		try {
+			Field profileField = headMeta.getClass().getDeclaredField("profile");
+			profileField.setAccessible(true);
+			profileField.set(headMeta, profile);
+
+		} catch (IllegalArgumentException | NoSuchFieldException | SecurityException | IllegalAccessException error) {
+			error.printStackTrace();
+		}
+		head.setItemMeta(headMeta);
+		return head;
+	}
+
+	/**
+	 * 
+	 * @param itemStack
+	 * @return boolean
+	 */
+	protected boolean isPlayerHead(ItemStack itemStack) {
+		Material material = itemStack.getType();
+		if (ItemDecoder.isNewVersion())
+			return material.equals(Material.PLAYER_HEAD);
+		return (material.equals(getMaterial(397))) && (itemStack.getDurability() == 3);
+	}
+
 }
