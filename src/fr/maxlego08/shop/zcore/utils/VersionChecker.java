@@ -39,7 +39,7 @@ public class VersionChecker extends ListenerAdapter {
 
 			long ver = Long.valueOf(version.replace(".", ""));
 			long plVersion = Long.valueOf(plugin.getDescription().getVersion().replace(".", ""));
-			atomicBoolean.set(ver < plVersion);
+			atomicBoolean.set(plVersion >= ver);
 			useLastVersion = atomicBoolean.get();
 			if (atomicBoolean.get())
 				Logger.info("There is not a new update available.");
