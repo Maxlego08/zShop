@@ -2,6 +2,7 @@ package fr.maxlego08.shop.zcore.utils.loader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.bukkit.Material;
@@ -14,11 +15,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
+import com.songoda.epicheads.core.utils.ItemUtils;
+import com.songoda.epicheads.head.Head;
+
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.exceptions.ItemEnchantException;
 import fr.maxlego08.shop.api.exceptions.ItemFlagException;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
+import fr.maxlego08.shop.zcore.utils.Heads;
 import fr.maxlego08.shop.zcore.utils.ItemDecoder;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -58,6 +63,30 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 				HeadDatabaseAPI api = new HeadDatabaseAPI();
 
 				item = api.getItemHead(String.valueOf(id));
+
+			} catch (Exception e) {
+				Logger.info("Impossible to find the head with : " + idAsString, LogType.ERROR);
+				e.printStackTrace();
+			}
+		} else if (currentMateraial.startsWith("eh:")) {
+
+			String idAsString = currentMateraial.replace("eh:", "");
+
+			try {
+				int id = Integer.valueOf(idAsString);
+
+				Heads heads = new Heads();
+				Optional<Head> optional = heads.getHead(id);
+
+				if (!optional.isPresent()) {
+					Logger.info("Impossible to find the head with : " + idAsString, LogType.ERROR);
+					item = new ItemStack(Material.AIR);
+				} else {
+
+					Head head = optional.get();
+					item = ItemUtils.getCustomHead(head.getURL());
+
+				}
 
 			} catch (Exception e) {
 				Logger.info("Impossible to find the head with : " + idAsString, LogType.ERROR);
