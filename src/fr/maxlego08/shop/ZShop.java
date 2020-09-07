@@ -5,7 +5,9 @@ import org.bukkit.plugin.ServicePriority;
 
 import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
+import fr.maxlego08.shop.api.history.HistoryManager;
 import fr.maxlego08.shop.command.CommandManager;
+import fr.maxlego08.shop.history.ZHistoryManager;
 import fr.maxlego08.shop.inventory.InventoryLoader;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.inventory.inventories.InventoryConfirm;
@@ -25,12 +27,14 @@ public class ZShop extends ZPlugin {
 	private final IEconomy economy = new ZEconomy(this);
 	private ShopManager shopManager = new ZShopManager(this, economy);
 	private final fr.maxlego08.shop.api.InventoryManager inventory = new InventoryLoader(this, economy);
+	private HistoryManager historyManager;
 
 	@Override
 	public void onEnable() {
 
 		preEnable();
 
+		historyManager = new ZHistoryManager(this, super.getPersist());
 		commandManager = new CommandManager(this);
 
 		if (!isEnabled())
@@ -49,7 +53,7 @@ public class ZShop extends ZPlugin {
 				inventory.loadInventories();
 			} catch (Exception e) {
 				e.printStackTrace();
-//				getServer().getPluginManager().disablePlugin(this);
+				// getServer().getPluginManager().disablePlugin(this);
 				return;
 			}
 
@@ -58,7 +62,7 @@ public class ZShop extends ZPlugin {
 				shopManager.loadCommands();
 			} catch (Exception e) {
 				e.printStackTrace();
-//				getServer().getPluginManager().disablePlugin(this);
+				// getServer().getPluginManager().disablePlugin(this);
 				return;
 			}
 		};
@@ -118,6 +122,10 @@ public class ZShop extends ZPlugin {
 
 	public ShopManager getShopManager() {
 		return shopManager;
+	}
+
+	public HistoryManager getHistoryManager() {
+		return historyManager;
 	}
 
 }

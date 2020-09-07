@@ -99,6 +99,32 @@ public class Persist extends ZUtils {
 		return loaded;
 	}
 
+	public <T> T silentLoadOrSaveDefault(T def, Class<T> clazz, File file) {
+		if (!file.exists()) {
+			this.save(def, file);
+			return def;
+		}
+
+		T loaded = this.load(clazz, file);
+
+		if (loaded == null) {
+
+			/*
+			 * Create new config backup
+			 */
+
+			File backup = new File(file.getPath() + "_bad");
+			if (backup.exists())
+				backup.delete();
+
+			file.renameTo(backup);
+
+			return def;
+		}
+
+		return loaded;
+	}
+
 	// SAVE
 
 	public boolean save(Object instance) {
@@ -124,6 +150,21 @@ public class Persist extends ZUtils {
 		} catch (Exception e) {
 
 			p.getLog().log("cannot save file " + file.getAbsolutePath(), LogType.ERROR);
+			e.printStackTrace();
+
+			return false;
+		}
+	}
+
+	public boolean silentSave(Object instance, File file) {
+
+		try {
+
+			boolean b = DiscUtils.writeCatch(file, p.getGson().toJson(instance));
+			return b;
+
+		} catch (Exception e) {
+
 			e.printStackTrace();
 
 			return false;
