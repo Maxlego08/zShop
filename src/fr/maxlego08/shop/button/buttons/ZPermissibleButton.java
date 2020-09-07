@@ -13,6 +13,7 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 	private final String permission;
 	private final String message;
 	private final Button elseButton;
+	private final boolean glowIfCheck;
 
 	/**
 	 * @param type
@@ -22,11 +23,12 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 	 * @param elseButton
 	 */
 	public ZPermissibleButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, boolean isPermanent) {
+			Button elseButton, boolean isPermanent, boolean glowIfCheck) {
 		super(type, itemStack, slot, isPermanent);
 		this.permission = permission;
 		this.elseButton = elseButton;
 		this.message = color(message);
+		this.glowIfCheck = glowIfCheck;
 	}
 
 	/**
@@ -41,6 +43,7 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 		this.permission = null;
 		this.elseButton = null;
 		this.message = null;
+		this.glowIfCheck = false;
 	}
 
 	@Override
@@ -87,6 +90,19 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 	@Override
 	public boolean checkPermission(Player player) {
 		return this.getPermission() != null && player.hasPermission(this.getPermission());
+	}
+
+	@Override
+	public boolean needToGlow() {
+		return glowIfCheck;
+	}
+	
+	@Override
+	public ItemStack getCustomItemStack(Player player) {
+		ItemStack itemStack = super.getCustomItemStack(player);
+		if (checkPermission(player) && needToGlow())
+			glow(itemStack);
+		return itemStack;
 	}
 
 }

@@ -2,6 +2,7 @@ package fr.maxlego08.shop.zcore.utils.loader.button;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -47,8 +48,14 @@ public class ButtonLoader implements Loader<Button> {
 
 		Loader<ItemStack> loaderItemStack = new ItemStackLoader();
 		ButtonType type = ButtonType.from(configuration.getString(path + "type"), (String) args[0], path + "type");
+		
+		if (type.equals(ButtonType.ZSPAWNER) && Bukkit.getPluginManager().getPlugin("zSpawner") == null)
+			type = ButtonType.NONE;
+		
+		
 		int slot = configuration.getInt(path + "slot");
 		boolean isPermanent = configuration.getBoolean(path + "isPermanent", false);
+		boolean glowIfCheck = configuration.getBoolean(path + "glowIfCheck", false);
 		slot = slot < 0 ? 0 : slot;
 
 		String name = (String) args[0];
@@ -80,14 +87,14 @@ public class ButtonLoader implements Loader<Button> {
 			return new ZAddRemoveButton(type, itemStack, slot, amount, isPermanent);
 		case BACK:
 			return new ZBackButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, null, null, plugin);
+					placeHolder, value, null, null, plugin, glowIfCheck);
 		case HOME:
 			return new ZHomeButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, null, null, plugin);
+					placeHolder, value, null, null, plugin, glowIfCheck);
 		case INVENTORY:
 			String inventory = configuration.getString(path + "inventory");
 			return new ZInventoryButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, inventory, null, plugin);
+					placeHolder, value, inventory, null, plugin, glowIfCheck);
 		case SHOW_ITEM: {
 			List<String> lore = configuration.getStringList(path + "lore");
 			return new ZShowButton(type, itemStack, slot, lore, isPermanent);
@@ -108,7 +115,7 @@ public class ButtonLoader implements Loader<Button> {
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
-					currentLore, buyCommands, sellCommands, giveItem);
+					currentLore, buyCommands, sellCommands, giveItem, glowIfCheck);
 		}
 		case ZSPAWNER: {
 			
@@ -132,23 +139,24 @@ public class ButtonLoader implements Loader<Button> {
 
 			return new ZZSpawnerButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
-					currentLore, buyCommands, sellCommands, giveItem, entityType, spawnerAction, plugin, level);
+					currentLore, buyCommands, sellCommands, giveItem, entityType, spawnerAction, plugin, level, glowIfCheck);
 		}
 		case PERFORM_COMMAND:
 			List<String> commands = configuration.getStringList(path + "commands");
+			List<String> consoleCommands = configuration.getStringList(path + "consoleCommands");
 			boolean closeInventory = configuration.getBoolean(path + "closeInventory", false);
 			return new ZPerformButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, commands, closeInventory);
+					placeHolder, value, commands, consoleCommands, closeInventory, glowIfCheck);
 		case NONE_SLOT:
 			List<Integer> list = configuration.getIntegerList(path + "slots");
 			return new ZButtonSlot(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, list);
+					placeHolder, value, list, glowIfCheck);
 		case NEXT:
 		case NONE:
 		case PREVIOUS:
 		default:
 			button = new ZPlaceholderButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent,
-					action, placeHolder, value);
+					action, placeHolder, value, glowIfCheck);
 		}
 
 		return button;

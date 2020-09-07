@@ -32,8 +32,8 @@ public class ZInventoryButton extends ZPlaceholderButton implements InventoryBut
 	 */
 	public ZInventoryButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
-			String inventory, Inventory inventoryInterface, ZShop plugin) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value);
+			String inventory, Inventory inventoryInterface, ZShop plugin, boolean glow) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow);
 		this.inventory = inventory;
 		this.inventoryInterface = inventoryInterface;
 		this.plugin = plugin;

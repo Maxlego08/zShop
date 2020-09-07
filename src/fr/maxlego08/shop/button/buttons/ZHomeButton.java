@@ -28,9 +28,9 @@ public class ZHomeButton extends ZBackButton implements HomeButton {
 	 */
 	public ZHomeButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
-			String inventory, Inventory inventoryInterface, ZShop plugin) {
+			String inventory, Inventory inventoryInterface, ZShop plugin, boolean glow) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value,
-				inventory, inventoryInterface, plugin);
+				inventory, inventoryInterface, plugin, glow);
 		// TODO Auto-generated constructor stub
 	}
 

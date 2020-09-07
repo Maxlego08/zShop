@@ -14,6 +14,12 @@ public interface PerformButton extends PermissibleButton {
 	
 	/**
 	 * 
+	 * @return console commands
+	 */
+	public List<String> getConsoleCommands();
+	
+	/**
+	 * 
 	 * @param player
 	 */
 	void execute(Player player);

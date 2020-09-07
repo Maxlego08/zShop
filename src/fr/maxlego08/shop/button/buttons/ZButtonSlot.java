@@ -28,8 +28,8 @@ public class ZButtonSlot extends ZPlaceholderButton implements SlotButton {
 	 */
 	public ZButtonSlot(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
-			List<Integer> slots) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value);
+			List<Integer> slots, boolean glow) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow);
 		this.slots = slots;
 	}
 

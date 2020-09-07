@@ -49,4 +49,9 @@ public interface PermissibleButton extends Button{
 	 */
 	public boolean checkPermission(Player player);
 	
+	/*
+	 * 
+	 */
+	public boolean needToGlow();
+	
 }

@@ -61,8 +61,8 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 	public ZItemButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
 			ShopManager manager, IEconomy iEconomy, double sellPrice, double buyPrice, int maxStack, Economy economy,
-			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value);
+			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem, boolean glow) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow);
 		this.manager = manager;
 		this.iEconomy = iEconomy;
 		this.sellPrice = sellPrice;

@@ -35,6 +35,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.Plugin;
@@ -422,10 +423,10 @@ public abstract class ZUtils extends MessageUtils {
 	 */
 	protected String format(double decimal) {
 		if (decimal % 1 == 0)
-			return this.format((long)decimal, ' ');
+			return this.format((long) decimal, ' ');
 		return this.format(decimal, "#.##");
 	}
-	
+
 	/**
 	 * 
 	 * @param player
@@ -1129,6 +1130,14 @@ public abstract class ZUtils extends MessageUtils {
 		if (ItemDecoder.isNewVersion())
 			return material.equals(Material.PLAYER_HEAD);
 		return (material.equals(getMaterial(397))) && (itemStack.getDurability() == 3);
+	}
+
+	public void glow(ItemStack itemStack) {
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		itemMeta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
+		if (ItemDecoder.getNMSVersion() != 1.7)
+			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		itemStack.setItemMeta(itemMeta);
 	}
 
 }
