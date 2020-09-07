@@ -21,6 +21,9 @@ public class Lang implements Saveable {
 	public static String buyItem = "§aYou have just bought §6x%amount% %item%§a for §6%price%§a%currency% !";
 	public static String notEnouhtItems = "§cYou do not have enough items in your inventory.";
 	
+	public static String buyLog = "%player% has purchased x%amount% %item% for %price%%currency%.";
+	public static String sellLog = "%player% has just sold x%amount% %item% for %price%%currency%.";
+	
 	public static String notEnouhtMoneyVault = "§cYou do not have enough money.";
 	public static String notEnouhtMoneyPlayerPoint = "§cYou do not have enough points.";
 	public static String notEnouhtMoneyTokenManager = "§cYou do not have enough token.";

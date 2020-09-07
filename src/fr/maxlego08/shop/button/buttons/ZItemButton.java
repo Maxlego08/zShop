@@ -19,7 +19,11 @@ import fr.maxlego08.shop.api.enums.PermissionType;
 import fr.maxlego08.shop.api.enums.PlaceholderAction;
 import fr.maxlego08.shop.api.events.ZShopBuyEvent;
 import fr.maxlego08.shop.api.events.ZShopSellEvent;
+import fr.maxlego08.shop.api.history.History;
+import fr.maxlego08.shop.api.history.HistoryManager;
+import fr.maxlego08.shop.api.history.HistoryType;
 import fr.maxlego08.shop.api.permission.Permission;
+import fr.maxlego08.shop.history.ZHistory;
 import fr.maxlego08.shop.save.Lang;
 
 public class ZItemButton extends ZPlaceholderButton implements ItemButton {
@@ -34,6 +38,8 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 	private final List<String> buyCommands;
 	private final List<String> sellCommands;
 	private final boolean giveItem;
+	protected final boolean log;
+	protected final HistoryManager historyManager;
 
 	/**
 	 * 
@@ -61,7 +67,7 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 	public ZItemButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
 			ShopManager manager, IEconomy iEconomy, double sellPrice, double buyPrice, int maxStack, Economy economy,
-			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem, boolean glow) {
+			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem, boolean glow, boolean log) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow);
 		this.manager = manager;
 		this.iEconomy = iEconomy;
@@ -73,6 +79,8 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 		this.buyCommands = buyCommands;
 		this.sellCommands = sellCommands;
 		this.giveItem = giveItem;
+		this.historyManager = manager.getHistory();
+		this.log = log;
 	}
 
 	@Override
@@ -163,6 +171,21 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 				command = command.replace("%player%", player.getName());
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), papi(command, player));
 			}
+		
+		if (log){
+			
+			String logMessage = Lang.buyLog;
+			
+			logMessage = logMessage.replace("%amount%", String.valueOf(amount));
+			logMessage = logMessage.replace("%item%", getItemName(itemStack));
+			logMessage = logMessage.replace("%price%", format(currentPrice));
+			logMessage = logMessage.replace("%currency%", this.economy.getCurrenry());
+			logMessage = logMessage.replace("%player%", player.getName());
+			
+			History history = new ZHistory(HistoryType.BUY, logMessage);
+			this.historyManager.asyncValue(player.getUniqueId(), history);
+			
+		}
 
 	}
 
@@ -243,6 +266,21 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 				command = command.replace("%player%", player.getName());
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), papi(command, player));
 			}
+		
+		if (log){
+			
+			String logMessage = Lang.sellLog;
+			
+			logMessage = logMessage.replace("%amount%", String.valueOf(amount));
+			logMessage = logMessage.replace("%item%", getItemName(itemStack));
+			logMessage = logMessage.replace("%price%", format(currentPrice));
+			logMessage = logMessage.replace("%currency%", this.economy.getCurrenry());
+			logMessage = logMessage.replace("%player%", player.getName());
+			
+			History history = new ZHistory(HistoryType.SELL, logMessage);
+			this.historyManager.asyncValue(player.getUniqueId(), history);
+			
+		}
 
 	}
 

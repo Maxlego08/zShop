@@ -17,6 +17,9 @@ import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.enums.PlaceholderAction;
 import fr.maxlego08.shop.api.enums.ZSpawnerAction;
 import fr.maxlego08.shop.api.events.ZShopBuyEvent;
+import fr.maxlego08.shop.api.history.History;
+import fr.maxlego08.shop.api.history.HistoryType;
+import fr.maxlego08.shop.history.ZHistory;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
@@ -57,9 +60,9 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
 			ShopManager manager, IEconomy iEconomy, double sellPrice, double buyPrice, int maxStack, Economy economy,
 			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem, EntityType entity,
-			ZSpawnerAction zAction, Plugin plugin, int level, boolean glow) {
+			ZSpawnerAction zAction, Plugin plugin, int level, boolean glow, boolean log) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, manager,
-				iEconomy, sellPrice, buyPrice, maxStack, economy, lore, buyCommands, sellCommands, giveItem, glow);
+				iEconomy, sellPrice, buyPrice, maxStack, economy, lore, buyCommands, sellCommands, giveItem, glow, log);
 		this.type = entity;
 		this.action = zAction;
 		this.manager = getProvider(plugin, SpawnerManager.class);
@@ -145,6 +148,21 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), papi(command, player));
 			}
 
+		if (super.log){
+			
+			String logMessage = Lang.buyLog;
+			
+			logMessage = logMessage.replace("%amount%", String.valueOf(amount));
+			logMessage = logMessage.replace("%item%", getItemName(itemStack));
+			logMessage = logMessage.replace("%price%", format(currentPrice));
+			logMessage = logMessage.replace("%currency%", this.getEconomy().getCurrenry());
+			logMessage = logMessage.replace("%player%", player.getName());
+			
+			History history = new ZHistory(HistoryType.BUY, logMessage);
+			this.historyManager.asyncValue(player.getUniqueId(), history);
+			
+		}
+		
 	}
 	
 

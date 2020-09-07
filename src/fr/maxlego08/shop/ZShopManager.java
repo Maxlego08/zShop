@@ -29,6 +29,7 @@ import fr.maxlego08.shop.api.enums.OptionalAction;
 import fr.maxlego08.shop.api.enums.PermissionType;
 import fr.maxlego08.shop.api.events.ZShopInventoryOpen;
 import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
+import fr.maxlego08.shop.api.history.HistoryManager;
 import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.api.permission.Permission;
 import fr.maxlego08.shop.command.CommandManager;
@@ -428,6 +429,11 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	@Override
 	public Optional<Inventory> getInventoryByName(String name) {
 		return plugin.getInventory().getInventoryByName(name);
+	}
+
+	@Override
+	public HistoryManager getHistory() {
+		return plugin.getHistoryManager();
 	}
 
 }

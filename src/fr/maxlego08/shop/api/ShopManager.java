@@ -10,6 +10,7 @@ import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.enums.PermissionType;
+import fr.maxlego08.shop.api.history.HistoryManager;
 import fr.maxlego08.shop.api.inventory.Inventory;
 import fr.maxlego08.shop.api.permission.Permission;
 
@@ -114,5 +115,11 @@ public interface ShopManager {
 	 * @return {@link Inventory}
 	 */
 	public Optional<Inventory> getInventoryByName(String name);
+
+	/**
+	 * 
+	 * @return
+	 */
+	public HistoryManager getHistory();
 
 }

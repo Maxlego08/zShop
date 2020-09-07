@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.bukkit.plugin.Plugin;
 
+import fr.maxlego08.shop.api.history.History;
 import fr.maxlego08.shop.api.history.HistoryFile;
 import fr.maxlego08.shop.api.history.HistoryManager;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
@@ -82,6 +83,24 @@ public class ZHistoryManager extends ZUtils implements HistoryManager {
 				persist.silentSave((ZHistoryFile) optional.get(), file);
 			}
 		});
+	}
+
+	@Override
+	public void asyncValue(UUID uuid, History history) {
+		runAsync(plugin, () -> {
+			HistoryFile file = getOrCreate(uuid);
+			file.addHistory(history);
+			this.save(uuid);
+		});
+	}
+
+	@Override
+	public void save(UUID uuid) {
+		Optional<HistoryFile> optional = getFile(uuid);
+		if (optional.isPresent()) {
+			File file = new File(plugin.getDataFolder(), "players/" + uuid + ".json");
+			persist.silentSave((ZHistoryFile) optional.get(), file);
+		}
 	}
 
 }

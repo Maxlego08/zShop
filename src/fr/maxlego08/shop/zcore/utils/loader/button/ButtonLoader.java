@@ -105,6 +105,7 @@ public class ButtonLoader implements Loader<Button> {
 			double buyPrice = configuration.getDouble(path + "buyPrice", 0.0);
 			int maxStack = configuration.getInt(path + "maxStack", 64);
 			boolean giveItem = configuration.getBoolean(path + "giveItem", true);
+			boolean log = configuration.getBoolean(path + "log", false);
 			List<String> currentLore = configuration.getStringList(path + "lore");
 			List<String> buyCommands = configuration.getStringList(path + "buyCommands");
 			List<String> sellCommands = configuration.getStringList(path + "sellCommands");
@@ -115,7 +116,7 @@ public class ButtonLoader implements Loader<Button> {
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
-					currentLore, buyCommands, sellCommands, giveItem, glowIfCheck);
+					currentLore, buyCommands, sellCommands, giveItem, glowIfCheck, log);
 		}
 		case ZSPAWNER: {
 			
@@ -123,6 +124,7 @@ public class ButtonLoader implements Loader<Button> {
 			double buyPrice = configuration.getDouble(path + "buyPrice", 0.0);
 			int maxStack = configuration.getInt(path + "maxStack", 64);
 			boolean giveItem = configuration.getBoolean(path + "giveItem", true);
+			boolean log = configuration.getBoolean(path + "log", false);
 			List<String> currentLore = configuration.getStringList(path + "lore");
 			List<String> buyCommands = configuration.getStringList(path + "buyCommands");
 			List<String> sellCommands = configuration.getStringList(path + "sellCommands");
@@ -139,7 +141,7 @@ public class ButtonLoader implements Loader<Button> {
 
 			return new ZZSpawnerButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
-					currentLore, buyCommands, sellCommands, giveItem, entityType, spawnerAction, plugin, level, glowIfCheck);
+					currentLore, buyCommands, sellCommands, giveItem, entityType, spawnerAction, plugin, level, glowIfCheck, log);
 		}
 		case PERFORM_COMMAND:
 			List<String> commands = configuration.getStringList(path + "commands");

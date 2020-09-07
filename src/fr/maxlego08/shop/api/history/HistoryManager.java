@@ -44,4 +44,17 @@ public interface HistoryManager {
 	 */
 	public void asyncSave(UUID uuid);
 	
+	/**
+	 * 
+	 * @param uuid
+	 */
+	public void save(UUID uuid);
+	
+	/**
+	 * Add async value
+	 * @param uuid
+	 * @param history
+	 */
+	public void asyncValue(UUID uuid, History history);
+	
 }
