@@ -8,6 +8,7 @@ import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.PlaceholderAction;
+import fr.maxlego08.shop.api.sound.SoundOption;
 
 public class ZButtonSlot extends ZPlaceholderButton implements SlotButton {
 
@@ -28,8 +29,9 @@ public class ZButtonSlot extends ZPlaceholderButton implements SlotButton {
 	 */
 	public ZButtonSlot(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
-			List<Integer> slots, boolean glow) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow);
+			List<Integer> slots, boolean glow, SoundOption sound) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow,
+				sound);
 		this.slots = slots;
 	}
 

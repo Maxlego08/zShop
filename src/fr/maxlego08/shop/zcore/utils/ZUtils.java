@@ -35,6 +35,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.permissions.Permissible;
@@ -215,19 +216,13 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return true if the player's inventory is full
 	 */
 	protected boolean hasInventoryFull(Player player) {
-
 		int slot = 0;
-		for (int a = 0; a != player.getInventory().getContents().length; a++) {
-
-			ItemStack current = player.getInventory().getContents()[a];
-			if (current == null)
+		PlayerInventory inventory = player.getInventory();
+		for (int a = 0; a != 36; a++) {
+			ItemStack itemStack = inventory.getContents()[a];
+			if (itemStack == null)
 				slot++;
-
 		}
-
-		if (!ItemDecoder.isOneHand())
-			slot -= 5;
-
 		return slot == 0;
 	}
 

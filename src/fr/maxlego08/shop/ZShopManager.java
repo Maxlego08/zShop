@@ -332,7 +332,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		Economy economy = null;
 
 		// On parcours l'inventaire du joueur
-		for (int slot = 0; slot != player.getInventory().getContents().length; slot++) {
+		for (int slot = 0; slot != 36; slot++) {
 
 			ItemStack itemStack = player.getInventory().getContents()[slot];
 

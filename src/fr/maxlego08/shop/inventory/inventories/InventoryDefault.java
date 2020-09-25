@@ -178,6 +178,8 @@ public class InventoryDefault extends VInventory {
 				}
 			}
 
+			finalButton.playSound(player);
+			
 			switch (finalButton.getType()) {
 			case NEXT:
 				if (page != maxPage)

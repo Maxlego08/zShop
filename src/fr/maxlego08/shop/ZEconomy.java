@@ -8,7 +8,9 @@ import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.events.EconomyDepositEvent;
 import fr.maxlego08.shop.api.events.EconomyMoneyEvent;
 import fr.maxlego08.shop.api.events.EconomyWithdrawMoney;
-import fr.vanilla.core.IceCore;
+import fr.maxlego08.token.TokenPlugin;
+import fr.maxlego08.token.Type;
+import fr.maxlego08.token.zcore.ZPlugin;
 import me.bukkit.mTokens.Inkzzz.Tokens;
 import me.realized.tokenmanager.api.TokenManager;
 
@@ -55,8 +57,7 @@ public class ZEconomy implements IEconomy {
 			player.setLevel((int) (level + value));
 			break;
 		case ICECORE:
-			IceCore.getInstance().getUser(player)
-					.setTokens((int) (IceCore.getInstance().getUser(player).getTokens() + value));
+			((TokenPlugin) ZPlugin.z()).getTokens().getOrCreate(player.getUniqueId()).add(Type.CREDITS, value);
 			break;
 		default:
 			break;
@@ -87,7 +88,7 @@ public class ZEconomy implements IEconomy {
 			player.setLevel((int) (level - value));
 			break;
 		case ICECORE:
-			IceCore.getInstance().getUser(player);
+			((TokenPlugin) ZPlugin.z()).getTokens().getOrCreate(player.getUniqueId()).remove(Type.CREDITS, value);
 			break;
 		default:
 			break;
@@ -110,7 +111,7 @@ public class ZEconomy implements IEconomy {
 			event.callEvent();
 			return event.getMoney();
 		case ICECORE:
-			return IceCore.getInstance().getUser(player).getTokens();
+			return ((TokenPlugin) ZPlugin.z()).getTokens().getOrCreate(player.getUniqueId()).getCredits();
 		case LEVEL:
 			return player.getLevel();
 		default:

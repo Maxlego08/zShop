@@ -11,6 +11,7 @@ import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.PerformButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.PlaceholderAction;
+import fr.maxlego08.shop.api.sound.SoundOption;
 
 public class ZPerformButton extends ZPlaceholderButton implements PerformButton {
 
@@ -34,8 +35,8 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 	 */
 	public ZPerformButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
-			List<String> commands, List<String> consoleCommands, boolean closeInventory, boolean glow) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow);
+			List<String> commands, List<String> consoleCommands, boolean closeInventory, boolean glow, SoundOption sound) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow, sound);
 		this.commands = commands;
 		this.consoleCommands = consoleCommands;
 		this.closeInventory = closeInventory;
@@ -49,7 +50,7 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 	@Override
 	public void execute(Player player) {
 		
-		if (!super.checkPermission(player))
+		if (!checkPermission(player))
 			return;
 		
 		if (this.closeInventory())

@@ -19,6 +19,7 @@ import fr.maxlego08.shop.api.enums.ZSpawnerAction;
 import fr.maxlego08.shop.api.events.ZShopBuyEvent;
 import fr.maxlego08.shop.api.history.History;
 import fr.maxlego08.shop.api.history.HistoryType;
+import fr.maxlego08.shop.api.sound.SoundOption;
 import fr.maxlego08.shop.history.ZHistory;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.logger.Logger;
@@ -60,9 +61,10 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
 			ShopManager manager, IEconomy iEconomy, double sellPrice, double buyPrice, int maxStack, Economy economy,
 			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem, EntityType entity,
-			ZSpawnerAction zAction, Plugin plugin, int level, boolean glow, boolean log) {
+			ZSpawnerAction zAction, Plugin plugin, int level, boolean glow, boolean log, SoundOption sound) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, manager,
-				iEconomy, sellPrice, buyPrice, maxStack, economy, lore, buyCommands, sellCommands, giveItem, glow, log);
+				iEconomy, sellPrice, buyPrice, maxStack, economy, lore, buyCommands, sellCommands, giveItem, glow, log,
+				sound);
 		this.type = entity;
 		this.action = zAction;
 		this.manager = getProvider(plugin, SpawnerManager.class);
@@ -80,12 +82,12 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 	public ZSpawnerAction getZSpawnerAction() {
 		return action;
 	}
-	
+
 	@Override
 	public boolean needToConfirm() {
 		return true;
 	}
-	
+
 	@Override
 	public void buy(Player player, int amount) {
 
@@ -118,7 +120,7 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 
 		ItemStack itemStack = super.getItemStack().clone();
 		itemStack.setAmount(amount);
-		
+
 		switch (this.action) {
 		case ADD:
 			manager.addSpawner(Bukkit.getConsoleSender(), player, type, amount, level);
@@ -148,22 +150,21 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), papi(command, player));
 			}
 
-		if (super.log){
-			
+		if (super.log) {
+
 			String logMessage = Lang.buyLog;
-			
+
 			logMessage = logMessage.replace("%amount%", String.valueOf(amount));
 			logMessage = logMessage.replace("%item%", getItemName(itemStack));
 			logMessage = logMessage.replace("%price%", format(currentPrice));
 			logMessage = logMessage.replace("%currency%", this.getEconomy().getCurrenry());
 			logMessage = logMessage.replace("%player%", player.getName());
-			
+
 			History history = new ZHistory(HistoryType.BUY, logMessage);
 			this.historyManager.asyncValue(player.getUniqueId(), history);
-			
+
 		}
-		
+
 	}
-	
 
 }

@@ -85,6 +85,7 @@ public class InventoryConfirm extends VInventory {
 	}
 
 	private Consumer<InventoryClickEvent> clickEvent(ZShop plugin, Player player, int page, Button currentButton) {
+		currentButton.playSound(player);
 		return event -> {
 			switch (currentButton.getType()) {
 			case BUY_CONFIRM:

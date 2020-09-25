@@ -7,6 +7,7 @@ import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.PlaceholderButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.PlaceholderAction;
+import fr.maxlego08.shop.api.sound.SoundOption;
 import fr.maxlego08.shop.zcore.logger.Logger;
 
 public class ZPlaceholderButton extends ZPermissibleButton implements PlaceholderButton {
@@ -27,8 +28,9 @@ public class ZPlaceholderButton extends ZPermissibleButton implements Placeholde
 	 * @param placeholder
 	 */
 	public ZPlaceholderButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value, boolean needGlow) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent, needGlow);
+			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
+			boolean needGlow, SoundOption sound) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, needGlow, sound);
 		this.action = action;
 		this.placeholder = placeholder;
 		this.value = value;
@@ -95,7 +97,9 @@ public class ZPlaceholderButton extends ZPermissibleButton implements Placeholde
 		return value;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -103,12 +107,9 @@ public class ZPlaceholderButton extends ZPermissibleButton implements Placeholde
 		return "ZPlaceholderButton [action=" + action + ", placeholder=" + placeholder + ", value=" + value
 				+ ", getElseButton()=" + getElseButton() + ", getPermission()=" + getPermission() + ", hasElseButton()="
 				+ hasElseButton() + ", getMessage()=" + getMessage() + ", hasMessage()=" + hasMessage()
-				+ ", getItemStack()=" + getItemStack() + ", getType()=" + getType()
-				+ ", getSlot()=" + getSlot() + ", getTmpSlot()=" + getTmpSlot() + ", isClickable()=" + isClickable()
-				+ ", isPermament()=" + isPermament() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ "]";
+				+ ", getItemStack()=" + getItemStack() + ", getType()=" + getType() + ", getSlot()=" + getSlot()
+				+ ", getTmpSlot()=" + getTmpSlot() + ", isClickable()=" + isClickable() + ", isPermament()="
+				+ isPermament() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
 	}
-
-	
 
 }

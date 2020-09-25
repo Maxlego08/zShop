@@ -12,6 +12,7 @@ import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.ShowButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.sound.SoundOption;
 import fr.maxlego08.shop.button.ZButton;
 
 public class ZShowButton extends ZButton implements ShowButton {
@@ -27,8 +28,8 @@ public class ZShowButton extends ZButton implements ShowButton {
 	 * @param elseButton
 	 * @param lore
 	 */
-	public ZShowButton(ButtonType type, ItemStack itemStack, int slot, List<String> lore, boolean isPermanent) {
-		super(type, itemStack, slot, isPermanent);
+	public ZShowButton(ButtonType type, ItemStack itemStack, int slot, List<String> lore, boolean isPermanent, SoundOption sound) {
+		super(type, itemStack, slot, isPermanent, sound);
 		this.lore = lore;
 	}
 

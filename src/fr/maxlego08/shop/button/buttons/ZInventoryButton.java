@@ -8,6 +8,7 @@ import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.PlaceholderAction;
 import fr.maxlego08.shop.api.inventory.Inventory;
+import fr.maxlego08.shop.api.sound.SoundOption;
 
 public class ZInventoryButton extends ZPlaceholderButton implements InventoryButton {
 
@@ -32,8 +33,9 @@ public class ZInventoryButton extends ZPlaceholderButton implements InventoryBut
 	 */
 	public ZInventoryButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
-			String inventory, Inventory inventoryInterface, ZShop plugin, boolean glow) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow);
+			String inventory, Inventory inventoryInterface, ZShop plugin, boolean glow, SoundOption sound) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow,
+				sound);
 		this.inventory = inventory;
 		this.inventoryInterface = inventoryInterface;
 		this.plugin = plugin;

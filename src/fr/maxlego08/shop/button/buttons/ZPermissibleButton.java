@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
+import fr.maxlego08.shop.api.sound.SoundOption;
 import fr.maxlego08.shop.button.ZButton;
 
 public class ZPermissibleButton extends ZButton implements PermissibleButton {
@@ -23,8 +24,8 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 	 * @param elseButton
 	 */
 	public ZPermissibleButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, boolean isPermanent, boolean glowIfCheck) {
-		super(type, itemStack, slot, isPermanent);
+			Button elseButton, boolean isPermanent, boolean glowIfCheck, SoundOption sound) {
+		super(type, itemStack, slot, isPermanent, sound);
 		this.permission = permission;
 		this.elseButton = elseButton;
 		this.message = color(message);
@@ -38,8 +39,8 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 	 * @param permission
 	 * @param elseButton
 	 */
-	public ZPermissibleButton(ButtonType type, ItemStack itemStack, int slot, boolean isPermanent) {
-		super(type, itemStack, slot, isPermanent);
+	public ZPermissibleButton(ButtonType type, ItemStack itemStack, int slot, boolean isPermanent, SoundOption sound) {
+		super(type, itemStack, slot, isPermanent, sound);
 		this.permission = null;
 		this.elseButton = null;
 		this.message = null;
@@ -89,14 +90,14 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 
 	@Override
 	public boolean checkPermission(Player player) {
-		return this.getPermission() != null && player.hasPermission(this.getPermission());
+		return this.getPermission() == null || player.hasPermission(this.getPermission());
 	}
 
 	@Override
 	public boolean needToGlow() {
 		return glowIfCheck;
 	}
-	
+
 	@Override
 	public ItemStack getCustomItemStack(Player player) {
 		ItemStack itemStack = super.getCustomItemStack(player);
