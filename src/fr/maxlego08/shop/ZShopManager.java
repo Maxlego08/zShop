@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
@@ -240,7 +241,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	@Override
 	public void sellHand(Player player, int amount) {
 
-		if (player.getItemInHand() == null || player.getItemInHand().getType().isAir()) {
+		if (player.getItemInHand() == null || player.getItemInHand().getType().equals(Material.AIR)) {
 			message(player, Lang.sellHandAir);
 			return;
 		}
