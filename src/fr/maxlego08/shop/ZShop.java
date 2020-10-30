@@ -84,6 +84,7 @@ public class ZShop extends ZPlugin {
 
 		addListener(new AdapterListener(this));
 		addListener(inventoryManager);
+		addListener(commandManager);
 
 		VersionChecker versionChecker = new VersionChecker(this);
 		versionChecker.useLastVersion(this);

@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
@@ -68,7 +69,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			for (String value : config.getConfigurationSection("boostSellPermission.").getKeys(false)) {
 
 				double percent = Double.valueOf(value);
-				String permissionString = config.getString("boostSellPermission." + value);
+				String permissionString = config.getString("boostSellPermission." + percent);
 				Permission permission = new ZPermission(PermissionType.SELL, percent, permissionString);
 				permissions.add(permission);
 
@@ -81,7 +82,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			for (String value : config.getConfigurationSection("boostBuyPermission.").getKeys(false)) {
 
 				double percent = Double.valueOf(value);
-				String permissionString = config.getString("boostBuyPermission." + value);
+				String permissionString = config.getString("boostBuyPermission." + percent);
 				Permission permission = new ZPermission(PermissionType.BUY, percent, permissionString);
 				permissions.add(permission);
 
@@ -209,7 +210,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			plugin.getInventory().loadInventories();
 		} catch (Exception e) {
 			e.printStackTrace();
-//			plugin.getServer().getPluginManager().disablePlugin(plugin);
+			// plugin.getServer().getPluginManager().disablePlugin(plugin);
 			return;
 		}
 
@@ -218,7 +219,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			loadCommands();
 		} catch (Exception e) {
 			e.printStackTrace();
-//			plugin.getServer().getPluginManager().disablePlugin(plugin);
+			// plugin.getServer().getPluginManager().disablePlugin(plugin);
 			return;
 		}
 
@@ -303,7 +304,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	@Override
 	public void sellHand(Player player, int amount) {
 
-		if (player.getItemInHand() == null || player.getItemInHand().getType().isAir()) {
+		if (player.getItemInHand() == null || player.getItemInHand().getType().equals(Material.AIR)) {
 			message(player, Lang.sellHandAir);
 			return;
 		}

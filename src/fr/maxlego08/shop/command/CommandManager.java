@@ -14,6 +14,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 
 import fr.maxlego08.shop.ZShop;
@@ -25,7 +28,7 @@ import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.commands.CommandType;
 
-public class CommandManager extends ZUtils implements CommandExecutor, TabCompleter {
+public class CommandManager extends ZUtils implements CommandExecutor, TabCompleter, Listener {
 
 	private final ZShop plugin;
 	private final List<VCommand> commands = new ArrayList<VCommand>();
@@ -102,7 +105,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String useless, String[] args) {
 		for (VCommand command : commands) {
 			if (command.getSubCommands().contains(cmd.getName().toLowerCase())) {
 				if ((args.length == 0 || command.isIgnoreParent()) && command.getParent() == null) {
@@ -285,6 +288,42 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			return command.toTab(plugin, sender, args);
 
 		return null;
+	}
+
+	@EventHandler
+	public void onCommand(PlayerCommandPreprocessEvent event) {
+
+		String message = event.getMessage();
+		message = message.replace("/", "");
+		String[] messages = message.split(" ");
+		String commands = messages[0];
+
+		if (!this.commands.stream().filter(cmd -> {
+			return cmd.getParent() == null
+					&& cmd.getSubCommands().stream().filter(e -> e.equalsIgnoreCase(commands)).findAny().isPresent();
+		}).findAny().isPresent())
+			return;
+
+		Command command = new Command(commands) {
+			@Override
+			public boolean execute(CommandSender arg0, String arg1, String[] arg2) {
+				return true;
+			}
+		};
+		String[] args = getArgs(messages);
+		if (this.onCommand(event.getPlayer(), command, commands, args)) {
+			event.setCancelled(true);
+		}
+
+	}
+
+	private String[] getArgs(String[] oldArgs) {
+		if (oldArgs.length < 2)
+			return new String[] {};
+		String[] args = new String[oldArgs.length - 1];
+		for (int a = 1; a != oldArgs.length; a++)
+			args[a - 1] = oldArgs[a];
+		return args;
 	}
 
 }

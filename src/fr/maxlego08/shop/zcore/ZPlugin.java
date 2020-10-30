@@ -67,13 +67,24 @@ public abstract class ZPlugin extends JavaPlugin {
 		if (getPlugin(Plugins.VAULT) != null)
 			economy = getProvider(Economy.class);
 
+		if (economy == null && isEnable(Plugins.VAULT)) {
+			Logger.info("Vault error, retry in 5 secondes...");
+			Bukkit.getScheduler().runTaskLater(this, () -> {
+				economy = getProvider(Economy.class);
+				if (economy != null)
+					Logger.info("Vault loaded !");
+				else
+					Logger.info("Vault error :'( don't cry", LogType.ERROR);
+			}, 20 * 5);
+		}
+
 		saveDefaultConfig();
 
 		this.hookPlayerPoints();
 
 		List<String> files = Arrays.asList("blocks", "ores", "miscellaneous", "mobs", "farm", "redstone", "foods",
 				"shop", "sell", "buy", "confirm", "menu");
-		
+
 		boolean isNew = ItemDecoder.isNewVersion();
 		for (String file : files) {
 
