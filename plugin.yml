@@ -3,5 +3,5 @@ author: Maxlego08
 main: fr.maxlego08.shop.ZShop
 version: 2.0.1.4
 api-version: 1.13
-softdepend: [Vault, MySQL-Tokens, TokenManager, PlayerPoints, HeadDatabase, PlaceholderAPI, zSpawner, EpicHeads]
+softdepend: [Vault, MySQL-Tokens, TokenManager, PlayerPoints, HeadDatabase, PlaceholderAPI, zSpawner, EpicHeads, CataEssentials]
 commands:

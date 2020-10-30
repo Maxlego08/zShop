@@ -155,7 +155,7 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 		itemStack.setAmount(amount);
 
 		if (this.giveItem)
-			give(player, itemStack);
+			give(player, papi(itemStack, player));
 
 		String message = Lang.buyItem;
 		message = message.replace("%amount%", String.valueOf(amount));
@@ -185,7 +185,7 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 			logMessage = logMessage.replace("%currency%", this.economy.getCurrenry());
 			logMessage = logMessage.replace("%player%", player.getName());
 
-			History history = new ZHistory(HistoryType.BUY, logMessage);
+			History history = new ZHistory(HistoryType.BUY, papi(logMessage, player));
 			this.historyManager.asyncValue(player.getUniqueId(), history);
 
 		}
