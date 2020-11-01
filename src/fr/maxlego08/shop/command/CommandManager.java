@@ -187,7 +187,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 
 			CommandType returnType = command.prePerform(plugin, sender, strings);
 			if (returnType == CommandType.SYNTAX_ERROR)
-				message(sender, Lang.syntaxeError, command.getSyntaxe());
+				message(sender, Lang.syntaxeError.replace("%command%", command.getSyntaxe()));
 			return returnType;
 		}
 		message(sender, Lang.noPermission);
@@ -311,10 +311,8 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			}
 		};
 		String[] args = getArgs(messages);
-		if (this.onCommand(event.getPlayer(), command, commands, args)) {
+		if (this.onCustomCommands(event.getPlayer(), command, commands, args)) 
 			event.setCancelled(true);
-		}
-
 	}
 
 	private String[] getArgs(String[] oldArgs) {
@@ -324,6 +322,32 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 		for (int a = 1; a != oldArgs.length; a++)
 			args[a - 1] = oldArgs[a];
 		return args;
+	}
+	
+	/**
+	 * 
+	 * @param sender
+	 * @param cmd
+	 * @param useless
+	 * @param args
+	 * @return
+	 */
+	private boolean onCustomCommands(CommandSender sender, Command cmd, String useless, String[] args){
+		for (VCommand command : commands) {
+			if (command.getSubCommands().contains(cmd.getName().toLowerCase())) {
+				if ((args.length == 0 || command.isIgnoreParent()) && command.getParent() == null) {
+					CommandType type = processRequirements(command, sender, args);
+					if (!type.equals(CommandType.CONTINUE))
+						return true;
+				}
+			} else if (args.length >= 1 && command.getParent() != null
+					&& canExecute(args, cmd.getName().toLowerCase(), command)) {
+				CommandType type = processRequirements(command, sender, args);
+				if (!type.equals(CommandType.CONTINUE))
+					return true;
+			}
+		}
+		return false;
 	}
 
 }
