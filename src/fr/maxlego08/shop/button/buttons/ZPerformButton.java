@@ -17,6 +17,8 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 
 	private final List<String> commands;
 	private final List<String> consoleCommands;
+	private final List<String> consolePermissionCommands;
+	private final String consolePermission;
 	private final boolean closeInventory;
 
 	/**
@@ -35,11 +37,15 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 	 */
 	public ZPerformButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
-			List<String> commands, List<String> consoleCommands, boolean closeInventory, boolean glow, SoundOption sound) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow, sound);
+			List<String> commands, List<String> consoleCommands, boolean closeInventory, boolean glow,
+			SoundOption sound, List<String> consolePermissionCommands, String consolePermission) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow,
+				sound);
 		this.commands = commands;
 		this.consoleCommands = consoleCommands;
 		this.closeInventory = closeInventory;
+		this.consolePermissionCommands = consolePermissionCommands;
+		this.consolePermission = consolePermission;
 	}
 
 	@Override
@@ -49,17 +55,22 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 
 	@Override
 	public void execute(Player player) {
-		
+
 		if (!checkPermission(player))
 			return;
-		
+
 		if (this.closeInventory())
 			player.closeInventory();
 		papi(new ArrayList<String>(commands), player)
 				.forEach(command -> player.performCommand(command.replace("%player%", player.getName())));
-		
+
 		papi(new ArrayList<String>(consoleCommands), player).forEach(command -> Bukkit
 				.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName())));
+
+		if (consolePermission != null && player.hasPermission(consolePermission)) {
+			papi(new ArrayList<String>(consolePermissionCommands), player).forEach(command -> Bukkit
+					.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName())));
+		}
 	}
 
 	@Override
@@ -70,6 +81,16 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 	@Override
 	public List<String> getConsoleCommands() {
 		return consoleCommands;
+	}
+
+	@Override
+	public List<String> getConsolePermissionCommands() {
+		return consolePermissionCommands;
+	}
+
+	@Override
+	public String getConsolePermission() {
+		return consolePermission;
 	}
 
 }
