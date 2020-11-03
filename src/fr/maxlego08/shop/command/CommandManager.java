@@ -39,7 +39,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 
 	public void registerCommands() {
 
-		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"));
+		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"), false);
 
 		plugin.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 		this.commandChecking();
@@ -65,7 +65,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	public void clear() {
 
 		this.commands.clear();
-		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"));
+		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"), true);
 
 	}
 
@@ -76,7 +76,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	 * @param vCommand
 	 * @param aliases
 	 */
-	public void registerCommand(String string, VCommand vCommand, List<String> aliases) {
+	public void registerCommand(String string, VCommand vCommand, List<String> aliases, boolean customRegister) {
 		try {
 			Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 			bukkitCommandMap.setAccessible(true);
@@ -97,7 +97,8 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			for (String cmd : aliases)
 				vCommand.addSubCommand(cmd);
 
-			commandMap.register(command.getName(), plugin.getDescription().getName(), command);
+			if (customRegister)
+				commandMap.register(command.getName(), plugin.getDescription().getName(), command);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -311,7 +312,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			}
 		};
 		String[] args = getArgs(messages);
-		if (this.onCustomCommands(event.getPlayer(), command, commands, args)) 
+		if (this.onCustomCommands(event.getPlayer(), command, commands, args))
 			event.setCancelled(true);
 	}
 
@@ -323,7 +324,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			args[a - 1] = oldArgs[a];
 		return args;
 	}
-	
+
 	/**
 	 * 
 	 * @param sender
@@ -332,7 +333,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	 * @param args
 	 * @return
 	 */
-	private boolean onCustomCommands(CommandSender sender, Command cmd, String useless, String[] args){
+	private boolean onCustomCommands(CommandSender sender, Command cmd, String useless, String[] args) {
 		for (VCommand command : commands) {
 			if (command.getSubCommands().contains(cmd.getName().toLowerCase())) {
 				if ((args.length == 0 || command.isIgnoreParent()) && command.getParent() == null) {

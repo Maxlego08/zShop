@@ -18,6 +18,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
@@ -90,12 +91,14 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		}
 
+		
 		success("Loaded " + permissions.size() + " permissions");
 
 		ConfigurationSection section = config.getConfigurationSection("commands.");
 
 		CommandManager commandManager = plugin.getCommandManager();
 		commandManager.clear();
+		
 		for (String key : section.getKeys(false)) {
 
 			String path = "commands." + key + ".";
@@ -126,7 +129,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 			Command command = new CommandObject(stringCommand, aliases, inventory, permission, description, commands);
 			commandManager.registerCommand(stringCommand, new CommandInventory(plugin.getCommandManager(), command),
-					aliases);
+					aliases, false);
 
 			success("Register command /" + stringCommand);
 
@@ -331,11 +334,12 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		double price = 0;
 		Map<ItemStack, Integer> map = new HashMap<ItemStack, Integer>();
 		Economy economy = null;
+		PlayerInventory inventory = player.getInventory();
 
 		// On parcours l'inventaire du joueur
 		for (int slot = 0; slot != 36; slot++) {
 
-			ItemStack itemStack = player.getInventory().getContents()[slot];
+			ItemStack itemStack = inventory.getContents()[slot];
 
 			// On verif si l'item est pas null
 			if (itemStack != null) {
@@ -351,20 +355,22 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 					if (tmpPrice <= 0)
 						continue;
 
+					if (economy != null && !economy.equals(button.getEconomy()))
+						continue;
+
 					int tmpAmount = itemStack.getAmount();
+
 					// On multiplie par le nombre d'item
 					tmpPrice *= tmpAmount;
 					// On modifie les varirables
 					price += tmpPrice;
 					// on ajoute l'item et le nombre d'item dans la map
 					map.put(itemStack, tmpAmount + map.getOrDefault(itemStack, 0));
+
 					economy = button.getEconomy();
 
 					// On retire l'item de l'inventaire du joueur
-					if (slot == 40)
-						player.getInventory().setItemInOffHand(null);
-					else
-						player.getInventory().remove(itemStack);
+					inventory.setItem(slot, null);
 
 				}
 
@@ -396,7 +402,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		String str = Lang.sellHandAll.replace("%item%", builder.toString());
 		str = str.replace("%currency%", economy.getCurrenry());
-		message(player, str.replace("%price%", String.valueOf(price)));
+		message(player, str.replace("%price%", format(price)));
 
 	}
 
