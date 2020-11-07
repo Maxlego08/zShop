@@ -96,7 +96,7 @@ public class ZShop extends ZPlugin {
 
 		getSavers().forEach(saver -> saver.load(getPersist()));
 
-		new Metrics(this);
+		new Metrics(this, 5881);
 
 		postEnable();
 	}

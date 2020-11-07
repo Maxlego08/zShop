@@ -51,6 +51,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	private final IEconomy economy;
 	private final List<Permission> permissions = new ArrayList<>();
 	private final Map<UUID, TemporyObject> tmpObjects = new HashMap<>();
+	private boolean registerCommandInSpigot = true;
 
 	public ZShopManager(ZShop plugin, IEconomy economy) {
 		super(plugin);
@@ -91,6 +92,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		}
 
+		registerCommandInSpigot = config.getBoolean("registerCommandInSpigot", true);
 		
 		success("Loaded " + permissions.size() + " permissions");
 
@@ -98,7 +100,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		CommandManager commandManager = plugin.getCommandManager();
 		commandManager.clear();
-		
+
 		for (String key : section.getKeys(false)) {
 
 			String path = "commands." + key + ".";
@@ -129,7 +131,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 			Command command = new CommandObject(stringCommand, aliases, inventory, permission, description, commands);
 			commandManager.registerCommand(stringCommand, new CommandInventory(plugin.getCommandManager(), command),
-					aliases, false);
+					aliases, registerCommandInSpigot);
 
 			success("Register command /" + stringCommand);
 
@@ -182,7 +184,10 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		info("Reload starting...");
 
 		info("Closure of all inventories...");
-		closeInventory();
+		try {
+			closeInventory();
+		} catch (Exception e) {
+		}
 
 		plugin.getSavers().forEach(saver -> saver.load(plugin.getPersist()));
 

@@ -294,6 +294,9 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
 
+		if (event.isCancelled())
+			return;
+		
 		String message = event.getMessage();
 		message = message.replace("/", "");
 		String[] messages = message.split(" ");

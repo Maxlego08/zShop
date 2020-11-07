@@ -29,6 +29,9 @@ commands:
       - "aide"
     inventory: "menu" #File name        
 
+#Allows not to add the command on the spigot and thus to take the upper hand for the /kit for example but to always be able to do /kit <kit name>.
+registerCommandInSpigot: true
+
 #Here you will put the list of inventories that must be loaded, you must put the name of the file that is in the inventories folder.
 #Be careful, you must not put the name of an inventory that is loaded from an command.
 categories:    
