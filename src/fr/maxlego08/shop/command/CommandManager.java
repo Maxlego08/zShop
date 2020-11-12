@@ -27,6 +27,7 @@ import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.commands.CommandType;
+import net.minelink.ctplus.CombatTagPlus;
 
 public class CommandManager extends ZUtils implements CommandExecutor, TabCompleter, Listener {
 
@@ -296,7 +297,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 
 		if (event.isCancelled())
 			return;
-		
+
 		String message = event.getMessage();
 		message = message.replace("/", "");
 		String[] messages = message.split(" ");
@@ -337,6 +338,16 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	 * @return
 	 */
 	private boolean onCustomCommands(CommandSender sender, Command cmd, String useless, String[] args) {
+
+		Plugin plugin = Bukkit.getPluginManager().getPlugin("CombatTagPlus");
+		if (plugin != null && plugin.isEnabled() && sender instanceof Player) {
+
+			CombatTagPlus combatTagPlus = (CombatTagPlus) plugin;
+			if (combatTagPlus.getTagManager().isTagged(((Player) sender).getUniqueId()))
+				return false;
+
+		}
+
 		for (VCommand command : commands) {
 			if (command.getSubCommands().contains(cmd.getName().toLowerCase())) {
 				if ((args.length == 0 || command.isIgnoreParent()) && command.getParent() == null) {
