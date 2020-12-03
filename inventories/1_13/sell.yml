@@ -58,4 +58,4 @@ items:
     type: SHOW_ITEM
     slot: 22
     lore:
-      - "&eBuy price&8: &b%buyPrice%%currency%"
+      - "&eSell price&8: &b%buyPrice%%currency%"
