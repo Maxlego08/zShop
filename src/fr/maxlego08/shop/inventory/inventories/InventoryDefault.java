@@ -14,11 +14,13 @@ import fr.maxlego08.shop.api.button.buttons.BackButton;
 import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
+import fr.maxlego08.shop.api.button.buttons.MoveButton;
 import fr.maxlego08.shop.api.button.buttons.PerformButton;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
 import fr.maxlego08.shop.api.button.buttons.PlaceholderButton;
 import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.command.Command;
+import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.exceptions.InventoryTypeException;
@@ -101,6 +103,11 @@ public class InventoryDefault extends VInventory {
 						});
 					} else {
 
+						if (button.getType().isMove() && !button.toButton(MoveButton.class).isDisplay()) 
+							if ((button.getType() == ButtonType.NEXT && page == maxPage)
+									|| (button.getType() == ButtonType.PREVIOUS && page == 1))
+								continue;
+						
 						ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack(player));
 						if (button.isClickable()) {
 							zButton.setClick(clickEvent(main, player, page, maxPage, button));
@@ -121,6 +128,11 @@ public class InventoryDefault extends VInventory {
 					});
 
 				} else {
+
+					if (button.getType().isMove() && !button.toButton(MoveButton.class).isDisplay()) 
+						if ((button.getType() == ButtonType.NEXT && page == maxPage)
+								|| (button.getType() == ButtonType.PREVIOUS && page == 1))
+							continue;
 
 					ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack(player));
 					if (button.isClickable()) {
@@ -179,7 +191,7 @@ public class InventoryDefault extends VInventory {
 			}
 
 			finalButton.playSound(player);
-			
+
 			switch (finalButton.getType()) {
 			case NEXT:
 				if (page != maxPage)

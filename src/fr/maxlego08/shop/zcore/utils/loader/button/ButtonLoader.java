@@ -24,6 +24,7 @@ import fr.maxlego08.shop.button.buttons.ZButtonSlot;
 import fr.maxlego08.shop.button.buttons.ZHomeButton;
 import fr.maxlego08.shop.button.buttons.ZInventoryButton;
 import fr.maxlego08.shop.button.buttons.ZItemButton;
+import fr.maxlego08.shop.button.buttons.ZMoveButton;
 import fr.maxlego08.shop.button.buttons.ZPerformButton;
 import fr.maxlego08.shop.button.buttons.ZPlaceholderButton;
 import fr.maxlego08.shop.button.buttons.ZShowButton;
@@ -96,6 +97,11 @@ public class ButtonLoader implements Loader<Button> {
 		Button button = null;
 
 		switch (type) {
+		case NEXT:
+		case PREVIOUS:
+			boolean display = configuration.getBoolean(path + "display", true);
+			return new ZMoveButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
+					placeHolder, value, glowIfCheck, sound, display);
 		case ADD:
 		case REMOVE:
 			int amount = configuration.getInt(path + "amount", 1);
@@ -172,9 +178,7 @@ public class ButtonLoader implements Loader<Button> {
 			List<Integer> list = configuration.getIntegerList(path + "slots");
 			return new ZButtonSlot(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, list, glowIfCheck, sound);
-		case NEXT:
 		case NONE:
-		case PREVIOUS:
 		default:
 			button = new ZPlaceholderButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent,
 					action, placeHolder, value, glowIfCheck, sound);

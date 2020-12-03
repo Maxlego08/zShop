@@ -96,4 +96,8 @@ public enum ButtonType {
 		}
 	}
 
+	public boolean isMove() {
+		return NEXT == this || this == PREVIOUS;
+	}
+
 }
