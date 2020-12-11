@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.button.buttons.BackButton;
@@ -103,11 +104,11 @@ public class InventoryDefault extends VInventory {
 						});
 					} else {
 
-						if (button.getType().isMove() && !button.toButton(MoveButton.class).isDisplay()) 
+						if (button.getType().isMove() && !button.toButton(MoveButton.class).isDisplay())
 							if ((button.getType() == ButtonType.NEXT && page == maxPage)
 									|| (button.getType() == ButtonType.PREVIOUS && page == 1))
 								continue;
-						
+
 						ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack(player));
 						if (button.isClickable()) {
 							zButton.setClick(clickEvent(main, player, page, maxPage, button));
@@ -129,7 +130,7 @@ public class InventoryDefault extends VInventory {
 
 				} else {
 
-					if (button.getType().isMove() && !button.toButton(MoveButton.class).isDisplay()) 
+					if (button.getType().isMove() && !button.toButton(MoveButton.class).isDisplay())
 						if ((button.getType() == ButtonType.NEXT && page == maxPage)
 								|| (button.getType() == ButtonType.PREVIOUS && page == 1))
 							continue;
@@ -143,6 +144,15 @@ public class InventoryDefault extends VInventory {
 									.setMiddleClick(middleClick(main, player, page, maxPage, button));
 						}
 					}
+				}
+			}
+		}
+
+		ItemStack fillItemStack = inventory.getFillItem();
+		if (fillItemStack != null) {
+			for (int a = 0; a != super.inventory.getSize(); a++) {
+				if (!items.containsKey(a)) {
+					this.addItem(a, fillItemStack);
 				}
 			}
 		}

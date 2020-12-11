@@ -84,6 +84,12 @@ public interface Inventory {
 	 * @return
 	 */
 	public String getFileName();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ItemStack getFillItem();
 
 	
 }

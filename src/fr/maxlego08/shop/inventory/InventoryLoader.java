@@ -23,6 +23,7 @@ import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
 import fr.maxlego08.shop.api.exceptions.InventorySizeException;
 import fr.maxlego08.shop.api.exceptions.NameAlreadyExistException;
 import fr.maxlego08.shop.api.inventory.Inventory;
+import fr.maxlego08.shop.zcore.utils.loader.ItemStackLoader;
 import fr.maxlego08.shop.zcore.utils.loader.button.ButtonCollections;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 
@@ -122,7 +123,15 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		Loader<List<Button>> loader = new ButtonCollections(plugin, economy);
 		List<Button> buttons = loader.load(configuration, lowerCategory);
 
-		Inventory inventory = new InventoryObject(name, type, size, buttons, lowerCategory);
+		ItemStack itemStack = null;
+
+		if (configuration.contains("fillItem")) {
+			Loader<ItemStack> itemStackLoader = new ItemStackLoader();
+			itemStack = itemStackLoader.load(configuration, "fillItem.");
+
+		}
+
+		Inventory inventory = new InventoryObject(name, type, size, buttons, lowerCategory, itemStack);
 		inventories.put(lowerCategory, inventory);
 
 		if (type != InventoryType.DEFAULT)
@@ -164,7 +173,8 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		Inventory inventory = getInventory(name, false);
 		if (inventory != null)
 			return Optional.of(inventory);
-		return inventories.values().stream().filter(inv -> inv.getName().toLowerCase().contains(name.toLowerCase())).findFirst();
+		return inventories.values().stream().filter(inv -> inv.getName().toLowerCase().contains(name.toLowerCase()))
+				.findFirst();
 	}
 
 }

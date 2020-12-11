@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.button.Button;
@@ -81,6 +82,15 @@ public class InventoryConfirm extends VInventory {
 				addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
 		});
 
+		ItemStack fillItemStack = inventory.getFillItem();
+		if (fillItemStack != null) {
+			for (int a = 0; a != super.inventory.getSize(); a++) {
+				if (!items.containsKey(a)) {
+					this.addItem(a, fillItemStack);
+				}
+			}
+		}
+		
 		return InventoryResult.SUCCESS;
 	}
 

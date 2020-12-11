@@ -109,6 +109,15 @@ public class InventoryShop extends VInventory {
 
 		});
 
+		ItemStack fillItemStack = inventory.getFillItem();
+		if (fillItemStack != null) {
+			for (int a = 0; a != super.inventory.getSize(); a++) {
+				if (!items.containsKey(a)) {
+					this.addItem(a, fillItemStack);
+				}
+			}
+		}
+		
 		return InventoryResult.SUCCESS;
 	}
 

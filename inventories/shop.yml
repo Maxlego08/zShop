@@ -1,37 +1,10 @@
 name: "&eShop"
 size: 45
+fillItem:
+  material: STAINED_GLASS_PANE
+  data: 7
+  name: "&e"
 items:
-  slots:
-    type: NONE_SLOT
-    item:
-      material: STAINED_GLASS_PANE
-      data: 7
-      name: "&e"
-    slots:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      - 8
-      - 9
-      - 18
-      - 27
-      - 36
-      - 37
-      - 38
-      - 39
-      - 40
-      - 41
-      - 42
-      - 43
-      - 44
-      - 17
-      - 26
-      - 35
   block: 
     item:
       material: GRASS
