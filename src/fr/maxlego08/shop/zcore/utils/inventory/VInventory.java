@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
+import fr.maxlego08.shop.zcore.logger.Logger;
+import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.builder.ItemBuilder;
 
@@ -103,8 +105,15 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 		createDefaultInventory();
 
 		ZButton button = new ZButton(item);
-		this.items.put(slot, button);
+		if (slot >= this.inventory.getSize()) {
+			Logger.info(
+					"Be careful, slot " + slot + " of the inventory \"" + this.guiName
+							+ "\" is bigger than the size of the inventory ! You must correct this in the configuration.",
+					LogType.ERROR);
+			return button;
+		}
 
+		this.items.put(slot, button);
 		runAsync(plugin, () -> this.inventory.setItem(slot, item));
 
 		return button;

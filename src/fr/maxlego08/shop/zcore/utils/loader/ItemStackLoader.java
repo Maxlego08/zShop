@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
@@ -114,6 +116,22 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 			boolean extended = configuration.getBoolean(path + "extended", false);
 
 			item = new Potion(type, level, splash, extended).toItemStack(amount);
+
+		} else if (configuration.contains(path + "color")) {
+
+			if (material.equals(Material.LEATHER_BOOTS) || material.equals(Material.LEATHER_HELMET)
+					|| material.equals(Material.LEATHER_LEGGINGS) || material.equals(Material.LEATHER_CHESTPLATE)) {
+
+				LeatherArmorMeta armorMeta = (LeatherArmorMeta) item.getItemMeta();
+				Color color = fromString(configuration.getString(path + "color"));
+				
+				if (color != null)
+					armorMeta.setColor(color);
+				else
+					Logger.info("Impossible de trouver la couleur: \"" + color + "\"");
+				
+				item.setItemMeta(armorMeta);
+			}
 
 		}
 

@@ -22,9 +22,7 @@ public class CommandZShopVersion extends VCommand {
 		sender.sendMessage("§7(§bzShop§7) §aVersion du plugin§7: §2" + main.getDescription().getVersion());
 		sender.sendMessage("§7(§bzShop§7) §aAuteur§7: §2Maxlego08");
 		sender.sendMessage("§7(§bzShop§7) §aDiscord§7: §2http://discord.groupez.xyz/");
-		sender.sendMessage("§7(§bzShop§7) §aBuy it for §d8€§7: §2https://www.spigotmc.org/resources/74073/");
-		String user = "%%__USER__%%";
-		sender.sendMessage("§7(§bzShop§7) §aUser account§7: §2https://www.spigotmc.org/members/" + user);
+		sender.sendMessage("§7(§bzShop§7) §aBuy it for §d8€§7: §2https://groupez.xyz/resources/zShop.2");
 		
 		return CommandType.SUCCESS;
 	}

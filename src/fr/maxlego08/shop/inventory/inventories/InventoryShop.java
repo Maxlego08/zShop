@@ -21,6 +21,7 @@ import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.PerformButton;
 import fr.maxlego08.shop.api.button.buttons.ShowButton;
+import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
@@ -74,7 +75,11 @@ public class InventoryShop extends VInventory {
 
 		buttons.forEach(button -> {
 
-			if (button.getType().equals(ButtonType.HOME))
+			if (button.getType().isSlots()) {
+				button.toButton(SlotButton.class).getSlots().forEach(slot -> {
+					addItem(slot, button.getCustomItemStack(player));
+				});
+			} else if (button.getType().equals(ButtonType.HOME))
 				button.toButton(HomeButton.class).setBackInventory(command.getInventory());
 
 			if (button.getType().equals(ButtonType.BACK) && finalInventory != null)
@@ -117,7 +122,7 @@ public class InventoryShop extends VInventory {
 				}
 			}
 		}
-		
+
 		return InventoryResult.SUCCESS;
 	}
 
@@ -158,12 +163,12 @@ public class InventoryShop extends VInventory {
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
 						new ArrayList<>(), command);
 			case INVENTORY:
-				
+
 				inventoryButton = currentButton.toButton(InventoryButton.class);
 				oldInventories.add(this.inventory);
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, oldPage,
 						inventoryButton.getInventory(), this.oldInventories, this.command, this.button, this.type);
-				
+
 				break;
 			case BACK:
 				inventoryButton = currentButton.toButton(InventoryButton.class);

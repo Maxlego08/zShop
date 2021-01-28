@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -47,6 +48,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.enums.Message;
@@ -418,8 +420,8 @@ public abstract class ZUtils extends MessageUtils {
 	 */
 	protected String format(double decimal) {
 		if (decimal % 1 == 0)
-			return this.format((long) decimal, ' ');
-		return this.format(decimal, "#.##");
+			return this.format((long) decimal, Lang.priceLongFormat);
+		return this.format(decimal, Lang.priceDoubleFormat);
 	}
 
 	/**
@@ -1133,6 +1135,44 @@ public abstract class ZUtils extends MessageUtils {
 		if (ItemDecoder.getNMSVersion() != 1.7)
 			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		itemStack.setItemMeta(itemMeta);
+	}
+
+	public Color fromString(String color) {
+		if (color.equalsIgnoreCase("AQUA"))
+			return Color.AQUA;
+		else if (color.equalsIgnoreCase("SILVER"))
+			return Color.SILVER;
+		else if (color.equalsIgnoreCase("BLACK"))
+			return Color.BLACK;
+		else if (color.equalsIgnoreCase("BLUE"))
+			return Color.BLUE;
+		else if (color.equalsIgnoreCase("FUCHSIA"))
+			return Color.FUCHSIA;
+		else if (color.equalsIgnoreCase("GRAY"))
+			return Color.GRAY;
+		else if (color.equalsIgnoreCase("GREEN"))
+			return Color.GREEN;
+		else if (color.equalsIgnoreCase("LIME"))
+			return Color.LIME;
+		else if (color.equalsIgnoreCase("MAROON"))
+			return Color.MAROON;
+		else if (color.equalsIgnoreCase("NAVY"))
+			return Color.NAVY;
+		else if (color.equalsIgnoreCase("OLIVE"))
+			return Color.OLIVE;
+		else if (color.equalsIgnoreCase("ORANGE"))
+			return Color.ORANGE;
+		else if (color.equalsIgnoreCase("PURPLE"))
+			return Color.PURPLE;
+		else if (color.equalsIgnoreCase("RED"))
+			return Color.RED;
+		else if (color.equalsIgnoreCase("TEAL"))
+			return Color.TEAL;
+		else if (color.equalsIgnoreCase("WHITE"))
+			return Color.WHITE;
+		else if (color.equalsIgnoreCase("YELLOW"))
+			return Color.YELLOW;
+		return null;
 	}
 
 }

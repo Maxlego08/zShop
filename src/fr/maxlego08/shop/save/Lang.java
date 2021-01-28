@@ -58,6 +58,11 @@ public class Lang implements Saveable {
 	public static String currencyMySQLToken = "MT";
 	public static String currencyIceToken = "*";
 	public static String currencyLevel = "xp";
+	
+	public static char priceLongFormat = ' ';
+	public static String priceDoubleFormat = "#.##";
+	
+	
 
 	private static transient Lang i = new Lang();
 
