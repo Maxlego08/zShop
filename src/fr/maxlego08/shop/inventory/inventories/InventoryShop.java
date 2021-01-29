@@ -82,10 +82,10 @@ public class InventoryShop extends VInventory {
 			} else if (button.getType().equals(ButtonType.HOME))
 				button.toButton(HomeButton.class).setBackInventory(command.getInventory());
 
-			if (button.getType().equals(ButtonType.BACK) && finalInventory != null)
+			else if (button.getType().equals(ButtonType.BACK) && finalInventory != null)
 				button.toButton(BackButton.class).setBackInventory(finalInventory);
 
-			if (button.getType().equals(ButtonType.SHOW_ITEM)) {
+			else if (button.getType().equals(ButtonType.SHOW_ITEM)) {
 
 				ShowButton showButton = button.toButton(ShowButton.class);
 				addItem(button.getSlot(), showButton.applyLore(this.player, this.button, amount, type));
