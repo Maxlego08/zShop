@@ -79,39 +79,41 @@ public class InventoryShop extends VInventory {
 				button.toButton(SlotButton.class).getSlots().forEach(slot -> {
 					addItem(slot, button.getCustomItemStack(player));
 				});
-			} else if (button.getType().equals(ButtonType.HOME))
-				button.toButton(HomeButton.class).setBackInventory(command.getInventory());
+			} else {
 
-			else if (button.getType().equals(ButtonType.BACK) && finalInventory != null)
-				button.toButton(BackButton.class).setBackInventory(finalInventory);
+				if (button.getType().equals(ButtonType.HOME)) {
+					button.toButton(HomeButton.class).setBackInventory(command.getInventory());
+				} else if (button.getType().equals(ButtonType.BACK) && finalInventory != null) {
+					button.toButton(BackButton.class).setBackInventory(finalInventory);
+				}
 
-			else if (button.getType().equals(ButtonType.SHOW_ITEM)) {
+				if (button.getType().equals(ButtonType.SHOW_ITEM)) {
 
-				ShowButton showButton = button.toButton(ShowButton.class);
-				addItem(button.getSlot(), showButton.applyLore(this.player, this.button, amount, type));
-				this.shows.add(showButton);
+					ShowButton showButton = button.toButton(ShowButton.class);
+					addItem(button.getSlot(), showButton.applyLore(this.player, this.button, amount, type));
+					this.shows.add(showButton);
 
-			} else if (button.getType().equals(ButtonType.SET_TO_MAX)) {
+				} else if (button.getType().equals(ButtonType.SET_TO_MAX)) {
 
-				// Bouton max
+					// Bouton max
 
-				ItemStack itemStack = button.getItemStack();
-				ItemMeta itemMeta = itemStack.getItemMeta();
-				if (itemMeta.hasDisplayName())
-					itemMeta.setDisplayName(
-							itemMeta.getDisplayName().replace("%maxStack%", String.valueOf(this.button.getMaxStack())));
-				itemStack.setItemMeta(itemMeta);
+					ItemStack itemStack = button.getItemStack();
+					ItemMeta itemMeta = itemStack.getItemMeta();
+					if (itemMeta.hasDisplayName())
+						itemMeta.setDisplayName(itemMeta.getDisplayName().replace("%maxStack%",
+								String.valueOf(this.button.getMaxStack())));
+					itemStack.setItemMeta(itemMeta);
 
-				addItem(button.getSlot(), itemStack).setClick(clickEvent(main, player, page, button));
+					addItem(button.getSlot(), itemStack).setClick(clickEvent(main, player, page, button));
 
-			} else if (button.getType().equals(ButtonType.ADD) || button.getType().equals(ButtonType.REMOVE))
-				// Bouton add remove
+				} else if (button.getType().equals(ButtonType.ADD) || button.getType().equals(ButtonType.REMOVE))
+					// Bouton add remove
 
-				addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
+					addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
 
-			else // Bouton classique
-				addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
-
+				else // Bouton classique
+					addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
+			}
 		});
 
 		ItemStack fillItemStack = inventory.getFillItem();
