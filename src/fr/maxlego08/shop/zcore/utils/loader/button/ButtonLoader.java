@@ -77,7 +77,7 @@ public class ButtonLoader implements Loader<Button> {
 
 		PlaceholderAction action = PlaceholderAction.from(configuration.getString(path + "action", null));
 		String placeHolder = configuration.getString(path + "placeHolder", null);
-		double value = configuration.getDouble(path + "value", 0.0);
+		String value = configuration.getString(path + "value", "0.0");
 
 		// Sound
 

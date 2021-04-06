@@ -36,7 +36,7 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 	 * @param closeInventory
 	 */
 	public ZPerformButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
+			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
 			List<String> commands, List<String> consoleCommands, boolean closeInventory, boolean glow,
 			SoundOption sound, List<String> consolePermissionCommands, String consolePermission) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow,

@@ -66,7 +66,7 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 	 * @param giveItem
 	 */
 	public ZItemButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
+			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
 			ShopManager manager, IEconomy iEconomy, double sellPrice, double buyPrice, int maxStack, Economy economy,
 			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem, boolean glow,
 			boolean log, SoundOption sound) {

@@ -28,7 +28,7 @@ public class ZButtonSlot extends ZPlaceholderButton implements SlotButton {
 	 * @param slots
 	 */
 	public ZButtonSlot(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
+			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
 			List<Integer> slots, boolean glow, SoundOption sound) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow,
 				sound);

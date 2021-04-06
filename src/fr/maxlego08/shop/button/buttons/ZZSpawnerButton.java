@@ -58,7 +58,7 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 	 * @param action2
 	 */
 	public ZZSpawnerButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
+			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
 			ShopManager manager, IEconomy iEconomy, double sellPrice, double buyPrice, int maxStack, Economy economy,
 			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem, EntityType entity,
 			ZSpawnerAction zAction, Plugin plugin, int level, boolean glow, boolean log, SoundOption sound) {

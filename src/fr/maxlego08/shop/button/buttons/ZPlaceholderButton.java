@@ -8,13 +8,12 @@ import fr.maxlego08.shop.api.button.buttons.PlaceholderButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.PlaceholderAction;
 import fr.maxlego08.shop.api.sound.SoundOption;
-import fr.maxlego08.shop.zcore.logger.Logger;
 
 public class ZPlaceholderButton extends ZPermissibleButton implements PlaceholderButton {
 
 	private final PlaceholderAction action;
 	private final String placeholder;
-	private final double value;
+	private final String value;
 
 	/**
 	 * @param type
@@ -28,7 +27,7 @@ public class ZPlaceholderButton extends ZPermissibleButton implements Placeholde
 	 * @param placeholder
 	 */
 	public ZPlaceholderButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, double value,
+			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
 			boolean needGlow, SoundOption sound) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, needGlow, sound);
 		this.action = action;
@@ -66,34 +65,47 @@ public class ZPlaceholderButton extends ZPermissibleButton implements Placeholde
 		else {
 
 			String valueAsString = papi(getPlaceHolder(), player);
-
-			try {
-				double value = Double.valueOf(valueAsString);
-
+			
+			if (this.action.isString()) {
 				switch (action) {
-				case LOWER:
-					return value < this.value;
-				case LOWER_OR_EQUAL:
-					return value <= this.value;
-				case SUPERIOR:
-					return value > this.value;
-				case SUPERIOR_OR_EQUAL:
-					return value >= this.value;
+				case EQUALS_STRING:
+					return valueAsString.equals(String.valueOf(this.value));
+				case EQUALSIGNORECASE_STRING:
+					return valueAsString.equalsIgnoreCase(String.valueOf(this.value));
 				default:
 					return super.checkPermission(player);
 				}
+			} else
+				try {
 
-			} catch (Exception e) {
-				Logger.info("Impossible de transformer la valeur " + valueAsString + " en double pour le placeholder "
-						+ this.placeholder);
-				return super.checkPermission(player);
-			}
+					double value = Double.valueOf(valueAsString);
+					double currentValue = Double.valueOf(this.value);
 
+					switch (action) {
+					case LOWER:
+						return value < currentValue;
+					case LOWER_OR_EQUAL:
+						return value <= currentValue;
+					case SUPERIOR:
+						return value > currentValue;
+					case SUPERIOR_OR_EQUAL:
+						return value >= currentValue;
+					case EQUALS_STRING:
+						return valueAsString.equals(String.valueOf(this.value));
+					case EQUALSIGNORECASE_STRING:
+						return valueAsString.equalsIgnoreCase(String.valueOf(this.value));
+					default:
+						return super.checkPermission(player);
+					}
+
+				} catch (Exception e) {
+					return super.checkPermission(player);
+				}
 		}
 	}
 
 	@Override
-	public double getValue() {
+	public String getValue() {
 		return value;
 	}
 

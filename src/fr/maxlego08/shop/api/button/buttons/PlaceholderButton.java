@@ -10,6 +10,6 @@ public interface PlaceholderButton extends PermissibleButton{
 	
 	public boolean hasPlaceHolder();
 	
-	public double getValue();
+	public String getValue();
 
 }
