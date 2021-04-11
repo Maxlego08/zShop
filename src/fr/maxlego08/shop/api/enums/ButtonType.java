@@ -19,6 +19,8 @@ public enum ButtonType {
 	ITEM,
 
 	ITEM_CONFIRM,
+	
+	ITEM_CONFIRM_DOUBLE,
 
 	INVENTORY,
 

@@ -24,6 +24,7 @@ import fr.maxlego08.shop.button.buttons.ZButtonSlot;
 import fr.maxlego08.shop.button.buttons.ZHomeButton;
 import fr.maxlego08.shop.button.buttons.ZInventoryButton;
 import fr.maxlego08.shop.button.buttons.ZItemButton;
+import fr.maxlego08.shop.button.buttons.ZItemConfirmDoubleButton;
 import fr.maxlego08.shop.button.buttons.ZMoveButton;
 import fr.maxlego08.shop.button.buttons.ZPerformButton;
 import fr.maxlego08.shop.button.buttons.ZPlaceholderButton;
@@ -138,6 +139,21 @@ public class ButtonLoader implements Loader<Button> {
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
 					currentLore, buyCommands, sellCommands, giveItem, glowIfCheck, log, sound);
+		}
+		case ITEM_CONFIRM_DOUBLE: {
+
+			long rightPrice = configuration.getLong(path + "rightPrice", 0l);
+			List<String> rightCommands = configuration.getStringList(path + "rightCommands");
+			Economy rightEconomy = Economy.get(configuration.getString(path + "rightEconomy", null));
+
+			long leftPrice = configuration.getLong(path + "leftPrice", 0l);
+			List<String> leftCommands = configuration.getStringList(path + "leftCommands");
+			Economy leftEconomy = Economy.get(configuration.getString(path + "leftEconomy", null));
+
+			return new ZItemConfirmDoubleButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent,
+					action, placeHolder, value, glowIfCheck, sound, rightPrice, rightEconomy, leftPrice, leftEconomy,
+					rightCommands, leftCommands, this.economy, this.plugin.getShopManager());
+
 		}
 		case ZSPAWNER: {
 

@@ -362,6 +362,9 @@ public class InventoryDefault extends VInventory {
 							InventoryType.SELL);
 				}
 				break;
+			case ITEM_CONFIRM_DOUBLE:
+
+				break;
 			default:
 				break;
 
@@ -404,6 +407,11 @@ public class InventoryDefault extends VInventory {
 					plugin.getShopManager().open(player, this.command, itemButton, page, this.oldInventories,
 							InventoryType.BUY);
 				}
+				break;
+			case ITEM_CONFIRM_DOUBLE:
+				this.oldInventories.add(this.inventory);
+				plugin.getShopManager().open(player, this.command, finalButton.toButton(ItemButton.class), page,
+						this.oldInventories, InventoryType.CONFIRM);
 				break;
 			default:
 				break;

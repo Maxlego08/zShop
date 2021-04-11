@@ -2,7 +2,10 @@ package fr.maxlego08.shop.api.enums;
 
 public enum InventoryType {
 
-	DEFAULT, BUY, SELL, CONFIRM,;
+	DEFAULT, BUY, SELL, 
+	
+	CONFIRM,
+	;
 
 	/**
 	 * 

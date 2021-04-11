@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
+import fr.maxlego08.shop.api.button.buttons.ItemConfirmDoubleButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.enums.PermissionType;
@@ -55,7 +56,18 @@ public interface ShopManager {
 	 */
 	public void open(Player player, Command command, ItemButton button, int page, List<Inventory> oldInventories,
 			InventoryType type);
-	
+
+	/**
+	 * 
+	 * @param player
+	 * @param command
+	 * @param button
+	 * @param page
+	 * @param inventory
+	 */
+	public void open(Player player, Command command, ItemConfirmDoubleButton button, int page,
+			List<Inventory> oldInventories, boolean isRight);
+
 	/**
 	 * Set item in hand
 	 * 
@@ -78,23 +90,25 @@ public interface ShopManager {
 	 * @param player
 	 */
 	void sellAll(Player player);
-	
+
 	/**
 	 * Allows to retrieve an itembutton
+	 * 
 	 * @param itemStack
 	 * @return {@link Optional}
 	 */
 	public Optional<ItemButton> getItemButton(ItemStack itemStack);
-	
+
 	/**
 	 * 
 	 * @param permission
 	 * @return
 	 */
 	public Optional<Permission> getPermission(String permission);
-	
+
 	/**
 	 * Get permission
+	 * 
 	 * @param player
 	 * @param type
 	 * @return {@link Permission}
@@ -103,14 +117,16 @@ public interface ShopManager {
 
 	/**
 	 * Opens a specific category
+	 * 
 	 * @param player
 	 * @param command
 	 * @param category
 	 */
 	public void open(Player player, Command command, String category);
-	
+
 	/**
 	 * Get inventory by name
+	 * 
 	 * @param name
 	 * @return {@link Inventory}
 	 */

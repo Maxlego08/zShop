@@ -11,6 +11,7 @@ import fr.maxlego08.shop.history.ZHistoryManager;
 import fr.maxlego08.shop.inventory.InventoryLoader;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.inventory.inventories.InventoryConfirm;
+import fr.maxlego08.shop.inventory.inventories.InventoryConfirm2;
 import fr.maxlego08.shop.inventory.inventories.InventoryDefault;
 import fr.maxlego08.shop.inventory.inventories.InventoryShop;
 import fr.maxlego08.shop.listener.AdapterListener;
@@ -79,6 +80,7 @@ public class ZShop extends ZPlugin {
 		this.registerInventory(EnumInventory.INVENTORY_DEFAULT, new InventoryDefault());
 		this.registerInventory(EnumInventory.INVENTORY_SHOP, new InventoryShop());
 		this.registerInventory(EnumInventory.INVENTORY_CONFIRM, new InventoryConfirm());
+		this.registerInventory(EnumInventory.INVENTORY_CONFIRM_DOUBLE, new InventoryConfirm2());
 
 		/* Add Listener */
 

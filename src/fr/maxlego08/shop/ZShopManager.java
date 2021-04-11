@@ -23,6 +23,7 @@ import org.bukkit.inventory.PlayerInventory;
 import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
+import fr.maxlego08.shop.api.button.buttons.ItemConfirmDoubleButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.command.OptionalCommand;
 import fr.maxlego08.shop.api.enums.Economy;
@@ -93,7 +94,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		}
 
 		registerCommandInSpigot = config.getBoolean("registerCommandInSpigot", true);
-		
+
 		success("Loaded " + permissions.size() + " permissions");
 
 		ConfigurationSection section = config.getConfigurationSection("commands.");
@@ -446,6 +447,26 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	@Override
 	public HistoryManager getHistory() {
 		return plugin.getHistoryManager();
+	}
+
+	@Override
+	public void open(Player player, Command command, ItemConfirmDoubleButton button, int page,
+			List<Inventory> oldInventories, boolean isRight) {
+
+		InventoryType type = InventoryType.CONFIRM;
+		Inventory typeInventory = plugin.getInventory().getInventory(type);
+
+		if (typeInventory == null)
+			throw new InventoryNotFoundException("Cannot find the inventory with the type " + type);
+
+		ZShopInventoryOpen event = new ZShopInventoryOpen(typeInventory, command, player);
+		event.callEvent();
+
+		if (event.isCancelled())
+			return;
+
+		plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_CONFIRM, player, 1, typeInventory, button,
+				oldInventories, page, command, isRight);
 	}
 
 }
