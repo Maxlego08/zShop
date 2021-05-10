@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.ItemConfirmDoubleButton;
 import fr.maxlego08.shop.api.command.Command;
+import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.enums.PermissionType;
 import fr.maxlego08.shop.api.history.HistoryManager;
@@ -137,5 +138,11 @@ public interface ShopManager {
 	 * @return
 	 */
 	public HistoryManager getHistory();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Economy getDefaultEconomy();
 
 }

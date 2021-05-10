@@ -136,6 +136,10 @@ public class ButtonLoader implements Loader<Button> {
 				currentLore = plugin.getInventory().getLore();
 
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
+			
+			if (economy == null)
+				economy = plugin.getShopManager().getDefaultEconomy();
+		
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
 					currentLore, buyCommands, sellCommands, giveItem, glowIfCheck, log, sound);
@@ -146,10 +150,16 @@ public class ButtonLoader implements Loader<Button> {
 			List<String> rightCommands = configuration.getStringList(path + "rightCommands");
 			Economy rightEconomy = Economy.get(configuration.getString(path + "rightEconomy", null));
 
+			if (rightEconomy == null)
+				rightEconomy = plugin.getShopManager().getDefaultEconomy();
+			
 			long leftPrice = configuration.getLong(path + "leftPrice", 0l);
 			List<String> leftCommands = configuration.getStringList(path + "leftCommands");
 			Economy leftEconomy = Economy.get(configuration.getString(path + "leftEconomy", null));
 
+			if (leftEconomy == null)
+				leftEconomy = plugin.getShopManager().getDefaultEconomy();
+			
 			return new ZItemConfirmDoubleButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent,
 					action, placeHolder, value, glowIfCheck, sound, rightPrice, rightEconomy, leftPrice, leftEconomy,
 					rightCommands, leftCommands, this.economy, this.plugin.getShopManager());
@@ -171,6 +181,9 @@ public class ButtonLoader implements Loader<Button> {
 
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
 
+			if (economy == null)
+				economy = plugin.getShopManager().getDefaultEconomy();
+			
 			EntityType entityType = EntityType.valueOf(configuration.getString(path + "entity").toUpperCase());
 			ZSpawnerAction spawnerAction = ZSpawnerAction
 					.valueOf(configuration.getString(path + "zpawnerAction").toUpperCase());
