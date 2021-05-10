@@ -68,6 +68,14 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		permissions.clear();
 
+		try {
+			this.defaultEconomy = Economy
+					.valueOf(config.getString("defaultEconomy", Economy.VAULT.name()).toUpperCase());
+			success("Default Economy: §7" + defaultEconomy.name());
+		} catch (Exception e) {
+			error("Could not find " + config.getString("defaultEconomy") + " economy");
+		}
+		
 		if (config.getConfigurationSection("boostSellPermission") != null && config.getBoolean("useSellPermission")) {
 
 			for (String value : config.getConfigurationSection("boostSellPermission.").getKeys(false)) {
@@ -137,14 +145,6 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 			success("Register command /" + stringCommand);
 
-		}
-
-		try {
-			this.defaultEconomy = Economy
-					.valueOf(config.getString("defaultEconomy", Economy.VAULT.name()).toUpperCase());
-			success("Default Economy:" + defaultEconomy.name());
-		} catch (Exception e) {
-			error("Could not find " + config.getString("defaultEconomy") + " economy");
 		}
 
 	}
