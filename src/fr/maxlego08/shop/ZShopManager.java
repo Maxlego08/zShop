@@ -53,6 +53,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	private final List<Permission> permissions = new ArrayList<>();
 	private final Map<UUID, TemporyObject> tmpObjects = new HashMap<>();
 	private boolean registerCommandInSpigot = true;
+	private Economy defaultEconomy = Economy.VAULT;
 
 	public ZShopManager(ZShop plugin, IEconomy economy) {
 		super(plugin);
@@ -136,6 +137,14 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 			success("Register command /" + stringCommand);
 
+		}
+
+		try {
+			this.defaultEconomy = Economy
+					.valueOf(config.getString("defaultEconomy", Economy.VAULT.name()).toUpperCase());
+			success("Default Economy:" + defaultEconomy.name());
+		} catch (Exception e) {
+			error("Could not find " + config.getString("defaultEconomy") + " economy");
 		}
 
 	}

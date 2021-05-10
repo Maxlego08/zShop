@@ -29,6 +29,9 @@ commands:
       - "aide"
     inventory: "menu" #File name        
 
+#Economy which will be used by default
+defaultEconomy: VAULT
+
 #Allows not to add the command on the spigot and thus to take the upper hand for the /kit for example but to always be able to do /kit <kit name>.
 registerCommandInSpigot: true
 

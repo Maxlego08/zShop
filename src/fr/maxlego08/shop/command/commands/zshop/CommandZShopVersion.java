@@ -21,8 +21,8 @@ public class CommandZShopVersion extends VCommand {
 		
 		sender.sendMessage("§7(§bzShop§7) §aVersion du plugin§7: §2" + main.getDescription().getVersion());
 		sender.sendMessage("§7(§bzShop§7) §aAuteur§7: §2Maxlego08");
-		sender.sendMessage("§7(§bzShop§7) §aDiscord§7: §2http://discord.groupez.xyz/");
-		sender.sendMessage("§7(§bzShop§7) §aBuy it for §d8€§7: §2https://groupez.xyz/resources/zShop.2");
+		sender.sendMessage("§7(§bzShop§7) §aDiscord§7: §2http://discord.groupez.dev/");
+		sender.sendMessage("§7(§bzShop§7) §aBuy it for §d8€§7: §2https://groupez.dev/resources/zShop.2");
 		
 		return CommandType.SUCCESS;
 	}

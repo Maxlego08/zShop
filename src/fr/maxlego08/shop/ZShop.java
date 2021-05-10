@@ -20,8 +20,8 @@ import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.utils.Metrics;
-import fr.maxlego08.shop.zcore.utils.VersionChecker;
 import fr.maxlego08.shop.zcore.utils.plugins.Plugins;
+import fr.maxlego08.shop.zcore.utils.plugins.VersionChecker;
 
 public class ZShop extends ZPlugin {
 
@@ -88,9 +88,8 @@ public class ZShop extends ZPlugin {
 		addListener(inventoryManager);
 		addListener(commandManager);
 
-		VersionChecker versionChecker = new VersionChecker(this);
-		versionChecker.useLastVersion(this);
-		addListener(versionChecker);
+		VersionChecker versionChecker = new VersionChecker(this, 2);
+		versionChecker.useLastVersion();
 
 		/* Add Saver */
 		addSave(new Lang());
