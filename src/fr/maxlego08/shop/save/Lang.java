@@ -28,8 +28,8 @@ public class Lang implements Saveable {
 	public static String notEnouhtMoneyPlayerPoint = "§cYou do not have enough points.";
 	public static String notEnouhtMoneyTokenManager = "§cYou do not have enough token.";
 	public static String notEnouhtMoneyMySQLToken = "§cYou do not have enough token.";
-	public static String notEnouhtMoneyIceToken = "§cYou do not have enough token.";
 	public static String notEnouhtMoneyLevel = "§cYou do not have enough level.";
+	public static String notEnouhtMoneyOptEco = "§cYou do not have enough OE.";
 	
 	public static String notEnouhtPlace = "§cYour inventory is ful";
 	public static String notItems = "§cYou do not have this item in your inventory.";
@@ -56,8 +56,8 @@ public class Lang implements Saveable {
 	public static String currencyPlayerPoint = "£";
 	public static String currencyTokenManager = "T";
 	public static String currencyMySQLToken = "MT";
-	public static String currencyIceToken = "*";
 	public static String currencyLevel = "xp";
+	public static String currencyOptEco = "oe";
 	
 	public static char priceLongFormat = ' ';
 	public static String priceDoubleFormat = "#.##";

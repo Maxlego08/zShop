@@ -20,7 +20,7 @@ public enum Economy {
 
 	LEVEL,
 
-	ICECORE,
+	OPTECO,
 
 	;
 
@@ -48,10 +48,10 @@ public enum Economy {
 			return Lang.currencyTokenManager;
 		case MYSQLTOKEN:
 			return Lang.currencyMySQLToken;
-		case ICECORE:
-			return Lang.currencyIceToken;
 		case LEVEL:
 			return Lang.currencyLevel;
+		case OPTECO:
+			return Lang.currencyOptEco;
 		case CUSTOM:
 			EconomyCurrencyEvent event = new EconomyCurrencyEvent();
 			Bukkit.getPluginManager().callEvent(event);
@@ -67,8 +67,6 @@ public enum Economy {
 			EconomyDenyEvent event = new EconomyDenyEvent();
 			Bukkit.getPluginManager().callEvent(event);
 			return event.getMessage();
-		case ICECORE:
-			return Lang.notEnouhtMoneyIceToken;
 		case LEVEL:
 			return Lang.notEnouhtMoneyLevel;
 		case MYSQLTOKEN:
@@ -79,6 +77,8 @@ public enum Economy {
 			return Lang.notEnouhtMoneyTokenManager;
 		case VAULT:
 			return Lang.notEnouhtMoneyVault;
+		case OPTECO:
+			return Lang.notEnouhtMoneyOptEco;
 		default:
 			return Lang.notEnouhtMoneyVault;
 		}

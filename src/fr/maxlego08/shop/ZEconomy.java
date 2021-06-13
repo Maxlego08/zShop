@@ -8,6 +8,7 @@ import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.events.EconomyDepositEvent;
 import fr.maxlego08.shop.api.events.EconomyMoneyEvent;
 import fr.maxlego08.shop.api.events.EconomyWithdrawMoney;
+import fr.maxlego08.shop.zcore.utils.OptEco;
 import me.bukkit.mTokens.Inkzzz.Tokens;
 import me.realized.tokenmanager.api.TokenManager;
 
@@ -53,6 +54,10 @@ public class ZEconomy implements IEconomy {
 			int level = player.getLevel();
 			player.setLevel((int) (level + value));
 			break;
+		case OPTECO:
+			OptEco eco = new OptEco();
+			eco.depositMoney(player, value);
+			break;
 		default:
 			break;
 		}
@@ -81,6 +86,10 @@ public class ZEconomy implements IEconomy {
 			int level = player.getLevel();
 			player.setLevel((int) (level - value));
 			break;
+		case OPTECO:
+			OptEco eco = new OptEco();
+			eco.withdrawMoney(player, value);
+			break;
 		default:
 			break;
 		}
@@ -103,6 +112,9 @@ public class ZEconomy implements IEconomy {
 			return event.getMoney();
 		case LEVEL:
 			return player.getLevel();
+		case OPTECO:
+			OptEco eco = new OptEco();
+			return eco.getMoney(player);
 		default:
 			return 0.0;
 		}
