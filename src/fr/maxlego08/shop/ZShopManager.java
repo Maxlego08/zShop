@@ -42,8 +42,8 @@ import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.permission.ZPermission;
 import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
-import fr.maxlego08.shop.zcore.utils.ItemDecoder;
 import fr.maxlego08.shop.zcore.utils.TemporyObject;
+import fr.maxlego08.shop.zcore.utils.itemstack.NMSUtils;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 
 public class ZShopManager extends YamlUtils implements ShopManager {
@@ -251,7 +251,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		Class<?> clazz = object.getClass();
 		Field objectField = field.equals("commandMap") ? clazz.getDeclaredField(field)
-				: field.equals("knownCommands") ? ItemDecoder.isNewVersion()
+				: field.equals("knownCommands") ? NMSUtils.isNewVersion()
 						? clazz.getSuperclass().getDeclaredField(field) : clazz.getDeclaredField(field) : null;
 		objectField.setAccessible(true);
 		Object result = objectField.get(object);

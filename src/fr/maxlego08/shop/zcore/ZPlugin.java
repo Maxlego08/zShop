@@ -28,8 +28,8 @@ import fr.maxlego08.shop.listener.ListenerAdapter;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
-import fr.maxlego08.shop.zcore.utils.ItemDecoder;
 import fr.maxlego08.shop.zcore.utils.inventory.VInventory;
+import fr.maxlego08.shop.zcore.utils.itemstack.NMSUtils;
 import fr.maxlego08.shop.zcore.utils.plugins.Plugins;
 import fr.maxlego08.shop.zcore.utils.storage.Persist;
 import fr.maxlego08.shop.zcore.utils.storage.Saveable;
@@ -85,7 +85,7 @@ public abstract class ZPlugin extends JavaPlugin {
 		List<String> files = Arrays.asList("blocks", "ores", "miscellaneous", "mobs", "farm", "redstone", "foods",
 				"shop", "sell", "buy", "confirm", "menu");
 
-		boolean isNew = ItemDecoder.isNewVersion();
+		boolean isNew = NMSUtils.isNewVersion();
 		for (String file : files) {
 
 			if (isNew) {
