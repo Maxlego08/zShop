@@ -75,7 +75,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 		this.delete();
 
-		defaultLore = config.getStringList("defaultItemLore");
+		defaultLore = color(config.getStringList("defaultItemLore"));
 
 		if (!config.contains("categories"))
 			throw new CategoriesNotFoundException("Cannot find the list of categories !");

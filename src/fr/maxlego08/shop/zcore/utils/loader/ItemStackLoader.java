@@ -114,7 +114,7 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 			int level = configuration.getInt(path + "level", 1);
 			boolean splash = configuration.getBoolean(path + "splash", false);
 			boolean extended = configuration.getBoolean(path + "extended", false);
-
+			
 			item = new Potion(type, level, splash, extended).toItemStack(amount);
 
 		} else if (configuration.contains(path + "color")) {
