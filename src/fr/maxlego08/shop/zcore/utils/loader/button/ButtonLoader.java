@@ -60,6 +60,7 @@ public class ButtonLoader implements Loader<Button> {
 
 		int slot = configuration.getInt(path + "slot");
 		boolean isPermanent = configuration.getBoolean(path + "isPermanent", false);
+		boolean closeInventory = configuration.getBoolean(path + "close", false);
 		boolean glowIfCheck = configuration.getBoolean(path + "glowIfCheck", false);
 		slot = slot < 0 ? 0 : slot;
 
@@ -102,24 +103,24 @@ public class ButtonLoader implements Loader<Button> {
 		case PREVIOUS:
 			boolean display = configuration.getBoolean(path + "display", true);
 			return new ZMoveButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, glowIfCheck, sound, display);
+					placeHolder, value, glowIfCheck, sound, display, closeInventory);
 		case ADD:
 		case REMOVE:
 			int amount = configuration.getInt(path + "amount", 1);
-			return new ZAddRemoveButton(type, itemStack, slot, amount, isPermanent, sound);
+			return new ZAddRemoveButton(type, itemStack, slot, amount, isPermanent, sound, closeInventory);
 		case BACK:
 			return new ZBackButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, null, null, plugin, glowIfCheck, sound);
+					placeHolder, value, null, null, plugin, glowIfCheck, sound, closeInventory);
 		case HOME:
 			return new ZHomeButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, null, null, plugin, glowIfCheck, sound);
+					placeHolder, value, null, null, plugin, glowIfCheck, sound, closeInventory);
 		case INVENTORY:
 			String inventory = configuration.getString(path + "inventory");
 			return new ZInventoryButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, inventory, null, plugin, glowIfCheck, sound);
+					placeHolder, value, inventory, null, plugin, glowIfCheck, sound, closeInventory);
 		case SHOW_ITEM: {
 			List<String> lore = configuration.getStringList(path + "lore");
-			return new ZShowButton(type, itemStack, slot, lore, isPermanent, sound);
+			return new ZShowButton(type, itemStack, slot, lore, isPermanent, sound, closeInventory);
 		}
 		case ITEM:
 		case ITEM_CONFIRM: {
@@ -136,13 +137,13 @@ public class ButtonLoader implements Loader<Button> {
 				currentLore = plugin.getInventory().getLore();
 
 			Economy economy = Economy.get(configuration.getString(path + "economy", null));
-			
+
 			if (economy == null)
 				economy = plugin.getShopManager().getDefaultEconomy();
-		
+
 			return new ZItemButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
-					currentLore, buyCommands, sellCommands, giveItem, glowIfCheck, log, sound);
+					currentLore, buyCommands, sellCommands, giveItem, glowIfCheck, log, sound, closeInventory);
 		}
 		case ITEM_CONFIRM_DOUBLE: {
 
@@ -152,17 +153,17 @@ public class ButtonLoader implements Loader<Button> {
 
 			if (rightEconomy == null)
 				rightEconomy = plugin.getShopManager().getDefaultEconomy();
-			
+
 			long leftPrice = configuration.getLong(path + "leftPrice", 0l);
 			List<String> leftCommands = configuration.getStringList(path + "leftCommands");
 			Economy leftEconomy = Economy.get(configuration.getString(path + "leftEconomy", null));
 
 			if (leftEconomy == null)
 				leftEconomy = plugin.getShopManager().getDefaultEconomy();
-			
+
 			return new ZItemConfirmDoubleButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent,
 					action, placeHolder, value, glowIfCheck, sound, rightPrice, rightEconomy, leftPrice, leftEconomy,
-					rightCommands, leftCommands, this.economy, this.plugin.getShopManager());
+					rightCommands, leftCommands, this.economy, this.plugin.getShopManager(), closeInventory);
 
 		}
 		case ZSPAWNER: {
@@ -183,7 +184,7 @@ public class ButtonLoader implements Loader<Button> {
 
 			if (economy == null)
 				economy = plugin.getShopManager().getDefaultEconomy();
-			
+
 			EntityType entityType = EntityType.valueOf(configuration.getString(path + "entity").toUpperCase());
 			ZSpawnerAction spawnerAction = ZSpawnerAction
 					.valueOf(configuration.getString(path + "zpawnerAction").toUpperCase());
@@ -192,25 +193,24 @@ public class ButtonLoader implements Loader<Button> {
 			return new ZZSpawnerButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
 					placeHolder, value, plugin.getShopManager(), this.economy, sellPrice, buyPrice, maxStack, economy,
 					currentLore, buyCommands, sellCommands, giveItem, entityType, spawnerAction, plugin, level,
-					glowIfCheck, log, sound);
+					glowIfCheck, log, sound, closeInventory);
 		}
 		case PERFORM_COMMAND:
 			List<String> commands = configuration.getStringList(path + "commands");
 			List<String> consoleCommands = configuration.getStringList(path + "consoleCommands");
 			List<String> consolePermissionCommands = configuration.getStringList(path + "consolePermissionCommands");
 			String consolePermission = configuration.getString(path + "consolePermission");
-			boolean closeInventory = configuration.getBoolean(path + "closeInventory", false);
 			return new ZPerformButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, commands, consoleCommands, closeInventory, glowIfCheck, sound,
-					consolePermissionCommands, consolePermission);
+					placeHolder, value, commands, consoleCommands, glowIfCheck, sound,
+					consolePermissionCommands, consolePermission, closeInventory);
 		case NONE_SLOT:
 			List<Integer> list = configuration.getIntegerList(path + "slots");
 			return new ZButtonSlot(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, list, glowIfCheck, sound);
+					placeHolder, value, list, glowIfCheck, sound, closeInventory);
 		case NONE:
 		default:
 			button = new ZPlaceholderButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent,
-					action, placeHolder, value, glowIfCheck, sound);
+					action, placeHolder, value, glowIfCheck, sound, closeInventory);
 		}
 
 		return button;

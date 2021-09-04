@@ -28,8 +28,8 @@ public class ZShowButton extends ZButton implements ShowButton {
 	 * @param elseButton
 	 * @param lore
 	 */
-	public ZShowButton(ButtonType type, ItemStack itemStack, int slot, List<String> lore, boolean isPermanent, SoundOption sound) {
-		super(type, itemStack, slot, isPermanent, sound);
+	public ZShowButton(ButtonType type, ItemStack itemStack, int slot, List<String> lore, boolean isPermanent, SoundOption sound, boolean isClose) {
+		super(type, itemStack, slot, isPermanent, sound, isClose);
 		this.lore = lore;
 	}
 

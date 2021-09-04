@@ -15,9 +15,9 @@ public class ZMoveButton extends ZPlaceholderButton implements NextButton, Previ
 
 	public ZMoveButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
-			boolean needGlow, SoundOption sound, boolean display) {
+			boolean needGlow, SoundOption sound, boolean display, boolean isClose) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, needGlow,
-				sound);
+				sound, isClose);
 		this.display = display;
 	}
 

@@ -23,6 +23,7 @@ import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.events.ZShopButtonRenderEvent;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.exceptions.InventoryTypeException;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -85,7 +86,17 @@ public class InventoryDefault extends VInventory {
 				if (!button.checkPermission(player) && button.hasElseButton()) {
 
 					PlaceholderButton elseButton = button.getElseButton().toButton(PlaceholderButton.class);
-					ZButton zButton = addItem(button.getTmpSlot(), elseButton.getCustomItemStack(player));
+					
+					ItemStack itemStack = elseButton.getCustomItemStack(player);
+					int slot = button.getTmpSlot();
+
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, slot, itemStack);
+					event.callEvent();
+
+					if (event.isCancelled())
+						continue;
+
+					ZButton zButton = addItem(event.getSlot(), event.getItemStack());
 
 					if (elseButton.isClickable()) {
 						zButton.setClick(clickEvent(main, player, page, maxPage, elseButton));
@@ -109,7 +120,16 @@ public class InventoryDefault extends VInventory {
 									|| (button.getType() == ButtonType.PREVIOUS && page == 1))
 								continue;
 
-						ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack(player));
+						ItemStack itemStack = button.getCustomItemStack(player);
+						int slot = button.getTmpSlot();
+
+						ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, slot, itemStack);
+						event.callEvent();
+
+						if (event.isCancelled())
+							continue;
+
+						ZButton zButton = addItem(event.getSlot(), event.getItemStack());
 						if (button.isClickable()) {
 							zButton.setClick(clickEvent(main, player, page, maxPage, button));
 							if (button.getType().isOtherClick()) {
@@ -135,7 +155,16 @@ public class InventoryDefault extends VInventory {
 								|| (button.getType() == ButtonType.PREVIOUS && page == 1))
 							continue;
 
-					ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack(player));
+					ItemStack itemStack = button.getCustomItemStack(player);
+					int slot = button.getTmpSlot();
+
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, slot, itemStack);
+					event.callEvent();
+
+					if (event.isCancelled())
+						continue;
+
+					ZButton zButton = addItem(event.getSlot(), event.getItemStack());
 					if (button.isClickable()) {
 						zButton.setClick(clickEvent(main, player, page, maxPage, button));
 						if (button.getType().isOtherClick()) {
@@ -201,6 +230,9 @@ public class InventoryDefault extends VInventory {
 			}
 
 			finalButton.playSound(player);
+
+			if (finalButton.closeInventory())
+				player.closeInventory();
 
 			switch (finalButton.getType()) {
 			case NEXT:

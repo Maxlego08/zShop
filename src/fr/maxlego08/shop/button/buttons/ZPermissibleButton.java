@@ -24,8 +24,8 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 	 * @param elseButton
 	 */
 	public ZPermissibleButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
-			Button elseButton, boolean isPermanent, boolean glowIfCheck, SoundOption sound) {
-		super(type, itemStack, slot, isPermanent, sound);
+			Button elseButton, boolean isPermanent, boolean glowIfCheck, SoundOption sound, boolean isClose) {
+		super(type, itemStack, slot, isPermanent, sound, isClose);
 		this.permission = permission;
 		this.elseButton = elseButton;
 		this.message = color(message);
@@ -39,8 +39,8 @@ public class ZPermissibleButton extends ZButton implements PermissibleButton {
 	 * @param permission
 	 * @param elseButton
 	 */
-	public ZPermissibleButton(ButtonType type, ItemStack itemStack, int slot, boolean isPermanent, SoundOption sound) {
-		super(type, itemStack, slot, isPermanent, sound);
+	public ZPermissibleButton(ButtonType type, ItemStack itemStack, int slot, boolean isPermanent, SoundOption sound, boolean isClose) {
+		super(type, itemStack, slot, isPermanent, sound, isClose);
 		this.permission = null;
 		this.elseButton = null;
 		this.message = null;

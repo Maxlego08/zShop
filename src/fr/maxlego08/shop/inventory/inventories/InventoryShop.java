@@ -25,6 +25,7 @@ import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.events.ZShopButtonRenderEvent;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.exceptions.InventoryTypeException;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -90,7 +91,15 @@ public class InventoryShop extends VInventory {
 				if (button.getType().equals(ButtonType.SHOW_ITEM)) {
 
 					ShowButton showButton = button.toButton(ShowButton.class);
-					addItem(button.getSlot(), showButton.applyLore(this.player, this.button, amount, type));
+
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(showButton, player, button.getSlot(),
+							showButton.applyLore(this.player, this.button, amount, type));
+					event.callEvent();
+
+					if (event.isCancelled())
+						return;
+
+					addItem(event.getSlot(), event.getItemStack());
 					this.shows.add(showButton);
 
 				} else if (button.getType().equals(ButtonType.SET_TO_MAX)) {
@@ -104,15 +113,37 @@ public class InventoryShop extends VInventory {
 								String.valueOf(this.button.getMaxStack())));
 					itemStack.setItemMeta(itemMeta);
 
-					addItem(button.getSlot(), itemStack).setClick(clickEvent(main, player, page, button));
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, button.getSlot(),
+							itemStack);
+					event.callEvent();
 
-				} else if (button.getType().equals(ButtonType.ADD) || button.getType().equals(ButtonType.REMOVE))
+					if (event.isCancelled())
+						return;
+
+					addItem(event.getSlot(), event.getItemStack()).setClick(clickEvent(main, player, page, button));
+
+				} else if (button.getType().equals(ButtonType.ADD) || button.getType().equals(ButtonType.REMOVE)) {
 					// Bouton add remove
 
-					addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, button.getSlot(),
+							button.getItemStack());
+					event.callEvent();
 
-				else // Bouton classique
-					addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
+					if (event.isCancelled())
+						return;
+
+					addItem(event.getSlot(), event.getItemStack()).setClick(clickEvent(main, player, page, button));
+
+				} else {// Bouton classique
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, button.getSlot(),
+							button.getItemStack());
+					event.callEvent();
+
+					if (event.isCancelled())
+						return;
+
+					addItem(event.getSlot(), event.getItemStack()).setClick(clickEvent(main, player, page, button));
+				}
 			}
 		});
 

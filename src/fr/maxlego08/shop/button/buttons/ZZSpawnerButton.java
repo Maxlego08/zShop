@@ -61,10 +61,10 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
 			ShopManager manager, IEconomy iEconomy, double sellPrice, double buyPrice, int maxStack, Economy economy,
 			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem, EntityType entity,
-			ZSpawnerAction zAction, Plugin plugin, int level, boolean glow, boolean log, SoundOption sound) {
+			ZSpawnerAction zAction, Plugin plugin, int level, boolean glow, boolean log, SoundOption sound, boolean isClose) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, manager,
 				iEconomy, sellPrice, buyPrice, maxStack, economy, lore, buyCommands, sellCommands, giveItem, glow, log,
-				sound);
+				sound, isClose);
 		this.type = entity;
 		this.action = zAction;
 		this.manager = getProvider(plugin, SpawnerManager.class);

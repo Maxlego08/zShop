@@ -40,6 +40,7 @@ public interface PerformButton extends PermissibleButton {
 	 * 
 	 * @return true if inventory need to be close
 	 */
+	@Deprecated
 	public boolean closeInventory();
 
 }

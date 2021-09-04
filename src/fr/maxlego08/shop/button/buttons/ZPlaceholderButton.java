@@ -28,8 +28,8 @@ public class ZPlaceholderButton extends ZPermissibleButton implements Placeholde
 	 */
 	public ZPlaceholderButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
-			boolean needGlow, SoundOption sound) {
-		super(type, itemStack, slot, permission, message, elseButton, isPermanent, needGlow, sound);
+			boolean needGlow, SoundOption sound, boolean isClose) {
+		super(type, itemStack, slot, permission, message, elseButton, isPermanent, needGlow, sound, isClose);
 		this.action = action;
 		this.placeholder = placeholder;
 		this.value = value;

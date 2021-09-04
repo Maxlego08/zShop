@@ -19,7 +19,6 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 	private final List<String> consoleCommands;
 	private final List<String> consolePermissionCommands;
 	private final String consolePermission;
-	private final boolean closeInventory;
 
 	/**
 	 * @param type
@@ -37,13 +36,12 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 	 */
 	public ZPerformButton(ButtonType type, ItemStack itemStack, int slot, String permission, String message,
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
-			List<String> commands, List<String> consoleCommands, boolean closeInventory, boolean glow,
-			SoundOption sound, List<String> consolePermissionCommands, String consolePermission) {
+			List<String> commands, List<String> consoleCommands, boolean glow, SoundOption sound,
+			List<String> consolePermissionCommands, String consolePermission, boolean isClose) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, glow,
-				sound);
+				sound, isClose);
 		this.commands = commands;
 		this.consoleCommands = consoleCommands;
-		this.closeInventory = closeInventory;
 		this.consolePermissionCommands = consolePermissionCommands;
 		this.consolePermission = consolePermission;
 	}
@@ -59,7 +57,7 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 		if (!checkPermission(player))
 			return;
 
-		if (this.closeInventory())
+		if (super.closeInventory())
 			player.closeInventory();
 		papi(new ArrayList<String>(commands), player)
 				.forEach(command -> player.performCommand(command.replace("%player%", player.getName())));
@@ -74,8 +72,9 @@ public class ZPerformButton extends ZPlaceholderButton implements PerformButton 
 	}
 
 	@Override
+	@Deprecated
 	public boolean closeInventory() {
-		return closeInventory;
+		return super.closeInventory();
 	}
 
 	@Override

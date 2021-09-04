@@ -17,8 +17,8 @@ public class ZAddRemoveButton extends ZButton implements AddRemoveButton {
 	 * @param slot
 	 * @param amount
 	 */
-	public ZAddRemoveButton(ButtonType type, ItemStack itemStack, int slot, int amount, boolean isPermanent, SoundOption sound) {
-		super(type, itemStack, slot, isPermanent, sound);
+	public ZAddRemoveButton(ButtonType type, ItemStack itemStack, int slot, int amount, boolean isPermanent, SoundOption sound, boolean isClose) {
+		super(type, itemStack, slot, isPermanent, sound, isClose);
 		this.amount = amount;
 	}
 

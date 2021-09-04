@@ -52,9 +52,9 @@ public class ZItemConfirmDoubleButton extends ZPlaceholderButton implements Item
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
 			boolean needGlow, SoundOption sound, long rightPrice, Economy rightEconomy, long leftPrice,
 			Economy leftEconomy, List<String> rightCommands, List<String> leftCommands, IEconomy iEconomy,
-			ShopManager manager) {
+			ShopManager manager, boolean isClose) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, needGlow,
-				sound);
+				sound, isClose);
 		this.rightPrice = rightPrice;
 		this.rightEconomy = rightEconomy;
 		this.leftPrice = leftPrice;

@@ -17,34 +17,37 @@ public class ZButton extends ZUtils implements Button {
 	private final SoundOption sound;
 	private int tmpSlot;
 	private boolean isPermanent;
+	private boolean isClose;
 
 	/**
 	 * @param type
 	 * @param itemStack
 	 * @param slot
 	 */
-	public ZButton(ButtonType type, ItemStack itemStack, int slot, boolean isPermanent, SoundOption sound) {
+	public ZButton(ButtonType type, ItemStack itemStack, int slot, boolean isPermanent, SoundOption sound,
+			boolean isClose) {
 		super();
 		this.type = type;
 		this.itemStack = itemStack;
 		this.slot = slot;
 		this.isPermanent = isPermanent;
 		this.sound = sound;
+		this.isClose = true;
 	}
 
 	@Override
 	public ItemStack getItemStack() {
-		return itemStack;
+		return this.itemStack;
 	}
 
 	@Override
 	public ButtonType getType() {
-		return type;
+		return this.type;
 	}
 
 	@Override
 	public int getSlot() {
-		return slot;
+		return this.slot;
 	}
 
 	@Override
@@ -57,7 +60,7 @@ public class ZButton extends ZUtils implements Button {
 
 	@Override
 	public int getTmpSlot() {
-		return tmpSlot;
+		return this.tmpSlot;
 	}
 
 	/*
@@ -67,7 +70,7 @@ public class ZButton extends ZUtils implements Button {
 	 */
 	@Override
 	public String toString() {
-		return "ZButton [type=" + type + ", itemStack=" + itemStack + ", slot=" + slot + "]";
+		return "ZButton [type=" + this.type + ", itemStack=" + this.itemStack + ", slot=" + this.slot + "]";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -84,23 +87,28 @@ public class ZButton extends ZUtils implements Button {
 
 	@Override
 	public boolean isClickable() {
-		return type.isClickable();
+		return this.type.isClickable() || this.closeInventory();
 	}
 
 	@Override
 	public boolean isPermament() {
-		return isPermanent;
+		return this.isPermanent;
 	}
 
 	@Override
 	public SoundOption getSound() {
-		return sound;
+		return this.sound;
 	}
 
 	@Override
 	public void playSound(Entity entity) {
-		if (sound != null)
-			sound.play(entity);
+		if (this.sound != null)
+			this.sound.play(entity);
+	}
+
+	@Override
+	public boolean closeInventory() {
+		return this.isClose;
 	}
 
 }

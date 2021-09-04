@@ -78,5 +78,7 @@ public interface Button {
 	 * @param entity
 	 */
 	void playSound(Entity entity);
+	
+	boolean closeInventory();
 
 }
