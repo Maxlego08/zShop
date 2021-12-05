@@ -32,7 +32,7 @@ public class ZButton extends ZUtils implements Button {
 		this.slot = slot;
 		this.isPermanent = isPermanent;
 		this.sound = sound;
-		this.isClose = true;
+		this.isClose = isClose;
 	}
 
 	@Override

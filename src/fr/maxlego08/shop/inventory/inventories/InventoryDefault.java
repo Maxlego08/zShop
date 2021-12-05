@@ -231,19 +231,22 @@ public class InventoryDefault extends VInventory {
 
 			finalButton.playSound(player);
 
-			if (finalButton.closeInventory())
+			if (finalButton.closeInventory()) {
 				player.closeInventory();
+			}
 
 			switch (finalButton.getType()) {
 			case NEXT:
-				if (page != maxPage)
+				if (page != maxPage) {
 					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory,
 							oldInventories, command);
+				}
 				break;
 			case PREVIOUS:
-				if (page != 1)
+				if (page != 1) {
 					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory,
 							oldInventories, command);
+				}
 				break;
 			case ITEM_CONFIRM:
 			case ZSPAWNER:

@@ -16,7 +16,6 @@ import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.BackButton;
 import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
-import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.ItemConfirmDoubleButton;
 import fr.maxlego08.shop.api.button.buttons.ShowButton;
 import fr.maxlego08.shop.api.button.buttons.SlotButton;
@@ -36,7 +35,6 @@ public class InventoryConfirm2 extends VInventory {
 	private Command command;
 	private ItemConfirmDoubleButton button;
 	private int oldPage;
-	private boolean isRight;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -48,8 +46,6 @@ public class InventoryConfirm2 extends VInventory {
 		this.oldInventories = (List<Inventory>) args[2];
 		this.oldPage = (Integer) args[3];
 		this.command = (Command) args[4];
-		this.isRight = (Boolean) args[4];
-
 		createInventory(papi(inventory.getName(), player), inventory.size());
 
 		Inventory oldInventory = null;
@@ -72,8 +68,7 @@ public class InventoryConfirm2 extends VInventory {
 
 			if (button.getType().equals(ButtonType.SHOW_ITEM)) {
 
-				ShowButton showButton = button.toButton(ShowButton.class);
-//				addItem(button.getSlot(), showButton.applyLore(player, this.button, 1, InventoryType.CONFIRM));
+				button.toButton(ShowButton.class);
 
 			} else if (button.getType().isSlots()) {
 
@@ -93,7 +88,7 @@ public class InventoryConfirm2 extends VInventory {
 				}
 			}
 		}
-		
+
 		return InventoryResult.SUCCESS;
 	}
 
@@ -102,7 +97,7 @@ public class InventoryConfirm2 extends VInventory {
 		return event -> {
 			switch (currentButton.getType()) {
 			case BUY_CONFIRM:
-//				button.buy(player, 1);
+				// button.buy(player, 1);
 				player.closeInventory();
 				break;
 			case HOME:

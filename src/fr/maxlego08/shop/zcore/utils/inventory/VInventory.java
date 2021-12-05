@@ -29,6 +29,7 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 	protected Inventory inventory;
 	protected String guiName;
 	protected boolean disableClick = true;
+	protected boolean allowPlayerClick = false;
 
 	/**
 	 * Id de l'inventaire
@@ -232,5 +233,9 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public boolean allowPlayerClick() {
+		return this.allowPlayerClick;
 	}
 }
