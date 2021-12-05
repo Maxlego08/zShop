@@ -351,7 +351,7 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 
 			lore.add(str);
 		});
-		itemMeta.setLore(lore);
+		itemMeta.setLore(color(lore));
 		itemStack.setItemMeta(itemMeta);
 		return playerHead(papi(itemStack, player), player);
 	}
