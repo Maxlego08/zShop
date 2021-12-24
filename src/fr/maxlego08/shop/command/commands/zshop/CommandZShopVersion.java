@@ -23,6 +23,7 @@ public class CommandZShopVersion extends VCommand {
 		sender.sendMessage("§7(§bzShop§7) §aAuteur§7: §2Maxlego08");
 		sender.sendMessage("§7(§bzShop§7) §aDiscord§7: §2http://discord.groupez.dev/");
 		sender.sendMessage("§7(§bzShop§7) §aBuy it for §d8€§7: §2https://groupez.dev/resources/zShop.2");
+		sender.sendMessage("§aSponsor§7: §chttps://serveur-minecraft-vote.fr/?ref=345");
 		
 		return CommandType.SUCCESS;
 	}

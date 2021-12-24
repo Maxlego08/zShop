@@ -73,17 +73,22 @@ public class ZButton {
 
 	/**
 	 * Permet de gérer le click du joueur
+	 * 
 	 * @param event
 	 */
 	public void onClick(InventoryClickEvent event) {
-		if (onClick != null)
+
+		if (onClick != null) {
 			onClick.accept(event);
-		if (event.getClick().equals(ClickType.MIDDLE) && onMiddleClick != null)
+		}
+		if ((event.getClick().equals(ClickType.MIDDLE) || event.getClick().equals(ClickType.DROP))
+				&& onMiddleClick != null) {
 			onMiddleClick.accept(event);
-		else if (event.getClick().equals(ClickType.RIGHT) && onRightClick != null)
+		} else if (event.getClick().equals(ClickType.RIGHT) && onRightClick != null) {
 			onRightClick.accept(event);
-		else if (event.getClick().equals(ClickType.LEFT) && onLeftClick != null)
+		} else if (event.getClick().equals(ClickType.LEFT) && onLeftClick != null) {
 			onLeftClick.accept(event);
+		}
 	}
 
 }
