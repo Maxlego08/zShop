@@ -60,6 +60,8 @@ import fr.maxlego08.shop.zcore.utils.builder.TimerBuilder;
 import fr.maxlego08.shop.zcore.utils.itemstack.ItemStackUtils;
 import fr.maxlego08.shop.zcore.utils.itemstack.NMSUtils;
 import fr.maxlego08.shop.zcore.utils.players.ActionBar;
+import fr.maxlego08.shop.zcore.utils.plugins.Plugins;
+import fr.maxlego08.ztranslator.api.Translator;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -622,8 +624,17 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return
 	 */
 	protected String getItemName(ItemStack item) {
-		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName())
+		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
 			return item.getItemMeta().getDisplayName();
+		}
+
+		if (ZPlugin.z().isEnable(Plugins.ZTRANSLATOR)) {
+
+			Translator translator = ZPlugin.z().getProvider(Translator.class);
+			return translator.translate(item);
+
+		}
+
 		String name = item.serialize().get("type").toString().replace("_", " ").toLowerCase();
 		return name.substring(0, 1).toUpperCase() + name.substring(1);
 	}

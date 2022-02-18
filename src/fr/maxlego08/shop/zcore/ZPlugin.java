@@ -52,8 +52,12 @@ public abstract class ZPlugin extends JavaPlugin {
 	private PlayerPoints playerPoints;
 	private PlayerPointsAPI playerPointsAPI;
 
+	private static ZPlugin plugin;
+	
 	protected boolean preEnable() {
 
+		plugin = this;
+		
 		enableTime = System.currentTimeMillis();
 
 		log.log("=== ENABLE START ===");
@@ -172,9 +176,10 @@ public abstract class ZPlugin extends JavaPlugin {
 	 * @param adapter
 	 */
 	public void addListener(ListenerAdapter adapter) {
-		if (adapter instanceof Saveable)
+		if (adapter instanceof Saveable) {
 			addSave((Saveable) adapter);
-		listenerAdapters.add(adapter);
+		}
+		this.listenerAdapters.add(adapter);
 	}
 
 	/**
@@ -222,7 +227,7 @@ public abstract class ZPlugin extends JavaPlugin {
 	 * @param classz
 	 * @return
 	 */
-	protected <T> T getProvider(Class<T> classz) {
+	public <T> T getProvider(Class<T> classz) {
 		RegisteredServiceProvider<T> provider = getServer().getServicesManager().getRegistration(classz);
 		if (provider == null) {
 			log.log("Unable to retrieve the provider " + classz.toString(), LogType.WARNING);
@@ -262,7 +267,7 @@ public abstract class ZPlugin extends JavaPlugin {
 	 * @param pluginName
 	 * @return
 	 */
-	protected boolean isEnable(Plugins pl) {
+	public boolean isEnable(Plugins pl) {
 		Plugin plugin = getPlugin(pl);
 		return plugin == null ? false : plugin.isEnabled();
 	}
@@ -333,6 +338,10 @@ public abstract class ZPlugin extends JavaPlugin {
 		} else {
 			throw new IllegalArgumentException("ResourcePath cannot be null or empty");
 		}
+	}
+	
+	public static ZPlugin z(){
+		return plugin;
 	}
 
 }

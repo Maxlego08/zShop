@@ -3,6 +3,7 @@ package fr.maxlego08.shop.api.button.buttons;
 import java.util.List;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 
 public interface PerformButton extends PermissibleButton {
 
@@ -34,7 +35,7 @@ public interface PerformButton extends PermissibleButton {
 	 * 
 	 * @param player
 	 */
-	void execute(Player player);
+	void execute(Player player, ClickType type);
 
 	/**
 	 * 

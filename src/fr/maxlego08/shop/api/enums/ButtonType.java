@@ -76,6 +76,7 @@ public enum ButtonType {
 		switch (this) {
 		case ITEM:
 		case ZSPAWNER:
+		case PERFORM_COMMAND:
 			return true;
 		case ADD:
 		case BACK:
@@ -86,7 +87,6 @@ public enum ButtonType {
 		case NEXT:
 		case NONE:
 		case NONE_SLOT:
-		case PERFORM_COMMAND:
 		case PREVIOUS:
 		case REMOVE:
 		case SELL_CONFIRM:

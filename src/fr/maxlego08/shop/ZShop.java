@@ -98,7 +98,11 @@ public class ZShop extends ZPlugin {
 		getSavers().forEach(saver -> saver.load(getPersist()));
 
 		new Metrics(this, 5881);
-
+	
+		if (isEnable(Plugins.ZTRANSLATOR)) {
+			this.getLog().log("zTranslator found. We will use for translations.");
+		}
+		
 		postEnable();
 	}
 

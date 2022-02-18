@@ -135,8 +135,9 @@ public class InventoryManager extends ListenerAdapter {
 
 				event.setCancelled(gui.isDisableClick());
 				ZButton button = gui.getItems().getOrDefault(event.getSlot(), null);
-				if (button != null)
+				if (button != null) {					
 					button.onClick(event);
+				}
 			}
 		}
 	}

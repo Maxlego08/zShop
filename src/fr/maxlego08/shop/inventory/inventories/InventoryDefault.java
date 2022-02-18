@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -287,10 +288,6 @@ public class InventoryDefault extends VInventory {
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
 						new ArrayList<>(), command);
 				break;
-			case PERFORM_COMMAND:
-				PerformButton performButton = finalButton.toButton(PerformButton.class);
-				performButton.execute(player);
-				break;
 			case BACK:
 
 				inventoryButton = finalButton.toButton(InventoryButton.class);
@@ -400,6 +397,10 @@ public class InventoryDefault extends VInventory {
 			case ITEM_CONFIRM_DOUBLE:
 
 				break;
+			case PERFORM_COMMAND:
+				PerformButton performButton = finalButton.toButton(PerformButton.class);
+				performButton.execute(player, ClickType.RIGHT);
+				break;
 			default:
 				break;
 
@@ -447,6 +448,10 @@ public class InventoryDefault extends VInventory {
 				this.oldInventories.add(this.inventory);
 				plugin.getShopManager().open(player, this.command, finalButton.toButton(ItemButton.class), page,
 						this.oldInventories, InventoryType.CONFIRM);
+				break;
+			case PERFORM_COMMAND:
+				PerformButton performButton = finalButton.toButton(PerformButton.class);
+				performButton.execute(player, ClickType.LEFT);
 				break;
 			default:
 				break;

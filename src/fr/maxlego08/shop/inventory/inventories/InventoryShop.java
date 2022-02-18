@@ -211,7 +211,7 @@ public class InventoryShop extends VInventory {
 				break;
 			case PERFORM_COMMAND:
 				PerformButton performButton = currentButton.toButton(PerformButton.class);
-				performButton.execute(player);
+				performButton.execute(player, event.getClick());
 				break;
 			default:
 				break;

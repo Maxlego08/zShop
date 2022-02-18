@@ -78,16 +78,16 @@ public class ZButton {
 	 */
 	public void onClick(InventoryClickEvent event) {
 
-		if (onClick != null) {
-			onClick.accept(event);
+		if (this.onClick != null) {
+			this.onClick.accept(event);
 		}
 		if ((event.getClick().equals(ClickType.MIDDLE) || event.getClick().equals(ClickType.DROP))
-				&& onMiddleClick != null) {
-			onMiddleClick.accept(event);
+				&& this.onMiddleClick != null) {
+			this.onMiddleClick.accept(event);
 		} else if (event.getClick().equals(ClickType.RIGHT) && onRightClick != null) {
-			onRightClick.accept(event);
+			this.onRightClick.accept(event);
 		} else if (event.getClick().equals(ClickType.LEFT) && onLeftClick != null) {
-			onLeftClick.accept(event);
+			this.onLeftClick.accept(event);
 		}
 	}
 

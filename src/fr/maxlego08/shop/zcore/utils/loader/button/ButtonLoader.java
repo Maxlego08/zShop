@@ -198,11 +198,13 @@ public class ButtonLoader implements Loader<Button> {
 		case PERFORM_COMMAND:
 			List<String> commands = configuration.getStringList(path + "commands");
 			List<String> consoleCommands = configuration.getStringList(path + "consoleCommands");
+			List<String> consoleRightCommands = configuration.getStringList(path + "consoleRightCommands");
+			List<String> consoleLeftCommands = configuration.getStringList(path + "consoleLeftCommands");
 			List<String> consolePermissionCommands = configuration.getStringList(path + "consolePermissionCommands");
 			String consolePermission = configuration.getString(path + "consolePermission");
 			return new ZPerformButton(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,
-					placeHolder, value, commands, consoleCommands, glowIfCheck, sound,
-					consolePermissionCommands, consolePermission, closeInventory);
+					placeHolder, value, commands, consoleCommands, consoleRightCommands, consoleLeftCommands,
+					glowIfCheck, sound, consolePermissionCommands, consolePermission, closeInventory);
 		case NONE_SLOT:
 			List<Integer> list = configuration.getIntegerList(path + "slots");
 			return new ZButtonSlot(type, itemStack, slot, permission, elseMessage, elseButton, isPermanent, action,

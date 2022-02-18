@@ -29,6 +29,12 @@
 	</repositories>
 	<dependencies>
 		<dependency>
+			<groupId>com.github.Maxlego08</groupId>
+			<artifactId>zTranslator</artifactId>
+			<version>1.0.0.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.sun.org.apache</groupId>
 			<artifactId>jaxp-ri</artifactId>
 			<version>1.4</version>
