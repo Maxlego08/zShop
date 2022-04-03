@@ -190,7 +190,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		} catch (Exception e) {
 		}
 
-		plugin.getSavers().forEach(saver -> saver.load(plugin.getPersist()));
+		plugin.getSavers().forEach(saver -> saver.load(this.plugin.getPersist()));
 
 		info("Deleting commands...");
 		FileConfiguration configuration = getConfig();

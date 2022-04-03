@@ -38,8 +38,8 @@ public enum Message {
 	
 	CANT_SELL("§cUnable to sell"),
 	CANT_BUY("§cUnable to buy"),
-	SELL_ITEM("§aYou just sold §6x%amount% %item%§a for §6%price%§a%currency% !"),
-	BUY_ITEM("§aYou have just bought §6x%amount% %item%§a for §6%price%§a%currency% !"),
+	SELL_ITEM("§7You just sold §6x%amount% %item%§7 for §b%price%§a%currency%§7."),
+	BUY_ITEM("§7You have just bought §6x%amount% %item%§7 for §b%price%§a%currency%§7."),
 	NOT_ENOUGH_ITEMS("§cYou do not have enough items in your inventory."),
 
 	BUY_LOG("%player% has purchased x%amount% %item% for %price%%currency%."),
