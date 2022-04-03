@@ -5,19 +5,26 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.button.buttons.BackButton;
 import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
+import fr.maxlego08.shop.api.button.buttons.MoveButton;
+import fr.maxlego08.shop.api.button.buttons.PerformButton;
 import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
+import fr.maxlego08.shop.api.button.buttons.PlaceholderButton;
 import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.command.Command;
+import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.events.ZShopButtonRenderEvent;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.exceptions.InventoryTypeException;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -64,61 +71,118 @@ public class InventoryDefault extends VInventory {
 
 		inventory.getButtons(HomeButton.class).forEach(button -> button.setBackInventory(command.getInventory()));
 
-		List<PermissibleButton> buttons = inventory.sortButtons(page);
+		List<PlaceholderButton> buttons = inventory.sortButtons(page);
 
 		// Gestion du nom de l'inventaire
 		String inventoryName = inventory.getName();
 		inventoryName = inventoryName.replace("%page%", String.valueOf(page));
 		inventoryName = inventoryName.replace("%maxPage%", String.valueOf(maxPage));
 
-		createInventory(inventoryName, inventory.size());
+		createInventory(papi(inventoryName, player), inventory.size());
 
-		for (PermissibleButton button : buttons) {
+		for (PlaceholderButton button : buttons) {
 
 			if (button.hasPermission()) {
 
-				if (!player.hasPermission(button.getPermission()) && button.hasElseButton()) {
+				if (!button.checkPermission(player) && button.hasElseButton()) {
 
-					ZButton zButton = addItem(button.getTmpSlot(), button.getElseButton().getCustomItemStack());
+					PlaceholderButton elseButton = button.getElseButton().toButton(PlaceholderButton.class);
+					
+					ItemStack itemStack = elseButton.getCustomItemStack(player);
+					int slot = button.getTmpSlot();
 
-					if (button.isClickable())
-						zButton.setClick(clickEvent(main, player, page, maxPage, button))
-								.setLeftClick(leftClick(main, player, page, maxPage, button))
-								.setRightClick(rightClick(main, player, page, maxPage, button))
-								.setMiddleClick(middleClick(main, player, page, maxPage, button));
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, slot, itemStack);
+					event.callEvent();
+
+					if (event.isCancelled())
+						continue;
+
+					ZButton zButton = addItem(event.getSlot(), event.getItemStack());
+
+					if (elseButton.isClickable()) {
+						zButton.setClick(clickEvent(main, player, page, maxPage, elseButton));
+						if (elseButton.getType().isOtherClick()) {
+							zButton.setLeftClick(leftClick(main, player, page, maxPage, elseButton))
+									.setRightClick(rightClick(main, player, page, maxPage, elseButton))
+									.setMiddleClick(middleClick(main, player, page, maxPage, elseButton));
+						}
+					}
 
 				} else {
 
 					if (button.getType().isSlots()) {
 						button.toButton(SlotButton.class).getSlots().forEach(slot -> {
-							addItem(slot, button.getCustomItemStack());
+							addItem(slot, button.getCustomItemStack(player));
 						});
 					} else {
 
-						ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack());
-						if (button.isClickable())
-							zButton.setClick(clickEvent(main, player, page, maxPage, button))
-									.setLeftClick(leftClick(main, player, page, maxPage, button))
-									.setRightClick(rightClick(main, player, page, maxPage, button))
-									.setMiddleClick(middleClick(main, player, page, maxPage, button));
+						if (button.getType().isMove() && !button.toButton(MoveButton.class).isDisplay())
+							if ((button.getType() == ButtonType.NEXT && page == maxPage)
+									|| (button.getType() == ButtonType.PREVIOUS && page == 1))
+								continue;
+
+						ItemStack itemStack = button.getCustomItemStack(player);
+						int slot = button.getTmpSlot();
+
+						ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, slot, itemStack);
+						event.callEvent();
+
+						if (event.isCancelled())
+							continue;
+
+						ZButton zButton = addItem(event.getSlot(), event.getItemStack());
+						if (button.isClickable()) {
+							zButton.setClick(clickEvent(main, player, page, maxPage, button));
+							if (button.getType().isOtherClick()) {
+								zButton.setLeftClick(leftClick(main, player, page, maxPage, button))
+										.setRightClick(rightClick(main, player, page, maxPage, button))
+										.setMiddleClick(middleClick(main, player, page, maxPage, button));
+							}
+						}
 					}
 				}
 			} else {
 
 				if (button.getType().isSlots()) {
-					
+
 					button.toButton(SlotButton.class).getSlots().forEach(slot -> {
-						addItem(slot, button.getCustomItemStack());
+						addItem(slot, button.getCustomItemStack(player));
 					});
-					
+
 				} else {
 
-					ZButton zButton = addItem(button.getTmpSlot(), button.getCustomItemStack());
-					if (button.isClickable())
-						zButton.setClick(clickEvent(main, player, page, maxPage, button))
-								.setLeftClick(leftClick(main, player, page, maxPage, button))
-								.setRightClick(rightClick(main, player, page, maxPage, button))
-								.setMiddleClick(middleClick(main, player, page, maxPage, button));
+					if (button.getType().isMove() && !button.toButton(MoveButton.class).isDisplay())
+						if ((button.getType() == ButtonType.NEXT && page == maxPage)
+								|| (button.getType() == ButtonType.PREVIOUS && page == 1))
+							continue;
+
+					ItemStack itemStack = button.getCustomItemStack(player);
+					int slot = button.getTmpSlot();
+
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, slot, itemStack);
+					event.callEvent();
+
+					if (event.isCancelled())
+						continue;
+
+					ZButton zButton = addItem(event.getSlot(), event.getItemStack());
+					if (button.isClickable()) {
+						zButton.setClick(clickEvent(main, player, page, maxPage, button));
+						if (button.getType().isOtherClick()) {
+							zButton.setLeftClick(leftClick(main, player, page, maxPage, button))
+									.setRightClick(rightClick(main, player, page, maxPage, button))
+									.setMiddleClick(middleClick(main, player, page, maxPage, button));
+						}
+					}
+				}
+			}
+		}
+
+		ItemStack fillItemStack = inventory.getFillItem();
+		if (fillItemStack != null) {
+			for (int a = 0; a != super.inventory.getSize(); a++) {
+				if (!items.containsKey(a)) {
+					this.addItem(a, fillItemStack);
 				}
 			}
 		}
@@ -146,38 +210,47 @@ public class InventoryDefault extends VInventory {
 	 * @return
 	 */
 	private Consumer<InventoryClickEvent> clickEvent(ZShop plugin, Player player, int page, int maxPage,
-			PermissibleButton button) {
+			PlaceholderButton button) {
 		return event -> {
 
-			PermissibleButton finalButton = button;
+			PlaceholderButton finalButton = button;
 
 			if (finalButton.hasPermission()) {
 
-				if (!player.hasPermission(finalButton.getPermission())) {
+				if (!button.checkPermission(player)) {
 
 					if (finalButton.hasMessage())
 						message(player, finalButton.getMessage());
 
 					if (button.hasElseButton())
-						finalButton = finalButton.getElseButton().toButton(PermissibleButton.class);
+						finalButton = finalButton.getElseButton().toButton(PlaceholderButton.class);
 					else
 						return;
 
 				}
 			}
 
+			finalButton.playSound(player);
+
+			if (finalButton.closeInventory()) {
+				player.closeInventory();
+			}
+
 			switch (finalButton.getType()) {
 			case NEXT:
-				if (page != maxPage)
+				if (page != maxPage) {
 					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory,
 							oldInventories, command);
+				}
 				break;
 			case PREVIOUS:
-				if (page != 1)
+				if (page != 1) {
 					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory,
 							oldInventories, command);
+				}
 				break;
 			case ITEM_CONFIRM:
+			case ZSPAWNER:
 				this.oldInventories.add(this.inventory);
 				plugin.getShopManager().open(player, this.command, finalButton.toButton(ItemButton.class), page,
 						this.oldInventories, InventoryType.CONFIRM);
@@ -321,6 +394,13 @@ public class InventoryDefault extends VInventory {
 							InventoryType.SELL);
 				}
 				break;
+			case ITEM_CONFIRM_DOUBLE:
+
+				break;
+			case PERFORM_COMMAND:
+				PerformButton performButton = finalButton.toButton(PerformButton.class);
+				performButton.execute(player, ClickType.RIGHT);
+				break;
 			default:
 				break;
 
@@ -363,6 +443,15 @@ public class InventoryDefault extends VInventory {
 					plugin.getShopManager().open(player, this.command, itemButton, page, this.oldInventories,
 							InventoryType.BUY);
 				}
+				break;
+			case ITEM_CONFIRM_DOUBLE:
+				this.oldInventories.add(this.inventory);
+				plugin.getShopManager().open(player, this.command, finalButton.toButton(ItemButton.class), page,
+						this.oldInventories, InventoryType.CONFIRM);
+				break;
+			case PERFORM_COMMAND:
+				PerformButton performButton = finalButton.toButton(PerformButton.class);
+				performButton.execute(player, ClickType.LEFT);
 				break;
 			default:
 				break;

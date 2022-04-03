@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.button.Button;
@@ -46,7 +47,7 @@ public class InventoryConfirm extends VInventory {
 		this.oldPage = (Integer) args[3];
 		this.command = (Command) args[4];
 
-		createInventory(inventory.getName(), inventory.size());
+		createInventory(papi(inventory.getName(), player), inventory.size());
 
 		Inventory oldInventory = null;
 
@@ -69,22 +70,32 @@ public class InventoryConfirm extends VInventory {
 			if (button.getType().equals(ButtonType.SHOW_ITEM)) {
 
 				ShowButton showButton = button.toButton(ShowButton.class);
-				addItem(button.getSlot(), showButton.applyLore(this.button, 1, InventoryType.CONFIRM));
+				addItem(button.getSlot(), showButton.applyLore(player, this.button, 1, InventoryType.CONFIRM));
 
 			} else if (button.getType().isSlots()) {
 
 				button.toButton(SlotButton.class).getSlots().forEach(slot -> {
-					addItem(slot, button.getCustomItemStack());
+					addItem(slot, button.getCustomItemStack(player));
 				});
 
 			} else
 				addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
 		});
 
+		ItemStack fillItemStack = inventory.getFillItem();
+		if (fillItemStack != null) {
+			for (int a = 0; a != super.inventory.getSize(); a++) {
+				if (!items.containsKey(a)) {
+					this.addItem(a, fillItemStack);
+				}
+			}
+		}
+		
 		return InventoryResult.SUCCESS;
 	}
 
 	private Consumer<InventoryClickEvent> clickEvent(ZShop plugin, Player player, int page, Button currentButton) {
+		currentButton.playSound(player);
 		return event -> {
 			switch (currentButton.getType()) {
 			case BUY_CONFIRM:

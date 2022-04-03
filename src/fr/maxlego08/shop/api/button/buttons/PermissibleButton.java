@@ -1,5 +1,7 @@
 package fr.maxlego08.shop.api.button.buttons;
 
+import org.bukkit.entity.Player;
+
 import fr.maxlego08.shop.api.button.Button;
 
 public interface PermissibleButton extends Button{
@@ -39,5 +41,17 @@ public interface PermissibleButton extends Button{
 	 * @return true if message is not null
 	 */
 	public boolean hasMessage();
+	
+	/**
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public boolean checkPermission(Player player);
+	
+	/*
+	 * 
+	 */
+	public boolean needToGlow();
 	
 }

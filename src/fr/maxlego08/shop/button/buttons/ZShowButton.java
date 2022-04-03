@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -11,8 +12,10 @@ import fr.maxlego08.shop.api.button.buttons.ItemButton;
 import fr.maxlego08.shop.api.button.buttons.ShowButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.sound.SoundOption;
+import fr.maxlego08.shop.button.ZButton;
 
-public class ZShowButton extends ZPermissibleButton implements ShowButton {
+public class ZShowButton extends ZButton implements ShowButton {
 
 	private final List<String> lore;
 
@@ -25,8 +28,8 @@ public class ZShowButton extends ZPermissibleButton implements ShowButton {
 	 * @param elseButton
 	 * @param lore
 	 */
-	public ZShowButton(ButtonType type, ItemStack itemStack, int slot, List<String> lore, boolean isPermanent) {
-		super(type, itemStack, slot, isPermanent);
+	public ZShowButton(ButtonType type, ItemStack itemStack, int slot, List<String> lore, boolean isPermanent, SoundOption sound, boolean isClose) {
+		super(type, itemStack, slot, isPermanent, sound, isClose);
 		this.lore = lore;
 	}
 
@@ -36,14 +39,14 @@ public class ZShowButton extends ZPermissibleButton implements ShowButton {
 	}
 
 	@Override
-	public List<String> getLore(ItemButton button, int amount, InventoryType type) {
+	public List<String> getLore(Player player, ItemButton button, int amount, InventoryType type) {
 		return lore.stream().map(line -> {
-			
+
 			line = line.replace("%sellPrice%",
-					String.valueOf(button.getSellPrice() * (type == InventoryType.SELL ? amount : 1)));
+					button.getSellPriceAsString(player, (type == InventoryType.SELL ? amount : 1)));
 			line = line.replace("%buyPrice%",
-					String.valueOf(button.getBuyPrice() * (type == InventoryType.BUY ? amount : 1)));
-			
+					button.getBuyPriceAsString(player, (type == InventoryType.BUY ? amount : 1)));
+
 			line = line.replace("%currency%", button.getEconomy().getCurrenry());
 			line = line.replace("&", "§");
 			return line;
@@ -51,21 +54,21 @@ public class ZShowButton extends ZPermissibleButton implements ShowButton {
 	}
 
 	@Override
-	public ItemStack applyLore(ItemButton button, int amount, InventoryType type) {
+	public ItemStack applyLore(Player player, ItemButton button, int amount, InventoryType type) {
 		ItemStack itemStack = button.getItemStack().clone();
 		itemStack.setAmount(amount);
 		List<String> lore = new ArrayList<>();
 		ItemMeta itemMeta = itemStack.getItemMeta();
-		
+
 		if (itemMeta == null)
 			return itemStack;
-		
+
 		if (itemMeta.hasLore())
 			lore.addAll(itemMeta.getLore());
-		lore.addAll(getLore(button, amount, type));
+		lore.addAll(getLore(player, button, amount, type));
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);
-		return itemStack;
+		return papi(itemStack, player);
 	}
 
 }

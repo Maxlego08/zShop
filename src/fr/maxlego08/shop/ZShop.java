@@ -5,32 +5,37 @@ import org.bukkit.plugin.ServicePriority;
 
 import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
+import fr.maxlego08.shop.api.history.HistoryManager;
 import fr.maxlego08.shop.command.CommandManager;
+import fr.maxlego08.shop.history.ZHistoryManager;
 import fr.maxlego08.shop.inventory.InventoryLoader;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.inventory.inventories.InventoryConfirm;
+import fr.maxlego08.shop.inventory.inventories.InventoryConfirm2;
 import fr.maxlego08.shop.inventory.inventories.InventoryDefault;
 import fr.maxlego08.shop.inventory.inventories.InventoryShop;
 import fr.maxlego08.shop.listener.AdapterListener;
 import fr.maxlego08.shop.listener.HeadListener;
-import fr.maxlego08.shop.save.Lang;
+import fr.maxlego08.shop.save.MessageLoader;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.utils.Metrics;
-import fr.maxlego08.shop.zcore.utils.VersionChecker;
 import fr.maxlego08.shop.zcore.utils.plugins.Plugins;
+import fr.maxlego08.shop.zcore.utils.plugins.VersionChecker;
 
 public class ZShop extends ZPlugin {
 
 	private final IEconomy economy = new ZEconomy(this);
 	private ShopManager shopManager = new ZShopManager(this, economy);
 	private final fr.maxlego08.shop.api.InventoryManager inventory = new InventoryLoader(this, economy);
+	private HistoryManager historyManager;
 
 	@Override
 	public void onEnable() {
 
 		preEnable();
 
+		historyManager = new ZHistoryManager(this, super.getPersist());
 		commandManager = new CommandManager(this);
 
 		if (!isEnabled())
@@ -49,7 +54,7 @@ public class ZShop extends ZPlugin {
 				inventory.loadInventories();
 			} catch (Exception e) {
 				e.printStackTrace();
-				getServer().getPluginManager().disablePlugin(this);
+				// getServer().getPluginManager().disablePlugin(this);
 				return;
 			}
 
@@ -58,7 +63,7 @@ public class ZShop extends ZPlugin {
 				shopManager.loadCommands();
 			} catch (Exception e) {
 				e.printStackTrace();
-				getServer().getPluginManager().disablePlugin(this);
+				// getServer().getPluginManager().disablePlugin(this);
 				return;
 			}
 		};
@@ -75,24 +80,30 @@ public class ZShop extends ZPlugin {
 		this.registerInventory(EnumInventory.INVENTORY_DEFAULT, new InventoryDefault());
 		this.registerInventory(EnumInventory.INVENTORY_SHOP, new InventoryShop());
 		this.registerInventory(EnumInventory.INVENTORY_CONFIRM, new InventoryConfirm());
+		this.registerInventory(EnumInventory.INVENTORY_CONFIRM_DOUBLE, new InventoryConfirm2());
 
 		/* Add Listener */
 
 		addListener(new AdapterListener(this));
 		addListener(inventoryManager);
+		addListener(commandManager);
 
-		VersionChecker versionChecker = new VersionChecker(this);
-		versionChecker.useLastVersion(this);
-		addListener(versionChecker);
+		VersionChecker versionChecker = new VersionChecker(this, 2);
+		versionChecker.useLastVersion();
 
 		/* Add Saver */
-		addSave(new Lang());
+		// addSave(new Lang());
+		addSave(new MessageLoader(this));
 		// addSave(new CooldownBuilder());
 
 		getSavers().forEach(saver -> saver.load(getPersist()));
 
-		new Metrics(this);
-
+		new Metrics(this, 5881);
+	
+		if (isEnable(Plugins.ZTRANSLATOR)) {
+			this.getLog().log("zTranslator found. We will use for translations.");
+		}
+		
 		postEnable();
 	}
 
@@ -118,6 +129,10 @@ public class ZShop extends ZPlugin {
 
 	public ShopManager getShopManager() {
 		return shopManager;
+	}
+
+	public HistoryManager getHistoryManager() {
+		return historyManager;
 	}
 
 }

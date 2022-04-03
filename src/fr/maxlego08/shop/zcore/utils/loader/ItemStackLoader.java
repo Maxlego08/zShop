@@ -2,8 +2,10 @@ package fr.maxlego08.shop.zcore.utils.loader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -11,25 +13,36 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
+
+import com.songoda.epicheads.core.utils.ItemUtils;
+import com.songoda.epicheads.head.Head;
 
 import fr.maxlego08.shop.api.Loader;
 import fr.maxlego08.shop.api.exceptions.ItemEnchantException;
 import fr.maxlego08.shop.api.exceptions.ItemFlagException;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
-import fr.maxlego08.shop.zcore.utils.ItemDecoder;
+import fr.maxlego08.shop.zcore.utils.Heads;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
+import fr.maxlego08.shop.zcore.utils.itemstack.NMSUtils;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 
+@SuppressWarnings("deprecation")
 public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
-	@SuppressWarnings("deprecation")
 	public ItemStack load(YamlConfiguration configuration, String path, Object... args) {
 
-		int data = configuration.getInt(path + ".data", 0);
-		int amount = configuration.getInt(path + ".amount", 1);
-		short durability = (short) configuration.getInt(path + ".durability", 0);
+		int data = configuration.getInt(path + "data", 0);
+		int amount = configuration.getInt(path + "amount", 1);
+		short durability = (short) configuration.getInt(path + "durability", 0);
+		int modelID = configuration.getInt(path + "modelID", 0);
 
+		if (modelID < 0)
+			modelID = 0;		
+		
 		Material material = null;
 
 		int value = configuration.getInt(path + "material", 0);
@@ -54,9 +67,33 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 				int id = Integer.valueOf(idAsString);
 
 				HeadDatabaseAPI api = new HeadDatabaseAPI();
-				
+
 				item = api.getItemHead(String.valueOf(id));
-				
+
+			} catch (Exception e) {
+				Logger.info("Impossible to find the head with : " + idAsString, LogType.ERROR);
+				e.printStackTrace();
+			}
+		} else if (currentMateraial.startsWith("eh:")) {
+
+			String idAsString = currentMateraial.replace("eh:", "");
+
+			try {
+				int id = Integer.valueOf(idAsString);
+
+				Heads heads = new Heads();
+				Optional<Head> optional = heads.getHead(id);
+
+				if (!optional.isPresent()) {
+					Logger.info("Impossible to find the head with : " + idAsString, LogType.ERROR);
+					item = new ItemStack(Material.AIR);
+				} else {
+
+					Head head = optional.get();
+					item = ItemUtils.getCustomHead(head.getURL());
+
+				}
+
 			} catch (Exception e) {
 				Logger.info("Impossible to find the head with : " + idAsString, LogType.ERROR);
 				e.printStackTrace();
@@ -64,15 +101,41 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
 		} else {
 
-			if (material == null) {
+			if (material == null || material.equals(Material.AIR))
 				return null;
-			}
-
-			if (material.equals(Material.AIR)) {
-				return null;
-			}
 
 			item = new ItemStack(material, amount, (byte) data);
+
+		}
+
+		if (configuration.contains(path + "url")) {
+
+			item = createSkull(configuration.getString(path + "url"));
+
+		} else if (configuration.contains(path + "potion")) {
+
+			PotionType type = PotionType.valueOf(configuration.getString(path + "potion", "REGEN").toUpperCase());
+			int level = configuration.getInt(path + "level", 1);
+			boolean splash = configuration.getBoolean(path + "splash", false);
+			boolean extended = configuration.getBoolean(path + "extended", false);
+			
+			item = new Potion(type, level, splash, extended).toItemStack(amount);
+
+		} else if (configuration.contains(path + "color")) {
+
+			if (material.equals(Material.LEATHER_BOOTS) || material.equals(Material.LEATHER_HELMET)
+					|| material.equals(Material.LEATHER_LEGGINGS) || material.equals(Material.LEATHER_CHESTPLATE)) {
+
+				LeatherArmorMeta armorMeta = (LeatherArmorMeta) item.getItemMeta();
+				Color color = fromString(configuration.getString(path + "color"));
+				
+				if (color != null)
+					armorMeta.setColor(color);
+				else
+					Logger.info("Impossible de trouver la couleur: \"" + color + "\"");
+				
+				item.setItemMeta(armorMeta);
+			}
 
 		}
 
@@ -98,6 +161,18 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
 		List<String> enchants = configuration.getStringList(path + "enchants");
 
+		boolean isGlowing = configuration.getBoolean(path + "glow");
+
+		if (isGlowing && NMSUtils.getNMSVersion() != 1.7) {
+
+			meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
+			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+		}
+
+		if (modelID > 0)
+			meta.setCustomModelData(modelID);
+		
 		// Permet de charger l'enchantement de l'item
 		if (enchants.size() != 0) {
 
@@ -142,7 +217,7 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 		List<String> flags = configuration.getStringList(path + "flags");
 
 		// Permet de charger les différents flags
-		if (flags.size() != 0 && ItemDecoder.getNMSVersion() != 1.7) {
+		if (flags.size() != 0 && NMSUtils.getNMSVersion() != 1.7) {
 
 			for (String flagString : flags) {
 
@@ -168,7 +243,6 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public void save(ItemStack item, YamlConfiguration configuration, String path) {
 
 		if (item == null) {
@@ -185,7 +259,7 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 			configuration.set(path + "name", meta.getDisplayName().replace("&", "§"));
 		if (meta.hasLore())
 			configuration.set(path + "lore", colorReverse(meta.getLore()));
-		if (ItemDecoder.getNMSVersion() != 1.7 && meta.getItemFlags().size() != 0)
+		if (NMSUtils.getNMSVersion() != 1.7 && meta.getItemFlags().size() != 0)
 			configuration.set(path + "flags",
 					meta.getItemFlags().stream().map(flag -> flag.name()).collect(Collectors.toList()));
 		if (meta.hasEnchants()) {
@@ -201,7 +275,10 @@ public class ItemStackLoader extends ZUtils implements Loader<ItemStack> {
 
 			configuration.set(path + "enchants", enchantList);
 		}
-
+		if (meta.hasCustomModelData()){
+  			configuration.set(path + "modelID", meta.getCustomModelData());
+		}
+		
 	}
 
 }

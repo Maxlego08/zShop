@@ -23,6 +23,7 @@ import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
 import fr.maxlego08.shop.api.exceptions.InventorySizeException;
 import fr.maxlego08.shop.api.exceptions.NameAlreadyExistException;
 import fr.maxlego08.shop.api.inventory.Inventory;
+import fr.maxlego08.shop.zcore.utils.loader.ItemStackLoader;
 import fr.maxlego08.shop.zcore.utils.loader.button.ButtonCollections;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 
@@ -47,10 +48,20 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 	@Override
 	public Inventory getInventory(String name) {
-		if (name == null)
+		return this.getInventory(name, true);
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @param throwError
+	 * @return
+	 */
+	private Inventory getInventory(String name, boolean throwError) {
+		if (name == null && throwError)
 			throw new InventoryNotFoundException("Unable to find the inventory with name null");
 		Inventory inventory = inventories.getOrDefault(name.toLowerCase(), null);
-		if (inventory == null)
+		if (inventory == null && throwError)
 			throw new InventoryNotFoundException("Unable to find the inventory " + name);
 		return inventory;
 	}
@@ -64,7 +75,7 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 
 		this.delete();
 
-		defaultLore = config.getStringList("defaultItemLore");
+		defaultLore = color(config.getStringList("defaultItemLore"));
 
 		if (!config.contains("categories"))
 			throw new CategoriesNotFoundException("Cannot find the list of categories !");
@@ -112,7 +123,15 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 		Loader<List<Button>> loader = new ButtonCollections(plugin, economy);
 		List<Button> buttons = loader.load(configuration, lowerCategory);
 
-		Inventory inventory = new InventoryObject(name, type, size, buttons);
+		ItemStack itemStack = null;
+
+		if (configuration.contains("fillItem")) {
+			Loader<ItemStack> itemStackLoader = new ItemStackLoader();
+			itemStack = itemStackLoader.load(configuration, "fillItem.");
+
+		}
+
+		Inventory inventory = new InventoryObject(name, type, size, buttons, lowerCategory, itemStack);
 		inventories.put(lowerCategory, inventory);
 
 		if (type != InventoryType.DEFAULT)
@@ -147,6 +166,15 @@ public class InventoryLoader extends YamlUtils implements InventoryManager {
 				return optional;
 		}
 		return Optional.empty();
+	}
+
+	@Override
+	public Optional<Inventory> getInventoryByName(String name) {
+		Inventory inventory = getInventory(name, false);
+		if (inventory != null)
+			return Optional.of(inventory);
+		return inventories.values().stream().filter(inv -> inv.getName().toLowerCase().contains(name.toLowerCase()))
+				.findFirst();
 	}
 
 }

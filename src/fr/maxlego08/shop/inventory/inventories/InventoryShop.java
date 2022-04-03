@@ -19,10 +19,13 @@ import fr.maxlego08.shop.api.button.buttons.BackButton;
 import fr.maxlego08.shop.api.button.buttons.HomeButton;
 import fr.maxlego08.shop.api.button.buttons.InventoryButton;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
+import fr.maxlego08.shop.api.button.buttons.PerformButton;
 import fr.maxlego08.shop.api.button.buttons.ShowButton;
+import fr.maxlego08.shop.api.button.buttons.SlotButton;
 import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.events.ZShopButtonRenderEvent;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.exceptions.InventoryTypeException;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -58,7 +61,7 @@ public class InventoryShop extends VInventory {
 		if (!inventory.getType().isShop())
 			throw new InventoryTypeException("Cannot open buy inventory with type " + inventory.getType());
 
-		createInventory(inventory.getName(), inventory.size());
+		createInventory(papi(inventory.getName(), player), inventory.size());
 
 		Inventory oldInventory = null;
 
@@ -73,45 +76,91 @@ public class InventoryShop extends VInventory {
 
 		buttons.forEach(button -> {
 
-			if (button.getType().equals(ButtonType.HOME))
-				button.toButton(HomeButton.class).setBackInventory(command.getInventory());
+			if (button.getType().isSlots()) {
+				button.toButton(SlotButton.class).getSlots().forEach(slot -> {
+					addItem(slot, button.getCustomItemStack(player));
+				});
+			} else {
 
-			if (button.getType().equals(ButtonType.BACK) && finalInventory != null)
-				button.toButton(BackButton.class).setBackInventory(finalInventory);
+				if (button.getType().equals(ButtonType.HOME)) {
+					button.toButton(HomeButton.class).setBackInventory(command.getInventory());
+				} else if (button.getType().equals(ButtonType.BACK) && finalInventory != null) {
+					button.toButton(BackButton.class).setBackInventory(finalInventory);
+				}
 
-			if (button.getType().equals(ButtonType.SHOW_ITEM)) {
+				if (button.getType().equals(ButtonType.SHOW_ITEM)) {
 
-				ShowButton showButton = button.toButton(ShowButton.class);
-				addItem(button.getSlot(), showButton.applyLore(this.button, amount, type));
-				this.shows.add(showButton);
+					ShowButton showButton = button.toButton(ShowButton.class);
 
-			} else if (button.getType().equals(ButtonType.SET_TO_MAX)) {
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(showButton, player, button.getSlot(),
+							showButton.applyLore(this.player, this.button, amount, type));
+					event.callEvent();
 
-				// Bouton max
+					if (event.isCancelled())
+						return;
 
-				ItemStack itemStack = button.getItemStack();
-				ItemMeta itemMeta = itemStack.getItemMeta();
-				if (itemMeta.hasDisplayName())
-					itemMeta.setDisplayName(
-							itemMeta.getDisplayName().replace("%maxStack%", String.valueOf(this.button.getMaxStack())));
-				itemStack.setItemMeta(itemMeta);
+					addItem(event.getSlot(), event.getItemStack());
+					this.shows.add(showButton);
 
-				addItem(button.getSlot(), itemStack).setClick(clickEvent(main, player, page, button));
+				} else if (button.getType().equals(ButtonType.SET_TO_MAX)) {
 
-			} else if (button.getType().equals(ButtonType.ADD) || button.getType().equals(ButtonType.REMOVE))
-				// Bouton add remove
+					// Bouton max
 
-				addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
+					ItemStack itemStack = button.getItemStack();
+					ItemMeta itemMeta = itemStack.getItemMeta();
+					if (itemMeta.hasDisplayName())
+						itemMeta.setDisplayName(itemMeta.getDisplayName().replace("%maxStack%",
+								String.valueOf(this.button.getMaxStack())));
+					itemStack.setItemMeta(itemMeta);
 
-			else // Bouton classique
-				addItem(button.getSlot(), button.getItemStack()).setClick(clickEvent(main, player, page, button));
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, button.getSlot(),
+							itemStack);
+					event.callEvent();
 
+					if (event.isCancelled())
+						return;
+
+					addItem(event.getSlot(), event.getItemStack()).setClick(clickEvent(main, player, page, button));
+
+				} else if (button.getType().equals(ButtonType.ADD) || button.getType().equals(ButtonType.REMOVE)) {
+					// Bouton add remove
+
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, button.getSlot(),
+							button.getItemStack());
+					event.callEvent();
+
+					if (event.isCancelled())
+						return;
+
+					addItem(event.getSlot(), event.getItemStack()).setClick(clickEvent(main, player, page, button));
+
+				} else {// Bouton classique
+					ZShopButtonRenderEvent event = new ZShopButtonRenderEvent(button, player, button.getSlot(),
+							button.getItemStack());
+					event.callEvent();
+
+					if (event.isCancelled())
+						return;
+
+					addItem(event.getSlot(), event.getItemStack()).setClick(clickEvent(main, player, page, button));
+				}
+			}
 		});
+
+		ItemStack fillItemStack = inventory.getFillItem();
+		if (fillItemStack != null) {
+			for (int a = 0; a != super.inventory.getSize(); a++) {
+				if (!items.containsKey(a)) {
+					this.addItem(a, fillItemStack);
+				}
+			}
+		}
 
 		return InventoryResult.SUCCESS;
 	}
 
 	private Consumer<InventoryClickEvent> clickEvent(ZShop plugin, Player player, int page, Button currentButton) {
+		currentButton.playSound(player);
 		return event -> {
 			switch (currentButton.getType()) {
 			case BUY_CONFIRM:
@@ -147,18 +196,22 @@ public class InventoryShop extends VInventory {
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
 						new ArrayList<>(), command);
 			case INVENTORY:
-				
+
 				inventoryButton = currentButton.toButton(InventoryButton.class);
 				oldInventories.add(this.inventory);
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, oldPage,
 						inventoryButton.getInventory(), this.oldInventories, this.command, this.button, this.type);
-				
+
 				break;
 			case BACK:
 				inventoryButton = currentButton.toButton(InventoryButton.class);
 				oldInventories.remove(inventoryButton.getInventory());
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, oldPage,
 						inventoryButton.getInventory(), this.oldInventories, this.command, this.button, this.type);
+				break;
+			case PERFORM_COMMAND:
+				PerformButton performButton = currentButton.toButton(PerformButton.class);
+				performButton.execute(player, event.getClick());
 				break;
 			default:
 				break;
@@ -168,7 +221,7 @@ public class InventoryShop extends VInventory {
 
 	private void itemRender() {
 		this.shows.forEach(showButton -> {
-			super.inventory.setItem(showButton.getSlot(), showButton.applyLore(this.button, amount, type));
+			super.inventory.setItem(showButton.getSlot(), showButton.applyLore(this.player, this.button, amount, type));
 		});
 	}
 

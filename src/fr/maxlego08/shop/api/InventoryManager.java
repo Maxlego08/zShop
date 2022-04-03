@@ -59,5 +59,12 @@ public interface InventoryManager {
 	 * @return {@link Optional}
 	 */
 	public Optional<ItemButton> getItemButton(ItemStack itemStack);
+
+	/**
+	 * Get inventory by name
+	 * @param name
+	 * @return {@link Inventory}
+	 */
+	public Optional<Inventory> getInventoryByName(String name);
 	
 }

@@ -1,12 +1,13 @@
 package fr.maxlego08.shop;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.Material;
@@ -16,31 +17,42 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import fr.maxlego08.shop.api.IEconomy;
 import fr.maxlego08.shop.api.ShopManager;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
+import fr.maxlego08.shop.api.button.buttons.ItemConfirmDoubleButton;
 import fr.maxlego08.shop.api.command.Command;
-import fr.maxlego08.shop.api.command.OptionalAction;
 import fr.maxlego08.shop.api.command.OptionalCommand;
 import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.enums.InventoryType;
+import fr.maxlego08.shop.api.enums.OptionalAction;
+import fr.maxlego08.shop.api.enums.PermissionType;
 import fr.maxlego08.shop.api.events.ZShopInventoryOpen;
 import fr.maxlego08.shop.api.exceptions.InventoryNotFoundException;
+import fr.maxlego08.shop.api.history.HistoryManager;
 import fr.maxlego08.shop.api.inventory.Inventory;
+import fr.maxlego08.shop.api.permission.Permission;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.CommandObject;
 import fr.maxlego08.shop.command.commands.CommandInventory;
 import fr.maxlego08.shop.inventory.InventoryManager;
-import fr.maxlego08.shop.save.Lang;
+import fr.maxlego08.shop.permission.ZPermission;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
-import fr.maxlego08.shop.zcore.utils.ItemDecoder;
+import fr.maxlego08.shop.zcore.enums.Message;
+import fr.maxlego08.shop.zcore.utils.TemporyObject;
+import fr.maxlego08.shop.zcore.utils.itemstack.NMSUtils;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
 
 public class ZShopManager extends YamlUtils implements ShopManager {
 
 	private final ZShop plugin;
 	private final IEconomy economy;
+	private final List<Permission> permissions = new ArrayList<>();
+	private final Map<UUID, TemporyObject> tmpObjects = new HashMap<>();
+	private boolean registerCommandInSpigot = true;
+	private Economy defaultEconomy = Economy.VAULT;
 
 	public ZShopManager(ZShop plugin, IEconomy economy) {
 		super(plugin);
@@ -53,10 +65,43 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		FileConfiguration config = getConfig();
 
+		permissions.clear();
+
+		if (config.getConfigurationSection("boostSellPermission") != null && config.getBoolean("useSellPermission")) {
+
+			for (String value : config.getConfigurationSection("boostSellPermission.").getKeys(false)) {
+
+				double percent = Double.valueOf(value);
+				String permissionString = config.getString("boostSellPermission." + percent);
+				Permission permission = new ZPermission(PermissionType.SELL, percent, permissionString);
+				permissions.add(permission);
+
+			}
+
+		}
+
+		if (config.getConfigurationSection("boostBuyPermission") != null && config.getBoolean("useBuyPermission")) {
+
+			for (String value : config.getConfigurationSection("boostBuyPermission.").getKeys(false)) {
+
+				double percent = Double.valueOf(value);
+				String permissionString = config.getString("boostBuyPermission." + percent);
+				Permission permission = new ZPermission(PermissionType.BUY, percent, permissionString);
+				permissions.add(permission);
+
+			}
+
+		}
+
+		registerCommandInSpigot = config.getBoolean("registerCommandInSpigot", true);
+
+		success("Loaded " + permissions.size() + " permissions");
+
 		ConfigurationSection section = config.getConfigurationSection("commands.");
 
 		CommandManager commandManager = plugin.getCommandManager();
 		commandManager.clear();
+
 		for (String key : section.getKeys(false)) {
 
 			String path = "commands." + key + ".";
@@ -87,7 +132,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 			Command command = new CommandObject(stringCommand, aliases, inventory, permission, description, commands);
 			commandManager.registerCommand(stringCommand, new CommandInventory(plugin.getCommandManager(), command),
-					aliases);
+					aliases, registerCommandInSpigot);
 
 			success("Register command /" + stringCommand);
 
@@ -101,9 +146,33 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		Inventory inventory = command.getInventory();
 
 		InventoryManager inventoryManager = plugin.getInventoryManager();
-		inventoryManager.createInventory(fr.maxlego08.shop.zcore.enums.EnumInventory.INVENTORY_DEFAULT, player, 1,
-				inventory, new ArrayList<>(), command);
+		inventoryManager.createInventory(EnumInventory.INVENTORY_DEFAULT, player, 1, inventory, new ArrayList<>(),
+				command);
 
+	}
+
+	@Override
+	public void open(Player player, Command command, String category) {
+
+		if (category == null) {
+			message(player, Message.CATEGORY_EMPTY);
+			return;
+		}
+
+		Optional<Inventory> optional = getInventoryByName(category);
+
+		if (!optional.isPresent()) {
+			message(player, Message.CATEGORY_DOESNT_EXIST, "%name%", category);
+			return;
+		}
+
+		Inventory inventory = optional.get();
+
+		List<Inventory> list = new ArrayList<>();
+		list.add(command.getInventory());
+
+		InventoryManager inventoryManager = plugin.getInventoryManager();
+		inventoryManager.createInventory(EnumInventory.INVENTORY_DEFAULT, player, 1, inventory, list, command);
 	}
 
 	@Override
@@ -116,10 +185,13 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		info("Reload starting...");
 
 		info("Closure of all inventories...");
-		closeInventory();
+		try {
+			closeInventory();
+		} catch (Exception e) {
+		}
 
-		plugin.getSavers().forEach(saver -> saver.load(plugin.getPersist()));
-		
+		plugin.getSavers().forEach(saver -> saver.load(this.plugin.getPersist()));
+
 		info("Deleting commands...");
 		FileConfiguration configuration = getConfig();
 
@@ -142,12 +214,21 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		info("Reload config file");
 		plugin.reloadConfig();
 
+		FileConfiguration config = getConfig();
+		try {
+			this.defaultEconomy = Economy
+					.valueOf(config.getString("defaultEconomy", Economy.VAULT.name()).toUpperCase());
+			success("Default Economy: �7" + defaultEconomy.name());
+		} catch (Exception e) {
+			error("Could not find " + config.getString("defaultEconomy") + " economy");
+		}
+
 		/* Load inventories */
 		try {
 			plugin.getInventory().loadInventories();
 		} catch (Exception e) {
 			e.printStackTrace();
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
+			// plugin.getServer().getPluginManager().disablePlugin(plugin);
 			return;
 		}
 
@@ -156,7 +237,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			loadCommands();
 		} catch (Exception e) {
 			e.printStackTrace();
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
+			// plugin.getServer().getPluginManager().disablePlugin(plugin);
 			return;
 		}
 
@@ -168,8 +249,8 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	private Object getPrivateField(Object object, String field)
 			throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		Class<?> clazz = object.getClass();
-		Field objectField = field.equals("commandMap") ? clazz.getDeclaredField(field)
-				: field.equals("knownCommands") ? ItemDecoder.isNewVersion()
+		java.lang.reflect.Field objectField = field.equals("commandMap") ? clazz.getDeclaredField(field)
+				: field.equals("knownCommands") ? NMSUtils.isNewVersion()
 						? clazz.getSuperclass().getDeclaredField(field) : clazz.getDeclaredField(field) : null;
 		objectField.setAccessible(true);
 		Object result = objectField.get(object);
@@ -217,10 +298,10 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		ZShopInventoryOpen event = new ZShopInventoryOpen(typeInventory, command, player);
 		event.callEvent();
-		
+
 		if (event.isCancelled())
 			return;
-		
+
 		switch (type) {
 		case BUY:
 		case SELL:
@@ -242,14 +323,14 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	public void sellHand(Player player, int amount) {
 
 		if (player.getItemInHand() == null || player.getItemInHand().getType().equals(Material.AIR)) {
-			message(player, Lang.sellHandAir);
+			message(player, Message.SELLHAND_AIR);
 			return;
 		}
 
 		Optional<ItemButton> optional = getItemButton(player.getItemInHand());
-		
+
 		if (!optional.isPresent())
-			message(player, Lang.sellHandEmpty);
+			message(player, Message.SELLHAND_EMPTY);
 		else {
 			ItemButton button = optional.get();
 			button.sell(player, amount);
@@ -268,11 +349,12 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		double price = 0;
 		Map<ItemStack, Integer> map = new HashMap<ItemStack, Integer>();
 		Economy economy = null;
+		PlayerInventory inventory = player.getInventory();
 
 		// On parcours l'inventaire du joueur
-		for (int slot = 0; slot != player.getInventory().getContents().length; slot++) {
+		for (int slot = 0; slot != 36; slot++) {
 
-			ItemStack itemStack = player.getInventory().getContents()[slot];
+			ItemStack itemStack = inventory.getContents()[slot];
 
 			// On verif si l'item est pas null
 			if (itemStack != null) {
@@ -283,25 +365,27 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 					ItemButton button = optional.get();
 
-					double tmpPrice = button.getSellPrice();
+					double tmpPrice = button.getSellPrice(player);
 
 					if (tmpPrice <= 0)
 						continue;
 
+					if (economy != null && !economy.equals(button.getEconomy()))
+						continue;
+
 					int tmpAmount = itemStack.getAmount();
+
 					// On multiplie par le nombre d'item
 					tmpPrice *= tmpAmount;
 					// On modifie les varirables
 					price += tmpPrice;
 					// on ajoute l'item et le nombre d'item dans la map
 					map.put(itemStack, tmpAmount + map.getOrDefault(itemStack, 0));
+
 					economy = button.getEconomy();
 
 					// On retire l'item de l'inventaire du joueur
-					if (slot == 40)
-						player.getInventory().setItemInOffHand(null);
-					else
-						player.getInventory().remove(itemStack);
+					inventory.setItem(slot, null);
 
 				}
 
@@ -309,7 +393,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		}
 
 		if (economy == null) {
-			message(player, Lang.sellAllError);
+			message(player, Message.SELLALL_ERROR);
 			return;
 
 		}
@@ -321,25 +405,81 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			Integer amout = e.getValue();
 			int tmp = atomicInteger.addAndGet(1);
 			if (tmp == map.size())
-				builder.append(" " + Lang.and + " ");
+				builder.append(" " + Message.AND + " ");
 			else if (tmp != 1)
 				builder.append(", ");
-			String message = Lang.sellHandAllItem.replace("%amount%", String.valueOf(amout)).replace("%item%",
+			String message = Message.SELLHAND_ALLITEM.replace("%amount%", String.valueOf(amout)).replace("%item%",
 					getItemName(items));
 			builder.append(message);
 		}
 
 		this.economy.depositMoney(economy, player, price);
 
-		String str = Lang.sellHandAll.replace("%item%", builder.toString());
-		str = str.replace("%currency%", economy.getCurrenry());
-		message(player, str.replace("%price%", String.valueOf(price)));
+		message(player, Message.SELLHAND_ALL, "%price%", format(price), "%item%", builder.toString(), "%currency%",
+				economy.getCurrenry());
 
 	}
 
 	@Override
 	public Optional<ItemButton> getItemButton(ItemStack itemStack) {
 		return plugin.getInventory().getItemButton(itemStack);
+	}
+
+	@Override
+	public Optional<Permission> getPermission(String permission) {
+		return permissions.stream().filter(perm -> perm.getPermission().equals(permission)).findFirst();
+	}
+
+	@Override
+	public Optional<Permission> getPermission(Player player, PermissionType type) {
+
+		if (this.tmpObjects.containsKey(player.getUniqueId())) {
+			TemporyObject object = this.tmpObjects.get(player.getUniqueId());
+			if (!object.isExpired())
+				return object.getPermission();
+		}
+
+		Optional<Permission> optional = permissions.stream()
+				.filter(perm -> perm.getType().equals(type) && player.hasPermission(perm.getPermission()))
+				.sorted(Comparator.comparingDouble(Permission::getPercent).reversed()).findFirst();
+
+		this.tmpObjects.put(player.getUniqueId(), new TemporyObject(optional));
+		return optional;
+	}
+
+	@Override
+	public Optional<Inventory> getInventoryByName(String name) {
+		return plugin.getInventory().getInventoryByName(name);
+	}
+
+	@Override
+	public HistoryManager getHistory() {
+		return plugin.getHistoryManager();
+	}
+
+	@Override
+	public void open(Player player, Command command, ItemConfirmDoubleButton button, int page,
+			List<Inventory> oldInventories, boolean isRight) {
+
+		InventoryType type = InventoryType.CONFIRM;
+		Inventory typeInventory = plugin.getInventory().getInventory(type);
+
+		if (typeInventory == null)
+			throw new InventoryNotFoundException("Cannot find the inventory with the type " + type);
+
+		ZShopInventoryOpen event = new ZShopInventoryOpen(typeInventory, command, player);
+		event.callEvent();
+
+		if (event.isCancelled())
+			return;
+
+		plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_CONFIRM, player, 1, typeInventory, button,
+				oldInventories, page, command, isRight);
+	}
+
+	@Override
+	public Economy getDefaultEconomy() {
+		return this.defaultEconomy;
 	}
 
 }

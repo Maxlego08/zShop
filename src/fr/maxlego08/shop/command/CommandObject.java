@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import fr.maxlego08.shop.api.command.Command;
-import fr.maxlego08.shop.api.command.OptionalAction;
 import fr.maxlego08.shop.api.command.OptionalCommand;
+import fr.maxlego08.shop.api.enums.OptionalAction;
 import fr.maxlego08.shop.api.inventory.Inventory;
 
 public class CommandObject implements Command {

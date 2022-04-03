@@ -5,7 +5,7 @@ import fr.maxlego08.shop.api.exceptions.ButtonTypeException;
 public enum ButtonType {
 
 	NONE,
-	
+
 	NONE_SLOT,
 
 	BACK,
@@ -19,24 +19,29 @@ public enum ButtonType {
 	ITEM,
 
 	ITEM_CONFIRM,
+	
+	ITEM_CONFIRM_DOUBLE,
 
 	INVENTORY,
-	
+
 	BUY_CONFIRM,
-	
+
 	SELL_CONFIRM,
-	
+
 	ADD,
-	
+
 	REMOVE,
-	
+
 	SET_TO_ONE,
-	
+
 	SET_TO_MAX,
-	
+
 	SHOW_ITEM,
-	
-	
+
+	PERFORM_COMMAND,
+
+	ZSPAWNER,
+
 	;
 
 	/**
@@ -65,6 +70,36 @@ public enum ButtonType {
 
 	public boolean isSlots() {
 		return this == NONE_SLOT;
+	}
+
+	public boolean isOtherClick() {
+		switch (this) {
+		case ITEM:
+		case ZSPAWNER:
+		case PERFORM_COMMAND:
+			return true;
+		case ADD:
+		case BACK:
+		case BUY_CONFIRM:
+		case HOME:
+		case INVENTORY:
+		case ITEM_CONFIRM:
+		case NEXT:
+		case NONE:
+		case NONE_SLOT:
+		case PREVIOUS:
+		case REMOVE:
+		case SELL_CONFIRM:
+		case SET_TO_MAX:
+		case SET_TO_ONE:
+		case SHOW_ITEM:
+		default:
+			return false;
+		}
+	}
+
+	public boolean isMove() {
+		return NEXT == this || this == PREVIOUS;
 	}
 
 }

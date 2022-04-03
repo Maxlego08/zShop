@@ -4,6 +4,7 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.buttons.AddRemoveButton;
 import fr.maxlego08.shop.api.enums.ButtonType;
+import fr.maxlego08.shop.api.sound.SoundOption;
 import fr.maxlego08.shop.button.ZButton;
 
 public class ZAddRemoveButton extends ZButton implements AddRemoveButton {
@@ -16,8 +17,8 @@ public class ZAddRemoveButton extends ZButton implements AddRemoveButton {
 	 * @param slot
 	 * @param amount
 	 */
-	public ZAddRemoveButton(ButtonType type, ItemStack itemStack, int slot, int amount, boolean isPermanent) {
-		super(type, itemStack, slot, isPermanent);
+	public ZAddRemoveButton(ButtonType type, ItemStack itemStack, int slot, int amount, boolean isPermanent, SoundOption sound, boolean isClose) {
+		super(type, itemStack, slot, isPermanent, sound, isClose);
 		this.amount = amount;
 	}
 

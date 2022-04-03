@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
+import fr.maxlego08.shop.zcore.logger.Logger;
+import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.builder.ItemBuilder;
 
@@ -27,6 +29,7 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 	protected Inventory inventory;
 	protected String guiName;
 	protected boolean disableClick = true;
+	protected boolean allowPlayerClick = false;
 
 	/**
 	 * Id de l'inventaire
@@ -103,8 +106,17 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 		createDefaultInventory();
 
 		ZButton button = new ZButton(item);
+		if (slot >= this.inventory.getSize()) {
+			Logger.info(
+					"Be careful, slot " + slot + " of the inventory \"" + this.guiName
+							+ "\" is bigger than the size of the inventory ! You must correct this in the configuration.",
+					LogType.ERROR);
+			return button;
+		}
+
 		this.items.put(slot, button);
-		this.inventory.setItem(slot, item);
+		runAsync(plugin, () -> this.inventory.setItem(slot, item));
+
 		return button;
 	}
 
@@ -206,6 +218,7 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 			throws InventoryOpenException;
 
 	public abstract void onClose(InventoryCloseEvent event, ZShop plugin, Player player);
+
 	public abstract void onDrag(InventoryDragEvent event, ZShop plugin, Player player);
 
 	@Override
@@ -220,5 +233,9 @@ public abstract class VInventory extends ZUtils implements Cloneable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public boolean allowPlayerClick() {
+		return this.allowPlayerClick;
 	}
 }

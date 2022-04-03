@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.button.Button;
 import fr.maxlego08.shop.api.button.buttons.ItemButton;
-import fr.maxlego08.shop.api.button.buttons.PermissibleButton;
+import fr.maxlego08.shop.api.button.buttons.PlaceholderButton;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.inventory.Inventory;
 
@@ -20,6 +20,8 @@ public class InventoryObject implements Inventory {
 	private final InventoryType type;
 	private final int size;
 	private final List<Button> buttons;
+	private final String fileName;
+	private final ItemStack fillItemStack;
 
 	/**
 	 * @param name
@@ -27,12 +29,14 @@ public class InventoryObject implements Inventory {
 	 * @param size
 	 * @param buttons
 	 */
-	public InventoryObject(String name, InventoryType type, int size, List<Button> buttons) {
+	public InventoryObject(String name, InventoryType type, int size, List<Button> buttons, String fileName, ItemStack itemStack) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.size = size;
 		this.buttons = buttons;
+		this.fillItemStack = itemStack;
+		this.fileName = fileName;
 	}
 
 	@Override
@@ -69,15 +73,15 @@ public class InventoryObject implements Inventory {
 	}
 
 	@Override
-	public List<PermissibleButton> sortButtons(int page) {
-		List<PermissibleButton> buttons = new ArrayList<PermissibleButton>();
+	public List<PlaceholderButton> sortButtons(int page) {
+		List<PlaceholderButton> buttons = new ArrayList<PlaceholderButton>();
 		for (Button button : this.buttons) {
 
 			int slot = (button.getSlot() - ((page - 1) * size));
 
 			if ((slot >= 0 && slot < size) || button.isPermament()) {
 				button.setTmpSlot(slot);
-				buttons.add(button.toButton(PermissibleButton.class));
+				buttons.add(button.toButton(PlaceholderButton.class));
 			}
 
 		}
@@ -101,6 +105,16 @@ public class InventoryObject implements Inventory {
 	public Optional<ItemButton> getItemButton(ItemStack itemStack) {
 		return getButtons(ItemButton.class).stream().filter(button -> button.getItemStack().isSimilar(itemStack))
 				.findFirst();
+	}
+
+	@Override
+	public String getFileName() {
+		return fileName;
+	}
+
+	@Override
+	public ItemStack getFillItem() {
+		return fillItemStack;
 	}
 
 }

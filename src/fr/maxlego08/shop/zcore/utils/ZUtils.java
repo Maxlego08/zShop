@@ -1,5 +1,6 @@
 package fr.maxlego08.shop.zcore.utils;
 
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -11,6 +12,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
@@ -18,31 +20,47 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.permissions.Permissible;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
 
-import fr.maxlego08.shop.save.Config;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.enums.Permission;
 import fr.maxlego08.shop.zcore.utils.builder.CooldownBuilder;
 import fr.maxlego08.shop.zcore.utils.builder.TimerBuilder;
+import fr.maxlego08.shop.zcore.utils.itemstack.ItemStackUtils;
+import fr.maxlego08.shop.zcore.utils.itemstack.NMSUtils;
 import fr.maxlego08.shop.zcore.utils.players.ActionBar;
+import fr.maxlego08.shop.zcore.utils.plugins.Plugins;
+import fr.maxlego08.ztranslator.api.Translator;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -172,7 +190,7 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return the encoded item
 	 */
 	protected String encode(ItemStack item) {
-		return ItemDecoder.serializeItemStack(item);
+		return ItemStackUtils.serializeItemStack(item);
 	}
 
 	/**
@@ -180,7 +198,7 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return the decoded item
 	 */
 	protected ItemStack decode(String item) {
-		return ItemDecoder.deserializeItemStack(item);
+		return ItemStackUtils.deserializeItemStack(item);
 	}
 
 	/**
@@ -205,21 +223,13 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return true if the player's inventory is full
 	 */
 	protected boolean hasInventoryFull(Player player) {
-
 		int slot = 0;
-		for (int a = 0; a != player.getInventory().getContents().length; a++) {
-
-			ItemStack current = player.getInventory().getContents()[a];
-			if (current == null)
+		PlayerInventory inventory = player.getInventory();
+		for (int a = 0; a != 36; a++) {
+			ItemStack itemStack = inventory.getContents()[a];
+			if (itemStack == null)
 				slot++;
-
 		}
-
-		slot -= 4;
-
-		if (!ItemDecoder.isOneHand())
-			slot -= 1;
-
 		return slot == 0;
 	}
 
@@ -247,7 +257,7 @@ public abstract class ZUtils extends MessageUtils {
 	private static transient Material[] byId;
 
 	static {
-		if (!ItemDecoder.isNewVersion()) {
+		if (!NMSUtils.isNewVersion()) {
 			byId = new Material[0];
 			for (Material material : Material.values()) {
 				if (byId.length > material.getId()) {
@@ -400,22 +410,23 @@ public abstract class ZUtils extends MessageUtils {
 	 * Format a double in a String
 	 * 
 	 * @param decimal
-	 * @return formatting current duplicate
-	 */
-	protected String format(double decimal) {
-		return format(decimal, Config.priceFormat);
-	}
-
-	/**
-	 * Format a double in a String
-	 * 
-	 * @param decimal
 	 * @param format
 	 * @return formatting current double according to the given format
 	 */
 	protected String format(double decimal, String format) {
 		DecimalFormat decimalFormat = new DecimalFormat(format);
 		return decimalFormat.format(decimal);
+	}
+
+	/**
+	 * 
+	 * @param decimal
+	 * @return
+	 */
+	protected String format(double decimal) {
+		if (decimal % 1 == 0)
+			return this.format((long) decimal, ' ');
+		return this.format(decimal, Message.PRICE_DOUBLE_FORMAT.getMessage());
 	}
 
 	/**
@@ -612,8 +623,17 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return
 	 */
 	protected String getItemName(ItemStack item) {
-		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName())
+		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
 			return item.getItemMeta().getDisplayName();
+		}
+
+		if (ZPlugin.z().isEnable(Plugins.ZTRANSLATOR)) {
+
+			Translator translator = ZPlugin.z().getProvider(Translator.class);
+			return translator.translate(item);
+
+		}
+
 		String name = item.serialize().get("type").toString().replace("_", " ").toLowerCase();
 		return name.substring(0, 1).toUpperCase() + name.substring(1);
 	}
@@ -624,9 +644,18 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return
 	 */
 	protected String color(String message) {
-		if (message != null)
-			return message.replace("&", "§");
-		return null;
+		if (message == null)
+			return null;
+		if (NMSUtils.isHexColor()) {
+			Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
+			Matcher matcher = pattern.matcher(message);
+			while (matcher.find()) {
+				String color = message.substring(matcher.start(), matcher.end());
+				message = message.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
+				matcher = pattern.matcher(message);
+			}
+		}
+		return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', message);
 	}
 
 	/**
@@ -1017,6 +1046,156 @@ public abstract class ZUtils extends MessageUtils {
 		symbols.setGroupingSeparator(c);
 		formatter.setDecimalFormatSymbols(symbols);
 		return formatter.format(l);
+	}
+
+	/**
+	 * 
+	 * @param itemStack
+	 * @param player
+	 * @return itemstack
+	 */
+	public ItemStack playerHead(ItemStack itemStack, OfflinePlayer player) {
+		String name = itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName()
+				? itemStack.getItemMeta().getDisplayName() : null;
+		if (NMSUtils.isNewVersion()) {
+			if (itemStack.getType().equals(Material.PLAYER_HEAD) && name != null && name.startsWith("HEAD")) {
+				SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+				name = name.replace("HEAD", "");
+				if (name.length() == 0)
+					meta.setDisplayName(null);
+				else
+					meta.setDisplayName(name);
+				meta.setOwningPlayer(player);
+				itemStack.setItemMeta(meta);
+			}
+		} else {
+			if (itemStack.getType().equals(getMaterial(397)) && itemStack.getData().getData() == 3 && name != null
+					&& name.startsWith("HEAD")) {
+				SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+				name = name.replace("HEAD", "");
+				if (name.length() == 0)
+					meta.setDisplayName(null);
+				else
+					meta.setDisplayName(name);
+				meta.setOwner(player.getName());
+				itemStack.setItemMeta(meta);
+			}
+		}
+		return itemStack;
+	}
+
+	/**
+	 * 
+	 * @param itemStack
+	 * @param player
+	 * @return itemstack
+	 */
+	public ItemStack playerHead() {
+		return NMSUtils.isNewVersion() ? new ItemStack(Material.PLAYER_HEAD)
+				: new ItemStack(getMaterial(397), 1, (byte) 3);
+	}
+
+	protected <T> T getProvider(Plugin plugin, Class<T> classz) {
+		RegisteredServiceProvider<T> provider = plugin.getServer().getServicesManager().getRegistration(classz);
+		if (provider == null)
+			return null;
+		return provider.getProvider() != null ? (T) provider.getProvider() : null;
+	}
+
+	protected PotionEffectType getPotion(String configuration) {
+		for (PotionEffectType effectType : PotionEffectType.values())
+			if (effectType.getName().equalsIgnoreCase(configuration))
+				return effectType;
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param runnable
+	 */
+	public void runAsync(Plugin plugin, Runnable runnable) {
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
+	}
+
+	protected ItemStack createSkull(String url) {
+
+		ItemStack head = playerHead();
+		if (url.isEmpty())
+			return head;
+
+		SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+		GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+
+		profile.getProperties().put("textures", new Property("textures", url));
+
+		try {
+			Field profileField = headMeta.getClass().getDeclaredField("profile");
+			profileField.setAccessible(true);
+			profileField.set(headMeta, profile);
+
+		} catch (IllegalArgumentException | NoSuchFieldException | SecurityException | IllegalAccessException error) {
+			error.printStackTrace();
+		}
+		head.setItemMeta(headMeta);
+		return head;
+	}
+
+	/**
+	 * 
+	 * @param itemStack
+	 * @return boolean
+	 */
+	protected boolean isPlayerHead(ItemStack itemStack) {
+		Material material = itemStack.getType();
+		if (NMSUtils.isNewVersion())
+			return material.equals(Material.PLAYER_HEAD);
+		return (material.equals(getMaterial(397))) && (itemStack.getDurability() == 3);
+	}
+
+	public void glow(ItemStack itemStack) {
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		itemMeta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
+		if (NMSUtils.getNMSVersion() != 1.7)
+			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		itemStack.setItemMeta(itemMeta);
+	}
+
+	public Color fromString(String color) {
+		if (color.equalsIgnoreCase("AQUA"))
+			return Color.AQUA;
+		else if (color.equalsIgnoreCase("SILVER"))
+			return Color.SILVER;
+		else if (color.equalsIgnoreCase("BLACK"))
+			return Color.BLACK;
+		else if (color.equalsIgnoreCase("BLUE"))
+			return Color.BLUE;
+		else if (color.equalsIgnoreCase("FUCHSIA"))
+			return Color.FUCHSIA;
+		else if (color.equalsIgnoreCase("GRAY"))
+			return Color.GRAY;
+		else if (color.equalsIgnoreCase("GREEN"))
+			return Color.GREEN;
+		else if (color.equalsIgnoreCase("LIME"))
+			return Color.LIME;
+		else if (color.equalsIgnoreCase("MAROON"))
+			return Color.MAROON;
+		else if (color.equalsIgnoreCase("NAVY"))
+			return Color.NAVY;
+		else if (color.equalsIgnoreCase("OLIVE"))
+			return Color.OLIVE;
+		else if (color.equalsIgnoreCase("ORANGE"))
+			return Color.ORANGE;
+		else if (color.equalsIgnoreCase("PURPLE"))
+			return Color.PURPLE;
+		else if (color.equalsIgnoreCase("RED"))
+			return Color.RED;
+		else if (color.equalsIgnoreCase("TEAL"))
+			return Color.TEAL;
+		else if (color.equalsIgnoreCase("WHITE"))
+			return Color.WHITE;
+		else if (color.equalsIgnoreCase("YELLOW"))
+			return Color.YELLOW;
+		return null;
 	}
 
 }

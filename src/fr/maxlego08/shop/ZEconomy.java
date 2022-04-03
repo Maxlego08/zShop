@@ -8,7 +8,7 @@ import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.events.EconomyDepositEvent;
 import fr.maxlego08.shop.api.events.EconomyMoneyEvent;
 import fr.maxlego08.shop.api.events.EconomyWithdrawMoney;
-import fr.vanilla.core.IceCore;
+import fr.maxlego08.shop.zcore.utils.OptEco;
 import me.bukkit.mTokens.Inkzzz.Tokens;
 import me.realized.tokenmanager.api.TokenManager;
 
@@ -28,7 +28,7 @@ public class ZEconomy implements IEconomy {
 
 	@Override
 	public boolean hasMoney(Economy economy, Player player, double price) {
-		return getMoney(economy, player) > price;
+		return getMoney(economy, player) >= price;
 	}
 
 	@Override
@@ -50,9 +50,13 @@ public class ZEconomy implements IEconomy {
 			EconomyDepositEvent event = new EconomyDepositEvent(player, value);
 			event.callEvent();
 			break;
-		case ICECORE:
-			IceCore.getInstance().getUser(player)
-					.setTokens((int) (IceCore.getInstance().getUser(player).getTokens() + value));
+		case LEVEL:
+			int level = player.getLevel();
+			player.setLevel((int) (level + value));
+			break;
+		case OPTECO:
+			OptEco eco = new OptEco();
+			eco.depositMoney(player, value);
 			break;
 		default:
 			break;
@@ -78,8 +82,13 @@ public class ZEconomy implements IEconomy {
 			EconomyWithdrawMoney event = new EconomyWithdrawMoney(player, value);
 			event.callEvent();
 			break;
-		case ICECORE:
-			IceCore.getInstance().getUser(player);
+		case LEVEL:
+			int level = player.getLevel();
+			player.setLevel((int) (level - value));
+			break;
+		case OPTECO:
+			OptEco eco = new OptEco();
+			eco.withdrawMoney(player, value);
 			break;
 		default:
 			break;
@@ -101,8 +110,11 @@ public class ZEconomy implements IEconomy {
 			EconomyMoneyEvent event = new EconomyMoneyEvent(player);
 			event.callEvent();
 			return event.getMoney();
-		case ICECORE:
-			return IceCore.getInstance().getUser(player).getTokens();
+		case LEVEL:
+			return player.getLevel();
+		case OPTECO:
+			OptEco eco = new OptEco();
+			return eco.getMoney(player);
 		default:
 			return 0.0;
 		}

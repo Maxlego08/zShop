@@ -14,6 +14,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 
 import fr.maxlego08.shop.ZShop;
@@ -23,8 +26,9 @@ import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.shop.zcore.utils.ZUtils;
 import fr.maxlego08.shop.zcore.utils.commands.CommandType;
+import net.minelink.ctplus.CombatTagPlus;
 
-public class CommandManager extends ZUtils implements CommandExecutor, TabCompleter {
+public class CommandManager extends ZUtils implements CommandExecutor, TabCompleter, Listener {
 
 	private final ZShop plugin;
 	private final List<VCommand> commands = new ArrayList<VCommand>();
@@ -35,7 +39,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 
 	public void registerCommands() {
 
-		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"));
+		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"), false);
 
 		plugin.getLog().log("Loading " + getUniqueCommand() + " commands", LogType.SUCCESS);
 		this.commandChecking();
@@ -58,13 +62,13 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 		return command;
 	}
 
-	public void clear(){
-		
+	public void clear() {
+
 		this.commands.clear();
-		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"));
-		
+		this.registerCommand("zshoplugin", new CommandZShopPlugin(this), Arrays.asList("zpl"), true);
+
 	}
-	
+
 	/**
 	 * Register command whitout plugin.yml
 	 * 
@@ -72,7 +76,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	 * @param vCommand
 	 * @param aliases
 	 */
-	public void registerCommand(String string, VCommand vCommand, List<String> aliases) {
+	public void registerCommand(String string, VCommand vCommand, List<String> aliases, boolean customRegister) {
 		try {
 			Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 			bukkitCommandMap.setAccessible(true);
@@ -93,7 +97,8 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			for (String cmd : aliases)
 				vCommand.addSubCommand(cmd);
 
-			commandMap.register(command.getName(), plugin.getDescription().getName(), command);
+			if (customRegister)
+				commandMap.register(command.getName(), plugin.getDescription().getName(), command);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,7 +106,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String useless, String[] args) {
 		for (VCommand command : commands) {
 			if (command.getSubCommands().contains(cmd.getName().toLowerCase())) {
 				if ((args.length == 0 || command.isIgnoreParent()) && command.getParent() == null) {
@@ -175,15 +180,17 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			if (command.runAsync) {
 				Bukkit.getScheduler().runTask(plugin, () -> {
 					CommandType returnType = command.prePerform(plugin, sender, strings);
-					if (returnType == CommandType.SYNTAX_ERROR)
-						message(sender, Message.COMMAND_SYNTAXE_ERROR, command.getSyntaxe());
+					if (returnType == CommandType.SYNTAX_ERROR) {
+						message(sender, Message.COMMAND_SYNTAXE_ERROR, "%syntax%", command.getSyntaxe());
+					}
 				});
 				return CommandType.DEFAULT;
 			}
 
 			CommandType returnType = command.prePerform(plugin, sender, strings);
-			if (returnType == CommandType.SYNTAX_ERROR)
-				message(sender, Message.COMMAND_SYNTAXE_ERROR, command.getSyntaxe());
+			if (returnType == CommandType.SYNTAX_ERROR) {
+				message(sender, Message.COMMAND_SYNTAXE_ERROR, "%syntax%", command.getSyntaxe());
+			}
 			return returnType;
 		}
 		message(sender, Message.COMMAND_NO_PERMISSION);
@@ -284,6 +291,83 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			return command.toTab(plugin, sender, args);
 
 		return null;
+	}
+
+	@EventHandler
+	public void onCommand(PlayerCommandPreprocessEvent event) {
+
+		if (event.isCancelled())
+			return;
+
+		String message = event.getMessage();
+		message = message.replace("/", "");
+		String[] messages = message.split(" ");
+		String commands = messages[0];
+
+		if (!this.commands.stream().filter(cmd -> {
+			return cmd.getParent() == null
+					&& cmd.getSubCommands().stream().filter(e -> e.equalsIgnoreCase(commands)).findAny().isPresent();
+		}).findAny().isPresent())
+			return;
+
+		Command command = new Command(commands) {
+			@Override
+			public boolean execute(CommandSender arg0, String arg1, String[] arg2) {
+				return true;
+			}
+		};
+		String[] args = getArgs(messages);
+		if (this.onCustomCommands(event.getPlayer(), command, commands, args)) {
+			event.setCancelled(true);
+		}
+	}
+
+	private String[] getArgs(String[] oldArgs) {
+		if (oldArgs.length < 2)
+			return new String[] {};
+		String[] args = new String[oldArgs.length - 1];
+		for (int a = 1; a != oldArgs.length; a++)
+			args[a - 1] = oldArgs[a];
+		return args;
+	}
+
+	/**
+	 * 
+	 * @param sender
+	 * @param cmd
+	 * @param useless
+	 * @param args
+	 * @return
+	 */
+	private boolean onCustomCommands(CommandSender sender, Command cmd, String useless, String[] args) {
+
+		Plugin plugin = Bukkit.getPluginManager().getPlugin("CombatTagPlus");
+		if (plugin != null && plugin.isEnabled() && sender instanceof Player) {
+
+			CombatTagPlus combatTagPlus = (CombatTagPlus) plugin;
+			if (combatTagPlus.getTagManager().isTagged(((Player) sender).getUniqueId())) {
+				return false;
+			}
+
+		}
+
+		for (VCommand command : commands) {
+			if (command.getSubCommands().contains(cmd.getName().toLowerCase())) {
+				if ((args.length == 0 || command.isIgnoreParent()) && command.getParent() == null) {
+					CommandType type = processRequirements(command, sender, args);
+					if (!type.equals(CommandType.CONTINUE)) {
+						return true;
+					}
+				}
+			} else if (args.length >= 1 && command.getParent() != null
+					&& canExecute(args, cmd.getName().toLowerCase(), command)) {
+				CommandType type = processRequirements(command, sender, args);
+				if (!type.equals(CommandType.CONTINUE)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

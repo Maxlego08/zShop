@@ -1,8 +1,12 @@
 package fr.maxlego08.shop.api.button;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.maxlego08.shop.api.enums.ButtonType;
+import fr.maxlego08.shop.api.sound.SoundOption;
+import fr.maxlego08.shop.zcore.utils.XSound;
 
 public interface Button {
 
@@ -16,7 +20,7 @@ public interface Button {
 	 * 
 	 * @return
 	 */
-	public ItemStack getCustomItemStack();
+	public ItemStack getCustomItemStack(Player player);
 
 	/**
 	 * 
@@ -61,5 +65,20 @@ public interface Button {
 	 * @return true is button is permanent
 	 */
 	public boolean isPermament();
+
+	/**
+	 * 
+	 * @return {@link XSound}
+	 */
+	public SoundOption getSound();
+
+	/**
+	 * Player sound
+	 * 
+	 * @param entity
+	 */
+	void playSound(Entity entity);
+	
+	boolean closeInventory();
 
 }
