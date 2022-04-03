@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 
 import fr.maxlego08.shop.api.events.EconomyCurrencyEvent;
 import fr.maxlego08.shop.api.events.EconomyDenyEvent;
-import fr.maxlego08.shop.save.Lang;
+import fr.maxlego08.shop.zcore.enums.Message;
 
 public enum Economy {
 
@@ -41,17 +41,17 @@ public enum Economy {
 	public String getCurrenry() {
 		switch (this) {
 		case PLAYERPOINT:
-			return Lang.currencyPlayerPoint;
+			return Message.CURRENCY_PLAYERPOINT.msg();
 		case VAULT:
-			return Lang.currencyVault;
+			return Message.CURRENCY_VAULT.msg();
 		case TOKENMANAGER:
-			return Lang.currencyTokenManager;
+			return Message.CURRENCY_TOKENMANAGER.msg();
 		case MYSQLTOKEN:
-			return Lang.currencyMySQLToken;
+			return Message.CURRENCY_MYSQLTOKEN.msg();
 		case LEVEL:
-			return Lang.currencyLevel;
+			return Message.CURRENCY_LEVEL.msg();
 		case OPTECO:
-			return Lang.currencyOptEco;
+			return Message.CURRENCY_OPTECO.msg();
 		case CUSTOM:
 			EconomyCurrencyEvent event = new EconomyCurrencyEvent();
 			Bukkit.getPluginManager().callEvent(event);
@@ -68,19 +68,19 @@ public enum Economy {
 			Bukkit.getPluginManager().callEvent(event);
 			return event.getMessage();
 		case LEVEL:
-			return Lang.notEnouhtMoneyLevel;
+			return Message.NOT_ENOUGH_MONEY_LEVEL.msg();
 		case MYSQLTOKEN:
-			return Lang.notEnouhtMoneyMySQLToken;
+			return Message.NOT_ENOUGH_MONEY_MYSQLTOKEN.msg();
 		case PLAYERPOINT:
-			return Lang.notEnouhtMoneyPlayerPoint;
+			return Message.NOT_ENOUGH_MONEY_PLAYERPOINT.msg();
 		case TOKENMANAGER:
-			return Lang.notEnouhtMoneyTokenManager;
+			return Message.NOT_ENOUGH_MONEY_TOKENMANAGER.msg();
 		case VAULT:
-			return Lang.notEnouhtMoneyVault;
+			return Message.NOT_ENOUGH_MONEY_VAULT.msg();
 		case OPTECO:
-			return Lang.notEnouhtMoneyOptEco;
+			return Message.NOT_ENOUGH_MONEY_OPTECO.msg();
 		default:
-			return Lang.notEnouhtMoneyVault;
+			return Message.NOT_ENOUGH_MONEY_VAULT.msg();
 		}
 	}
 

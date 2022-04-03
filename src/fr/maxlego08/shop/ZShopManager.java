@@ -1,6 +1,5 @@
 package fr.maxlego08.shop;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -40,8 +39,8 @@ import fr.maxlego08.shop.command.CommandObject;
 import fr.maxlego08.shop.command.commands.CommandInventory;
 import fr.maxlego08.shop.inventory.InventoryManager;
 import fr.maxlego08.shop.permission.ZPermission;
-import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
+import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.utils.TemporyObject;
 import fr.maxlego08.shop.zcore.utils.itemstack.NMSUtils;
 import fr.maxlego08.shop.zcore.utils.yaml.YamlUtils;
@@ -156,14 +155,14 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	public void open(Player player, Command command, String category) {
 
 		if (category == null) {
-			message(player, Lang.categoryEmpty);
+			message(player, Message.CATEGORY_EMPTY);
 			return;
 		}
 
 		Optional<Inventory> optional = getInventoryByName(category);
 
 		if (!optional.isPresent()) {
-			message(player, Lang.categoryDoesntExist.replace("%name%", category));
+			message(player, Message.CATEGORY_DOESNT_EXIST, "%name%", category);
 			return;
 		}
 
@@ -250,7 +249,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	private Object getPrivateField(Object object, String field)
 			throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		Class<?> clazz = object.getClass();
-		Field objectField = field.equals("commandMap") ? clazz.getDeclaredField(field)
+		java.lang.reflect.Field objectField = field.equals("commandMap") ? clazz.getDeclaredField(field)
 				: field.equals("knownCommands") ? NMSUtils.isNewVersion()
 						? clazz.getSuperclass().getDeclaredField(field) : clazz.getDeclaredField(field) : null;
 		objectField.setAccessible(true);
@@ -324,14 +323,14 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 	public void sellHand(Player player, int amount) {
 
 		if (player.getItemInHand() == null || player.getItemInHand().getType().equals(Material.AIR)) {
-			message(player, Lang.sellHandAir);
+			message(player, Message.SELLHAND_AIR);
 			return;
 		}
 
 		Optional<ItemButton> optional = getItemButton(player.getItemInHand());
 
 		if (!optional.isPresent())
-			message(player, Lang.sellHandEmpty);
+			message(player, Message.SELLHAND_EMPTY);
 		else {
 			ItemButton button = optional.get();
 			button.sell(player, amount);
@@ -394,7 +393,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		}
 
 		if (economy == null) {
-			message(player, Lang.sellAllError);
+			message(player, Message.SELLALL_ERROR);
 			return;
 
 		}
@@ -406,19 +405,18 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			Integer amout = e.getValue();
 			int tmp = atomicInteger.addAndGet(1);
 			if (tmp == map.size())
-				builder.append(" " + Lang.and + " ");
+				builder.append(" " + Message.AND + " ");
 			else if (tmp != 1)
 				builder.append(", ");
-			String message = Lang.sellHandAllItem.replace("%amount%", String.valueOf(amout)).replace("%item%",
+			String message = Message.SELLHAND_ALLITEM.replace("%amount%", String.valueOf(amout)).replace("%item%",
 					getItemName(items));
 			builder.append(message);
 		}
 
 		this.economy.depositMoney(economy, player, price);
 
-		String str = Lang.sellHandAll.replace("%item%", builder.toString());
-		str = str.replace("%currency%", economy.getCurrenry());
-		message(player, str.replace("%price%", format(price)));
+		message(player, Message.SELLHAND_ALL, "%price%", format(price), "%item%", builder.toString(), "%currency%",
+				economy.getCurrenry());
 
 	}
 

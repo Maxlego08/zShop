@@ -21,7 +21,6 @@ import org.bukkit.plugin.Plugin;
 
 import fr.maxlego08.shop.ZShop;
 import fr.maxlego08.shop.command.commands.zshop.CommandZShopPlugin;
-import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
@@ -122,7 +121,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 					return true;
 			}
 		}
-		message(sender, Lang.commandError);
+		message(sender, Message.COMMAND_NO_ARG);
 		return true;
 	}
 
@@ -181,18 +180,20 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			if (command.runAsync) {
 				Bukkit.getScheduler().runTask(plugin, () -> {
 					CommandType returnType = command.prePerform(plugin, sender, strings);
-					if (returnType == CommandType.SYNTAX_ERROR)
-						message(sender, Lang.syntaxeError, command.getSyntaxe());
+					if (returnType == CommandType.SYNTAX_ERROR) {
+						message(sender, Message.COMMAND_SYNTAXE_ERROR, "%syntax%", command.getSyntaxe());
+					}
 				});
 				return CommandType.DEFAULT;
 			}
 
 			CommandType returnType = command.prePerform(plugin, sender, strings);
-			if (returnType == CommandType.SYNTAX_ERROR)
-				message(sender, Lang.syntaxeError.replace("%command%", command.getSyntaxe()));
+			if (returnType == CommandType.SYNTAX_ERROR) {
+				message(sender, Message.COMMAND_SYNTAXE_ERROR, "%syntax%", command.getSyntaxe());
+			}
 			return returnType;
 		}
-		message(sender, Lang.noPermission);
+		message(sender, Message.COMMAND_NO_PERMISSION);
 		return CommandType.DEFAULT;
 	}
 
@@ -316,8 +317,9 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			}
 		};
 		String[] args = getArgs(messages);
-		if (this.onCustomCommands(event.getPlayer(), command, commands, args))
+		if (this.onCustomCommands(event.getPlayer(), command, commands, args)) {
 			event.setCancelled(true);
+		}
 	}
 
 	private String[] getArgs(String[] oldArgs) {
@@ -343,8 +345,9 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 		if (plugin != null && plugin.isEnabled() && sender instanceof Player) {
 
 			CombatTagPlus combatTagPlus = (CombatTagPlus) plugin;
-			if (combatTagPlus.getTagManager().isTagged(((Player) sender).getUniqueId()))
+			if (combatTagPlus.getTagManager().isTagged(((Player) sender).getUniqueId())) {
 				return false;
+			}
 
 		}
 
@@ -352,14 +355,16 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 			if (command.getSubCommands().contains(cmd.getName().toLowerCase())) {
 				if ((args.length == 0 || command.isIgnoreParent()) && command.getParent() == null) {
 					CommandType type = processRequirements(command, sender, args);
-					if (!type.equals(CommandType.CONTINUE))
+					if (!type.equals(CommandType.CONTINUE)) {
 						return true;
+					}
 				}
 			} else if (args.length >= 1 && command.getParent() != null
 					&& canExecute(args, cmd.getName().toLowerCase(), command)) {
 				CommandType type = processRequirements(command, sender, args);
-				if (!type.equals(CommandType.CONTINUE))
+				if (!type.equals(CommandType.CONTINUE)) {
 					return true;
+				}
 			}
 		}
 		return false;

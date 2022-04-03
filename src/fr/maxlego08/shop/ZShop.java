@@ -16,7 +16,7 @@ import fr.maxlego08.shop.inventory.inventories.InventoryDefault;
 import fr.maxlego08.shop.inventory.inventories.InventoryShop;
 import fr.maxlego08.shop.listener.AdapterListener;
 import fr.maxlego08.shop.listener.HeadListener;
-import fr.maxlego08.shop.save.Lang;
+import fr.maxlego08.shop.save.MessageLoader;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.utils.Metrics;
@@ -92,7 +92,8 @@ public class ZShop extends ZPlugin {
 		versionChecker.useLastVersion();
 
 		/* Add Saver */
-		addSave(new Lang());
+		// addSave(new Lang());
+		addSave(new MessageLoader(this));
 		// addSave(new CooldownBuilder());
 
 		getSavers().forEach(saver -> saver.load(getPersist()));
