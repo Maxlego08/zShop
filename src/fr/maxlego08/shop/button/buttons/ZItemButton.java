@@ -25,7 +25,7 @@ import fr.maxlego08.shop.api.history.HistoryType;
 import fr.maxlego08.shop.api.permission.Permission;
 import fr.maxlego08.shop.api.sound.SoundOption;
 import fr.maxlego08.shop.history.ZHistory;
-import fr.maxlego08.shop.save.Lang;
+import fr.maxlego08.shop.zcore.enums.Message;
 
 public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 
@@ -135,7 +135,7 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 		}
 
 		if (hasInventoryFull(player)) {
-			message(player, Lang.notEnouhtPlace);
+			message(player, Message.NOT_ENOUGH_PLACE);
 			return;
 		}
 
@@ -149,24 +149,20 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 		currentPrice = event.getPrice();
 		amount = event.getAmount();
 
-		iEconomy.withdrawMoney(economy, player, currentPrice);
+		this.iEconomy.withdrawMoney(economy, player, currentPrice);
 
 		ItemStack itemStack = super.getItemStack().clone();
 		itemStack.setAmount(amount);
 
-		if (this.giveItem)
+		if (this.giveItem) {
 			give(player, papi(itemStack, player));
+		}
 
-		String message = Lang.buyItem;
-		message = message.replace("%amount%", String.valueOf(amount));
-		message = message.replace("%item%", getItemName(itemStack));
-		message = message.replace("%price%", format(currentPrice));
-		message = message.replace("%currency%", this.economy.getCurrenry());
+		message(player, Message.BUY_ITEM, "%amount%", String.valueOf(amount), "%item%", getItemName(itemStack),
+				"%price%", format(currentPrice), "%currency%", this.economy.getCurrenry());
 
-		message(player, message);
-
-		if (buyCommands.size() != 0)
-			for (String command : buyCommands) {
+		if (this.buyCommands.size() != 0) {
+			for (String command : this.buyCommands) {
 				command = command.replace("%amount%", String.valueOf(amount));
 				command = command.replace("%item%", getItemName(itemStack));
 				command = command.replace("%price%", format(currentPrice));
@@ -174,10 +170,11 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 				command = command.replace("%player%", player.getName());
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), papi(command, player));
 			}
+		}
 
-		if (log) {
+		if (this.log) {
 
-			String logMessage = Lang.buyLog;
+			String logMessage = Message.BUY_LOG.getMessage();
 
 			logMessage = logMessage.replace("%amount%", String.valueOf(amount));
 			logMessage = logMessage.replace("%item%", getItemName(itemStack));
@@ -200,17 +197,18 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 
 		for (int a = 0; a != 36; a++) {
 			ItemStack is = player.getInventory().getContents()[a];
-			if (is != null && is.isSimilar(itemStack))
+			if (is != null && is.isSimilar(itemStack)) {
 				item += is.getAmount();
+			}
 		}
 
 		if (item <= 0) {
-			message(player, Lang.notItems);
+			message(player, Message.NOT_ITEMS);
 			return;
 		}
 
 		if (item < amount) {
-			message(player, Lang.notEnouhtItems);
+			message(player, Message.NOT_ENOUGH_ITEMS);
 			return;
 		}
 
@@ -254,13 +252,8 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 
 		this.iEconomy.depositMoney(economy, player, currentPrice);
 
-		String message = Lang.sellItem;
-		message = message.replace("%amount%", String.valueOf(realAmount));
-		message = message.replace("%item%", getItemName(itemStack));
-		message = message.replace("%price%", format(currentPrice));
-		message = message.replace("%currency%", this.economy.getCurrenry());
-
-		message(player, message);
+		message(player, Message.SELL_ITEM, "%amount%", String.valueOf(realAmount), "%item%", getItemName(itemStack),
+				"%price%", format(currentPrice), "%currency%", this.economy.getCurrenry());
 
 		if (sellCommands.size() != 0)
 			for (String command : sellCommands) {
@@ -274,7 +267,7 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 
 		if (log) {
 
-			String logMessage = Lang.sellLog;
+			String logMessage = Message.SELL_LOG.getMessage();
 
 			logMessage = logMessage.replace("%amount%", String.valueOf(amount));
 			logMessage = logMessage.replace("%item%", getItemName(itemStack));
@@ -319,35 +312,40 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 		this.lore.forEach(string -> {
 
 			String str = string.replace("%buyPrice%", this.getBuyPriceAsString(optionalBuy, 1));
-			if (!str.equals(string))
+			if (!str.equals(string)) {
 				str = str.replace("%currency%", this.canBuy() ? this.economy.getCurrenry() : "");
+			}
 
 			str = str.replace("%sellPrice%", this.getSellPriceAsString(optionalSell, 1));
-			if (!str.equals(string))
+			if (!str.equals(string)) {
 				str = str.replace("%currency%", this.canSell() ? this.economy.getCurrenry() : "");
+			}
 			str = str.replace("&", "§");
 
-			if (optionalBuy.isPresent() && this.canBuy())
+			if (optionalBuy.isPresent() && this.canBuy()) {
 				str = str.replace("%buyPermission%",
-						Lang.buyPermission.replace("%percent%", format(optionalBuy.get().getPercent())));
-			else
+						Message.BUY_PERMISSION.replace("%percent%", format(optionalBuy.get().getPercent())));
+			} else {
 				str = str.replace("%buyPermission%", "");
+			}
 
-			if (optionalSell.isPresent() && this.canSell())
+			if (optionalSell.isPresent() && this.canSell()) {
 				str = str.replace("%sellPermission%",
-						Lang.sellPermission.replace("%percent%", format(optionalSell.get().getPercent())));
-			else
+						Message.SELL_PERMISSION.replace("%percent%", format(optionalSell.get().getPercent())));
+			} else {
 				str = str.replace("%sellPermission%", "");
+			}
 
 			if ((str.contains("%buyPermissionLine%") && (!optionalBuy.isPresent() || !this.canBuy()))
 					|| (str.contains("%sellPermissionLine%") && (!optionalBuy.isPresent() || !this.canSell()))) {
 				return;
 			}
 
-			if (str.contains("%buyPermissionLine%") && optionalBuy.isPresent() && this.canBuy())
-				str = Lang.buyPermissionLine.replace("%percent%", format(optionalSell.get().getPercent()));
-			else if (str.contains("%sellPermissionLine%") && optionalSell.isPresent() && this.canSell())
-				str = Lang.sellPermissionLine.replace("%percent%", format(optionalSell.get().getPercent()));
+			if (str.contains("%buyPermissionLine%") && optionalBuy.isPresent() && this.canBuy()) {
+				str = Message.BUY_PERMISSIONS_LINE.replace("%percent%", format(optionalSell.get().getPercent()));
+			} else if (str.contains("%sellPermissionLine%") && optionalSell.isPresent() && this.canSell()) {
+				str = Message.SELL_PERMISSION_LINE.replace("%percent%", format(optionalSell.get().getPercent()));
+			}
 
 			lore.add(str);
 		});
@@ -363,12 +361,12 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 
 	@Override
 	public String getSellPriceAsString(Player player, int amount) {
-		return this.canSell() ? format(getSellPrice(player) * amount) : Lang.canSell;
+		return this.canSell() ? format(getSellPrice(player) * amount) : Message.CANT_SELL.getMessage();
 	}
 
 	@Override
 	public String getBuyPriceAsString(Player player, int amount) {
-		return this.canBuy() ? format(getBuyPrice(player) * amount) : Lang.canBuy;
+		return this.canBuy() ? format(getBuyPrice(player) * amount) : Message.CANT_BUY.getMessage();
 	}
 
 	@Override
@@ -401,11 +399,11 @@ public class ZItemButton extends ZPlaceholderButton implements ItemButton {
 	}
 
 	public String getSellPriceAsString(Optional<Permission> optional, int amount) {
-		return this.canSell() ? format(getSellPrice(optional) * amount) : Lang.canSell;
+		return this.canSell() ? format(getSellPrice(optional) * amount) : Message.CANT_SELL.getMessage();
 	}
 
 	public String getBuyPriceAsString(Optional<Permission> optional, int amount) {
-		return this.canBuy() ? format(getBuyPrice(optional) * amount) : Lang.canBuy;
+		return this.canBuy() ? format(getBuyPrice(optional) * amount) : Message.CANT_BUY.getMessage();
 	}
 
 	@Override

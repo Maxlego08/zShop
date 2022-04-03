@@ -50,7 +50,6 @@ import org.bukkit.potion.PotionEffectType;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
-import fr.maxlego08.shop.save.Lang;
 import fr.maxlego08.shop.zcore.ZPlugin;
 import fr.maxlego08.shop.zcore.enums.EnumInventory;
 import fr.maxlego08.shop.zcore.enums.Message;
@@ -426,8 +425,8 @@ public abstract class ZUtils extends MessageUtils {
 	 */
 	protected String format(double decimal) {
 		if (decimal % 1 == 0)
-			return this.format((long) decimal, Lang.priceLongFormat);
-		return this.format(decimal, Lang.priceDoubleFormat);
+			return this.format((long) decimal, ' ');
+		return this.format(decimal, Message.PRICE_DOUBLE_FORMAT.getMessage());
 	}
 
 	/**

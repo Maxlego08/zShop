@@ -1,6 +1,7 @@
 package fr.maxlego08.shop.zcore.utils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,7 +12,11 @@ import me.clip.placeholderapi.PlaceholderAPI;
 
 public class PapiUtils {
 
-	private static boolean usePlaceHolder = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+	private final transient boolean usePlaceHolder;
+
+	public PapiUtils() {
+		usePlaceHolder = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+	}
 
 	/**
 	 * 
@@ -21,16 +26,22 @@ public class PapiUtils {
 	 */
 	protected ItemStack papi(ItemStack itemStack, Player player) {
 
-		if (!usePlaceHolder)
+		if (itemStack == null)
 			return itemStack;
 
 		ItemMeta itemMeta = itemStack.getItemMeta();
 
-		if (itemMeta.hasDisplayName())
-			itemMeta.setDisplayName(PlaceholderAPI.setPlaceholders(player, itemMeta.getDisplayName()));
+		if (itemMeta.hasDisplayName()) {
+			if (usePlaceHolder) {
+				if (!itemMeta.getDisplayName().contains("&"))
+					itemMeta.setDisplayName(PlaceholderAPI.setPlaceholders(player, itemMeta.getDisplayName()));
+			}
+		}
 
-		if (itemMeta.hasLore())
-			itemMeta.setLore(PlaceholderAPI.setPlaceholders(player, itemMeta.getLore()));
+		if (itemMeta.hasLore()) {
+			if (usePlaceHolder)
+				itemMeta.setLore(PlaceholderAPI.setPlaceholders(player, itemMeta.getLore()));
+		}
 
 		itemStack.setItemMeta(itemMeta);
 		return itemStack;
@@ -39,26 +50,29 @@ public class PapiUtils {
 
 	/**
 	 * 
-	 * @param text
+	 * @param placeHolder
 	 * @param player
-	 * @return
+	 * @return string
 	 */
-	protected String papi(String text, Player player) {
-		if (!usePlaceHolder)
-			return text;
-		return PlaceholderAPI.setPlaceholders(player, text);
-	}
-	
-	/**
-	 * 
-	 * @param text
-	 * @param player
-	 * @return
-	 */
-	protected List<String> papi(List<String> text, Player player) {
-		if (!usePlaceHolder)
-			return text;
-		return PlaceholderAPI.setPlaceholders(player, text);
+	public String papi(String placeHolder, Player player) {
+		
+		if (placeHolder == null)
+			return null;
+		
+		if (usePlaceHolder && !placeHolder.contains("&"))
+			return PlaceholderAPI.setPlaceholders(player, placeHolder);
+		
+		return placeHolder;
 	}
 
+	/**
+	 * Transforms a list into a list with placeholder API
+	 * 
+	 * @param placeHolder
+	 * @param player
+	 * @return
+	 */
+	public List<String> papi(List<String> placeHolder, Player player) {
+		return placeHolder == null ? null : placeHolder.stream().map(e -> papi(e, player)).collect(Collectors.toList());
+	}
 }

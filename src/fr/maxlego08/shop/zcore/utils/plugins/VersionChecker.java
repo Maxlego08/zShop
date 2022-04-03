@@ -76,7 +76,7 @@ public class VersionChecker implements Listener {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					String prefix = Message.PREFIX_END.getMessage();
+					String prefix = Message.PREFIX.getMessage();
 					player.sendMessage(prefix
 							+ "§cYou do not use the latest version of the plugin! Thank you for taking the latest version to avoid any risk of problem!");
 					player.sendMessage(prefix + "§fDownload plugin here: §a" + String.format(URL_RESOURCE, pluginID));

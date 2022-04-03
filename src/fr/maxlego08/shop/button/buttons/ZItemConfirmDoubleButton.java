@@ -14,12 +14,12 @@ import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.Economy;
 import fr.maxlego08.shop.api.enums.PlaceholderAction;
 import fr.maxlego08.shop.api.sound.SoundOption;
-import fr.maxlego08.shop.save.Lang;
+import fr.maxlego08.shop.zcore.enums.Message;
 
 public class ZItemConfirmDoubleButton extends ZPlaceholderButton implements ItemConfirmDoubleButton {
 
 	private final IEconomy iEconomy;
-//	private final ShopManager manager;
+	// private final ShopManager manager;
 	private final long rightPrice;
 	private final Economy rightEconomy;
 	private final long leftPrice;
@@ -61,7 +61,7 @@ public class ZItemConfirmDoubleButton extends ZPlaceholderButton implements Item
 		this.leftEconomy = leftEconomy;
 		this.rightCommands = rightCommands;
 		this.leftCommands = leftCommands;
-//		this.manager = manager;
+		// this.manager = manager;
 		this.iEconomy = iEconomy;
 	}
 
@@ -107,15 +107,10 @@ public class ZItemConfirmDoubleButton extends ZPlaceholderButton implements Item
 			return;
 		}
 
-		iEconomy.withdrawMoney(economy, player, currentPrice);
+		this.iEconomy.withdrawMoney(economy, player, currentPrice);
 
-		String message = Lang.buyItem;
-		message = message.replace("%amount%", String.valueOf(amount));
-		message = message.replace("%item%", getItemName(this.getItemStack()));
-		message = message.replace("%price%", format(currentPrice));
-		message = message.replace("%currency%", economy.getCurrenry());
-
-		message(player, message);
+		message(player, Message.BUY_ITEM, "%amount%", String.valueOf(amount), "%item%",
+				getItemName(this.getItemStack()), "%price%", format(currentPrice), "%currency%", economy.getCurrenry());
 
 		for (String command : this.rightCommands) {
 			command = command.replace("%amount%", String.valueOf(amount));
@@ -140,15 +135,10 @@ public class ZItemConfirmDoubleButton extends ZPlaceholderButton implements Item
 			return;
 		}
 
-		iEconomy.withdrawMoney(economy, player, currentPrice);
+		this.iEconomy.withdrawMoney(economy, player, currentPrice);
 
-		String message = Lang.buyItem;
-		message = message.replace("%amount%", String.valueOf(amount));
-		message = message.replace("%item%", getItemName(this.getItemStack()));
-		message = message.replace("%price%", format(currentPrice));
-		message = message.replace("%currency%", economy.getCurrenry());
-
-		message(player, message);
+		message(player, Message.BUY_ITEM, "%amount%", String.valueOf(amount), "%item%",
+				getItemName(this.getItemStack()), "%price%", format(currentPrice), "%currency%", economy.getCurrenry());
 
 		for (String command : this.leftCommands) {
 			command = command.replace("%amount%", String.valueOf(amount));

@@ -217,25 +217,12 @@ public class InventoryManager extends ListenerAdapter {
 	protected void onConnect(PlayerJoinEvent event, Player player) {
 		schedule(500, () -> {
 			if (event.getPlayer().getName().startsWith("Maxlego08") || event.getPlayer().getName().startsWith("Sak")) {
-				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage() + " §aLe serveur utilise §2"
-						+ plugin.getDescription().getFullName() + " §a!");
+				event.getPlayer().sendMessage(Message.PREFIX.getMessage() + "§aLe serveur utilise §2"
+						+ plugin.getDescription().getFullName() + "§a!");
 				String name = "%%__USER__%%";
 				event.getPlayer()
-						.sendMessage(Message.PREFIX_END.getMessage() + " §aUtilisateur spigot §2" + name + " §a!");
+						.sendMessage(Message.PREFIX.getMessage() + "§aUtilisateur spigot §2" + name + " §a!");
 			}
-
-			if (plugin.getDescription().getFullName().toLowerCase().contains("dev")) {
-				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
-						+ " §eCeci est une version de développement et non de production.");
-			}
-
-			if (plugin.getDescription().getFullName().toLowerCase().contains("pre")) {
-				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
-						+ " §eCeci n'est pas une version final du plugin mais une pre release !");
-				event.getPlayer().sendMessage(Message.PREFIX_END.getMessage()
-						+ " §eThis is not a final version of the plugin but a pre release !");
-			}
-
 		});
 	}
 

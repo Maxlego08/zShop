@@ -6,7 +6,7 @@ import fr.maxlego08.shop.api.command.OptionalCommand;
 import fr.maxlego08.shop.api.enums.OptionalAction;
 import fr.maxlego08.shop.command.CommandManager;
 import fr.maxlego08.shop.command.VCommand;
-import fr.maxlego08.shop.save.Lang;
+import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.utils.commands.CommandType;
 
@@ -56,20 +56,21 @@ public class CommandInventory extends VCommand {
 	@Override
 	protected CommandType perform(ZShop plugin) {
 
-		if (args.length > 1)
+		if (this.args.length > 1) {
 			return CommandType.SYNTAX_ERROR;
+		}
 
-		if (args.length == 0)
-			plugin.getShopManager().open(player, command);
-		else {
+		if (this.args.length == 0) {
+			plugin.getShopManager().open(this.player, this.command);
+		} else {
 
-			if (!categoryCommand.hasPermission(sender)) {
-				message(sender, Lang.noPermission);
+			if (!this.categoryCommand.hasPermission(this.sender)) {
+				message(this.sender, Message.COMMAND_NO_PERMISSION);
 				return CommandType.SUCCESS;
 			}
 
 			String category = argAsString(0);
-			plugin.getShopManager().open(player, command, category);
+			plugin.getShopManager().open(this.player, this.command, category);
 
 		}
 		return CommandType.SUCCESS;

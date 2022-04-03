@@ -21,7 +21,7 @@ import fr.maxlego08.shop.api.history.History;
 import fr.maxlego08.shop.api.history.HistoryType;
 import fr.maxlego08.shop.api.sound.SoundOption;
 import fr.maxlego08.shop.history.ZHistory;
-import fr.maxlego08.shop.save.Lang;
+import fr.maxlego08.shop.zcore.enums.Message;
 import fr.maxlego08.shop.zcore.logger.Logger;
 import fr.maxlego08.shop.zcore.logger.Logger.LogType;
 import fr.maxlego08.zspawner.api.manager.SpawnerManager;
@@ -61,7 +61,8 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 			Button elseButton, boolean isPermanent, PlaceholderAction action, String placeholder, String value,
 			ShopManager manager, IEconomy iEconomy, double sellPrice, double buyPrice, int maxStack, Economy economy,
 			List<String> lore, List<String> buyCommands, List<String> sellCommands, boolean giveItem, EntityType entity,
-			ZSpawnerAction zAction, Plugin plugin, int level, boolean glow, boolean log, SoundOption sound, boolean isClose) {
+			ZSpawnerAction zAction, Plugin plugin, int level, boolean glow, boolean log, SoundOption sound,
+			boolean isClose) {
 		super(type, itemStack, slot, permission, message, elseButton, isPermanent, action, placeholder, value, manager,
 				iEconomy, sellPrice, buyPrice, maxStack, economy, lore, buyCommands, sellCommands, giveItem, glow, log,
 				sound, isClose);
@@ -102,7 +103,7 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 		}
 
 		if (hasInventoryFull(player)) {
-			message(player, Lang.notEnouhtPlace);
+			message(player, Message.NOT_ENOUGH_PLACE);
 			return;
 		}
 
@@ -132,13 +133,8 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 			break;
 		}
 
-		String message = Lang.buyItem;
-		message = message.replace("%amount%", String.valueOf(amount));
-		message = message.replace("%item%", getItemName(itemStack));
-		message = message.replace("%price%", format(currentPrice));
-		message = message.replace("%currency%", super.getEconomy().getCurrenry());
-
-		message(player, message);
+		message(player, Message.BUY_ITEM, "%amount%", String.valueOf(amount), "%item%",
+				getItemName(this.getItemStack()), "%price%", format(currentPrice), "%currency%", economy.getCurrenry());
 
 		if (super.getBuyCommands().size() != 0)
 			for (String command : super.getBuyCommands()) {
@@ -152,7 +148,7 @@ public class ZZSpawnerButton extends ZItemButton implements ZSpawnerButton {
 
 		if (super.log) {
 
-			String logMessage = Lang.buyLog;
+			String logMessage = Message.BUY_LOG.getMessage();
 
 			logMessage = logMessage.replace("%amount%", String.valueOf(amount));
 			logMessage = logMessage.replace("%item%", getItemName(itemStack));
