@@ -145,7 +145,14 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 		Inventory inventory = command.getInventory();
 
-		InventoryManager inventoryManager = plugin.getInventoryManager();
+		ZShopInventoryOpen event = new ZShopInventoryOpen(inventory, command, player);
+		event.callEvent();
+
+		if (event.isCancelled()) {
+			return;
+		}
+		
+		InventoryManager inventoryManager = this.plugin.getInventoryManager();
 		inventoryManager.createInventory(EnumInventory.INVENTORY_DEFAULT, player, 1, inventory, new ArrayList<>(),
 				command);
 
@@ -171,6 +178,13 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		List<Inventory> list = new ArrayList<>();
 		list.add(command.getInventory());
 
+		ZShopInventoryOpen event = new ZShopInventoryOpen(inventory, command, player);
+		event.callEvent();
+
+		if (event.isCancelled()) {
+			return;
+		}
+		
 		InventoryManager inventoryManager = plugin.getInventoryManager();
 		inventoryManager.createInventory(EnumInventory.INVENTORY_DEFAULT, player, 1, inventory, list, command);
 	}
@@ -299,8 +313,9 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		ZShopInventoryOpen event = new ZShopInventoryOpen(typeInventory, command, player);
 		event.callEvent();
 
-		if (event.isCancelled())
+		if (event.isCancelled()) {
 			return;
+		}
 
 		switch (type) {
 		case BUY:
@@ -470,11 +485,12 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		ZShopInventoryOpen event = new ZShopInventoryOpen(typeInventory, command, player);
 		event.callEvent();
 
-		if (event.isCancelled())
+		if (event.isCancelled()) {
 			return;
+		}
 
-		plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_CONFIRM, player, 1, typeInventory, button,
-				oldInventories, page, command, isRight);
+		this.plugin.getInventoryManager().createInventory(EnumInventory.INVENTORY_CONFIRM, player, 1, typeInventory,
+				button, oldInventories, page, command, isRight);
 	}
 
 	@Override
