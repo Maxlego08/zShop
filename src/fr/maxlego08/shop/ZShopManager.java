@@ -151,7 +151,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		if (event.isCancelled()) {
 			return;
 		}
-		
+
 		InventoryManager inventoryManager = this.plugin.getInventoryManager();
 		inventoryManager.createInventory(EnumInventory.INVENTORY_DEFAULT, player, 1, inventory, new ArrayList<>(),
 				command);
@@ -184,7 +184,7 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 		if (event.isCancelled()) {
 			return;
 		}
-		
+
 		InventoryManager inventoryManager = plugin.getInventoryManager();
 		inventoryManager.createInventory(EnumInventory.INVENTORY_DEFAULT, player, 1, inventory, list, command);
 	}
@@ -348,7 +348,12 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 			message(player, Message.SELLHAND_EMPTY);
 		else {
 			ItemButton button = optional.get();
-			button.sell(player, amount);
+
+			if (button.canSell()) {
+				button.sell(player, amount);
+			} else {
+				message(player, Message.SELLHAND_EMPTY);
+			}
 		}
 
 	}
@@ -382,11 +387,13 @@ public class ZShopManager extends YamlUtils implements ShopManager {
 
 					double tmpPrice = button.getSellPrice(player);
 
-					if (tmpPrice <= 0)
+					if (tmpPrice <= 0){
 						continue;
+					}
 
-					if (economy != null && !economy.equals(button.getEconomy()))
+					if (economy != null && !economy.equals(button.getEconomy())) {
 						continue;
+					}
 
 					int tmpAmount = itemStack.getAmount();
 

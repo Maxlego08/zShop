@@ -59,6 +59,7 @@ public enum Message {
 	SELLHAND_ALL("§aYou just sold §6%item% §afor §6%price%§a%currency%."),
 	SELLHAND_ALLITEM("§ax§e%amount% §2%item%§a"),
 	SELLHAND_EMPTY("§cUnable to find an item for sale."),
+	SELLHAND_ERROR("§cUnable to sell this item."),
 	SELLHAND_AIR("§cYou can't sell air !"),
 	CATEGORY_EMPTY("§cThe name of the CATEGORY_ cannot be null."),
 	CATEGORY_DOESNT_EXIST("§cThe §f%name% §cCATEGORY_ does not exist."),
