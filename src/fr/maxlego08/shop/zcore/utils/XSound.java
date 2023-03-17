@@ -55,7 +55,7 @@ import java.util.stream.Collectors;
  * play command: https://minecraft.gamepedia.com/Commands/play
  *
  * @author Crypto Morin
- * @version 8.0.1
+ * @version 9.0.0
  * @see Sound
  */
 public enum XSound {
@@ -123,6 +123,26 @@ public enum XSound {
     BLOCK_BAMBOO_SAPLING_HIT,
     BLOCK_BAMBOO_SAPLING_PLACE,
     BLOCK_BAMBOO_STEP,
+    BLOCK_BAMBOO_WOOD_BREAK,
+    BLOCK_BAMBOO_WOOD_BUTTON_CLICK_OFF,
+    BLOCK_BAMBOO_WOOD_BUTTON_CLICK_ON,
+    BLOCK_BAMBOO_WOOD_DOOR_CLOSE,
+    BLOCK_BAMBOO_WOOD_DOOR_OPEN,
+    BLOCK_BAMBOO_WOOD_FALL,
+    BLOCK_BAMBOO_WOOD_FENCE_GATE_CLOSE,
+    BLOCK_BAMBOO_WOOD_FENCE_GATE_OPEN,
+    BLOCK_BAMBOO_WOOD_HANGING_SIGN_BREAK,
+    BLOCK_BAMBOO_WOOD_HANGING_SIGN_FALL,
+    BLOCK_BAMBOO_WOOD_HANGING_SIGN_HIT,
+    BLOCK_BAMBOO_WOOD_HANGING_SIGN_PLACE,
+    BLOCK_BAMBOO_WOOD_HANGING_SIGN_STEP,
+    BLOCK_BAMBOO_WOOD_HIT,
+    BLOCK_BAMBOO_WOOD_PLACE,
+    BLOCK_BAMBOO_WOOD_PRESSURE_PLATE_CLICK_OFF,
+    BLOCK_BAMBOO_WOOD_PRESSURE_PLATE_CLICK_ON,
+    BLOCK_BAMBOO_WOOD_STEP,
+    BLOCK_BAMBOO_WOOD_TRAPDOOR_CLOSE,
+    BLOCK_BAMBOO_WOOD_TRAPDOOR_OPEN,
     BLOCK_BARREL_CLOSE,
     BLOCK_BARREL_OPEN,
     BLOCK_BASALT_BREAK,
@@ -188,6 +208,15 @@ public enum XSound {
     BLOCK_CHEST_CLOSE("CHEST_CLOSE", "ENTITY_CHEST_CLOSE"),
     BLOCK_CHEST_LOCKED,
     BLOCK_CHEST_OPEN("CHEST_OPEN", "ENTITY_CHEST_OPEN"),
+    BLOCK_CHISELED_BOOKSHELF_BREAK,
+    BLOCK_CHISELED_BOOKSHELF_FALL,
+    BLOCK_CHISELED_BOOKSHELF_HIT,
+    BLOCK_CHISELED_BOOKSHELF_INSERT,
+    BLOCK_CHISELED_BOOKSHELF_INSERT_ENCHANTED,
+    BLOCK_CHISELED_BOOKSHELF_PICKUP,
+    BLOCK_CHISELED_BOOKSHELF_PICKUP_ENCHANTED,
+    BLOCK_CHISELED_BOOKSHELF_PLACE,
+    BLOCK_CHISELED_BOOKSHELF_STEP,
     BLOCK_CHORUS_FLOWER_DEATH,
     BLOCK_CHORUS_FLOWER_GROW,
     BLOCK_COMPARATOR_CLICK,
@@ -293,6 +322,11 @@ public enum XSound {
     BLOCK_HANGING_ROOTS_HIT,
     BLOCK_HANGING_ROOTS_PLACE,
     BLOCK_HANGING_ROOTS_STEP,
+    BLOCK_HANGING_SIGN_BREAK,
+    BLOCK_HANGING_SIGN_FALL,
+    BLOCK_HANGING_SIGN_HIT,
+    BLOCK_HANGING_SIGN_PLACE,
+    BLOCK_HANGING_SIGN_STEP,
     BLOCK_HONEY_BLOCK_BREAK,
     BLOCK_HONEY_BLOCK_FALL,
     BLOCK_HONEY_BLOCK_HIT,
@@ -395,6 +429,26 @@ public enum XSound {
     BLOCK_NETHER_SPROUTS_PLACE,
     BLOCK_NETHER_SPROUTS_STEP,
     BLOCK_NETHER_WART_BREAK,
+    BLOCK_NETHER_WOOD_BREAK,
+    BLOCK_NETHER_WOOD_BUTTON_CLICK_OFF,
+    BLOCK_NETHER_WOOD_BUTTON_CLICK_ON,
+    BLOCK_NETHER_WOOD_DOOR_CLOSE,
+    BLOCK_NETHER_WOOD_DOOR_OPEN,
+    BLOCK_NETHER_WOOD_FALL,
+    BLOCK_NETHER_WOOD_FENCE_GATE_CLOSE,
+    BLOCK_NETHER_WOOD_FENCE_GATE_OPEN,
+    BLOCK_NETHER_WOOD_HANGING_SIGN_BREAK,
+    BLOCK_NETHER_WOOD_HANGING_SIGN_FALL,
+    BLOCK_NETHER_WOOD_HANGING_SIGN_HIT,
+    BLOCK_NETHER_WOOD_HANGING_SIGN_PLACE,
+    BLOCK_NETHER_WOOD_HANGING_SIGN_STEP,
+    BLOCK_NETHER_WOOD_HIT,
+    BLOCK_NETHER_WOOD_PLACE,
+    BLOCK_NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF,
+    BLOCK_NETHER_WOOD_PRESSURE_PLATE_CLICK_ON,
+    BLOCK_NETHER_WOOD_STEP,
+    BLOCK_NETHER_WOOD_TRAPDOOR_CLOSE,
+    BLOCK_NETHER_WOOD_TRAPDOOR_OPEN,
     BLOCK_NOTE_BLOCK_BANJO,
     BLOCK_NOTE_BLOCK_BASEDRUM("NOTE_BASS_DRUM", "BLOCK_NOTE_BASEDRUM"),
     BLOCK_NOTE_BLOCK_BASS("NOTE_BASS", "BLOCK_NOTE_BASS"),
@@ -407,6 +461,12 @@ public enum XSound {
     BLOCK_NOTE_BLOCK_GUITAR("NOTE_BASS_GUITAR", "BLOCK_NOTE_GUITAR"),
     BLOCK_NOTE_BLOCK_HARP("NOTE_PIANO", "BLOCK_NOTE_HARP"),
     BLOCK_NOTE_BLOCK_HAT("NOTE_STICKS", "BLOCK_NOTE_HAT"),
+    BLOCK_NOTE_BLOCK_IMITATE_CREEPER,
+    BLOCK_NOTE_BLOCK_IMITATE_ENDER_DRAGON,
+    BLOCK_NOTE_BLOCK_IMITATE_PIGLIN,
+    BLOCK_NOTE_BLOCK_IMITATE_SKELETON,
+    BLOCK_NOTE_BLOCK_IMITATE_WITHER_SKELETON,
+    BLOCK_NOTE_BLOCK_IMITATE_ZOMBIE,
     BLOCK_NOTE_BLOCK_IRON_XYLOPHONE,
     BLOCK_NOTE_BLOCK_PLING("NOTE_PLING", "BLOCK_NOTE_PLING"),
     BLOCK_NOTE_BLOCK_SNARE("NOTE_SNARE_DRUM", "BLOCK_NOTE_SNARE"),
@@ -649,6 +709,17 @@ public enum XSound {
     ENTITY_BLAZE_SHOOT,
     ENTITY_BOAT_PADDLE_LAND,
     ENTITY_BOAT_PADDLE_WATER,
+    ENTITY_CAMEL_AMBIENT,
+    ENTITY_CAMEL_DASH,
+    ENTITY_CAMEL_DASH_READY,
+    ENTITY_CAMEL_DEATH,
+    ENTITY_CAMEL_EAT,
+    ENTITY_CAMEL_HURT,
+    ENTITY_CAMEL_SADDLE,
+    ENTITY_CAMEL_SIT,
+    ENTITY_CAMEL_STAND,
+    ENTITY_CAMEL_STEP,
+    ENTITY_CAMEL_STEP_SAND,
     ENTITY_CAT_AMBIENT("CAT_MEOW"),
     ENTITY_CAT_BEG_FOR_FOOD,
     ENTITY_CAT_DEATH,
@@ -1472,7 +1543,7 @@ public enum XSound {
      */
     @Nonnull
     public static Optional<XSound> matchXSound(@Nonnull String sound) {
-        if (sound == null || sound.isEmpty()) throw new IllegalArgumentException("Cannot match XSound of a null or empty sound name");
+        if (sound == null || sound.isEmpty()) return Optional.empty();
         return Optional.ofNullable(Data.NAMES.get(format(sound)));
     }
 
@@ -1489,44 +1560,6 @@ public enum XSound {
     public static XSound matchXSound(@Nonnull Sound sound) {
         Objects.requireNonNull(sound, "Cannot match XSound of a null sound");
         return Objects.requireNonNull(Data.NAMES.get(sound.name()), () -> "Unsupported sound: " + sound.name());
-    }
-
-    /**
-     * A quick async way to play a sound from the config.
-     *
-     * @param player the player to play the sound to.
-     * @param sound  the sound to play to the player.
-     *
-     * @see #play(Location, String)
-     * @since 1.0.0
-     */
-    @Nonnull
-    public static CompletableFuture<Record> play(@Nonnull Player player, @Nullable String sound) {
-        Objects.requireNonNull(player, "Cannot play sound to null player");
-        return CompletableFuture.supplyAsync(() -> {
-            Record record = parse(sound);
-            if (record == null) return null;
-            record.forPlayer(player).play();
-            return record;
-        }).exceptionally(x -> {
-            x.printStackTrace();
-            return null;
-        });
-    }
-
-    /**
-     * A quick async way to play a sound from the config.
-     *
-     * @see #play(Location, String)
-     * @since 3.0.0
-     */
-    @Nullable
-    public static Record play(@Nonnull Location location, @Nullable String sound) {
-        Objects.requireNonNull(location, "Cannot play sound to null location");
-        Record record = parse(sound);
-        if (record == null) return null;
-        record.atLocation(location).play();
-        return record;
     }
 
     private static List<String> split(@Nonnull String str, char separatorChar) {
@@ -1782,6 +1815,50 @@ public enum XSound {
     }
 
     /**
+     * A quick async way to play a sound from the config.
+     *
+     * @param player the player to play the sound to.
+     * @param sound  the sound to play to the player.
+     *
+     * @see #play(Location, String)
+     * @since 1.0.0
+     */
+    @Nonnull
+    @Deprecated
+    public static CompletableFuture<Record> play(@Nonnull Player player, @Nullable String sound) {
+        Objects.requireNonNull(player, "Cannot play sound to null player");
+        return CompletableFuture.supplyAsync(() -> {
+            Record record;
+            try {
+                record = parse(sound);
+            } catch (Throwable ex) {
+                return null;
+            }
+            if (record == null) return null;
+            record.forPlayer(player).play();
+            return record;
+        }).exceptionally(x -> {
+            x.printStackTrace();
+            return null;
+        });
+    }
+
+    /**
+     * A quick async way to play a sound from the config.
+     *
+     * @see #play(Location, String)
+     * @since 3.0.0
+     */
+    @Nullable
+    public static Record play(@Nonnull Location location, @Nullable String sound) {
+        Objects.requireNonNull(location, "Cannot play sound to null location");
+        Record record = parse(sound);
+        if (record == null) return null;
+        record.atLocation(location).play();
+        return record;
+    }
+
+    /**
      * Plays a normal sound to an entity.
      *
      * @param entity the entity to play the sound to.
@@ -1866,7 +1943,7 @@ public enum XSound {
      *
      * @since 3.0.0
      */
-    public static class Record {
+    public static class Record implements Cloneable {
         @Nonnull public final XSound sound;
         public final float volume, pitch;
         public boolean playAtLocation;
@@ -1961,6 +2038,18 @@ public enum XSound {
 
         public String rebuild() {
             return (playAtLocation ? "~" : "") + sound.sound + ", " + volume + ", " + pitch;
+        }
+
+        @Override
+        public Record clone() {
+            return new Record(
+                    sound,
+                    player,
+                    location,
+                    volume,
+                    pitch,
+                    playAtLocation
+            );
         }
     }
 }

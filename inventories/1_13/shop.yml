@@ -1,4 +1,14 @@
-name: "&eShop"
+#########################################################################################################################################
+#
+#
+#   Sponsor: https://serveur-minecraft-vote.fr/
+#   Documentation: https://github.com/Maxlego08/zShop-API/wiki
+#   Discord: https://discord.groupez.dev/
+# 
+#
+#########################################################################################################################################
+
+name: "&7zShop"
 size: 45
 fillItem:
   material: GRAY_STAINED_GLASS_PANE

@@ -1,9 +1,34 @@
-#Sponsor: https://serveur-minecraft-vote.fr/
+#########################################################################################################################################
+#
+#
+#   Sponsor: https://serveur-minecraft-vote.fr/
+#   5€ gift code on Minecraft Vote Server : ZSHOP (https://serveur-minecraft-vote.fr/utiliser/un/code/cadeau?code=ZSHOP)
+#   
+#   zShop will become an addon of zMenu, the configurations are almost the same. You can already look at the zMenu documentation
+#   Documentation: https://docs.zmenu.dev/
+#   zShop Documentation: https://github.com/Maxlego08/zShop-API/wiki
+#   Discord: https://discord.groupez.dev/
+# 
+# 
+# ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+# ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+# ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+# ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+# ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+# ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+#
+#   Commands and permissions:
+#   - /zpl reload » Reload files - zshop.reload
+#   - /zpl version » Show plugin version
+#   
+#   
+#########################################################################################################################################
 
-#Commands
+# Commands
 
-#You have here the list of commands, you will be able to create an command and link it to an inventory.
-#You can create a simple inventory for your server, no need to use the menu or chestcommand :D
+# You have here the list of commands, you will be able to create an command and link it to an inventory.
+# You can create a simple inventory for your server, no need to use the menu or chestcommand :D
 commands:
   shop:
     command: "zshop" #Default commande
@@ -31,14 +56,14 @@ commands:
       - "aide"
     inventory: "menu" #File name        
 
-#Economy which will be used by default
+# Economy which will be used by default
 defaultEconomy: VAULT
 
-#Allows not to add the command on the spigot and thus to take the upper hand for the /kit for example but to always be able to do /kit <kit name>.
+# Allows not to add the command on the spigot and thus to take the upper hand for the /kit for example but to always be able to do /kit <kit name>.
 registerCommandInSpigot: true
 
-#Here you will put the list of inventories that must be loaded, you must put the name of the file that is in the inventories folder.
-#Be careful, you must not put the name of an inventory that is loaded from an command.
+# Here you will put the list of inventories that must be loaded, you must put the name of the file that is in the inventories folder.
+# Be careful, you must not put the name of an inventory that is loaded from an command.
 categories:    
  - "ores"
  - "redstone"
@@ -51,26 +76,28 @@ categories:
  - "blocks"
  - "confirm"
 
-#Default lore for buttons of type item
+# Default lore for buttons of type item
 defaultItemLore:
-  - "&f� &2Buying price&7: &a%buyPrice%%currency%"
-  - "&f� &2Selling price&7: &a%sellPrice%%currency%"
+  - "&7&l» &fBuying price&8: &a%buyPrice%%currency%"
+  - "&7&l» &fSelling price&8: &a%sellPrice%%currency%"
   - ""
-  - "&f� &7Left click to buy"
-  - "&f� &7Click wheel to sell everything"
-  - "&f� &7Right click to sell"
+  - "&7&l» &fLeft click to &nbuy"
+  - "&7&l» &fClick wheel to &nsell everything"
+  - "&7&l» &fRight click to &nsell"
   
 
+# Enables sales boost permissions
 useSellPermission: false
-useBuyPermission: false
   
-#Allows you to have permission to change the selling price, so the price will decrease by x percent.
+# Allows you to have permission to change the selling price, so the price will decrease by x percent.
 boostSellPermission:
   1.0: "zshop.boost.sell.1"
   5.0: "zshop.boost.sell.5"
   10.0: "zshop.boost.sell.10"
   20.0: "zshop.boost.sell.20"
   
+# Enables purchase boost permissions  
+useBuyPermission: false
 
 #Allows you to have permission to change the purchase price, so the price will decrease by x percent.
 boostBuyPermission:
