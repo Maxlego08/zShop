@@ -424,8 +424,9 @@ public abstract class ZUtils extends MessageUtils {
 	 * @return
 	 */
 	protected String format(double decimal) {
-		if (decimal % 1 == 0)
-			return this.format((long) decimal, ' ');
+		if (decimal % 1 == 0){
+			return this.format((long) decimal, Message.PRICE_LONG_FORMAT.getMessage());
+		}
 		return this.format(decimal, Message.PRICE_DOUBLE_FORMAT.getMessage());
 	}
 

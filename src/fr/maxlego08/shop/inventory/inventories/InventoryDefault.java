@@ -25,6 +25,7 @@ import fr.maxlego08.shop.api.command.Command;
 import fr.maxlego08.shop.api.enums.ButtonType;
 import fr.maxlego08.shop.api.enums.InventoryType;
 import fr.maxlego08.shop.api.events.ZShopButtonRenderEvent;
+import fr.maxlego08.shop.api.events.ZShopInventoryOpen;
 import fr.maxlego08.shop.api.exceptions.InventoryOpenException;
 import fr.maxlego08.shop.api.exceptions.InventoryTypeException;
 import fr.maxlego08.shop.api.inventory.Inventory;
@@ -87,7 +88,7 @@ public class InventoryDefault extends VInventory {
 				if (!button.checkPermission(player) && button.hasElseButton()) {
 
 					PlaceholderButton elseButton = button.getElseButton().toButton(PlaceholderButton.class);
-					
+
 					ItemStack itemStack = elseButton.getCustomItemStack(player);
 					int slot = button.getTmpSlot();
 
@@ -239,14 +240,30 @@ public class InventoryDefault extends VInventory {
 			switch (finalButton.getType()) {
 			case NEXT:
 				if (page != maxPage) {
-					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page + 1, inventory,
-							oldInventories, command);
+
+					ZShopInventoryOpen eventOpen = new ZShopInventoryOpen(this.inventory, this.command, player);
+					eventOpen.callEvent();
+
+					if (eventOpen.isCancelled()) {
+						return;
+					}
+
+					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page + 1, this.inventory,
+							this.oldInventories, this.command);
 				}
 				break;
 			case PREVIOUS:
 				if (page != 1) {
-					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page - 1, inventory,
-							oldInventories, command);
+
+					ZShopInventoryOpen eventOpen = new ZShopInventoryOpen(this.inventory, this.command, player);
+					eventOpen.callEvent();
+
+					if (eventOpen.isCancelled()) {
+						return;
+					}
+
+					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, page - 1, this.inventory,
+							this.oldInventories, this.command);
 				}
 				break;
 			case ITEM_CONFIRM:
@@ -276,18 +293,43 @@ public class InventoryDefault extends VInventory {
 					InventoryType type = (InventoryType) args[4];
 					ItemButton itemButton = (ItemButton) args[3];
 
+					ZShopInventoryOpen eventOpen = new ZShopInventoryOpen(toInventory, this.command, player);
+					eventOpen.callEvent();
+
+					if (eventOpen.isCancelled()) {
+						return;
+					}
+					
 					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, toInventory, oldInventories,
 							command, itemButton, type);
-				} else
+				} else {
 
+					ZShopInventoryOpen eventOpen = new ZShopInventoryOpen(toInventory, this.command, player);
+					eventOpen.callEvent();
+
+					if (eventOpen.isCancelled()) {
+						return;
+					}
+					
 					createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, toInventory, oldInventories,
 							command);
+					
+				}
 				break;
-			case HOME:
+			case HOME: {
 				inventoryButton = finalButton.toButton(InventoryButton.class);
+				
+				ZShopInventoryOpen eventOpen = new ZShopInventoryOpen(inventoryButton.getInventory(), this.command, player);
+				eventOpen.callEvent();
+
+				if (eventOpen.isCancelled()) {
+					return;
+				}
+				
 				createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, inventoryButton.getInventory(),
 						new ArrayList<>(), command);
 				break;
+			}
 			case BACK:
 
 				inventoryButton = finalButton.toButton(InventoryButton.class);
@@ -308,12 +350,28 @@ public class InventoryDefault extends VInventory {
 						InventoryType type = (InventoryType) args[4];
 						ItemButton itemButton = (ItemButton) args[3];
 
+						ZShopInventoryOpen eventOpen = new ZShopInventoryOpen(currentInventory, this.command, player);
+						eventOpen.callEvent();
+
+						if (eventOpen.isCancelled()) {
+							return;
+						}
+						
 						createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, currentInventory,
 								oldInventories, command, itemButton, type);
-					} else
+					} else {
 
+						ZShopInventoryOpen eventOpen = new ZShopInventoryOpen(currentInventory, this.command, player);
+						eventOpen.callEvent();
+
+						if (eventOpen.isCancelled()) {
+							return;
+						}
+						
 						createInventory(plugin, player, EnumInventory.INVENTORY_DEFAULT, 1, currentInventory,
 								oldInventories, command);
+						
+					}
 
 				}
 				break;
@@ -367,13 +425,15 @@ public class InventoryDefault extends VInventory {
 
 				if (!player.hasPermission(finalButton.getPermission())) {
 
-					if (finalButton.hasMessage())
+					if (finalButton.hasMessage()) {
 						message(player, finalButton.getMessage());
+					}
 
-					if (button.hasElseButton())
+					if (button.hasElseButton()) {
 						finalButton = finalButton.getElseButton().toButton(PermissibleButton.class);
-					else
+					} else {
 						return;
+					}
 
 				}
 			}
@@ -420,10 +480,11 @@ public class InventoryDefault extends VInventory {
 					if (finalButton.hasMessage())
 						message(player, finalButton.getMessage());
 
-					if (button.hasElseButton())
+					if (button.hasElseButton()) {
 						finalButton = finalButton.getElseButton().toButton(PermissibleButton.class);
-					else
+					} else {
 						return;
+					}
 
 				}
 			}
