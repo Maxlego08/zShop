@@ -2,6 +2,7 @@
 target/
 bin/
 .settings/
-doc/
-doc
 .classpath
+.project
+.gitignore
+.idea
