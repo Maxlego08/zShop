@@ -1,8 +1,8 @@
-name: TemplatePlugin
+name: zShop
 author: Maxlego08
 main: fr.maxlego08.template.Template
 website: https://groupez.dev
-description: Default plugin developed by GroupeZ
-version: 1.0.0
+description: Shop plugin
+version: 3.0.0.0
 api-version: 1.13
 commands:
