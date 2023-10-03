@@ -1,8 +1,12 @@
 name: zShop
 author: Maxlego08
-main: fr.maxlego08.template.Template
+main: fr.maxlego08.zshop.ShopPlugin
 website: https://groupez.dev
 description: Shop plugin
 version: 3.0.0.0
 api-version: 1.13
+depend:
+  - zMenu
+softdepend:
+  - Vault
 commands:

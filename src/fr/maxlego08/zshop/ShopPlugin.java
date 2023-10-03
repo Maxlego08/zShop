@@ -1,10 +1,13 @@
 package fr.maxlego08.zshop;
 
+import fr.maxlego08.zshop.api.economy.EconomyManager;
 import fr.maxlego08.zshop.command.commands.CommandShop;
+import fr.maxlego08.zshop.economy.ZEconomyManager;
 import fr.maxlego08.zshop.placeholder.LocalPlaceholder;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.save.MessageLoader;
 import fr.maxlego08.zshop.zcore.ZPlugin;
+import org.bukkit.plugin.ServicePriority;
 
 /**
  * System to create your plugins very simply Projet:
@@ -14,6 +17,8 @@ import fr.maxlego08.zshop.zcore.ZPlugin;
  */
 public class ShopPlugin extends ZPlugin {
 
+    private final EconomyManager economyManager = new ZEconomyManager(this);
+
     @Override
     public void onEnable() {
 
@@ -22,12 +27,14 @@ public class ShopPlugin extends ZPlugin {
 
         this.preEnable();
 
+        this.getServer().getServicesManager().register(EconomyManager.class, economyManager, this, ServicePriority.Normal);
         this.registerCommand("zshop", new CommandShop(this), "zpl");
 
         this.addSave(Config.getInstance());
         this.addSave(new MessageLoader(this));
 
         this.loadFiles();
+        this.economyManager.loadEconomies();
 
         this.postEnable();
     }
@@ -42,4 +49,7 @@ public class ShopPlugin extends ZPlugin {
         this.postDisable();
     }
 
+    public EconomyManager getEconomyManager() {
+        return economyManager;
+    }
 }

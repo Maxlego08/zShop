@@ -1,0 +1,6 @@
+economies:
+  VAULT:
+    name: "Vault"
+    format: "v"
+    currency: "%price%$"
+    isEnable: true
