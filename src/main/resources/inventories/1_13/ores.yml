@@ -1,0 +1,46 @@
+name: "&e★ #d5d5d5ᴏʀᴇs &e★"
+size: 54
+patterns:
+  - "zshop_decoration"
+  - "zshop_return_home"
+items:
+  coal:
+    item:
+      material: COAL
+    slot: 20
+  iron_ingot:
+    item:
+      material: IRON_INGOT
+    slot: 21
+  gold_ingot:
+    item:
+      material: GOLD_INGOT
+    slot: 22
+  emerald:
+    item:
+      material: EMERALD
+    slot: 23
+  diamond:
+    item:
+      material: DIAMOND
+    slot: 24
+  lapis_lazuli:
+    item:
+      material: LAPIS_LAZULI
+    slot: 29
+  quartz:
+    item:
+      material: QUARTZ
+    slot: 30
+  netherite_ingot:
+    item:
+      material: NETHERITE_INGOT
+    slot: 31
+  redstone:
+    item:
+      material: REDSTONE
+    slot: 32
+  amethyst_shard:
+    item:
+      material: AMETHYST_SHARD
+    slot: 33

@@ -1,0 +1,150 @@
+name: "&e★ #5d8d50ʙʟᴏᴄᴋs &e★"
+size: 54
+patterns:
+  - "zshop_decoration"
+  - "zshop_return_home"
+  - "zshop_pagination"
+items:
+  # First page
+  grass_block:
+    item:
+      material: GRASS_BLOCK
+    slot: 20
+  dirt:
+    item:
+      material: DIRT
+    slot: 21
+  gravel:
+    item:
+      material: GRAVEL
+    slot: 22
+  sand:
+    item:
+      material: SAND
+    slot: 23
+  red_sand:
+    item:
+      material: RED_SAND
+    slot: 24
+  stone:
+    item:
+      material: STONE
+    slot: 29
+  ice:
+    item:
+      material: ICE
+    slot: 30
+  diorite:
+    item:
+      material: DIORITE
+    slot: 31
+  andesite:
+    item:
+      material: ANDESITE
+    slot: 32
+  granite:
+    item:
+      material: GRANITE
+    slot: 33
+  # Second page
+  oak_log:
+    item:
+      material: OAK_LOG
+    slot: 20
+    page: 2
+  spruce_log:
+    item:
+      material: SPRUCE_LOG
+    slot: 21
+    page: 2
+  birch_log:
+    item:
+      material: BIRCH_LOG
+    slot: 22
+    page: 2
+  jungle_log:
+    item:
+      material: JUNGLE_LOG
+    slot: 23
+    page: 2
+  acacia_log:
+    item:
+      material: ACACIA_LOG
+    slot: 24
+    page: 2
+  dark_oak_log:
+    item:
+      material: DARK_OAK_LOG
+    slot: 29
+    page: 2
+  stone_bricks:
+    item:
+      material: STONE_BRICKS
+    slot: 30
+    page: 2
+  sea_lantern:
+    item:
+      material: SEA_LANTERN
+    slot: 31
+    page: 2
+  prismarine:
+    item:
+      material: PRISMARINE
+    slot: 32
+    page: 2
+  dark_prismarine:
+    item:
+      material: DARK_PRISMARINE
+    slot: 33
+    page: 2
+  # third page
+  end_stone:
+    item:
+      material: END_STONE
+    slot: 20
+    page: 3
+  end_stone_bricks:
+    item:
+      material: END_STONE_BRICKS
+    slot: 21
+    page: 3
+  purpur_block:
+    item:
+      material: PURPUR_BLOCK
+    slot: 22
+    page: 3
+  netherrack:
+    item:
+      material: NETHERRACK
+    slot: 23
+    page: 3
+  nether_bricks:
+    item:
+      material: NETHER_BRICKS
+    slot: 24
+    page: 3
+  red_nether_bricks:
+    item:
+      material: RED_NETHER_BRICKS
+    slot: 29
+    page: 3
+  basalt:
+    item:
+      material: BASALT
+    slot: 30
+    page: 3
+  blackstone:
+    item:
+      material: BLACKSTONE
+    slot: 31
+    page: 3
+  soul_sand:
+    item:
+      material: SOUL_SAND
+    slot: 32
+    page: 3
+  soul_soil:
+    item:
+      material: SOUL_SOIL
+    slot: 33
+    page: 3

@@ -1,4 +1,20 @@
 package fr.maxlego08.zshop.api;
 
-public class ShopManager {
+public interface ShopManager {
+
+    /**
+     * Load inventories
+     */
+    void loadInventories();
+
+    /**
+     * Load patterns
+     */
+    void loadPatterns();
+
+    /**
+     * Load commands
+     */
+    void loadCommands();
+
 }

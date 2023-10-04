@@ -1,0 +1,42 @@
+name: "&e★ #fca53eғᴀʀᴍs &e★"
+size: 54
+patterns:
+  - "zshop_decoration"
+  - "zshop_return_home"
+items:
+  carrot:
+    item:
+      material: CARROT
+    slot: 20
+  potato:
+    item:
+      material: POTATO
+    slot: 21
+  wheat:
+    item:
+      material: WHEAT
+    slot: 22
+  nether_wart:
+    item:
+      material: NETHER_WART
+    slot: 23
+  melon:
+    item:
+      material: MELON
+    slot: 24
+  sugar_cane:
+    item:
+      material: SUGAR_CANE
+    slot: 29
+  cactus:
+    item:
+      material: CACTUS
+    slot: 30
+  pumpkin:
+    item:
+      material: PUMPKIN
+    slot: 31
+  beetroot:
+    item:
+      material: BEETROOT
+    slot: 32

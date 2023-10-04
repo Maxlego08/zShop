@@ -1,0 +1,7 @@
+commands:
+  zshop:
+    command: zshop
+    aliases:
+      - shop
+      - myshop
+    inventory: main_shop

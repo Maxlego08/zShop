@@ -1,0 +1,31 @@
+name: "zshop_decoration"
+size: 54
+items:
+  playerHead:
+    isPermanent: true
+    item:
+      material: PLAYER_HEAD
+      playerHead: "%player%"
+      name: "&f%player%"
+      lore:
+        - ""
+        - "&f➥ &7Money&8: #ffed00%vault_eco_balance% #ffed0f⛃"
+    slot: 4
+  decorations:
+    isPermanent: true
+    item:
+      material: BLACK_STAINED_GLASS_PANE
+      name: "&e"
+    slots:
+      - 0
+      - 1
+      - 7
+      - 8
+      - 9
+      - 17
+      - 36
+      - 44
+      - 45
+      - 46
+      - 52
+      - 53

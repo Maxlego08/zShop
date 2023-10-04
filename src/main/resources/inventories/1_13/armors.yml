@@ -1,0 +1,46 @@
+name: "&e★ #49ead6ᴀʀᴍᴏʀs &e★"
+size: 54
+patterns:
+  - "zshop_decoration"
+  - "zshop_return_home"
+items:
+  diamond_helmet:
+    item:
+      material: DIAMOND_HELMET
+    slot: 20
+  diamond_chestplate:
+    item:
+      material: DIAMOND_CHESTPLATE
+    slot: 21
+  diamond_leggings:
+    item:
+      material: DIAMOND_LEGGINGS
+    slot: 22
+  diamond_boots:
+    item:
+      material: DIAMOND_BOOTS
+    slot: 23
+  diamond_sword:
+    item:
+      material: DIAMOND_SWORD
+    slot: 24
+  netherite_helmet:
+    item:
+      material: NETHERITE_HELMET
+    slot: 29
+  netherite_chestplate:
+    item:
+      material: NETHERITE_CHESTPLATE
+    slot: 30
+  netherite_leggings:
+    item:
+      material: NETHERITE_LEGGINGS
+    slot: 31
+  netherite_boots:
+    item:
+      material: NETHERITE_BOOTS
+    slot: 32
+  netherite_sword:
+    item:
+      material: NETHERITE_SWORD
+    slot: 33

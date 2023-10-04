@@ -1,0 +1,15 @@
+name: "zshop_return_home"
+size: 54
+items:
+  playerHead:
+    isPermanent: true
+    type: "INVENTORY"
+    inventory: "main_shop"
+    plugin: "zShop"
+    item:
+      material: BARRIER
+      name: "#cf1717ʙᴀᴄᴋ ᴛᴏ ᴄᴀᴛᴇɢᴏʀɪᴇs"
+      lore:
+        - ""
+        - "&f➥ &7Click to return to #cf1717categories"
+    slot: 49

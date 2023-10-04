@@ -1,0 +1,74 @@
+name: "&e★ #bb2008ʀᴇᴅsᴛᴏɴᴇs &e★"
+size: 54
+patterns:
+  - "zshop_decoration"
+  - "zshop_return_home"
+  - "zshop_pagination"
+items:
+  # First page
+  redstone:
+    item:
+      material: REDSTONE
+    slot: 20
+  redstone_torch:
+    item:
+      material: REDSTONE_TORCH
+    slot: 21
+  repeater:
+    item:
+      material: REPEATER
+    slot: 22
+  comparator:
+    item:
+      material: COMPARATOR
+    slot: 23
+  level:
+    item:
+      material: LEVER
+    slot: 24
+  stone_button:
+    item:
+      material: STONE_BUTTON
+    slot: 29
+  piston:
+    item:
+      material: PISTON
+    slot: 30
+  sticky_piston:
+    item:
+      material: STICKY_PISTON
+    slot: 31
+  redstone_block:
+    item:
+      material: REDSTONE_BLOCK
+    slot: 32
+  tripwire_hook:
+    item:
+      material: TRIPWIRE_HOOK
+    slot: 33
+  # Second page
+  slime_block:
+    item:
+      material: SLIME_BLOCK
+    slot: 20
+    page: 2
+  dispenser:
+    item:
+      material: DISPENSER
+    slot: 21
+    page: 2
+  dropper:
+    item:
+      material: DROPPER
+    slot: 22
+    page: 2
+  hopper:
+    item:
+      material: HOPPER
+    slot: 23
+    page: 2
+  observer:
+    item:
+      material: OBSERVER
+    slot: 24
+    page: 2
