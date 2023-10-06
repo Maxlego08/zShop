@@ -3,4 +3,55 @@ size: 54
 patterns:
   - "zshop_decoration"
   - "zshop_return_home"
-items: []
+items:
+  beacon:
+    item:
+      material: BEACON
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
+    slot: 20
+  enchanting_table:
+    item:
+      material: ENCHANTING_TABLE
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
+    slot: 21
+  ender_chest:
+    item:
+      material: ENDER_CHEST
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
+    slot: 22
+  experience_bottle:
+    item:
+      material: EXPERIENCE_BOTTLE
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
+    slot: 23
+  brewing_stand:
+    item:
+      material: BREWING_STAND
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
+    slot: 24
+  book:
+    item:
+      material: BOOK
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
+    slot: 29
+  enchanted_book:
+    item:
+      material: ENCHANTED_BOOK
+      enchants:
+        - PROTECTION_ENVIRONMENTAL,4
+    type: ZSHOP_ITEM
+    buyPrice: 500.0
+    sellPrice: 0
+    slot: 30

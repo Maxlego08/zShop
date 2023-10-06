@@ -111,7 +111,7 @@ public abstract class ZUtils extends MessageUtils {
 	 * @param player
 	 * @return true if the player's inventory is full
 	 */
-	protected boolean hasInventoryFull(Player player) {
+	public boolean hasInventoryFull(Player player) {
 		int slot = 0;
 		PlayerInventory inventory = player.getInventory();
 		for (int a = 0; a != 36; a++) {
@@ -129,7 +129,7 @@ public abstract class ZUtils extends MessageUtils {
 	 * @param player
 	 * @param item
 	 */
-	protected void give(Player player, ItemStack item) {
+	public void give(Player player, ItemStack item) {
 		if (hasInventoryFull(player))
 			player.getWorld().dropItem(player.getLocation(), item);
 		else
@@ -581,7 +581,7 @@ public abstract class ZUtils extends MessageUtils {
 	 * @param message
 	 * @return
 	 */
-	protected String color(String message) {
+	public String color(String message) {
 		if (message == null)
 			return null;
 		if (NMSUtils.isHexColor()) {

@@ -66,11 +66,12 @@ public class ZEconomyManager implements EconomyManager {
             String name = configuration.getString(path + "name", "VAULT");
             String format = configuration.getString(path + "format", "v");
             String currency = configuration.getString(path + "currency", "$");
+            String denyMessage = configuration.getString(path + "denyMessage");
 
             switch (name.toLowerCase()) {
                 case "vault":
                     if (Config.enableDebug) Logger.info("Register Vault economy");
-                    registerEconomy(new VaultEconomy(this.plugin, name, currency, format));
+                    registerEconomy(new VaultEconomy(this.plugin, name, currency, format, denyMessage));
                     break;
                 case "---":
                     // TODO

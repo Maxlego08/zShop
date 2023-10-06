@@ -1,0 +1,7 @@
+defaultLore:
+  - "&7&l» &fBuying price&8: &a%buyPrice%"
+  - "&7&l» &fSelling price&8: &a%sellPrice%"
+  - ""
+  - "&7&l» &fLeft click to &nbuy"
+  - "&7&l» &fClick wheel to &nsell everything"
+  - "&7&l» &fRight click to &nsell"

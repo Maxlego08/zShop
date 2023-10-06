@@ -1,6 +1,7 @@
 economies:
   VAULT:
-    name: "Vault"
+    name: vault
     format: "v"
     currency: "%price%$"
     isEnable: true
+    denyMessage: "&cYou don’t have enough money to buy this."

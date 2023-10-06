@@ -45,6 +45,17 @@ public enum Message {
 
     DESCRIPTION_RELOAD("Reload configuration files"),
 
+    CANT_SELL("§c✘ Unable to sell"),
+    CANT_BUY("§c✘ Unable to buy"),
+
+    INVENTORY_NOT_FOUND("§cImpossible to find the inventory §f%name%§c."),
+
+    NOT_ENOUGH_PLACE("§cYour inventory is full."),
+    SELL_ITEM("§fYou just sold §7x%amount% %item%§f for §b%price%§f."),
+    BUY_ITEM("§fYou have just bought §7x%amount% %item%§f for §b%price%§f."),
+    NOT_ENOUGH_ITEMS("§cYou do not have enough items in your inventory."),
+    NOT_ITEMS("§cYou do not have this item in your inventory."),
+
     ;
 
     private List<String> messages;

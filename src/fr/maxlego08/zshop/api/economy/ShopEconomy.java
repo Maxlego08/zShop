@@ -59,4 +59,15 @@ public interface ShopEconomy {
      */
     String getName();
 
+    /**
+     * Message sent when the player does not have enough money
+     *
+     * @return message
+     */
+    String getDenyMessage();
+
+    default String format(String priceAsString) {
+        return getCurrency().replace("%price%", priceAsString);
+    }
+
 }

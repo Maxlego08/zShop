@@ -1,0 +1,13 @@
+name: "zshop_back"
+size: 54
+items:
+  playerHead:
+    isPermanent: true
+    type: BACK
+    item:
+      material: BARRIER
+      name: "#cf1717ʙᴀᴄᴋ"
+      lore:
+        - ""
+        - "&f➥ &7Click to go #cf1717back"
+    slot: 48

@@ -7,40 +7,70 @@ items:
   coal:
     item:
       material: COAL
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 20
   iron_ingot:
     item:
       material: IRON_INGOT
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 21
   gold_ingot:
     item:
       material: GOLD_INGOT
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 22
   emerald:
     item:
       material: EMERALD
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 23
   diamond:
     item:
       material: DIAMOND
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 24
   lapis_lazuli:
     item:
       material: LAPIS_LAZULI
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 29
   quartz:
     item:
       material: QUARTZ
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 30
   netherite_ingot:
     item:
       material: NETHERITE_INGOT
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 31
   redstone:
     item:
       material: REDSTONE
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 32
   amethyst_shard:
     item:
       material: AMETHYST_SHARD
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 33

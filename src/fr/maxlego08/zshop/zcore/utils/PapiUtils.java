@@ -24,7 +24,7 @@ public class PapiUtils extends TranslationHelper {
 	 * @param player
 	 * @return itemstack
 	 */
-	protected ItemStack papi(ItemStack itemStack, Player player) {
+	public ItemStack papi(ItemStack itemStack, Player player) {
 
 		if (itemStack == null) {
 			return itemStack;

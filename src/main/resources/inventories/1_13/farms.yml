@@ -7,36 +7,63 @@ items:
   carrot:
     item:
       material: CARROT
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 20
   potato:
     item:
       material: POTATO
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 21
   wheat:
     item:
       material: WHEAT
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 22
   nether_wart:
     item:
       material: NETHER_WART
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 23
   melon:
     item:
       material: MELON
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 24
   sugar_cane:
     item:
       material: SUGAR_CANE
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 29
   cactus:
     item:
       material: CACTUS
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 30
   pumpkin:
     item:
       material: PUMPKIN
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 31
   beetroot:
     item:
       material: BEETROOT
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0
     slot: 32

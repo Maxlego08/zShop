@@ -45,7 +45,7 @@ public abstract class TranslationHelper {
 	 * @param itemStack
 	 * @return item name
 	 */
-	protected String getItemName(ItemStack itemStack) {
+	public String getItemName(ItemStack itemStack) {
 
 		if (itemStack == null) {
 			return "";

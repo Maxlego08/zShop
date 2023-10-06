@@ -3,7 +3,7 @@ size: 54
 items:
   playerHead:
     isPermanent: true
-    type: "INVENTORY"
+    type: INVENTORY
     inventory: "main_shop"
     plugin: "zShop"
     item:

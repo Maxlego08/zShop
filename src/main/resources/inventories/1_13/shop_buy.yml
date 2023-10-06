@@ -1,0 +1,16 @@
+name: "&e★ &3ᴘᴜʀᴄʜᴀsᴇ &e★"
+size: 54
+patterns:
+  - "zshop_decoration"
+  - "zshop_back"
+  - "zshop_choose_amount"
+items:
+  confirm_buy:
+    type: ZSHOP_CONFIRM_BUY
+    item:
+      material: LIME_STAINED_GLASS_PANE
+      name: "#94d160ᴄᴏɴғɪʀᴍ ᴛʜᴇ ᴘᴜʀᴄʜᴀsᴇ"
+      lore:
+        - ""
+        - "&f➥ &7Click to #94d160confirm the purchase"
+    slot: 50

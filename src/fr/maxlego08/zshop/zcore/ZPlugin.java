@@ -47,13 +47,11 @@ public abstract class ZPlugin extends JavaPlugin {
     private final Logger log = new Logger(this.getDescription().getFullName());
     private final List<Saveable> savers = new ArrayList<>();
     private final List<ListenerAdapter> listenerAdapters = new ArrayList<>();
-
+    protected CommandManager commandManager;
+    protected ZInventoryManager inventoryManager;
     private Gson gson;
     private Persist persist;
     private long enableTime;
-
-    protected CommandManager commandManager;
-    protected ZInventoryManager inventoryManager;
 
     protected void preEnable() {
 
@@ -87,8 +85,7 @@ public abstract class ZPlugin extends JavaPlugin {
             this.commandManager.validCommands();
         }
 
-        this.log.log(
-                "=== ENABLE DONE <&>7(<&>6" + Math.abs(enableTime - System.currentTimeMillis()) + "ms<&>7) <&>e===");
+        this.log.log("=== ENABLE DONE <&>7(<&>6" + Math.abs(enableTime - System.currentTimeMillis()) + "ms<&>7) <&>e===");
 
     }
 
@@ -98,8 +95,7 @@ public abstract class ZPlugin extends JavaPlugin {
     }
 
     protected void postDisable() {
-        this.log.log(
-                "=== DISABLE DONE <&>7(<&>6" + Math.abs(enableTime - System.currentTimeMillis()) + "ms<&>7) <&>e===");
+        this.log.log("=== DISABLE DONE <&>7(<&>6" + Math.abs(enableTime - System.currentTimeMillis()) + "ms<&>7) <&>e===");
 
     }
 
@@ -109,10 +105,7 @@ public abstract class ZPlugin extends JavaPlugin {
      * @return
      */
     public GsonBuilder getGsonBuilder() {
-        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls()
-                .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-                .registerTypeAdapter(PotionEffect.class, new PotionEffectAdapter(this))
-                .registerTypeAdapter(Location.class, new LocationAdapter(this));
+        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(PotionEffect.class, new PotionEffectAdapter(this)).registerTypeAdapter(Location.class, new LocationAdapter(this));
     }
 
     /**
@@ -121,8 +114,7 @@ public abstract class ZPlugin extends JavaPlugin {
      * @param listener
      */
     public void addListener(Listener listener) {
-        if (listener instanceof Saveable)
-            this.addSave((Saveable) listener);
+        if (listener instanceof Saveable) this.addSave((Saveable) listener);
         Bukkit.getPluginManager().registerEvents(listener, this);
     }
 
@@ -132,10 +124,8 @@ public abstract class ZPlugin extends JavaPlugin {
      * @param adapter
      */
     public void addListener(ListenerAdapter adapter) {
-        if (adapter == null)
-            throw new ListenerNullException("Warning, your listener is null");
-        if (adapter instanceof Saveable)
-            this.addSave((Saveable) adapter);
+        if (adapter == null) throw new ListenerNullException("Warning, your listener is null");
+        if (adapter instanceof Saveable) this.addSave((Saveable) adapter);
         this.listenerAdapters.add(adapter);
     }
 
@@ -186,10 +176,10 @@ public abstract class ZPlugin extends JavaPlugin {
     protected <T> T getProvider(Class<T> classz) {
         RegisteredServiceProvider<T> provider = getServer().getServicesManager().getRegistration(classz);
         if (provider == null) {
-            log.log("Unable to retrieve the provider " + classz.toString(), LogType.WARNING);
+            log.log("Unable to retrieve the provider " + classz, LogType.WARNING);
             return null;
         }
-        return provider.getProvider() != null ? (T) provider.getProvider() : null;
+        return provider.getProvider() != null ? provider.getProvider() : null;
     }
 
     /**
@@ -221,7 +211,7 @@ public abstract class ZPlugin extends JavaPlugin {
      */
     protected boolean isEnable(Plugins pl) {
         Plugin plugin = getPlugin(pl);
-        return plugin == null ? false : plugin.isEnabled();
+        return plugin != null && plugin.isEnabled();
     }
 
     /**
@@ -284,16 +274,15 @@ public abstract class ZPlugin extends JavaPlugin {
      * For 1.13+
      *
      * @param resourcePath Resource path
-     * @param toPath new path
-     * @param replace replace boolean
+     * @param toPath       new path
+     * @param replace      replace boolean
      */
     public void saveResource(String resourcePath, String toPath, boolean replace) {
         if (resourcePath != null && !resourcePath.equals("")) {
             resourcePath = resourcePath.replace('\\', '/');
             InputStream in = this.getResource(resourcePath);
             if (in == null) {
-                throw new IllegalArgumentException(
-                        "The embedded resource '" + resourcePath + "' cannot be found in " + this.getFile());
+                throw new IllegalArgumentException("The embedded resource '" + resourcePath + "' cannot be found in " + this.getFile());
             } else {
                 File outFile = new File(getDataFolder(), toPath);
                 int lastIndex = toPath.lastIndexOf(47);
@@ -304,8 +293,7 @@ public abstract class ZPlugin extends JavaPlugin {
 
                 try {
                     if (outFile.exists() && !replace) {
-                        getLogger().log(Level.WARNING, "Could not save " + outFile.getName() + " to " + outFile
-                                + " because " + outFile.getName() + " already exists.");
+                        getLogger().log(Level.WARNING, "Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
                     } else {
                         OutputStream out = Files.newOutputStream(outFile.toPath());
                         byte[] buf = new byte[1024];
