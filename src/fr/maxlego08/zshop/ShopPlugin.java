@@ -7,10 +7,12 @@ import fr.maxlego08.menu.api.pattern.PatternManager;
 import fr.maxlego08.menu.button.loader.PluginLoader;
 import fr.maxlego08.zshop.api.ShopManager;
 import fr.maxlego08.zshop.api.economy.EconomyManager;
+import fr.maxlego08.zshop.api.limit.LimiterManager;
 import fr.maxlego08.zshop.buttons.ZConfirmBuyButton;
 import fr.maxlego08.zshop.buttons.ZConfirmSellButton;
 import fr.maxlego08.zshop.command.commands.CommandShop;
 import fr.maxlego08.zshop.economy.ZEconomyManager;
+import fr.maxlego08.zshop.limit.ZLimitManager;
 import fr.maxlego08.zshop.loader.AddButtonLoader;
 import fr.maxlego08.zshop.loader.ItemButtonLoader;
 import fr.maxlego08.zshop.loader.RemoveButtonLoader;
@@ -33,6 +35,7 @@ import org.bukkit.plugin.ServicesManager;
  */
 public class ShopPlugin extends ZPlugin {
 
+    private ZLimitManager limitManager = new ZLimitManager();
     private final EconomyManager economyManager = new ZEconomyManager(this);
     private final ShopManager shopManager = new ZShopManager(this);
     private InventoryManager inventoryManager;
@@ -64,7 +67,11 @@ public class ShopPlugin extends ZPlugin {
         this.addSave(Config.getInstance());
         this.addSave(new MessageLoader(this));
 
+
         this.addListener(this.shopManager);
+
+        // Load limiter before
+        this.limitManager.load(this.getPersist());
 
         this.saveDefaultConfig();
         this.loadButtons();
@@ -74,7 +81,11 @@ public class ShopPlugin extends ZPlugin {
 
         new Metrics(this, 5881);
 
+        this.limitManager.registerPlaceholders();
         this.shopManager.registerPlaceholders();
+
+        this.limitManager.deletes();
+        this.limitManager.save(this.getPersist());
 
         this.postEnable();
     }
@@ -84,6 +95,7 @@ public class ShopPlugin extends ZPlugin {
 
         this.preDisable();
 
+        this.limitManager.save(this.getPersist());
         this.saveFiles();
 
         this.postDisable();
@@ -128,5 +140,9 @@ public class ShopPlugin extends ZPlugin {
         this.buttonManager.register(new PluginLoader(this, ZConfirmBuyButton.class, "zshop_confirm_buy"));
         this.buttonManager.register(new PluginLoader(this, ZConfirmSellButton.class, "zshop_confirm_sell"));
 
+    }
+
+    public LimiterManager getLimiterManager() {
+        return limitManager;
     }
 }

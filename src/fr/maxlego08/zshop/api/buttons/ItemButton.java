@@ -2,9 +2,12 @@ package fr.maxlego08.zshop.api.buttons;
 
 import fr.maxlego08.menu.api.button.Button;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import fr.maxlego08.zshop.api.limit.Limit;
+import fr.maxlego08.zshop.api.limit.LimitType;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemButton extends Button {
 
@@ -52,5 +55,9 @@ public interface ItemButton extends Button {
      * @return give item
      */
     boolean giveItem();
+
+    Optional<Limit> getServerBuyLimit();
+
+    Optional<Limit> getServerSellLimit();
 
 }

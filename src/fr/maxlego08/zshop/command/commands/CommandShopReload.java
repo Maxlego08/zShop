@@ -19,7 +19,7 @@ public class CommandShopReload extends VCommand {
 	protected CommandType perform(ShopPlugin plugin) {
 		
 		plugin.reloadFiles();
-		message(sender, Message.RELOAD);
+		message(plugin, sender, Message.RELOAD);
 		
 		return CommandType.SUCCESS;
 	}

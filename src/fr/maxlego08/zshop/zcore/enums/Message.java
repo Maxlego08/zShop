@@ -56,6 +56,9 @@ public enum Message {
     NOT_ENOUGH_ITEMS("§cYou do not have enough items in your inventory."),
     NOT_ITEMS("§cYou do not have this item in your inventory."),
 
+    LIMIT_SERVER_BUY("§cYou cannot buy this, the server has exceeded the purchasing capacity."),
+    LIMIT_SERVER_SELL("§cYou cannot sell this, the server has exceeded the selling capacity."),
+
     ;
 
     private List<String> messages;

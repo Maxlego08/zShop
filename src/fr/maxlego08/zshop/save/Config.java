@@ -11,6 +11,8 @@ public class Config implements Saveable {
     public static String sellInventoryName = "shop_sell";
     public static String buyInventoryName = "shop_buy";
 
+    public static String dateFormat = "EEEE, d MMM yyyy HH:mm:ss";
+
     /**
      * static Singleton instance.
      */

@@ -5,9 +5,12 @@ import fr.maxlego08.menu.api.loader.ButtonLoader;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import fr.maxlego08.zshop.api.limit.Limit;
+import fr.maxlego08.zshop.api.limit.LimitType;
 import fr.maxlego08.zshop.buttons.ZItemButton;
 import fr.maxlego08.zshop.exceptions.EconomyNotFoundException;
 import fr.maxlego08.zshop.save.Config;
+import fr.maxlego08.zshop.zcore.utils.loader.Loader;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -58,6 +61,22 @@ public class ItemButtonLoader implements ButtonLoader {
 
         if (lore.isEmpty()) lore = this.plugin.getShopManager().getDefaultLore();
 
-        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem);
+        Limit serverSellLimit = null;
+        Limit serverBuyLimit = null;
+        String material = configuration.getString(path + "item.material", "STONE");
+
+        if (configuration.contains(path + "serverSellLimit")) {
+            Loader<Limit> loader = new LimitLoader(material, LimitType.SERVER);
+            serverSellLimit = loader.load(configuration, path + "serverSellLimit.");
+            this.plugin.getLimiterManager().create(serverSellLimit);
+        }
+
+        if (configuration.contains(path + "serverBuyLimit")) {
+            Loader<Limit> loader = new LimitLoader(material, LimitType.SERVER);
+            serverBuyLimit = loader.load(configuration, path + "serverBuyLimit.");
+            this.plugin.getLimiterManager().create(serverBuyLimit);
+        }
+
+        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit);
     }
 }

@@ -223,7 +223,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
         Optional<Inventory> optional = inventoryManager.getInventory(this.plugin, inventoryName);
 
         if (optional.isPresent()) inventoryManager.openInventory(player, optional.get(), 1, inventories);
-        else message(player, Message.INVENTORY_NOT_FOUND, "%name%", inventoryName);
+        else message(this.plugin, player, Message.INVENTORY_NOT_FOUND, "%name%", inventoryName);
     }
 
     @Override

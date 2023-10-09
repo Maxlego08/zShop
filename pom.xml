@@ -107,7 +107,7 @@
         <dependency>
             <groupId>com.github.Maxlego08</groupId>
             <artifactId>zMenu-API</artifactId>
-            <version>93dedcc854</version>
+            <version>2f12d9c099</version>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>

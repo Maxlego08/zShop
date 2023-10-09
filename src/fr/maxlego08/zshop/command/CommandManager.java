@@ -99,7 +99,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 					return true;
 			}
 		}
-		message(sender, Message.COMMAND_NO_ARG);
+		message(this.plugin, sender, Message.COMMAND_NO_ARG);
 		return true;
 	}
 
@@ -157,7 +157,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 	private CommandType processRequirements(VCommand command, CommandSender sender, String[] strings) {
 
 		if (!(sender instanceof Player) && !command.isConsoleCanUse()) {
-			message(sender, Message.COMMAND_NO_CONSOLE);
+			message(this.plugin, sender, Message.COMMAND_NO_CONSOLE);
 			return CommandType.DEFAULT;
 		}
 		
@@ -167,7 +167,7 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 				super.runAsync(this.plugin, () -> {
 					CommandType returnType = command.prePerform(this.plugin, sender, strings);
 					if (returnType == CommandType.SYNTAX_ERROR) {
-						message(sender, Message.COMMAND_SYNTAXE_ERROR, "%syntax%", command.getSyntax());
+						message(this.plugin, sender, Message.COMMAND_SYNTAXE_ERROR, "%syntax%", command.getSyntax());
 					}
 				});
 				return CommandType.DEFAULT;
@@ -175,11 +175,11 @@ public class CommandManager extends ZUtils implements CommandExecutor, TabComple
 
 			CommandType returnType = command.prePerform(this.plugin, sender, strings);
 			if (returnType == CommandType.SYNTAX_ERROR) {
-				message(sender, Message.COMMAND_SYNTAXE_ERROR, "%syntax%", command.getSyntax());
+				message(this.plugin, sender, Message.COMMAND_SYNTAXE_ERROR, "%syntax%", command.getSyntax());
 			}
 			return returnType;
 		}
-		message(sender, Message.COMMAND_NO_PERMISSION);
+		message(this.plugin, sender, Message.COMMAND_NO_PERMISSION);
 		return CommandType.DEFAULT;
 	}
 

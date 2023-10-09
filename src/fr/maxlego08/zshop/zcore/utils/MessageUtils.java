@@ -3,6 +3,8 @@ package fr.maxlego08.zshop.zcore.utils;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
+import fr.maxlego08.menu.api.utils.MetaUpdater;
+import fr.maxlego08.zshop.ShopPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -45,8 +47,8 @@ public abstract class MessageUtils extends LocationUtils {
      * @param message
      * @param args
      */
-    public void message(CommandSender sender, String message, Object... args) {
-        sender.sendMessage(Message.PREFIX.msg() + getMessage(message, args));
+    public void message(ShopPlugin plugin, CommandSender sender, String message, Object... args) {
+        plugin.getIManager().getMeta().sendMessage(sender, Message.PREFIX.msg() + getMessage(message, args));
     }
 
     /**
@@ -58,7 +60,9 @@ public abstract class MessageUtils extends LocationUtils {
      * @param args    The arguments - The arguments work in pairs, you must put for
      *                example %test% and then the value
      */
-    public void message(CommandSender sender, Message message, Object... args) {
+    public void message(ShopPlugin plugin, CommandSender sender, Message message, Object... args) {
+
+        MetaUpdater updater = plugin.getIManager().getMeta();
 
         if (sender instanceof ConsoleCommandSender) {
             if (message.getMessages().size() > 0) {
@@ -72,9 +76,9 @@ public abstract class MessageUtils extends LocationUtils {
             switch (message.getType()) {
                 case CENTER:
                     if (message.getMessages().size() > 0) {
-                        message.getMessages().forEach(msg -> sender.sendMessage(this.getCenteredMessage(this.papi(getMessage(msg, args), player))));
+                        message.getMessages().forEach(msg -> updater.sendMessage(sender, this.getCenteredMessage(this.papi(getMessage(msg, args), player))));
                     } else {
-                        sender.sendMessage(this.getCenteredMessage(this.papi(getMessage(message, args), player)));
+                        updater.sendMessage(sender, this.getCenteredMessage(this.papi(getMessage(message, args), player)));
                     }
 
                     break;
@@ -83,9 +87,9 @@ public abstract class MessageUtils extends LocationUtils {
                     break;
                 case TCHAT:
                     if (message.getMessages().size() > 0) {
-                        message.getMessages().forEach(msg -> sender.sendMessage(this.papi(Message.PREFIX.msg() + getMessage(msg, args), player)));
+                        message.getMessages().forEach(msg -> updater.sendMessage(sender, this.papi(Message.PREFIX.msg() + getMessage(msg, args), player)));
                     } else {
-                        sender.sendMessage(this.papi(Message.PREFIX.msg() + getMessage(message, args), player));
+                        updater.sendMessage(sender, this.papi(Message.PREFIX.msg() + getMessage(message, args), player));
                     }
                     break;
                 case TITLE:
@@ -110,11 +114,11 @@ public abstract class MessageUtils extends LocationUtils {
      * @param message
      * @param args
      */
-    public void broadcast(Message message, Object... args) {
+    public void broadcast(ShopPlugin plugin, Message message, Object... args) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            message(player, message, args);
+            message(plugin, player, message, args);
         }
-        message(Bukkit.getConsoleSender(), message, args);
+        message(plugin, Bukkit.getConsoleSender(), message, args);
     }
 
     /**
