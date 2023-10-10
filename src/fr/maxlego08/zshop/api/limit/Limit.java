@@ -11,8 +11,6 @@ public interface Limit {
 
     String getMaterial();
 
-    UUID getOwnerUUID();
-
     int getLimit();
 
     int getAmount();

@@ -1,5 +1,6 @@
 package fr.maxlego08.zshop.loader;
 
+import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.limit.Limit;
 import fr.maxlego08.zshop.api.limit.LimitType;
 import fr.maxlego08.zshop.api.limit.SchedulerType;
@@ -20,10 +21,12 @@ public class LimitLoader implements Loader<Limit> {
     private static final Map<String, Integer> DAYS = IntStream.range(1, 8).collect(HashMap::new, (map, month) -> map.put(new DateFormatSymbols(Locale.ENGLISH).getWeekdays()[month].toUpperCase(), month), HashMap::putAll);
     private static final Map<String, Integer> MONTHS = IntStream.range(0, 11).collect(HashMap::new, (map, month) -> map.put(new DateFormatSymbols(Locale.ENGLISH).getMonths()[month].toUpperCase(), month), HashMap::putAll);
 
+    private final ShopPlugin plugin;
     private final String material;
     private final LimitType limitType;
 
-    public LimitLoader(String material, LimitType limitType) {
+    public LimitLoader(ShopPlugin plugin, String material, LimitType limitType) {
+        this.plugin = plugin;
         this.material = material;
         this.limitType = limitType;
     }
@@ -73,7 +76,7 @@ public class LimitLoader implements Loader<Limit> {
                 break;
         }
 
-        return new ZLimit(this.limitType, this.material, limit, schedulerType, dayOfMonth, dayOfWeek, month, hour, minute);
+        return new ZLimit(plugin, this.limitType, this.material, limit, schedulerType, dayOfMonth, dayOfWeek, month, hour, minute);
     }
 
     @Override

@@ -63,20 +63,34 @@ public class ItemButtonLoader implements ButtonLoader {
 
         Limit serverSellLimit = null;
         Limit serverBuyLimit = null;
+        Limit playerSellLimit = null;
+        Limit playerBuyLimit = null;
         String material = configuration.getString(path + "item.material", "STONE");
 
         if (configuration.contains(path + "serverSellLimit")) {
-            Loader<Limit> loader = new LimitLoader(material, LimitType.SERVER);
+            Loader<Limit> loader = new LimitLoader(plugin, material, LimitType.SERVER_SELL);
             serverSellLimit = loader.load(configuration, path + "serverSellLimit.");
             this.plugin.getLimiterManager().create(serverSellLimit);
         }
 
         if (configuration.contains(path + "serverBuyLimit")) {
-            Loader<Limit> loader = new LimitLoader(material, LimitType.SERVER);
+            Loader<Limit> loader = new LimitLoader(plugin, material, LimitType.SERVER_BUY);
             serverBuyLimit = loader.load(configuration, path + "serverBuyLimit.");
             this.plugin.getLimiterManager().create(serverBuyLimit);
         }
 
-        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit);
+        if (configuration.contains(path + "playerSellLimit")) {
+            Loader<Limit> loader = new LimitLoader(plugin, material, LimitType.PLAYER_SELL);
+            playerSellLimit = loader.load(configuration, path + "playerSellLimit.");
+            this.plugin.getLimiterManager().create(playerSellLimit);
+        }
+
+        if (configuration.contains(path + "playerBuyLimit")) {
+            Loader<Limit> loader = new LimitLoader(plugin, material, LimitType.PLAYER_BUY);
+            playerBuyLimit = loader.load(configuration, path + "playerBuyLimit.");
+            this.plugin.getLimiterManager().create(playerBuyLimit);
+        }
+
+        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit);
     }
 }

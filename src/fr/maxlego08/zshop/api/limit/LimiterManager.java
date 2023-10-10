@@ -1,11 +1,9 @@
 package fr.maxlego08.zshop.api.limit;
 
-import fr.maxlego08.zshop.api.buttons.ItemButton;
-import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface LimiterManager {
 
@@ -13,18 +11,20 @@ public interface LimiterManager {
 
     void create(Limit limit);
 
-    void delete(Limit limit);
+    Optional<Limit> getLimit(LimitType limitType, String material);
 
-    void delete(int id);
+    Optional<PlayerLimit> getLimit(Player player);
 
-    Optional<Limit> getLimit(int id);
-
-    Optional<Limit> getLimit(UUID ownerUUID);
-
-    Optional<Limit> getLimit(String material);
-
-    void update(Limit limit);
+    PlayerLimit getOrCreate(Player player);
 
     void deletes();
 
+    void reset(Limit limit);
+
+    void invalid();
+
+    /**
+     * Allows you to check if the players' data are valid in relation to the plugin configuration. If not, then they will be reset
+     */
+    void verifyPlayersLimit();
 }

@@ -22,8 +22,6 @@ import fr.maxlego08.zshop.zcore.utils.players.ActionBar;
  */
 public abstract class MessageUtils extends LocationUtils {
 
-    private final static int CENTER_PX = 154;
-
     /**
      * @param player
      * @param message
@@ -229,6 +227,7 @@ public abstract class MessageUtils extends LocationUtils {
         }
 
         int halvedMessageSize = messagePxSize / 2;
+        int CENTER_PX = 154;
         int toCompensate = CENTER_PX - halvedMessageSize;
         int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
         int compensated = 0;

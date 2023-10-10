@@ -24,6 +24,7 @@ import fr.maxlego08.zshop.save.MessageLoader;
 import fr.maxlego08.zshop.zcore.ZPlugin;
 import fr.maxlego08.zshop.zcore.utils.plugins.Metrics;
 import fr.maxlego08.zshop.zcore.utils.plugins.Plugins;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 
@@ -35,9 +36,9 @@ import org.bukkit.plugin.ServicesManager;
  */
 public class ShopPlugin extends ZPlugin {
 
-    private ZLimitManager limitManager = new ZLimitManager();
     private final EconomyManager economyManager = new ZEconomyManager(this);
     private final ShopManager shopManager = new ZShopManager(this);
+    private ZLimitManager limitManager = new ZLimitManager(this);
     private InventoryManager inventoryManager;
     private CommandManager commandManager;
     private PatternManager patternManager;
@@ -67,7 +68,7 @@ public class ShopPlugin extends ZPlugin {
         this.addSave(Config.getInstance());
         this.addSave(new MessageLoader(this));
 
-
+        Bukkit.getPluginManager().registerEvents(this.limitManager, this);
         this.addListener(this.shopManager);
 
         // Load limiter before
@@ -85,7 +86,7 @@ public class ShopPlugin extends ZPlugin {
         this.shopManager.registerPlaceholders();
 
         this.limitManager.deletes();
-        this.limitManager.save(this.getPersist());
+        this.limitManager.verifyPlayersLimit();
 
         this.postEnable();
     }
@@ -103,11 +104,19 @@ public class ShopPlugin extends ZPlugin {
 
     @Override
     public void reloadFiles() {
+
+        this.limitManager.invalid();
+
         super.reloadFiles();
         this.loadButtons();
         this.reloadConfig();
         this.economyManager.loadEconomies();
         this.shopManager.loadConfig();
+
+        this.limitManager.deletes();
+        this.limitManager.verifyPlayersLimit();
+
+        // Ajouter la cloture des inventaires
     }
 
     public EconomyManager getEconomyManager() {

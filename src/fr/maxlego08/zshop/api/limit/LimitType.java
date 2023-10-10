@@ -2,7 +2,9 @@ package fr.maxlego08.zshop.api.limit;
 
 public enum LimitType {
 
-    SERVER,
-    PLAYER,
+    SERVER_BUY,
+    SERVER_SELL,
+    PLAYER_BUY,
+    PLAYER_SELL,
 
 }

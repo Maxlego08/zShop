@@ -8,7 +8,11 @@ import fr.maxlego08.zshop.ZShopManager;
 import fr.maxlego08.zshop.api.ShopManager;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import fr.maxlego08.zshop.api.event.events.ZShopBuyEvent;
+import fr.maxlego08.zshop.api.event.events.ZShopSellEvent;
 import fr.maxlego08.zshop.api.limit.Limit;
+import fr.maxlego08.zshop.api.limit.LimiterManager;
+import fr.maxlego08.zshop.api.limit.PlayerLimit;
 import fr.maxlego08.zshop.placeholder.Placeholder;
 import fr.maxlego08.zshop.zcore.enums.Message;
 import org.bukkit.Bukkit;
@@ -35,8 +39,10 @@ public class ZItemButton extends ZButton implements ItemButton {
     private final boolean giveItem;
     private final Limit serverSellLimit;
     private final Limit serverBuyLimit;
+    private final Limit playerSellLimit;
+    private final Limit playerBuyLimit;
 
-    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit) {
+    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit) {
         this.plugin = plugin;
         this.shopManager = plugin.getShopManager();
         this.sellPrice = sellPrice;
@@ -49,6 +55,8 @@ public class ZItemButton extends ZButton implements ItemButton {
         this.giveItem = giveItem;
         this.serverSellLimit = serverSellLimit;
         this.serverBuyLimit = serverBuyLimit;
+        this.playerSellLimit = playerSellLimit;
+        this.playerBuyLimit = playerBuyLimit;
     }
 
     @Override
@@ -122,54 +130,82 @@ public class ZItemButton extends ZButton implements ItemButton {
         ZShopManager manager = (ZShopManager) this.plugin.getShopManager();
         double currentPrice = this.getBuyPrice(amount);
 
+        /* If the price is invalid, then we stop */
         if (currentPrice < 0) return;
 
-        // TODO REWORK LE SYSTEM D'ENVOYÉ DE MESSAGE POUR UTILISER LE SYSTEM DE META DE ZMENU
-
-        // Money
+        /* ECONOMY CHECK */
         if (!this.shopEconomy.hasMoney(player, currentPrice)) {
             manager.message(this.plugin, player, manager.color(this.shopEconomy.getDenyMessage()));
             return;
         }
+        /* END ECONOMY CHECK */
 
-        // Inventory
+        /* INVENTORY SLOT CHECK */
         if (manager.hasInventoryFull(player)) {
             manager.message(this.plugin, player, Message.NOT_ENOUGH_PLACE);
             return;
         }
+        /* END INVENTORY SLOT CHECK */
 
-        // Limit
+        /* SERVER LIMIT */
+        int newServerLimitAmount = 0;
+        int newPlayerLimitAmount = 0;
+        String material = this.getItemStack().getMaterial();
+        LimiterManager limiterManager = this.plugin.getLimiterManager();
+
         if (serverBuyLimit != null) {
-            int newAmount = serverBuyLimit.getAmount() + amount;
-            if (newAmount > serverBuyLimit.getLimit()) {
+            newServerLimitAmount = serverBuyLimit.getAmount() + amount;
+            if (newServerLimitAmount > serverBuyLimit.getLimit()) {
                 manager.message(this.plugin, player, Message.LIMIT_SERVER_BUY);
                 return;
             }
-
-            // NE PAS OUBLIER LA GESTION DE LA LIMIT AVEC LEVENT
-
-            serverBuyLimit.setAmount(newAmount);
         }
+        /* END SERVER LIMIT */
 
-        /*ZShopBuyEvent event = new ZShopBuyEvent(this, player, amount, currentPrice, economy);
-        event.callEvent();
+        /* PLAYER LIMIT */
+        if (playerBuyLimit != null) {
+            // We will recover the value without creating a new player limit
+            Optional<PlayerLimit> optional = limiterManager.getLimit(player);
+            newPlayerLimitAmount = optional.map(e -> e.getBuyAmount(material)).orElse(0) + amount;
+            if (newPlayerLimitAmount > playerBuyLimit.getLimit()) {
+                manager.message(this.plugin, player, Message.LIMIT_SERVER_SELL);
+                return;
+            }
+        }
+        /* END PLAYER LIMIT */
 
-        if (event.isCancelled())
-            return;*/
+        /* BUKKIT EVENT */
+        ZShopBuyEvent event = new ZShopBuyEvent(player, this, amount, currentPrice, newServerLimitAmount, newPlayerLimitAmount);
+        event.call();
 
-        this.shopEconomy.withdrawMoney(player, currentPrice);
+        if (event.isCancelled()) return;
 
+        newServerLimitAmount = event.getServerLimit();
+        newPlayerLimitAmount = event.getPlayerLimit();
+
+        /* If the purchase is confirmed, then we will change the limits */
+        if (serverBuyLimit != null && newServerLimitAmount > 0) serverBuyLimit.setAmount(newServerLimitAmount);
+        if (newPlayerLimitAmount > 0) limiterManager.getOrCreate(player).setBuyAmount(material, newPlayerLimitAmount);
+
+        amount = event.getAmount();
+        currentPrice = event.getPrice();
+        /* END BUKKIT EVENT */
+
+        /* We withdraw the money if the price is greater than 0  */
+        if (currentPrice > 0) this.shopEconomy.withdrawMoney(player, currentPrice);
+
+        /* BUILD ITEM AND GIVE IT TO PLAYER */
         ItemStack itemStack = super.getItemStack().build(player).clone();
         itemStack.setAmount(amount);
 
-        if (this.giveItem) {
-            manager.give(player, itemStack);
-        }
+        if (this.giveItem) manager.give(player, itemStack);
+        /* END BUILD ITEM AND GIVE IT TO PLAYER */
 
         String itemName = manager.getItemName(itemStack);
         String buyPrice = getBuyPriceFormat(player, amount);
         manager.message(this.plugin, player, Message.BUY_ITEM, "%amount%", String.valueOf(amount), "%item%", itemName, "%price%", buyPrice);
 
+        /* COMMANDS */
         for (String command : this.buyCommands) {
             command = command.replace("%amount%", String.valueOf(amount));
             command = command.replace("%item%", itemName);
@@ -177,7 +213,7 @@ public class ZItemButton extends ZButton implements ItemButton {
             command = command.replace("%player%", player.getName());
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Placeholder.getPlaceholder().setPlaceholders(player, command));
         }
-
+        /* END COMMANDS */
 
         /*if (this.log) {
 
@@ -193,7 +229,6 @@ public class ZItemButton extends ZButton implements ItemButton {
             this.historyManager.asyncValue(player.getUniqueId(), history);
 
         }*/
-
     }
 
     @Override
@@ -201,63 +236,84 @@ public class ZItemButton extends ZButton implements ItemButton {
         ZShopManager manager = (ZShopManager) this.plugin.getShopManager();
 
         ItemStack itemStack = getItemStack().build(player);
-        int item = 0;
+        int items = 0;
 
         for (int a = 0; a != 36; a++) {
             ItemStack is = player.getInventory().getContents()[a];
             if (is != null && is.isSimilar(itemStack)) {
-                item += is.getAmount();
+                items += is.getAmount();
             }
         }
 
-        if (item <= 0) {
+        if (items <= 0) {
             manager.message(this.plugin, player, Message.NOT_ITEMS);
             return;
         }
 
-        if (item < amount) {
+        if (items < amount) {
             manager.message(this.plugin, player, Message.NOT_ENOUGH_ITEMS);
             return;
         }
 
-        item = amount == 0 ? item : amount;
-        int realAmount = item;
+        items = amount == 0 ? items : amount;
+        int realAmount = items;
 
-        // Limit
+        int newServerLimitAmount = 0;
+        int newPlayerLimitAmount = 0;
+        String material = this.getItemStack().getMaterial();
+        LimiterManager limiterManager = this.plugin.getLimiterManager();
+
+        /* SERVER LIMIT */
         if (serverSellLimit != null) {
-            int newAmount = serverSellLimit.getAmount() + realAmount;
-            if (newAmount > serverSellLimit.getLimit()) {
+            newServerLimitAmount = serverSellLimit.getAmount() + realAmount;
+            if (newServerLimitAmount > serverSellLimit.getLimit()) {
                 manager.message(this.plugin, player, Message.LIMIT_SERVER_SELL);
                 return;
             }
-
-            // NE PAS OUBLIER LA GESTION DE LA LIMIT AVEC LEVENT
-
-            serverSellLimit.setAmount(newAmount);
         }
+        /* END SERVER LIMIT */
+
+        /* PLAYER LIMIT */
+        if (playerSellLimit != null) {
+            Optional<PlayerLimit> optional = limiterManager.getLimit(player);
+            newPlayerLimitAmount = optional.map(e -> e.getSellAmount(material)).orElse(0) + realAmount;
+            if (newPlayerLimitAmount > playerSellLimit.getLimit()) {
+                manager.message(this.plugin, player, Message.LIMIT_SERVER_SELL);
+                return;
+            }
+        }
+        /* END PLAYER LIMIT */
 
         double currentPrice = this.getSellPrice(realAmount);
 
         int slot = 0;
 
-        /*
-        ZShopSellEvent event = new ZShopSellEvent(this, player, realAmount, currentPrice, economy);
-        event.callEvent();
+        /* BUKKIT EVENT */
 
-        if (event.isCancelled())
-            return;
+        ZShopSellEvent event = new ZShopSellEvent(player, this, realAmount, currentPrice, newServerLimitAmount, newPlayerLimitAmount);
+        event.call();
 
+        if (event.isCancelled()) return;
+
+        newServerLimitAmount = event.getServerLimit();
+        newPlayerLimitAmount = event.getPlayerLimit();
+
+        /* If the sell is confirmed, then we will change the limits */
+        if (serverSellLimit != null && newServerLimitAmount > 0) serverSellLimit.setAmount(newServerLimitAmount);
+        if (newPlayerLimitAmount > 0) limiterManager.getOrCreate(player).setSellAmount(material, newPlayerLimitAmount);
+
+        realAmount = event.getAmount();
         currentPrice = event.getPrice();
-        Economy economy = event.getEconomy();
-        realAmount = event.getAmount();*/
 
-        // On retire ensuite les items de l'inventaire du joueur
+        /* END BUKKIT EVENT */
+
+        /* Items are then removed from the player’s inventory */
         for (ItemStack is : player.getInventory().getContents()) {
 
-            if (is != null && is.isSimilar(itemStack) && item > 0) {
+            if (is != null && is.isSimilar(itemStack) && items > 0) {
 
-                int currentAmount = is.getAmount() - item;
-                item -= is.getAmount();
+                int currentAmount = is.getAmount() - items;
+                items -= is.getAmount();
 
                 if (currentAmount <= 0) {
                     if (slot == 40) player.getInventory().setItemInOffHand(null);
@@ -266,15 +322,17 @@ public class ZItemButton extends ZButton implements ItemButton {
             }
             slot++;
         }
-
         player.updateInventory();
+        /* END ITEMS */
 
-        this.shopEconomy.depositMoney(player, currentPrice);
+        /* We withdraw the money if the price is greater than 0  */
+        if (currentPrice > 0) this.shopEconomy.depositMoney(player, currentPrice);
 
         String itemName = manager.getItemName(itemStack);
         String sellPrice = getSellPriceFormat(player, realAmount);
         manager.message(this.plugin, player, Message.SELL_ITEM, "%amount%", String.valueOf(realAmount), "%item%", itemName, "%price%", sellPrice);
 
+        /* COMMANDS */
         for (String command : sellCommands) {
             command = command.replace("%amount%", String.valueOf(realAmount));
             command = command.replace("%item%", itemName);
@@ -282,6 +340,7 @@ public class ZItemButton extends ZButton implements ItemButton {
             command = command.replace("%player%", player.getName());
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Placeholder.getPlaceholder().setPlaceholders(player, command));
         }
+        /* END COMMANDS */
 
         /*if (log) {
 
@@ -324,6 +383,16 @@ public class ZItemButton extends ZButton implements ItemButton {
     @Override
     public Optional<Limit> getServerSellLimit() {
         return Optional.ofNullable(this.serverSellLimit);
+    }
+
+    @Override
+    public Optional<Limit> getPlayerBuyLimit() {
+        return Optional.ofNullable(this.playerBuyLimit);
+    }
+
+    @Override
+    public Optional<Limit> getPlayerSellLimit() {
+        return Optional.ofNullable(this.playerSellLimit);
     }
 
     @Override
@@ -376,11 +445,21 @@ public class ZItemButton extends ZButton implements ItemButton {
             line = line.replace("%sellPrice%", sellPrice);
             line = line.replace("%buyPrice%", buyPrice);
 
+            // Server limit
             line = line.replace("%serverSellLimit%", serverSellLimit == null ? "-1" : String.valueOf(serverSellLimit.getLimit()));
             line = line.replace("%serverBuyLimit%", serverBuyLimit == null ? "-1" : String.valueOf(serverBuyLimit.getLimit()));
 
             line = line.replace("%serverSellAmount%", serverSellLimit == null ? "0" : String.valueOf(serverSellLimit.getAmount()));
             line = line.replace("%serverBuyAmount%", serverBuyLimit == null ? "0" : String.valueOf(serverBuyLimit.getAmount()));
+
+            // Player limit
+            line = line.replace("%playerSellLimit%", playerSellLimit == null ? "-1" : String.valueOf(playerSellLimit.getLimit()));
+            line = line.replace("%playerBuyLimit%", playerBuyLimit == null ? "-1" : String.valueOf(playerBuyLimit.getLimit()));
+
+            String material = this.getItemStack().getMaterial();
+            Optional<PlayerLimit> optional = this.plugin.getLimiterManager().getLimit(player);
+            line = line.replace("%playerSellAmount%", optional.map(limit -> String.valueOf(limit.getSellAmount(material))).orElse("0"));
+            line = line.replace("%playerBuyAmount%", optional.map(playerLimit -> String.valueOf(playerLimit.getBuyAmount(material))).orElse("0"));
 
             itemLore.add(line);
         });

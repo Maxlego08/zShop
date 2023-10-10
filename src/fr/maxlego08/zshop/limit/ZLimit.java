@@ -1,5 +1,6 @@
 package fr.maxlego08.zshop.limit;
 
+import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.limit.Limit;
 import fr.maxlego08.zshop.api.limit.LimitType;
 import fr.maxlego08.zshop.api.limit.SchedulerType;
@@ -7,11 +8,11 @@ import fr.maxlego08.zshop.zcore.utils.builder.TimerBuilder;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.UUID;
 
 public class ZLimit implements Limit {
-    private final LimitType limitType;
-    private final String material;
+
+    private transient final ShopPlugin plugin;
+    private transient final LimitType limitType;
     private transient final int limit;
 
     private transient final SchedulerType schedulerType;
@@ -20,16 +21,16 @@ public class ZLimit implements Limit {
     private transient final int month;
     private transient final int hour;
     private transient final int minute;
-    private UUID ownerUUID;
+    private final String material;
     private int id;
     private int amount;
-
     private transient boolean isValid;
     private transient Calendar calendar;
 
     // Ajouter un moyen de supprimer la limite si elle n'existe plus
 
-    public ZLimit(LimitType limitType, String material, int limit, SchedulerType schedulerType, int dayOfMonth, int dayOfWeek, int month, int hour, int minute) {
+    public ZLimit(ShopPlugin plugin, LimitType limitType, String material, int limit, SchedulerType schedulerType, int dayOfMonth, int dayOfWeek, int month, int hour, int minute) {
+        this.plugin = plugin;
         this.limitType = limitType;
         this.material = material;
         this.limit = limit;
@@ -112,15 +113,6 @@ public class ZLimit implements Limit {
     }
 
     @Override
-    public UUID getOwnerUUID() {
-        return this.ownerUUID;
-    }
-
-    public void setOwnerUUID(UUID ownerUUID) {
-        this.ownerUUID = ownerUUID;
-    }
-
-    @Override
     public int getLimit() {
         return this.limit;
     }
@@ -190,8 +182,30 @@ public class ZLimit implements Limit {
     @Override
     public void update() {
         if (calendar != null && schedulerType != SchedulerType.NEVER && System.currentTimeMillis() >= calendar.getTimeInMillis()) {
-            amount = 0;
+
+            if (this.limitType == LimitType.SERVER_BUY || this.limitType == LimitType.SERVER_SELL) amount = 0;
+            else {
+                plugin.getLimiterManager().reset(this);
+            }
             nextScheduler();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ZLimit{" +
+                "plugin=" + plugin +
+                ", limitType=" + limitType +
+                ", limit=" + limit +
+                ", schedulerType=" + schedulerType +
+                ", dayOfMonth=" + dayOfMonth +
+                ", dayOfWeek=" + dayOfWeek +
+                ", month=" + month +
+                ", hour=" + hour +
+                ", minute=" + minute +
+                ", material='" + material + '\'' +
+                ", id=" + id +
+                ", amount=" + amount +
+                ", isValid=" + isValid + '}';
     }
 }

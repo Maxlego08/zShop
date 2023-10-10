@@ -60,4 +60,8 @@ public interface ItemButton extends Button {
 
     Optional<Limit> getServerSellLimit();
 
+    Optional<Limit> getPlayerBuyLimit();
+
+    Optional<Limit> getPlayerSellLimit();
+
 }
