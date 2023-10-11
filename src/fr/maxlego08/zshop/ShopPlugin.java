@@ -63,6 +63,8 @@ public class ShopPlugin extends ZPlugin {
         this.patternManager = this.getProvider(PatternManager.class);
         this.buttonManager = this.getProvider(ButtonManager.class);
 
+        this.inventoryManager.registerButtonListener(this, this.shopManager.getButtonListener());
+
         this.registerCommand("zshoplugin", new CommandShop(this), "zpl");
 
         this.addSave(Config.getInstance());

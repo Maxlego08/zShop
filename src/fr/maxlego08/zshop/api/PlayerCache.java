@@ -1,6 +1,7 @@
 package fr.maxlego08.zshop.api;
 
 import fr.maxlego08.zshop.api.buttons.ItemButton;
+import fr.maxlego08.zshop.api.utils.PriceModifierCache;
 
 public interface PlayerCache {
 
@@ -11,5 +12,9 @@ public interface PlayerCache {
     int getAmount();
 
     void setItemAmount(int amount);
+
+    PriceModifierCache getPriceModifier(PriceType priceType);
+
+    void setPriceModifier(PriceType priceType, PriceModifierCache cache);
 
 }

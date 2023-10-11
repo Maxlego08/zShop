@@ -2,17 +2,24 @@ package fr.maxlego08.zshop;
 
 import fr.maxlego08.menu.api.Inventory;
 import fr.maxlego08.menu.api.InventoryManager;
+import fr.maxlego08.menu.api.button.Button;
 import fr.maxlego08.menu.api.command.CommandManager;
 import fr.maxlego08.menu.api.pattern.PatternManager;
 import fr.maxlego08.menu.exceptions.InventoryException;
 import fr.maxlego08.zshop.api.PlayerCache;
+import fr.maxlego08.zshop.api.PriceModifier;
+import fr.maxlego08.zshop.api.PriceType;
 import fr.maxlego08.zshop.api.ShopManager;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
+import fr.maxlego08.zshop.api.utils.PriceModifierCache;
+import fr.maxlego08.zshop.placeholder.ItemButtonPlaceholder;
 import fr.maxlego08.zshop.placeholder.LocalPlaceholder;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.enums.Message;
 import fr.maxlego08.zshop.zcore.utils.ZUtils;
 import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -24,28 +31,37 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ZShopManager extends ZUtils implements ShopManager {
 
     private final ShopPlugin plugin;
     private final Map<UUID, PlayerCache> cachePlayers = new HashMap<>();
+    private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    private final List<ItemButton> itemButtons = new ArrayList<>();
+    private List<PriceModifier> priceModifiers = new ArrayList<>();
     private List<String> defaultLore = new ArrayList<>();
 
     public ZShopManager(ShopPlugin plugin) {
         this.plugin = plugin;
     }
 
-
     @Override
     public void loadConfig() {
-        this.defaultLore = this.plugin.getConfig().getStringList("defaultLore");
+
+        FileConfiguration configuration = this.plugin.getConfig();
+        this.defaultLore = configuration.getStringList("defaultLore");
+        this.priceModifiers = ((List<Map<String, Object>>) configuration.getList("pricesModifier", new ArrayList<>())).stream().map(ZPriceModifier::new).collect(Collectors.toList());
 
         this.loadPatterns();
         this.loadInventories();
@@ -111,6 +127,20 @@ public class ZShopManager extends ZUtils implements ShopManager {
             ItemButton itemButton = playerCache.getItemButton();
             return itemButton == null ? "0" : String.valueOf(itemButton.getMaxStack());
         });
+
+        localPlaceholder.register("modifier_sell", (player, args) -> priceModifierPrice(getPriceModifier(player, PriceType.SELL), args.isEmpty()));
+        localPlaceholder.register("modifier_buy", (player, args) -> priceModifierPrice(getPriceModifier(player, PriceType.BUY), args.isEmpty()));
+
+        localPlaceholder.register("item_", new ItemButtonPlaceholder(this.plugin, this));
+    }
+
+    private final String priceModifierPrice(Optional<PriceModifier> optional, boolean isValue) {
+        if (isValue) {
+            return optional.map(priceModifier -> String.valueOf(priceModifier.getModifier())).orElse("1");
+        } else {
+            double percent = (optional.map(PriceModifier::getModifier).orElse(1.0) * 100) - 100;
+            return decimalFormat.format(percent);
+        }
     }
 
     @Override
@@ -125,6 +155,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
         InventoryManager inventoryManager = this.plugin.getIManager();
         inventoryManager.deleteInventories(this.plugin);
+        this.itemButtons.clear();
 
         files(folder, file -> {
             try {
@@ -137,7 +168,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
     @Override
     public void loadPatterns() {
-// Check if file exist
+        // Check if file exist
         File folder = new File(this.plugin.getDataFolder(), "patterns");
         if (!folder.exists()) {
             folder.mkdir();
@@ -234,5 +265,47 @@ public class ZShopManager extends ZUtils implements ShopManager {
         PlayerCache playerCache = new ZPlayerCache();
         this.cachePlayers.put(player.getUniqueId(), playerCache);
         return playerCache;
+    }
+
+    @Override
+    public Optional<PriceModifier> getPriceModifier(Player player, PriceType priceType) {
+
+        PlayerCache playerCache = getCache(player);
+        PriceModifierCache cache = playerCache.getPriceModifier(priceType);
+
+        if (!cache.isExpired()) return cache.getPriceModifier();
+
+        Optional<PriceModifier> optional = this.priceModifiers.stream().filter(modifier -> {
+            // Check if type is the same and check if player has an effective permission
+            return modifier.getType() == priceType && player.getEffectivePermissions().stream().anyMatch(e -> e.getPermission().equalsIgnoreCase(modifier.getPermission()));
+        }).max(Comparator.comparingDouble(PriceModifier::getModifier));
+
+        // 5 seconds of cache
+        playerCache.setPriceModifier(priceType, new PriceModifierCache(System.currentTimeMillis() + 5000, optional));
+        return optional;
+    }
+
+    @Override
+    public Optional<ItemButton> getItemButton(Material material) {
+        return getItemButton(material.name());
+    }
+
+    @Override
+    public Optional<ItemButton> getItemButton(String material) {
+        return this.itemButtons.stream().filter(button -> button.getItemStack().getMaterial().equalsIgnoreCase(material)).findFirst();
+    }
+
+    @Override
+    public Collection<ItemButton> getItemButtons() {
+        return Collections.unmodifiableCollection(this.itemButtons);
+    }
+
+    @Override
+    public Consumer<Button> getButtonListener() {
+        return button -> {
+            if (button instanceof ItemButton) {
+                this.itemButtons.add((ItemButton) button);
+            }
+        };
     }
 }

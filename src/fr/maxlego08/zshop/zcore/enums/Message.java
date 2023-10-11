@@ -63,6 +63,7 @@ public enum Message {
 
     private List<String> messages;
     private String message;
+    private String messageNewVersion;
     private Map<String, Object> titles = new HashMap<>();
     private boolean use = true;
     private MessageType type = MessageType.TCHAT;
@@ -75,6 +76,11 @@ public enum Message {
     private Message(String message) {
         this.message = message;
         this.use = true;
+    }
+
+    Message(String message, String messageNewVersion) {
+        this.message = message;
+        this.messageNewVersion = messageNewVersion;
     }
 
     /**
@@ -219,5 +225,8 @@ public enum Message {
         this.itemStack = itemStack;
     }
 
+    public String getMessageNewVersion() {
+        return messageNewVersion;
+    }
 }
 

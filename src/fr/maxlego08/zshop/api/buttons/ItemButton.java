@@ -33,9 +33,39 @@ public interface ItemButton extends Button {
 
     List<String> getLore();
 
+    /**
+     * Allows to recover the sale price with the modifiers
+     *
+     * @param player the player
+     * @param amount current amount
+     * @return price format
+     */
     String getSellPriceFormat(Player player, int amount);
 
+    /**
+     * Allows to recover the purchase price with the modifiers
+     *
+     * @param player the player
+     * @param amount current amount
+     * @return price format
+     */
     String getBuyPriceFormat(Player player, int amount);
+
+    /**
+     * Allows to recover the sale price
+     *
+     * @param amount current amount
+     * @return price format
+     */
+    String getSellPriceFormat(int amount);
+
+    /**
+     * Allows to recover the purchase price
+     *
+     * @param amount current amount
+     * @return price format
+     */
+    String getBuyPriceFormat(int amount);
 
     void buy(Player player, int amount);
 

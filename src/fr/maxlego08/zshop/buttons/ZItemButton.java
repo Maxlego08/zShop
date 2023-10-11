@@ -5,6 +5,8 @@ import fr.maxlego08.menu.button.ZButton;
 import fr.maxlego08.menu.inventory.inventories.InventoryDefault;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.ZShopManager;
+import fr.maxlego08.zshop.api.PriceModifier;
+import fr.maxlego08.zshop.api.PriceType;
 import fr.maxlego08.zshop.api.ShopManager;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
@@ -24,6 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ZItemButton extends ZButton implements ItemButton {
 
@@ -116,11 +119,29 @@ public class ZItemButton extends ZButton implements ItemButton {
 
     @Override
     public String getSellPriceFormat(Player player, int amount) {
-        return this.canSell() ? this.shopEconomy.format(this.shopManager.transformPrice(getSellPrice(amount))) : Message.CANT_SELL.msg();
+        if (!this.canSell()) return Message.CANT_SELL.msg();
+        AtomicReference<Double> price = new AtomicReference<>(getSellPrice(amount));
+        Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.SELL);
+        optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
+        return this.shopEconomy.format(this.shopManager.transformPrice(price.get()));
     }
 
     @Override
     public String getBuyPriceFormat(Player player, int amount) {
+        if (!this.canBuy()) return Message.CANT_BUY.msg();
+        AtomicReference<Double> price = new AtomicReference<>(getBuyPrice(amount));
+        Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.BUY);
+        optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
+        return this.shopEconomy.format(this.shopManager.transformPrice(price.get()));
+    }
+
+    @Override
+    public String getSellPriceFormat(int amount) {
+        return this.canSell() ? this.shopEconomy.format(this.shopManager.transformPrice(getSellPrice(amount))) : Message.CANT_SELL.msg();
+    }
+
+    @Override
+    public String getBuyPriceFormat(int amount) {
         return this.canBuy() ? this.shopEconomy.format(this.shopManager.transformPrice(getBuyPrice(amount))) : Message.CANT_BUY.msg();
     }
 
@@ -356,8 +377,6 @@ public class ZItemButton extends ZButton implements ItemButton {
             this.historyManager.asyncValue(player.getUniqueId(), history);
 
         }*/
-
-
     }
 
     @Override
@@ -440,19 +459,25 @@ public class ZItemButton extends ZButton implements ItemButton {
         String sellPrice = getSellPriceFormat(player, itemStack.getAmount());
         String buyPrice = getBuyPriceFormat(player, itemStack.getAmount());
 
+        String realSellPrice = getSellPriceFormat(itemStack.getAmount());
+        String realBuyPrice = getBuyPriceFormat(itemStack.getAmount());
+
         this.lore.forEach(line -> {
 
             line = line.replace("%sellPrice%", sellPrice);
             line = line.replace("%buyPrice%", buyPrice);
+            line = line.replace("%realSellPrice%", realSellPrice);
+            line = line.replace("%realBuyPrice%", realBuyPrice);
 
-            // Server limit
+            /* SERVER LIMIT */
             line = line.replace("%serverSellLimit%", serverSellLimit == null ? "-1" : String.valueOf(serverSellLimit.getLimit()));
             line = line.replace("%serverBuyLimit%", serverBuyLimit == null ? "-1" : String.valueOf(serverBuyLimit.getLimit()));
 
             line = line.replace("%serverSellAmount%", serverSellLimit == null ? "0" : String.valueOf(serverSellLimit.getAmount()));
             line = line.replace("%serverBuyAmount%", serverBuyLimit == null ? "0" : String.valueOf(serverBuyLimit.getAmount()));
+            /* END SERVER LIMIT */
 
-            // Player limit
+            /* PLAYER LIMIT */
             line = line.replace("%playerSellLimit%", playerSellLimit == null ? "-1" : String.valueOf(playerSellLimit.getLimit()));
             line = line.replace("%playerBuyLimit%", playerBuyLimit == null ? "-1" : String.valueOf(playerBuyLimit.getLimit()));
 
@@ -460,6 +485,7 @@ public class ZItemButton extends ZButton implements ItemButton {
             Optional<PlayerLimit> optional = this.plugin.getLimiterManager().getLimit(player);
             line = line.replace("%playerSellAmount%", optional.map(limit -> String.valueOf(limit.getSellAmount(material))).orElse("0"));
             line = line.replace("%playerBuyAmount%", optional.map(playerLimit -> String.valueOf(playerLimit.getBuyAmount(material))).orElse("0"));
+            /* END PLAYER LIMIT */
 
             itemLore.add(line);
         });

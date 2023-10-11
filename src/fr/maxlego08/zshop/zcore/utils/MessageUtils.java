@@ -49,6 +49,11 @@ public abstract class MessageUtils extends LocationUtils {
         plugin.getIManager().getMeta().sendMessage(sender, Message.PREFIX.msg() + getMessage(message, args));
     }
 
+    private static String removeColorCodes(String input) {
+        input = input.replaceAll("#[0-9a-fA-F]{6}", "");
+        return input.replaceAll("&[0-9a-fA-Fk-oK-OrR]", "");
+    }
+
     /**
      * Allows you to send a message to a command sender
      *
@@ -64,9 +69,9 @@ public abstract class MessageUtils extends LocationUtils {
 
         if (sender instanceof ConsoleCommandSender) {
             if (message.getMessages().size() > 0) {
-                message.getMessages().forEach(msg -> sender.sendMessage(Message.PREFIX.msg() + getMessage(msg, args)));
+                message.getMessages().forEach(msg -> sender.sendMessage(removeColorCodes(Message.PREFIX.msg() + getMessage(msg, args))));
             } else {
-                sender.sendMessage(Message.PREFIX.msg() + getMessage(message, args));
+                sender.sendMessage(removeColorCodes(Message.PREFIX.msg() + getMessage(message, args)));
             }
         } else {
 

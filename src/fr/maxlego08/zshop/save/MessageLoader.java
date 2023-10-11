@@ -1,5 +1,14 @@
 package fr.maxlego08.zshop.save;
 
+import fr.maxlego08.zshop.zcore.enums.Message;
+import fr.maxlego08.zshop.zcore.enums.MessageType;
+import fr.maxlego08.zshop.zcore.logger.Logger;
+import fr.maxlego08.zshop.zcore.utils.storage.Persist;
+import fr.maxlego08.zshop.zcore.utils.storage.Saveable;
+import fr.maxlego08.zshop.zcore.utils.yaml.YamlUtils;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,23 +16,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import fr.maxlego08.zshop.zcore.enums.Message;
-import fr.maxlego08.zshop.zcore.enums.MessageType;
-import fr.maxlego08.zshop.zcore.utils.storage.Persist;
-import fr.maxlego08.zshop.zcore.utils.storage.Saveable;
-import fr.maxlego08.zshop.zcore.utils.yaml.YamlUtils;
-
 public class MessageLoader extends YamlUtils implements Saveable {
 
-	public MessageLoader(JavaPlugin plugin) {
-		super(plugin);
-	}
+    private List<Message> loadedMessages = new ArrayList<>();
 
-	@Override
-	public void save(Persist persist) {
+    public MessageLoader(JavaPlugin plugin) {
+        super(plugin);
+    }
+
+    @Override
+    public void save(Persist persist) {
 
 		if (persist != null)
 			return;
@@ -77,93 +79,102 @@ public class MessageLoader extends YamlUtils implements Saveable {
 
 	}
 
-	@Override
-	public void load(Persist persist) {
+    @Override
+    public void load(Persist persist) {
 
-		File file = new File(plugin.getDataFolder(), "messages.yml");
-		if (!file.exists()) {
-			this.save(null);
-			return;
-		}
+        File file = new File(plugin.getDataFolder(), "messages.yml");
+        if (!file.exists()) {
+            this.save(null);
+            return;
+        }
 
-		YamlConfiguration configuration = getConfig(file);
+        YamlConfiguration configuration = getConfig(file);
 
-		if (!configuration.contains("messages")) {
-			this.save(null);
-			return;
-		}
+        if (!configuration.contains("messages")) {
+            this.save(null);
+            return;
+        }
 
-		for (String key : configuration.getConfigurationSection("messages.").getKeys(false)) {
+        for (String key : configuration.getConfigurationSection("messages.").getKeys(false)) {
+            loadMessage(configuration, "messages." + key);
+        }
 
-			loadMessage(configuration, "messages." + key);
+        boolean canSave = false;
+        for (Message message : Message.values()) {
+            if (!this.loadedMessages.contains(message)) {
+                canSave = true;
+                break;
+            }
+        }
 
-		}
+        // Allows you to save new parameters
+        if (canSave) {
+            Logger.info("Save the message file, add new settings");
+            this.save(null);
+        }
+    }
 
-		// Allows you to save new parameters
-		this.save(null);
-	}
+    /**
+     * @param configuration
+     * @param key
+     */
+    private void loadMessage(YamlConfiguration configuration, String key) {
 
-	/**
-	 * 
-	 * @param configuration
-	 * @param key
-	 */
-	private void loadMessage(YamlConfiguration configuration, String key) {
+        try {
+            MessageType messageType = MessageType.valueOf(configuration.getString(key + ".type", "TCHAT").toUpperCase());
+            String keys = key.substring("messages.".length());
+            Message enumMessage = Message.valueOf(keys.toUpperCase().replace(".", "_"));
+            enumMessage.setType(messageType);
+            loadedMessages.add(enumMessage);
 
-		try {
-			MessageType messageType = MessageType
-					.valueOf(configuration.getString(key + ".type", "TCHAT").toUpperCase());
-			String keys = key.substring("messages.".length(), key.length());
-			Message enumMessage = Message.valueOf(keys.toUpperCase().replace(".", "_"));
-			enumMessage.setType(messageType);
-			switch (messageType) {
-			case ACTION: {
-				String message = configuration.getString(key + ".message");
-				enumMessage.setMessage(color(message));
-				break;
-			}
-			case CENTER:
-			case TCHAT: {
-				if (configuration.contains(key + ".messages")) {
-					List<String> messages = configuration.getStringList(key + ".messages");
-					enumMessage.setMessages(color(messages));
-					enumMessage.setMessage(null);
-				} else {
-					String message = configuration.getString(key + ".message");
-					enumMessage.setMessage(color(message));
-					enumMessage.setMessages(new ArrayList<String>());
-				}
-				break;
-			}
-			case TITLE: {
-				String title = configuration.getString(key + ".title");
-				String subtitle = configuration.getString(key + ".subtitle");
-				int fadeInTime = configuration.getInt(key + ".fadeInTime");
-				int showTime = configuration.getInt(key + ".showTime");
-				int fadeOutTime = configuration.getInt(key + ".fadeOutTime");
-				Map<String, Object> titles = new HashMap<String, Object>();
-				titles.put("title", color(title));
-				titles.put("subtitle", color(subtitle));
-				titles.put("start", fadeInTime);
-				titles.put("time", showTime);
-				titles.put("end", fadeOutTime);
-				titles.put("isUse", true);
-				enumMessage.setTitles(titles);
-				break;
-			}
-			default:
-				break;
-			}
+            switch (messageType) {
+                case ACTION: {
+                    String message = configuration.getString(key + ".message");
+                    enumMessage.setMessage(message);
+                    break;
+                }
+                case CENTER:
+                case TCHAT: {
+                    if (configuration.contains(key + ".messages")) {
+                        List<String> messages = configuration.getStringList(key + ".messages");
+                        enumMessage.setMessages(messages);
+                        enumMessage.setMessage(null);
+                    } else {
+                        String message = configuration.getString(key + ".message");
+                        enumMessage.setMessage(message);
+                        enumMessage.setMessages(new ArrayList<String>());
+                    }
+                    break;
+                }
+                case TITLE: {
+                    String title = configuration.getString(key + ".title");
+                    String subtitle = configuration.getString(key + ".subtitle");
+                    int fadeInTime = configuration.getInt(key + ".fadeInTime");
+                    int showTime = configuration.getInt(key + ".showTime");
+                    int fadeOutTime = configuration.getInt(key + ".fadeOutTime");
+                    Map<String, Object> titles = new HashMap<>();
+                    titles.put("title", title);
+                    titles.put("subtitle", subtitle);
+                    titles.put("start", fadeInTime);
+                    titles.put("time", showTime);
+                    titles.put("end", fadeOutTime);
+                    titles.put("isUse", true);
+                    enumMessage.setTitles(titles);
+                    break;
+                }
+                default:
+                    break;
+            }
 
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+        } catch (Exception ignored) {
+        }
 
-		try {
-			for (String newKey : configuration.getConfigurationSection(key + ".").getKeys(false))
-				loadMessage(configuration, key + "." + newKey);
-		} catch (Exception e) {
-		}
-	}
+        try {
+            for (String newKey : configuration.getConfigurationSection(key + ".").getKeys(false)) {
+                loadMessage(configuration, key + "." + newKey);
+            }
+        } catch (Exception ignored) {
+        }
+    }
 
 }
