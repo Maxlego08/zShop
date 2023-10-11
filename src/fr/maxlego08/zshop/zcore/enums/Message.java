@@ -10,7 +10,7 @@ import java.util.Map;
 
 public enum Message {
 
-    PREFIX("§8(§6zShop§8) "),
+    PREFIX("§8(§6zShop§8) ", "#757575(#f78d23zShop#757575)  "),
 
     TELEPORT_MOVE("§cYou must not move!"),
     TELEPORT_MESSAGE("§7Teleportation in §3%second% §7seconds!"),
@@ -51,8 +51,8 @@ public enum Message {
     INVENTORY_NOT_FOUND("§cImpossible to find the inventory §f%name%§c."),
 
     NOT_ENOUGH_PLACE("§cYour inventory is full."),
-    SELL_ITEM("§fYou just sold §7x%amount% %item%§f for §b%price%§f."),
-    BUY_ITEM("§fYou have just bought §7x%amount% %item%§f for §b%price%§f."),
+    SELL_ITEM("§fYou just sold §7x%amount% %item%§f for §b%price%§f.", "&fYou just sold #37e674x%amount% #10e674%item%&f for #49e4f2%price%&f."),
+    BUY_ITEM("§fYou have just bought §7x%amount% %item%§f for §b%price%§f.", "&fYou have just bought #b188f7x%amount% #a77af5%item% &ffor #49e4f2%price%&f."),
     NOT_ENOUGH_ITEMS("§cYou do not have enough items in your inventory."),
     NOT_ITEMS("§cYou do not have this item in your inventory."),
 
@@ -81,6 +81,7 @@ public enum Message {
     Message(String message, String messageNewVersion) {
         this.message = message;
         this.messageNewVersion = messageNewVersion;
+        this.use = true;
     }
 
     /**
@@ -227,6 +228,20 @@ public enum Message {
 
     public String getMessageNewVersion() {
         return messageNewVersion;
+    }
+
+    public boolean isValid() {
+
+        switch (type){
+            case ACTION:
+                return this.message != null;
+            case CENTER:
+            case TCHAT: return this.message != null || !this.messages.isEmpty();
+            case TITLE:
+            case NONE: return true;
+        }
+
+        return true;
     }
 }
 
