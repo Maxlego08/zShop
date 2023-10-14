@@ -2,7 +2,6 @@
 - EcoBits
 - EcoQuests
 - EcoItems
-- PlayerPoints
 
 # Plugins
 - WildTools

@@ -10,9 +10,11 @@ import fr.maxlego08.zshop.api.economy.ShopEconomy;
 import fr.maxlego08.zshop.economy.economies.ExperienceEconomy;
 import fr.maxlego08.zshop.economy.economies.ItemEconomy;
 import fr.maxlego08.zshop.economy.economies.LevelEconomy;
+import fr.maxlego08.zshop.economy.economies.PlayerPointEconomy;
 import fr.maxlego08.zshop.economy.economies.VaultEconomy;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.logger.Logger;
+import fr.maxlego08.zshop.zcore.utils.plugins.Plugins;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -94,10 +96,18 @@ public class ZEconomyManager implements EconomyManager {
                     }
                     break;
                 case "level":
+                    if (Config.enableDebug) Logger.info("Register Level economy with name " + name);
                     registerEconomy(new LevelEconomy(name, currency, format, denyMessage));
                     break;
                 case "experience":
+                    if (Config.enableDebug) Logger.info("Register Experience economy with name " + name);
                     registerEconomy(new ExperienceEconomy(name, currency, format, denyMessage));
+                    break;
+                case "playerpoints":
+                    if (this.plugin.isEnable(Plugins.PLAYERPOINT)) {
+                        if (Config.enableDebug) Logger.info("Register PlayerPoints economy");
+                        registerEconomy(new PlayerPointEconomy(this.plugin, name, currency, format, denyMessage));
+                    } else Logger.info("Try to register PlayerPoint economy but PlayerPoints plugin is not enable");
                     break;
                 default:
                     break;
