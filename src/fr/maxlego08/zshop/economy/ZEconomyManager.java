@@ -11,6 +11,7 @@ import fr.maxlego08.zshop.economy.economies.ExperienceEconomy;
 import fr.maxlego08.zshop.economy.economies.ItemEconomy;
 import fr.maxlego08.zshop.economy.economies.LevelEconomy;
 import fr.maxlego08.zshop.economy.economies.PlayerPointEconomy;
+import fr.maxlego08.zshop.economy.economies.TokenManagerEconomy;
 import fr.maxlego08.zshop.economy.economies.VaultEconomy;
 import fr.maxlego08.zshop.economy.economies.VotingEconomy;
 import fr.maxlego08.zshop.save.Config;
@@ -115,6 +116,12 @@ public class ZEconomyManager implements EconomyManager {
                         if (Config.enableDebug) Logger.info("Register VotingPlugin economy");
                         registerEconomy(new VotingEconomy(name, currency, format, denyMessage));
                     } else Logger.info("Try to register VotingPlugin economy but VotingPlugin plugin is not enable");
+                    break;
+                case "tokenmanager":
+                    if (this.plugin.isEnable(Plugins.TOKENMANAGER)) {
+                        if (Config.enableDebug) Logger.info("Register TokenManager economy");
+                        registerEconomy(new TokenManagerEconomy(this.plugin, name, currency, format, denyMessage));
+                    } else Logger.info("Try to register TokenManager economy but TokenManager plugin is not enable");
                     break;
                 default:
                     break;

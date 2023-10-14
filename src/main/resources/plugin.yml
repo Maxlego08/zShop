@@ -11,4 +11,5 @@ softdepend:
   - Vault
   - PlayerPoints
   - VotingPlugin
+  - TokenManager
 commands:

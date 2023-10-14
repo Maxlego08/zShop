@@ -11,6 +11,7 @@ public enum Plugins {
 	ZTRANSLATOR("zTranslator"),
 	PLAYERPOINT("PlayerPoints"),
 	VOTINGPLUGIN("VotingPlugin"),
+	TOKENMANAGER("TokenManager"),
 
 	;
 
