@@ -77,6 +77,10 @@
             <id>rosewood-repo</id>
             <url>https://repo.rosewooddev.io/repository/public/</url>
         </repository>
+        <repository>
+            <id>BenCodez Repo</id>
+            <url>https://nexus.bencodez.com/repository/maven-public/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -123,6 +127,12 @@
             <groupId>org.black_ixx</groupId>
             <artifactId>playerpoints</artifactId>
             <version>3.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bencodez</groupId>
+            <artifactId>votingplugin</artifactId>
+            <version>6.14.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
