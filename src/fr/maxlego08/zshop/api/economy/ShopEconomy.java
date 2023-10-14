@@ -66,8 +66,8 @@ public interface ShopEconomy {
      */
     String getDenyMessage();
 
-    default String format(String priceAsString) {
-        return getCurrency().replace("%price%", priceAsString);
+    default String format(String priceAsString, double amount) {
+        return getCurrency().replace("%price%", priceAsString).replace("%s%", amount > 1 ? "s" : "");
     }
 
 }

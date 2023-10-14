@@ -1,6 +1,7 @@
 package fr.maxlego08.zshop.economy.economies;
 
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import org.bukkit.OfflinePlayer;
 
 public abstract class DefaultExample implements ShopEconomy {
 
@@ -34,5 +35,10 @@ public abstract class DefaultExample implements ShopEconomy {
     @Override
     public String getDenyMessage() {
         return this.denyMessage;
+    }
+
+    @Override
+    public boolean hasMoney(OfflinePlayer offlinePlayer, double price) {
+        return getMoney(offlinePlayer) >= price;
     }
 }

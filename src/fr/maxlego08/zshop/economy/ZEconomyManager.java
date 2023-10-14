@@ -1,8 +1,13 @@
 package fr.maxlego08.zshop.economy;
 
+import fr.maxlego08.menu.MenuItemStack;
+import fr.maxlego08.menu.exceptions.InventoryException;
+import fr.maxlego08.menu.loader.MenuItemStackLoader;
+import fr.maxlego08.menu.zcore.utils.loader.Loader;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.economy.EconomyManager;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import fr.maxlego08.zshop.economy.economies.ItemEconomy;
 import fr.maxlego08.zshop.economy.economies.VaultEconomy;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.logger.Logger;
@@ -33,7 +38,7 @@ public class ZEconomyManager implements EconomyManager {
     public boolean registerEconomy(ShopEconomy economy) {
         Optional<ShopEconomy> optional = getEconomy(economy.getName());
         if (!optional.isPresent()) {
-            shopEconomies.add(economy);
+            this.shopEconomies.add(economy);
             return true;
         }
         return false;
@@ -41,7 +46,7 @@ public class ZEconomyManager implements EconomyManager {
 
     @Override
     public boolean removeEconomy(ShopEconomy economy) {
-        return shopEconomies.remove(economy);
+        return this.shopEconomies.remove(economy);
     }
 
     @Override
@@ -57,6 +62,8 @@ public class ZEconomyManager implements EconomyManager {
             this.plugin.saveResource("economies.yml", true);
         }
 
+        this.shopEconomies.clear();
+
         YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
         for (String key : configuration.getConfigurationSection("economies.").getKeys(false)) {
             String path = "economies." + key + ".";
@@ -64,22 +71,29 @@ public class ZEconomyManager implements EconomyManager {
             if (!configuration.getBoolean(path + "isEnable")) continue;
 
             String name = configuration.getString(path + "name", "VAULT");
+            String type = configuration.getString(path + "type", "VAULT");
             String format = configuration.getString(path + "format", "v");
             String currency = configuration.getString(path + "currency", "$");
             String denyMessage = configuration.getString(path + "denyMessage");
 
-            switch (name.toLowerCase()) {
+            switch (type.toLowerCase()) {
                 case "vault":
                     if (Config.enableDebug) Logger.info("Register Vault economy");
                     registerEconomy(new VaultEconomy(this.plugin, name, currency, format, denyMessage));
                     break;
-                case "---":
-                    // TODO
+                case "item":
+                    if (Config.enableDebug) Logger.info("Register Item economy with name " + name);
+                    Loader<MenuItemStack> loader = new MenuItemStackLoader(this.plugin.getIManager());
+                    try {
+                        MenuItemStack menuItemStack = loader.load(configuration, path + "item.", file);
+                        registerEconomy(new ItemEconomy(this.plugin, name, currency, format, denyMessage, menuItemStack));
+                    } catch (InventoryException exception) {
+                        Logger.info("Error with " + path + ".item. economy !", Logger.LogType.ERROR);
+                    }
                     break;
                 default:
                     break;
             }
-
         }
     }
 }

@@ -25,11 +25,6 @@ public class VaultEconomy extends DefaultExample {
     }
 
     @Override
-    public boolean hasMoney(OfflinePlayer offlinePlayer, double price) {
-        return getMoney(offlinePlayer) >= price;
-    }
-
-    @Override
     public void depositMoney(OfflinePlayer offlinePlayer, double value) {
         this.economy.depositPlayer(offlinePlayer, value);
     }

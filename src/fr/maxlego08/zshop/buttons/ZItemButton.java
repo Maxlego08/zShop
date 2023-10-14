@@ -123,7 +123,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         AtomicReference<Double> price = new AtomicReference<>(getSellPrice(amount));
         Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.SELL);
         optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
-        return this.shopEconomy.format(this.shopManager.transformPrice(price.get()));
+        return this.shopEconomy.format(this.shopManager.transformPrice(price.get()), price.get());
     }
 
     @Override
@@ -132,17 +132,19 @@ public class ZItemButton extends ZButton implements ItemButton {
         AtomicReference<Double> price = new AtomicReference<>(getBuyPrice(amount));
         Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.BUY);
         optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
-        return this.shopEconomy.format(this.shopManager.transformPrice(price.get()));
+        return this.shopEconomy.format(this.shopManager.transformPrice(price.get()), price.get());
     }
 
     @Override
     public String getSellPriceFormat(int amount) {
-        return this.canSell() ? this.shopEconomy.format(this.shopManager.transformPrice(getSellPrice(amount))) : Message.CANT_SELL.msg();
+        double sellPrice = getSellPrice(amount);
+        return this.canSell() ? this.shopEconomy.format(this.shopManager.transformPrice(sellPrice), sellPrice) : Message.CANT_SELL.msg();
     }
 
     @Override
     public String getBuyPriceFormat(int amount) {
-        return this.canBuy() ? this.shopEconomy.format(this.shopManager.transformPrice(getBuyPrice(amount))) : Message.CANT_BUY.msg();
+        double buyPrice = getBuyPrice(amount);
+        return this.canBuy() ? this.shopEconomy.format(this.shopManager.transformPrice(buyPrice), buyPrice) : Message.CANT_BUY.msg();
     }
 
     @Override

@@ -92,6 +92,8 @@ public class MessageLoader extends YamlUtils implements Saveable {
             return;
         }
 
+        this.loadedMessages.clear();
+
         for (String key : configuration.getConfigurationSection("messages.").getKeys(false)) {
             loadMessage(configuration, "messages." + key);
         }
