@@ -7,7 +7,9 @@ import fr.maxlego08.menu.zcore.utils.loader.Loader;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.economy.EconomyManager;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import fr.maxlego08.zshop.economy.economies.ExperienceEconomy;
 import fr.maxlego08.zshop.economy.economies.ItemEconomy;
+import fr.maxlego08.zshop.economy.economies.LevelEconomy;
 import fr.maxlego08.zshop.economy.economies.VaultEconomy;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.logger.Logger;
@@ -86,10 +88,16 @@ public class ZEconomyManager implements EconomyManager {
                     Loader<MenuItemStack> loader = new MenuItemStackLoader(this.plugin.getIManager());
                     try {
                         MenuItemStack menuItemStack = loader.load(configuration, path + "item.", file);
-                        registerEconomy(new ItemEconomy(this.plugin, name, currency, format, denyMessage, menuItemStack));
+                        registerEconomy(new ItemEconomy(name, currency, format, denyMessage, menuItemStack));
                     } catch (InventoryException exception) {
                         Logger.info("Error with " + path + ".item. economy !", Logger.LogType.ERROR);
                     }
+                    break;
+                case "level":
+                    registerEconomy(new LevelEconomy(name, currency, format, denyMessage));
+                    break;
+                case "experience":
+                    registerEconomy(new ExperienceEconomy(name, currency, format, denyMessage));
                     break;
                 default:
                     break;

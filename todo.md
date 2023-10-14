@@ -1,11 +1,13 @@
 # Economies
 - EcoBits
 - EcoQuests
-- EcoItems 
-- Items
+- EcoItems
 - PlayerPoints
 
 # Plugins
 - WildTools
 - SuperiorSkyblock
 - WildChests
+
+# Others
+- Spawners

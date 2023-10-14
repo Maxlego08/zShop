@@ -12,7 +12,7 @@ public class ItemEconomy extends DefaultExample {
 
     private final MenuItemStack menuItemStack;
 
-    public ItemEconomy(Plugin plugin, String name, String currency, String format, String denyMessage, MenuItemStack itemStack) {
+    public ItemEconomy(String name, String currency, String format, String denyMessage, MenuItemStack itemStack) {
         super(name, currency, format, denyMessage);
         this.menuItemStack = itemStack;
     }

@@ -10,7 +10,7 @@ import java.util.Map;
 
 public enum Message {
 
-    PREFIX("§8(§6zShop§8) ", "#757575(#f78d23zShop#757575)  "),
+    PREFIX("§8(§6zShop§8) ", "#757575(#f78d23zShop#757575) "),
 
     TELEPORT_MOVE("§cYou must not move!"),
     TELEPORT_MESSAGE("§7Teleportation in §3%second% §7seconds!"),
