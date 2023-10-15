@@ -38,7 +38,7 @@ public class ZHistory implements History {
 
     @Override
     public String getDateAsString() {
-        return new SimpleDateFormat(Config.dateFormat).format(new Date(this.date));
+        return new SimpleDateFormat(Config.dateFormatLog).format(new Date(this.date));
     }
 
 }

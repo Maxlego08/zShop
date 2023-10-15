@@ -10,16 +10,17 @@ public class Pagination<T> {
 	 * Allows you to sort a list of items according to the number of items and the page
 	 * Here the pagination will allow to invert the list of elements
 	 * The system can be used to create inventories with several pages for example
-	 * 
+	 *
 	 * @param list - List of element
 	 * @param size - Pagination size
 	 * @param page - Current pagination page
 	 */
 	public List<T> paginateReverse(List<T> list, int inventorySize, int page) {
 		List<T> currentList = new ArrayList<>();
-		if (page == 0)
+		if (page <= 0)
 			page = 1;
 		int idStart = list.size() - 1 - ((page - 1) * inventorySize);
+		if (idStart >= list.size()) return currentList;
 		int idEnd = idStart - inventorySize;
 		if (idEnd < list.size() - inventorySize && list.size() < inventorySize * page)
 			idEnd = -1;
@@ -31,7 +32,7 @@ public class Pagination<T> {
 	/**
 	 * Allows you to sort a list of items according to the number of items and the page
 	 * The system can be used to create inventories with several pages for example
-	 * 
+	 *
 	 * @param list - List of element
 	 * @param size - Pagination size
 	 * @param page - Current pagination page
@@ -40,7 +41,8 @@ public class Pagination<T> {
 		List<T> currentList = new ArrayList<>();
 		if (page <= 0)
 			page = 1;
-		int idStart = ((page - 1)) * size;
+		int idStart = 0 + ((page - 1)) * size;
+		if (idStart >= list.size()) return currentList;
 		int idEnd = idStart + size;
 		if (idEnd > list.size())
 			idEnd = list.size();
@@ -48,7 +50,7 @@ public class Pagination<T> {
 			currentList.add(list.get(a));
 		return currentList;
 	}
-	
+
 	/**
 	 * The pagination will be done on the values of the map
 	 *
@@ -62,7 +64,7 @@ public class Pagination<T> {
 
 	/**
 	 * The pagination will be done on the values of the map
-	 * 
+	 *
 	 * @param map of element
 	 * @parma size
 	 * @param page
