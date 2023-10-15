@@ -2,7 +2,11 @@ package fr.maxlego08.zshop.zcore.enums;
 
 public enum Permission {
 	
-	EXAMPLE_PERMISSION
+	ZSHOP_HELP,
+	ZSHOP_RELOAD,
+	ZSHOP_SELL_ALL,
+	ZSHOP_SELL_HAND,
+	ZSHOP_SELL_HAND_ALL,
 
 	;
 

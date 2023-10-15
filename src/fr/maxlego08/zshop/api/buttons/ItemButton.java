@@ -19,6 +19,10 @@ public interface ItemButton extends Button {
 
     double getBuyPrice(int amount);
 
+    double getSellPrice(Player player, int amount);
+
+    double getBuyPrice(Player player, int amount);
+
     double getUnitSellPrice();
 
     double getUnitBuyPrice();

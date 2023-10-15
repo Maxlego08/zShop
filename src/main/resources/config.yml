@@ -1,7 +1,32 @@
+#########################################################################################################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+#########################################################################################################################################
+
 defaultLore:
-  - "&7&l» &fBuying price&8: &a%buyPrice%"
-  - "&7&l» &fSelling price&8: &a%sellPrice%"
+  - "&f» &7Buying price&8: &e%buyPrice%"
+  - "&f» &7Selling price&8: &e%sellPrice%"
   - ""
-  - "&7&l» &fLeft click to &nbuy"
-  - "&7&l» &fClick wheel to &nsell everything"
-  - "&7&l» &fRight click to &nsell"
+  - "&f➥ &7Left click to &f&nʙᴜʏ"
+  - "&f➥ &7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ"
+  - "&f➥ &7Right click to &f&nsᴇʟʟ"
+
+pricesModifier:
+  - permission: "zshop.prices.vip"
+    type: SELL
+    modifier: 1.5 # Multiplie sell price by x3.0 (+50%, 10 * 1.5 = 15)
+  - permission: "zshop.prices.eternal"
+    type: SELL
+    modifier: 2.0 # Multiplie sell price by x3.0 (+100%, 10 * 2.0 = 20)
+  - permission: "zshop.prices.legend.buy"
+    type: BUY
+    modifier: 0.9 # Multiplie buy price by x0.9 (-10%, 10 * 0.9 = 9)
+  - permission: "zshop.prices.legend.sell"
+    type: SELL
+    modifier: 3.0 # Multiplie sell price by x3.0 (+200%, 10 * 3.0 = 30)

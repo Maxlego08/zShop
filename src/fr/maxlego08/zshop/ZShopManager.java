@@ -11,11 +11,18 @@ import fr.maxlego08.zshop.api.PriceModifier;
 import fr.maxlego08.zshop.api.PriceType;
 import fr.maxlego08.zshop.api.ShopManager;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
+import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import fr.maxlego08.zshop.api.event.ShopAction;
+import fr.maxlego08.zshop.api.event.events.ZShopSellAllEvent;
+import fr.maxlego08.zshop.api.limit.Limit;
+import fr.maxlego08.zshop.api.limit.LimiterManager;
+import fr.maxlego08.zshop.api.limit.PlayerLimit;
 import fr.maxlego08.zshop.api.utils.PriceModifierCache;
 import fr.maxlego08.zshop.placeholder.ItemButtonPlaceholder;
 import fr.maxlego08.zshop.placeholder.LocalPlaceholder;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.enums.Message;
+import fr.maxlego08.zshop.zcore.utils.Pair;
 import fr.maxlego08.zshop.zcore.utils.ZUtils;
 import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
 import org.bukkit.Material;
@@ -23,6 +30,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.io.File;
 import java.io.IOException;
@@ -301,11 +310,122 @@ public class ZShopManager extends ZUtils implements ShopManager {
     }
 
     @Override
+    public Optional<ItemButton> getItemButton(Player player, ItemStack itemStack) {
+        return this.itemButtons.stream().filter(button -> button.getItemStack().build(player).isSimilar(itemStack)).findFirst();
+    }
+
+    @Override
     public Consumer<Button> getButtonListener() {
         return button -> {
             if (button instanceof ItemButton) {
                 this.itemButtons.add((ItemButton) button);
             }
         };
+    }
+
+    @Override
+    public void sellAll(Player player) {
+
+        PlayerInventory inventory = player.getInventory();
+        List<ShopAction> shopActions = new ArrayList<>();
+        List<Pair<ItemStack, ItemButton>> buttons = this.itemButtons.stream().map(button -> {
+            ItemStack itemStack = button.getItemStack().build(player);
+            return new Pair<>(itemStack, button);
+
+        }).collect(Collectors.toList());
+
+        /* SCAN ITEMS */
+        for (int slot = 0; slot != 36; slot++) {
+            ItemStack itemStack = inventory.getContents()[slot];
+            if (itemStack == null) continue;
+
+            Optional<ItemButton> optional = buttons.stream().filter(e -> e.first.isSimilar(itemStack)).map(e -> e.second).findFirst();
+            if (!optional.isPresent()) continue;
+
+            ItemButton itemButton = optional.get();
+            if (!itemButton.canSell()) continue;
+
+            double price = itemButton.getSellPrice(player, itemStack.getAmount());
+            ShopAction shopAction = new ShopAction(itemStack, itemButton, price);
+            shopActions.add(shopAction);
+        }
+
+        /* BUKKIT EVENT */
+        ZShopSellAllEvent event = new ZShopSellAllEvent(player, shopActions);
+        event.call();
+
+        if (event.isCancelled()) return;
+        /* END BUKKIT EVENT */
+
+        /* SELL ITEMS */
+        Map<ShopEconomy, Double> prices = new HashMap<>();
+        shopActions.forEach(action -> {
+
+            ItemButton button = action.getItemButton();
+            ItemStack itemStack = action.getItemStack();
+
+            int newServerLimitAmount = 0;
+            int newPlayerLimitAmount = 0;
+            String material = button.getItemStack().getMaterial();
+
+            Optional<Limit> optionalServer = button.getServerSellLimit();
+            Optional<Limit> optionalPlayer = button.getPlayerSellLimit();
+            LimiterManager limiterManager = this.plugin.getLimiterManager();
+
+            /* SERVER LIMIT */
+            if (optionalServer.isPresent()) {
+                Limit serverSellLimit = optionalServer.get();
+                newServerLimitAmount = serverSellLimit.getAmount() + itemStack.getAmount();
+                if (newServerLimitAmount > serverSellLimit.getLimit()) return;
+            }
+            /* END SERVER LIMIT */
+
+            /* PLAYER LIMIT */
+            if (optionalPlayer.isPresent()) {
+                Limit playerSellLimit = optionalPlayer.get();
+                Optional<PlayerLimit> optional = limiterManager.getLimit(player);
+                newPlayerLimitAmount = optional.map(e -> e.getSellAmount(material)).orElse(0) + itemStack.getAmount();
+                if (newPlayerLimitAmount > playerSellLimit.getLimit()) return;
+            }
+            /* END PLAYER LIMIT */
+
+            /* UPDATE LIMIT VALUES */
+            if (optionalServer.isPresent()) optionalServer.get().setAmount(newServerLimitAmount);
+            if (newPlayerLimitAmount > 0)
+                limiterManager.getOrCreate(player).setSellAmount(material, newPlayerLimitAmount);
+            /* END LIMIT VALUES */
+
+            /* REMOVE ITEMS AND UPDATE MONEY */
+            prices.put(button.getEconomy(), prices.getOrDefault(button.getEconomy(), 0.0) + action.getPrice());
+            inventory.remove(itemStack);
+        });
+
+        prices.forEach((economy, price) -> economy.depositMoney(player, price));
+        String results = toList(shopActions.stream().map(action -> getMessage(Message.SELL_ALL_INFO, "%amount%", action.getItemStack().getAmount(), "%item%", getItemName(action.getItemStack()), "%price%", action.getItemButton().getEconomy().format(transformPrice(action.getPrice()), action.getPrice()))).collect(Collectors.toList()), Message.SELL_ALL_COLOR_SEPARATOR.msg(), Message.SELL_ALL_COLOR_INFO.msg());
+
+        message(this.plugin, player, Message.SELL_ALL_MESSAGE, "%items%", results);
+    }
+
+    @Override
+    public void sellHand(Player player, int amount) {
+
+        ItemStack itemInHand = player.getItemInHand(); // Use old method for 1.8 support
+        if (itemInHand == null || itemInHand.getType().equals(Material.AIR)) {
+            message(this.plugin, player, Message.SELL_HAND_AIR);
+            return;
+        }
+
+        Optional<ItemButton> optional = getItemButton(player, itemInHand);
+        if (!optional.isPresent()) message(this.plugin, player, Message.SELL_HAND_EMPTY);
+        else {
+            ItemButton button = optional.get();
+            if (button.canSell()) button.sell(player, amount);
+            else message(this.plugin, player, Message.SELL_HAND_EMPTY);
+        }
+    }
+
+    @Override
+    public void sellAllHand(Player player) {
+        sellHand(player, 0);
     }
 }

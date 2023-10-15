@@ -10,6 +10,9 @@ import fr.maxlego08.zshop.api.economy.EconomyManager;
 import fr.maxlego08.zshop.api.limit.LimiterManager;
 import fr.maxlego08.zshop.buttons.ZConfirmBuyButton;
 import fr.maxlego08.zshop.buttons.ZConfirmSellButton;
+import fr.maxlego08.zshop.command.commands.CommandSellAll;
+import fr.maxlego08.zshop.command.commands.CommandSellAllHand;
+import fr.maxlego08.zshop.command.commands.CommandSellHand;
 import fr.maxlego08.zshop.command.commands.CommandShop;
 import fr.maxlego08.zshop.economy.ZEconomyManager;
 import fr.maxlego08.zshop.limit.ZLimitManager;
@@ -66,6 +69,9 @@ public class ShopPlugin extends ZPlugin {
         this.inventoryManager.registerButtonListener(this, this.shopManager.getButtonListener());
 
         this.registerCommand("zshoplugin", new CommandShop(this), "zpl");
+        this.registerCommand("sell-all", new CommandSellAll(this), "zshop-sell-all");
+        this.registerCommand("sell-hand", new CommandSellHand(this), "zshop-hand");
+        this.registerCommand("sell-handall", new CommandSellAllHand(this), "zshop-handall");
 
         this.addSave(Config.getInstance());
         this.addSave(new MessageLoader(this));

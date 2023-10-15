@@ -83,6 +83,22 @@ public class ZItemButton extends ZButton implements ItemButton {
     }
 
     @Override
+    public double getSellPrice(Player player, int amount) {
+        AtomicReference<Double> price = new AtomicReference<>(getSellPrice(amount));
+        Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.SELL);
+        optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
+        return price.get();
+    }
+
+    @Override
+    public double getBuyPrice(Player player, int amount) {
+        AtomicReference<Double> price = new AtomicReference<>(getBuyPrice(amount));
+        Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.BUY);
+        optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
+        return price.get();
+    }
+
+    @Override
     public double getUnitSellPrice() {
         return getSellPrice() / Double.parseDouble(this.getItemStack().getAmount());
     }
@@ -120,19 +136,15 @@ public class ZItemButton extends ZButton implements ItemButton {
     @Override
     public String getSellPriceFormat(Player player, int amount) {
         if (!this.canSell()) return Message.CANT_SELL.msg();
-        AtomicReference<Double> price = new AtomicReference<>(getSellPrice(amount));
-        Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.SELL);
-        optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
-        return this.shopEconomy.format(this.shopManager.transformPrice(price.get()), price.get());
+        double price = getSellPrice(player, amount);
+        return this.shopEconomy.format(this.shopManager.transformPrice(price), price);
     }
 
     @Override
     public String getBuyPriceFormat(Player player, int amount) {
         if (!this.canBuy()) return Message.CANT_BUY.msg();
-        AtomicReference<Double> price = new AtomicReference<>(getBuyPrice(amount));
-        Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.BUY);
-        optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
-        return this.shopEconomy.format(this.shopManager.transformPrice(price.get()), price.get());
+        double price = getSellPrice(player, amount);
+        return this.shopEconomy.format(this.shopManager.transformPrice(price), price);
     }
 
     @Override
@@ -151,7 +163,7 @@ public class ZItemButton extends ZButton implements ItemButton {
     public void buy(Player player, int amount) {
 
         ZShopManager manager = (ZShopManager) this.plugin.getShopManager();
-        double currentPrice = this.getBuyPrice(amount);
+        double currentPrice = this.getBuyPrice(player, amount);
 
         /* If the price is invalid, then we stop */
         if (currentPrice < 0) return;
@@ -307,7 +319,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         }
         /* END PLAYER LIMIT */
 
-        double currentPrice = this.getSellPrice(realAmount);
+        double currentPrice = this.getSellPrice(player, realAmount);
 
         int slot = 0;
 

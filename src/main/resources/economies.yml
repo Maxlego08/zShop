@@ -1,7 +1,48 @@
 economies:
   VAULT:
     name: vault
+    type: VAULT
     format: "v"
     currency: "%price%$"
     isEnable: true
     denyMessage: "&cYou don’t have enough money to buy this."
+  ITEM1:
+    name: item_diamond
+    type: ITEM
+    format: "d"
+    currency: "%price% diamond%s%"
+    isEnable: true
+    denyMessage: "&cYou don’t have enough money to buy this."
+    item:
+      material: DIAMOND
+  ITEM2:
+    name: item_emerald
+    type: ITEM
+    format: "E"
+    currency: "%price% emerald%s%"
+    isEnable: true
+    denyMessage: "&cYou don’t have enough money to buy this."
+    item:
+      material: EMERALD
+  EXPERIENCE:
+    name: experience
+    type: experience
+    format: "xp"
+    currency: "%price% xp"
+    isEnable: true
+    denyMessage: "&cYou don’t have enough experience to buy this."
+  LEVEL:
+    name: level
+    type: LEVEL
+    format: "LV"
+    currency: "%price% level"
+    isEnable: true
+    denyMessage: "&cYou don’t have enough level to buy this."
+  # Example with PlayerPoint
+  #playerpoints:
+  #  name: playerpoints
+  #  type: playerpoints
+  #  format: "P"
+  #  currency: "%price% P"
+  #  isEnable: true
+  #  denyMessage: "&cYou don’t have enough points to buy this."

@@ -59,6 +59,17 @@ public enum Message {
     LIMIT_SERVER_BUY("§cYou cannot buy this, the server has exceeded the purchasing capacity."),
     LIMIT_SERVER_SELL("§cYou cannot sell this, the server has exceeded the selling capacity."),
 
+    SELL_HAND_ALL("§aYou just sold §6%item% §afor §6%price%§a."),
+    SELL_HAND_ALLITEM("§ax§e%amount% §2%item%§a"),
+    SELL_HAND_EMPTY("§cUnable to find an item for sale."),
+    SELL_HAND_AIR("§cYou can't sell air ! It’s like you’re trying to sell something empty."),
+
+    SELL_ALL_MESSAGE("§fYou gave just sold §7%items%§7."),
+    SELL_ALL_INFO("§7x%amount% %item%§f for §b%price%"),
+    SELL_ALL_COLOR_SEPARATOR("§f"),
+    SELL_ALL_COLOR_INFO("§7"),
+    AND("and"),
+
     ;
 
     private List<String> messages;

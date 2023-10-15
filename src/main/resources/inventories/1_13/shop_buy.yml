@@ -5,6 +5,17 @@ patterns:
   - "zshop_back"
   - "zshop_choose_amount"
 items:
+  show_item:
+    item:
+      material: BARRIER
+      name: "&cError"
+      lore:
+        - "&cYou should not see this, please contact an administrator"
+    type: ZSHOP_SHOW
+    slot: 22
+    lore:
+      - ""
+      - "&f» &7Buying price&8: &e%buyPrice%"
   confirm_buy:
     type: ZSHOP_CONFIRM_BUY
     item:

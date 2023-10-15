@@ -3,6 +3,8 @@ size: 54
 items:
   playerHead:
     isPermanent: true
+    # Update the button when the player clicks on the inventory
+    updateOnClick: true
     item:
       material: PLAYER_HEAD
       playerHead: "%player%"

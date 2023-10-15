@@ -10,7 +10,7 @@ public class CommandShop extends VCommand {
 
 	public CommandShop(ShopPlugin plugin) {
 		super(plugin);
-		this.setPermission(Permission.EXAMPLE_PERMISSION);
+		this.setPermission(Permission.ZSHOP_HELP);
 		this.addSubCommand(new CommandShopReload(plugin));
 	}
 

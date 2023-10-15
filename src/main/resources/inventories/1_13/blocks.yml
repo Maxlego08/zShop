@@ -1,5 +1,6 @@
 name: "&e★ #5d8d50ʙʟᴏᴄᴋs &e★"
 size: 54
+updateInterval: 1
 patterns:
   - "zshop_decoration"
   - "zshop_return_home"
@@ -7,12 +8,29 @@ patterns:
 items:
   # First page
   grass_block:
+    update: true
     item:
       material: GRASS_BLOCK
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0.75
+    buyPrice: 2
+    sellPrice: 1
+    economy: item_diamond
     slot: 20
+    serverBuyLimit:
+      limit: 100
+      schedulerType: DAILY
+      hour: 20
+      minute: 55
+    lore:
+      - "&f» &7Buying price&8: &e%buyPrice%"
+      - "&f» &7Selling price&8: &e%sellPrice%"
+      - ""
+      # - "&f» &7Server sell limit&8: &f%serverSellAmount%&7/#d1d1d1%serverSellLimit%"
+      - "&f» &7Server buy limit&8: &f%serverBuyAmount%&7/#d1d1d1%serverBuyLimit% &8(&7%zshop_limiter_time_server_buy_GRASS_BLOCK%&8)"
+      - ""
+      - "&f➥ &r&7Left click to &f&nʙᴜʏ"
+      - "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ"
+      - "&f➥ &r&7Right click to &f&nsᴇʟʟ"
   dirt:
     item:
       material: DIRT
@@ -21,33 +39,77 @@ items:
     buyPrice: 5.0
     sellPrice: 1.5
     slot: 21
+    update: true
+    serverSellLimit:
+      limit: 100
+      schedulerType: WEEKLY
+      day: "MONDAY"
+      hour: 18
+      minute: 00
+    lore:
+      - "&f» &7Buying price&8: &e%buyPrice%"
+      - "&f» &7Selling price&8: &e%sellPrice%"
+      - ""
+      # - "&f» &7Server sell limit&8: &f%serverSellAmount%&7/#d1d1d1%serverSellLimit%"
+      - "&f» &7Server sell limit&8: &f%serverSellAmount%&7/#d1d1d1%serverSellLimit% &8(&7%zshop_limiter_time_server_sell_DIRT%&8)"
+      - ""
+      - "&f➥ &r&7Left click to &f&nʙᴜʏ"
+      - "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ"
+      - "&f➥ &r&7Right click to &f&nsᴇʟʟ"
   gravel:
     item:
       material: GRAVEL
     type: ZSHOP_ITEM
     buyPrice: 5.0
-    sellPrice: 0
+    sellPrice: 1
     slot: 22
+    update: true
+    playerSellLimit:
+      limit: 100
+      schedulerType: WEEKLY
+      day: "FRIDAY"
+      hour: 18
+      minute: 00
+    playerBuyLimit:
+      limit: 100
+      schedulerType: WEEKLY
+      day: "SUNDAY"
+      hour: 18
+      minute: 00
+    lore:
+      - "&f» &7Buying price&8: &e%buyPrice% &f%realBuyPrice% &ax%zshop_modifier_buy% &c%zshop_modifier_buy_percent%%"
+      - "&f» &7Selling price&8: &e%sellPrice% &f%realSellPrice% &ax%zshop_modifier_sell% &c+%zshop_modifier_sell_percent%%"
+      - ""
+      # - "&f» &7Server sell limit&8: &f%serverSellAmount%&7/#d1d1d1%serverSellLimit%"
+      - "&f» &7Player sell limit&8: &f%playerSellAmount%&7/#d1d1d1%playerSellLimit% &8(&7%zshop_limiter_time_player_sell_GRAVEL%&8)"
+      - "&f» &7Player buy limit&8: &f%playerBuyAmount%&7/#d1d1d1%playerBuyLimit% &8(&7%zshop_limiter_time_player_buy_GRAVEL%&8)"
+      - ""
+      - "&f➥ &r&7Left click to &f&nʙᴜʏ"
+      - "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ"
+      - "&f➥ &r&7Right click to &f&nsᴇʟʟ"
   sand:
     item:
       material: SAND
     type: ZSHOP_ITEM
-    buyPrice: 0
-    sellPrice: 1.5
+    economy: item_emerald
+    buyPrice: 5
+    sellPrice: 1
     slot: 23
   red_sand:
     item:
       material: RED_SAND
     type: ZSHOP_ITEM
+    economy: experience
     buyPrice: 5.0
-    sellPrice: 0
+    sellPrice: 2
     slot: 24
   stone:
     item:
       material: STONE
     type: ZSHOP_ITEM
+    economy: level
     buyPrice: 5.0
-    sellPrice: 0
+    sellPrice: 2
     slot: 29
   ice:
     item:
