@@ -12,11 +12,16 @@ import fr.maxlego08.zshop.api.buttons.ItemButton;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
 import fr.maxlego08.zshop.api.event.events.ZShopBuyEvent;
 import fr.maxlego08.zshop.api.event.events.ZShopSellEvent;
+import fr.maxlego08.zshop.api.history.History;
+import fr.maxlego08.zshop.api.history.HistoryType;
 import fr.maxlego08.zshop.api.limit.Limit;
 import fr.maxlego08.zshop.api.limit.LimiterManager;
 import fr.maxlego08.zshop.api.limit.PlayerLimit;
+import fr.maxlego08.zshop.history.ZHistory;
 import fr.maxlego08.zshop.placeholder.Placeholder;
+import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.enums.Message;
+import fr.maxlego08.zshop.zcore.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -26,6 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ZItemButton extends ZButton implements ItemButton {
@@ -44,8 +50,9 @@ public class ZItemButton extends ZButton implements ItemButton {
     private final Limit serverBuyLimit;
     private final Limit playerSellLimit;
     private final Limit playerBuyLimit;
+    private final boolean enableLog;
 
-    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit) {
+    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog) {
         this.plugin = plugin;
         this.shopManager = plugin.getShopManager();
         this.sellPrice = sellPrice;
@@ -60,6 +67,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         this.serverBuyLimit = serverBuyLimit;
         this.playerSellLimit = playerSellLimit;
         this.playerBuyLimit = playerBuyLimit;
+        this.enableLog = enableLog;
     }
 
     @Override
@@ -240,30 +248,8 @@ public class ZItemButton extends ZButton implements ItemButton {
         String buyPrice = getBuyPriceFormat(player, amount);
         manager.message(this.plugin, player, Message.BUY_ITEM, "%amount%", String.valueOf(amount), "%item%", itemName, "%price%", buyPrice);
 
-        /* COMMANDS */
-        for (String command : this.buyCommands) {
-            command = command.replace("%amount%", String.valueOf(amount));
-            command = command.replace("%item%", itemName);
-            command = command.replace("%price%", buyPrice);
-            command = command.replace("%player%", player.getName());
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Placeholder.getPlaceholder().setPlaceholders(player, command));
-        }
-        /* END COMMANDS */
-
-        /*if (this.log) {
-
-            String logMessage = Message.BUY_LOG.getMessage();
-
-            logMessage = logMessage.replace("%amount%", String.valueOf(amount));
-            logMessage = logMessage.replace("%item%", getItemName(itemStack));
-            logMessage = logMessage.replace("%price%", format(currentPrice));
-            logMessage = logMessage.replace("%currency%", this.economy.getCurrenry());
-            logMessage = logMessage.replace("%player%", player.getName());
-
-            History history = new ZHistory(HistoryType.BUY, papi(logMessage, player));
-            this.historyManager.asyncValue(player.getUniqueId(), history);
-
-        }*/
+        commands(amount, itemName, buyPrice, HistoryType.BUY, player);
+        log(amount, itemName, buyPrice, player.getName(), player.getUniqueId(), HistoryType.BUY);
     }
 
     @Override
@@ -367,30 +353,39 @@ public class ZItemButton extends ZButton implements ItemButton {
         String sellPrice = getSellPriceFormat(player, realAmount);
         manager.message(this.plugin, player, Message.SELL_ITEM, "%amount%", String.valueOf(realAmount), "%item%", itemName, "%price%", sellPrice);
 
-        /* COMMANDS */
-        for (String command : sellCommands) {
-            command = command.replace("%amount%", String.valueOf(realAmount));
+        commands(realAmount, itemName, sellPrice, HistoryType.SELL, player);
+        log(realAmount, itemName, sellPrice, player.getName(), player.getUniqueId(), HistoryType.SELL);
+    }
+
+    private void commands(int amount, String itemName, String price, HistoryType type, Player player) {
+        for (String command : (type == HistoryType.SELL ? sellCommands : buyCommands)) {
+            command = command.replace("%amount%", String.valueOf(amount));
             command = command.replace("%item%", itemName);
-            command = command.replace("%price%", sellPrice);
+            command = command.replace("%price%", price);
             command = command.replace("%player%", player.getName());
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Placeholder.getPlaceholder().setPlaceholders(player, command));
         }
-        /* END COMMANDS */
+    }
 
-        /*if (log) {
+    @Override
+    public void log(int amount, String itemName, String price, String playerName, UUID uuid, HistoryType type) {
+        if (Config.enableItemLog || this.enableLog) {
 
-            String logMessage = Message.SELL_LOG.getMessage();
+            String logMessage = (type == HistoryType.SELL ? Message.LOG_SELL : Message.LOG_BUY).getMessage();
 
             logMessage = logMessage.replace("%amount%", String.valueOf(amount));
-            logMessage = logMessage.replace("%item%", getItemName(itemStack));
-            logMessage = logMessage.replace("%price%", format(currentPrice));
-            logMessage = logMessage.replace("%currency%", this.economy.getCurrenry());
-            logMessage = logMessage.replace("%player%", player.getName());
+            logMessage = logMessage.replace("%item%", itemName);
+            logMessage = logMessage.replace("%price%", price);
+            logMessage = logMessage.replace("%player%", playerName);
+            logMessage = logMessage.replace("%uuid%", uuid.toString());
 
-            History history = new ZHistory(HistoryType.SELL, logMessage);
-            this.historyManager.asyncValue(player.getUniqueId(), history);
+            if (Config.enableItemLogInConsole) Logger.info(logMessage);
 
-        }*/
+            if (Config.enableItemLogInFile) {
+                History history = new ZHistory(type, logMessage);
+                this.plugin.getHistoryManager().asyncValue(uuid, history);
+            }
+        }
     }
 
     @Override
@@ -504,5 +499,10 @@ public class ZItemButton extends ZButton implements ItemButton {
             itemLore.add(line);
         });
         return itemLore;
+    }
+
+    @Override
+    public boolean enableLog() {
+        return this.enableLog;
     }
 }

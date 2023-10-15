@@ -40,7 +40,7 @@ public class Pagination<T> {
 		List<T> currentList = new ArrayList<>();
 		if (page <= 0)
 			page = 1;
-		int idStart = 0 + ((page - 1)) * size;
+		int idStart = ((page - 1)) * size;
 		int idEnd = idStart + size;
 		if (idEnd > list.size())
 			idEnd = list.size();

@@ -12,8 +12,8 @@ import java.util.UUID;
 public class ZPlayerLimit implements PlayerLimit {
 
     private final UUID uuid;
-    private final Map<String, Integer> sellLimits = new HashMap<>();
-    private final Map<String, Integer> buyLimits = new HashMap<>();
+    private Map<String, Integer> sellLimits = new HashMap<>();
+    private Map<String, Integer> buyLimits = new HashMap<>();
 
     public ZPlayerLimit(UUID uuid) {
         this.uuid = uuid;
@@ -48,6 +48,8 @@ public class ZPlayerLimit implements PlayerLimit {
     }
 
     public boolean isEmpty() {
+        if (this.sellLimits == null) this.sellLimits = new HashMap<>();
+        if (this.buyLimits == null) this.buyLimits = new HashMap<>();
         return (this.sellLimits.isEmpty() || this.sellLimits.values().stream().allMatch(e -> e == 0)) && (this.buyLimits.isEmpty() || this.buyLimits.values().stream().allMatch(e -> e == 0));
     }
 

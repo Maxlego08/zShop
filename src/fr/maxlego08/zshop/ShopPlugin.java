@@ -7,6 +7,7 @@ import fr.maxlego08.menu.api.pattern.PatternManager;
 import fr.maxlego08.menu.button.loader.PluginLoader;
 import fr.maxlego08.zshop.api.ShopManager;
 import fr.maxlego08.zshop.api.economy.EconomyManager;
+import fr.maxlego08.zshop.api.history.HistoryManager;
 import fr.maxlego08.zshop.api.limit.LimiterManager;
 import fr.maxlego08.zshop.buttons.ZConfirmBuyButton;
 import fr.maxlego08.zshop.buttons.ZConfirmSellButton;
@@ -15,6 +16,7 @@ import fr.maxlego08.zshop.command.commands.CommandSellAllHand;
 import fr.maxlego08.zshop.command.commands.CommandSellHand;
 import fr.maxlego08.zshop.command.commands.CommandShop;
 import fr.maxlego08.zshop.economy.ZEconomyManager;
+import fr.maxlego08.zshop.history.ZHistoryManager;
 import fr.maxlego08.zshop.limit.ZLimitManager;
 import fr.maxlego08.zshop.loader.AddButtonLoader;
 import fr.maxlego08.zshop.loader.ItemButtonLoader;
@@ -41,6 +43,7 @@ public class ShopPlugin extends ZPlugin {
 
     private final EconomyManager economyManager = new ZEconomyManager(this);
     private final ShopManager shopManager = new ZShopManager(this);
+    private HistoryManager historyManager;
     private ZLimitManager limitManager = new ZLimitManager(this);
     private InventoryManager inventoryManager;
     private CommandManager commandManager;
@@ -57,9 +60,13 @@ public class ShopPlugin extends ZPlugin {
 
         if (isEnable(Plugins.PLACEHOLDER)) Placeholder.getPlaceholder();
 
+        this.historyManager = new ZHistoryManager(this, this.getPersist());
+
         ServicesManager manager = this.getServer().getServicesManager();
         manager.register(EconomyManager.class, economyManager, this, ServicePriority.Normal);
         manager.register(ShopManager.class, shopManager, this, ServicePriority.Normal);
+        manager.register(LimiterManager.class, limitManager, this, ServicePriority.Normal);
+        manager.register(HistoryManager.class, historyManager, this, ServicePriority.Normal);
 
         this.inventoryManager = this.getProvider(InventoryManager.class);
         this.commandManager = this.getProvider(CommandManager.class);
@@ -77,6 +84,7 @@ public class ShopPlugin extends ZPlugin {
         this.addSave(new MessageLoader(this));
 
         Bukkit.getPluginManager().registerEvents(this.limitManager, this);
+        Bukkit.getPluginManager().registerEvents(this.historyManager, this);
         this.addListener(this.shopManager);
 
         // Load limiter before
@@ -161,5 +169,9 @@ public class ShopPlugin extends ZPlugin {
 
     public LimiterManager getLimiterManager() {
         return limitManager;
+    }
+
+    public HistoryManager getHistoryManager() {
+        return historyManager;
     }
 }

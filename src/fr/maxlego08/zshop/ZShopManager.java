@@ -14,17 +14,22 @@ import fr.maxlego08.zshop.api.buttons.ItemButton;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
 import fr.maxlego08.zshop.api.event.ShopAction;
 import fr.maxlego08.zshop.api.event.events.ZShopSellAllEvent;
+import fr.maxlego08.zshop.api.history.History;
+import fr.maxlego08.zshop.api.history.HistoryType;
 import fr.maxlego08.zshop.api.limit.Limit;
 import fr.maxlego08.zshop.api.limit.LimiterManager;
 import fr.maxlego08.zshop.api.limit.PlayerLimit;
 import fr.maxlego08.zshop.api.utils.PriceModifierCache;
+import fr.maxlego08.zshop.history.ZHistory;
 import fr.maxlego08.zshop.placeholder.ItemButtonPlaceholder;
 import fr.maxlego08.zshop.placeholder.LocalPlaceholder;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.enums.Message;
+import fr.maxlego08.zshop.zcore.logger.Logger;
 import fr.maxlego08.zshop.zcore.utils.Pair;
 import fr.maxlego08.zshop.zcore.utils.ZUtils;
 import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -71,6 +76,16 @@ public class ZShopManager extends ZUtils implements ShopManager {
         FileConfiguration configuration = this.plugin.getConfig();
         this.defaultLore = configuration.getStringList("defaultLore");
         this.priceModifiers = ((List<Map<String, Object>>) configuration.getList("pricesModifier", new ArrayList<>())).stream().map(ZPriceModifier::new).collect(Collectors.toList());
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            Optional<Inventory> optional = this.plugin.getIManager().getCurrentPlayerInventory(player);
+            if (optional.isPresent()) {
+                Inventory inventory = optional.get();
+                if (inventory.getPlugin() == this.plugin) {
+                    player.closeInventory();
+                }
+            }
+        });
 
         this.loadPatterns();
         this.loadInventories();
@@ -404,6 +419,21 @@ public class ZShopManager extends ZUtils implements ShopManager {
         String results = toList(shopActions.stream().map(action -> getMessage(Message.SELL_ALL_INFO, "%amount%", action.getItemStack().getAmount(), "%item%", getItemName(action.getItemStack()), "%price%", action.getItemButton().getEconomy().format(transformPrice(action.getPrice()), action.getPrice()))).collect(Collectors.toList()), Message.SELL_ALL_COLOR_SEPARATOR.msg(), Message.SELL_ALL_COLOR_INFO.msg());
 
         message(this.plugin, player, Message.SELL_ALL_MESSAGE, "%items%", results);
+
+        if (Config.enableItemLog) {
+            String logMessage = Message.LOG_SELLALL.getMessage();
+
+            logMessage = logMessage.replace("%items%", results);
+            logMessage = logMessage.replace("%player%", player.getName());
+            logMessage = logMessage.replace("%uuid%", player.getUniqueId().toString());
+
+            if (Config.enableItemLogInConsole) Logger.info(logMessage);
+
+            if (Config.enableItemLogInFile) {
+                History history = new ZHistory(HistoryType.SELL, logMessage);
+                this.plugin.getHistoryManager().asyncValue(player.getUniqueId(), history);
+            }
+        }
     }
 
     @Override

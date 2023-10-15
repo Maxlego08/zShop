@@ -49,6 +49,7 @@ public class ItemButtonLoader implements ButtonLoader {
         int maxStack = configuration.getInt(path + "maxStack", 64);
         List<String> lore = configuration.getStringList(path + "lore");
         boolean giveItem = configuration.getBoolean(path + "giveItem", true);
+        boolean enableLog = configuration.getBoolean(path + "enableLog", true);
         List<String> buyCommands = configuration.getStringList(path + "buyCommands");
         List<String> sellCommands = configuration.getStringList(path + "sellCommands");
 
@@ -91,6 +92,6 @@ public class ItemButtonLoader implements ButtonLoader {
             this.plugin.getLimiterManager().create(playerBuyLimit);
         }
 
-        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit);
+        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit, enableLog);
     }
 }

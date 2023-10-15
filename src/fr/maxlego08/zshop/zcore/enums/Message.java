@@ -69,6 +69,13 @@ public enum Message {
     SELL_ALL_COLOR_SEPARATOR("§f"),
     SELL_ALL_COLOR_INFO("§7"),
     AND("and"),
+    LOG_BUY("%player% has purchased x%amount% %item% for %price%."),
+    LOG_SELL("%player% has just sold x%amount% %item% for %price%."),
+    LOG_SELLALL("%player% has just sold %items%."),
+    LOG_INFO_HEADER(MessageType.TCHAT, "§7§m-------------------------------------", "§b%type% §flog of §a%player% §8(§7%page%§8/§7%maxPage%§8)"),
+    LOG_INFO_MESSAGE("§7%date% §8- §f%message%"),
+    LOG_INFO_FOOTER("§7§m-------------------------------------"),
+    LOG_INFO_NONE("§cAucune log pour le joueur §f%player%§c."),
 
     ;
 

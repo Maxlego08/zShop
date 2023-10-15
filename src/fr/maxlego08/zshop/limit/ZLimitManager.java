@@ -90,7 +90,7 @@ public class ZLimitManager extends ZUtils implements LimiterManager, Saveable, L
         this.players.values().forEach(player -> {
             File file = player.getFile(this.plugin);
             if (player.isEmpty()) file.delete();
-            else persist.save(player, file);
+            else persist.save(player, file, false);
         });
     }
 
@@ -104,6 +104,7 @@ public class ZLimitManager extends ZUtils implements LimiterManager, Saveable, L
         try (Stream<Path> s = Files.walk(Paths.get(folder.getPath()))) {
             s.skip(1).map(Path::toFile).filter(File::isFile).filter(e -> e.getName().endsWith(".json")).forEach(file -> {
                 ZPlayerLimit playerLimit = persist.load(ZPlayerLimit.class, file);
+                if (playerLimit == null) return;
                 if (playerLimit.isEmpty()) file.delete();
                 else players.put(playerLimit.getUniqueId(), playerLimit);
             });

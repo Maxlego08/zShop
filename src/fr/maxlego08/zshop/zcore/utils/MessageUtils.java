@@ -1,19 +1,18 @@
 package fr.maxlego08.zshop.zcore.utils;
 
-import java.lang.reflect.Constructor;
-import java.util.List;
-
 import fr.maxlego08.menu.api.utils.MetaUpdater;
 import fr.maxlego08.zshop.ShopPlugin;
+import fr.maxlego08.zshop.zcore.enums.Message;
+import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
+import fr.maxlego08.zshop.zcore.utils.players.ActionBar;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import fr.maxlego08.zshop.zcore.enums.Message;
-import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
-import fr.maxlego08.zshop.zcore.utils.players.ActionBar;
+import java.lang.reflect.Constructor;
+import java.util.List;
 
 /**
  * Allows you to manage messages sent to players and the console
@@ -22,6 +21,12 @@ import fr.maxlego08.zshop.zcore.utils.players.ActionBar;
  */
 public abstract class MessageUtils extends LocationUtils {
 
+    public static String removeColorCodes(String input) {
+        input = input.replaceAll("#[0-9a-fA-F]{6}", "");
+        input = input.replaceAll("§[0-9a-fA-Fk-oK-OrR]", "");
+        return input.replaceAll("&[0-9a-fA-Fk-oK-OrR]", "");
+    }
+
     /**
      * @param player
      * @param message
@@ -29,6 +34,30 @@ public abstract class MessageUtils extends LocationUtils {
      */
     public void messageWO(CommandSender player, Message message, Object... args) {
         player.sendMessage(getMessage(message, args));
+    }
+
+    /**
+     * @param sender
+     * @param message
+     * @param args
+     */
+    public void messageWO(ShopPlugin plugin, CommandSender sender, Message message, Object... args) {
+        MetaUpdater updater = plugin.getIManager().getMeta();
+
+        if (sender instanceof ConsoleCommandSender) {
+            if (message.getMessages().size() > 0) {
+                message.getMessages().forEach(msg -> sender.sendMessage(removeColorCodes(Message.PREFIX.msg() + getMessage(msg, args))));
+            } else {
+                sender.sendMessage(removeColorCodes(Message.PREFIX.msg() + getMessage(message, args)));
+            }
+        } else {
+            Player player = (Player) sender;
+            if (message.getMessages().size() > 0) {
+                message.getMessages().forEach(msg -> updater.sendMessage(sender, this.papi(getMessage(msg, args), player)));
+            } else {
+                updater.sendMessage(sender, this.papi(getMessage(message, args), player));
+            }
+        }
     }
 
     /**
@@ -47,11 +76,6 @@ public abstract class MessageUtils extends LocationUtils {
      */
     public void message(ShopPlugin plugin, CommandSender sender, String message, Object... args) {
         plugin.getIManager().getMeta().sendMessage(sender, Message.PREFIX.msg() + getMessage(message, args));
-    }
-
-    private static String removeColorCodes(String input) {
-        input = input.replaceAll("#[0-9a-fA-F]{6}", "");
-        return input.replaceAll("&[0-9a-fA-Fk-oK-OrR]", "");
     }
 
     /**

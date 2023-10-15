@@ -10,3 +10,4 @@
 
 # Others
 - Spawners
+- Create addon advanced logs
