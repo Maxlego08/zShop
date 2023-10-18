@@ -3,6 +3,7 @@ package fr.maxlego08.zshop;
 import fr.maxlego08.zshop.api.PlayerCache;
 import fr.maxlego08.zshop.api.PriceType;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
+import fr.maxlego08.zshop.api.buttons.EconomyAction;
 import fr.maxlego08.zshop.api.utils.PriceModifierCache;
 
 import java.util.Optional;
@@ -10,6 +11,7 @@ import java.util.Optional;
 public class ZPlayerCache implements PlayerCache {
 
     private ItemButton itemButton;
+    private EconomyAction economyAction;
     private int amount = 1;
     private PriceModifierCache sellCache = new PriceModifierCache(0, Optional.empty());
     private PriceModifierCache buyCache = new PriceModifierCache(0, Optional.empty());
@@ -22,6 +24,16 @@ public class ZPlayerCache implements PlayerCache {
     @Override
     public void setItemButton(ItemButton itemButton) {
         this.itemButton = itemButton;
+    }
+
+    @Override
+    public EconomyAction getEconomyAction() {
+        return this.economyAction;
+    }
+
+    @Override
+    public void setEconomyAction(EconomyAction economyAction) {
+        this.economyAction = economyAction;
     }
 
     @Override

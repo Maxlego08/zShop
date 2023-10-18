@@ -14,6 +14,7 @@ public class Config implements Saveable {
     public static String dateFormatLog = "d/M/yyyy HH:mm:ss";
     public static String defaultEconomy = "VAULT";
     public static String sellInventoryName = "shop_sell";
+    public static String confirmInventoryName = "confirm";
     public static String buyInventoryName = "shop_buy";
     public static String dateFormat = "EEEE, d MMM yyyy HH:mm:ss";
 

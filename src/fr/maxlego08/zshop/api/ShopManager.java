@@ -2,6 +2,7 @@ package fr.maxlego08.zshop.api;
 
 import fr.maxlego08.menu.api.button.Button;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
+import fr.maxlego08.zshop.api.buttons.ItemConfirmButton;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -71,6 +72,14 @@ public interface ShopManager extends Listener {
     void openSell(Player player, ItemButton itemButton);
 
     /**
+     * Open confirm inventory
+     *
+     * @param player     the player
+     * @param itemButton the current item button
+     */
+    void openConfirm(Player player, ItemConfirmButton itemButton);
+
+    /**
      * Allows to return the cache of the player, data will be saved in cache according to the player to avoid having to calculate several times' data.
      *
      * @param player the player
@@ -106,7 +115,7 @@ public interface ShopManager extends Listener {
     /**
      * Get an ItemButton
      *
-     * @param player the player
+     * @param player    the player
      * @param itemStack Current item
      * @return optional of {@link ItemButton}
      */

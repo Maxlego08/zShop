@@ -1,17 +1,15 @@
 package fr.maxlego08.zshop.api.buttons;
 
-import fr.maxlego08.menu.api.button.Button;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
 import fr.maxlego08.zshop.api.history.HistoryType;
 import fr.maxlego08.zshop.api.limit.Limit;
-import fr.maxlego08.zshop.api.limit.LimitType;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ItemButton extends Button {
+public interface ItemButton extends EconomyAction {
 
     double getSellPrice();
 
@@ -73,10 +71,6 @@ public interface ItemButton extends Button {
      */
     String getBuyPriceFormat(int amount);
 
-    void buy(Player player, int amount);
-
-    void sell(Player player, int amount);
-
     /**
      * @return buy commands
      */
@@ -103,5 +97,7 @@ public interface ItemButton extends Button {
     boolean enableLog();
 
     void log(int amount, String itemName, String price, String playerName, UUID uuid, HistoryType type);
+
+    boolean affectByPriceModifier();
 
 }

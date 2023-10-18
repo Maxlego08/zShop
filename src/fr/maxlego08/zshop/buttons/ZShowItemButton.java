@@ -1,7 +1,6 @@
 package fr.maxlego08.zshop.buttons;
 
 import fr.maxlego08.menu.button.ZButton;
-import fr.maxlego08.menu.inventory.inventories.InventoryDefault;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.PlayerCache;
 import fr.maxlego08.zshop.api.buttons.ItemButton;

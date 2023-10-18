@@ -70,6 +70,7 @@ public enum Message {
     SELL_ALL_COLOR_INFO("§7"),
     AND("and"),
     LOG_BUY("%player% has purchased x%amount% %item% for %price%."),
+    LOG_BUY_CONFIRM("%player% has purchased %name% for %price%."),
     LOG_SELL("%player% has just sold x%amount% %item% for %price%."),
     LOG_SELLALL("%player% has just sold %items%."),
     LOG_INFO_HEADER(MessageType.TCHAT, "§7§m-------------------------------------", "§b%type% §flog of §a%player% §8(§7%page%§8/§7%maxPage%§8)"),

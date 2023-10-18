@@ -11,6 +11,7 @@ import fr.maxlego08.zshop.api.history.HistoryManager;
 import fr.maxlego08.zshop.api.limit.LimiterManager;
 import fr.maxlego08.zshop.buttons.ZConfirmBuyButton;
 import fr.maxlego08.zshop.buttons.ZConfirmSellButton;
+import fr.maxlego08.zshop.buttons.ZShowConfirmItemButton;
 import fr.maxlego08.zshop.command.commands.CommandSellAll;
 import fr.maxlego08.zshop.command.commands.CommandSellAllHand;
 import fr.maxlego08.zshop.command.commands.CommandSellHand;
@@ -20,6 +21,7 @@ import fr.maxlego08.zshop.history.ZHistoryManager;
 import fr.maxlego08.zshop.limit.ZLimitManager;
 import fr.maxlego08.zshop.loader.AddButtonLoader;
 import fr.maxlego08.zshop.loader.ItemButtonLoader;
+import fr.maxlego08.zshop.loader.ItemConfirmButtonLoader;
 import fr.maxlego08.zshop.loader.RemoveButtonLoader;
 import fr.maxlego08.zshop.loader.ShowItemButtonLoader;
 import fr.maxlego08.zshop.placeholder.LocalPlaceholder;
@@ -159,11 +161,13 @@ public class ShopPlugin extends ZPlugin {
 
         this.buttonManager.unregisters(this);
         this.buttonManager.register(new ItemButtonLoader(this));
+        this.buttonManager.register(new ItemConfirmButtonLoader(this));
         this.buttonManager.register(new ShowItemButtonLoader(this));
         this.buttonManager.register(new AddButtonLoader(this));
         this.buttonManager.register(new RemoveButtonLoader(this));
         this.buttonManager.register(new PluginLoader(this, ZConfirmBuyButton.class, "zshop_confirm_buy"));
         this.buttonManager.register(new PluginLoader(this, ZConfirmSellButton.class, "zshop_confirm_sell"));
+        this.buttonManager.register(new PluginLoader(this, ZShowConfirmItemButton.class, "zshop_show_confirm"));
 
     }
 

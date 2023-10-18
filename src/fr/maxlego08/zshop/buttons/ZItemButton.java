@@ -36,8 +36,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ZItemButton extends ZButton implements ItemButton {
 
-    private final ShopManager shopManager;
-    private final ShopPlugin plugin;
+    protected final ShopManager shopManager;
+    protected final ShopPlugin plugin;
     private final double sellPrice;
     private final double buyPrice;
     private final int maxStack;
@@ -51,8 +51,9 @@ public class ZItemButton extends ZButton implements ItemButton {
     private final Limit playerSellLimit;
     private final Limit playerBuyLimit;
     private final boolean enableLog;
+    private final boolean affectByPriceModifier;
 
-    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog) {
+    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog, boolean affectByPriceModifier) {
         this.plugin = plugin;
         this.shopManager = plugin.getShopManager();
         this.sellPrice = sellPrice;
@@ -68,6 +69,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         this.playerSellLimit = playerSellLimit;
         this.playerBuyLimit = playerBuyLimit;
         this.enableLog = enableLog;
+        this.affectByPriceModifier = affectByPriceModifier;
     }
 
     @Override
@@ -94,7 +96,7 @@ public class ZItemButton extends ZButton implements ItemButton {
     public double getSellPrice(Player player, int amount) {
         AtomicReference<Double> price = new AtomicReference<>(getSellPrice(amount));
         Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.SELL);
-        optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
+        if (this.affectByPriceModifier()) optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
         return price.get();
     }
 
@@ -102,7 +104,7 @@ public class ZItemButton extends ZButton implements ItemButton {
     public double getBuyPrice(Player player, int amount) {
         AtomicReference<Double> price = new AtomicReference<>(getBuyPrice(amount));
         Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.BUY);
-        optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
+        if (this.affectByPriceModifier()) optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
         return price.get();
     }
 
@@ -386,6 +388,11 @@ public class ZItemButton extends ZButton implements ItemButton {
                 this.plugin.getHistoryManager().asyncValue(uuid, history);
             }
         }
+    }
+
+    @Override
+    public boolean affectByPriceModifier() {
+        return this.affectByPriceModifier;
     }
 
     @Override

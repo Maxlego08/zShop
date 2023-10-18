@@ -11,6 +11,7 @@ import fr.maxlego08.zshop.api.PriceModifier;
 import fr.maxlego08.zshop.api.PriceType;
 import fr.maxlego08.zshop.api.ShopManager;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
+import fr.maxlego08.zshop.api.buttons.ItemConfirmButton;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
 import fr.maxlego08.zshop.api.event.ShopAction;
 import fr.maxlego08.zshop.api.event.events.ZShopSellAllEvent;
@@ -19,6 +20,7 @@ import fr.maxlego08.zshop.api.history.HistoryType;
 import fr.maxlego08.zshop.api.limit.Limit;
 import fr.maxlego08.zshop.api.limit.LimiterManager;
 import fr.maxlego08.zshop.api.limit.PlayerLimit;
+import fr.maxlego08.zshop.api.buttons.EconomyAction;
 import fr.maxlego08.zshop.api.utils.PriceModifierCache;
 import fr.maxlego08.zshop.history.ZHistory;
 import fr.maxlego08.zshop.placeholder.ItemButtonPlaceholder;
@@ -158,7 +160,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
         localPlaceholder.register("item_", new ItemButtonPlaceholder(this.plugin, this));
     }
 
-    private final String priceModifierPrice(Optional<PriceModifier> optional, boolean isValue) {
+    private String priceModifierPrice(Optional<PriceModifier> optional, boolean isValue) {
         if (isValue) {
             return optional.map(priceModifier -> String.valueOf(priceModifier.getModifier())).orElse("1");
         } else {
@@ -260,17 +262,27 @@ public class ZShopManager extends ZUtils implements ShopManager {
         this.openInventory(player, itemButton, Config.sellInventoryName);
     }
 
+    @Override
+    public void openConfirm(Player player, ItemConfirmButton itemButton) {
+        this.openInventory(player, itemButton, Config.confirmInventoryName);
+    }
+
     /**
      * Open an inventory for purchase or sell an item
      *
      * @param player        who open inventory
-     * @param itemButton    current item
+     * @param economyAction current item
      * @param inventoryName inventory name (buy or sell)
      */
-    private void openInventory(Player player, ItemButton itemButton, String inventoryName) {
+    private void openInventory(Player player, EconomyAction economyAction, String inventoryName) {
         PlayerCache playerCache = getCache(player);
-        playerCache.setItemButton(itemButton);
-        playerCache.setItemAmount(itemButton.getItemStack().parseAmount(player));
+
+        if (economyAction instanceof ItemButton) {
+            ItemButton button = (ItemButton) economyAction;
+            playerCache.setItemButton(button);
+            playerCache.setItemAmount(button.getItemStack().parseAmount(player));
+        }
+        playerCache.setEconomyAction(economyAction);
 
         InventoryManager inventoryManager = this.plugin.getIManager();
         List<Inventory> inventories = new ArrayList<>();
