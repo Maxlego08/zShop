@@ -4,6 +4,7 @@ public enum Permission {
 	
 	ZSHOP_HELP,
 	ZSHOP_RELOAD,
+	ZSHOP_CONVERT,
 	ZSHOP_LOGS,
 	ZSHOP_SELL_ALL,
 	ZSHOP_SELL_HAND,

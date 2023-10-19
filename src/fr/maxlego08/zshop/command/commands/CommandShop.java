@@ -12,6 +12,7 @@ public class CommandShop extends VCommand {
         this.setPermission(Permission.ZSHOP_HELP);
         this.addSubCommand(new CommandShopReload(plugin));
         this.addSubCommand(new CommandShopLogs(plugin));
+        this.addSubCommand(new CommandShopConvert(plugin));
     }
 
     @Override

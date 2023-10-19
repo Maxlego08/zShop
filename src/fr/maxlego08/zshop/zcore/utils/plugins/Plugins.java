@@ -12,6 +12,7 @@ public enum Plugins {
 	PLAYERPOINT("PlayerPoints"),
 	VOTINGPLUGIN("VotingPlugin"),
 	TOKENMANAGER("TokenManager"),
+	SHOPGUIPLUS("ShopGUIPlus"),
 
 	;
 
