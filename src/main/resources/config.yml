@@ -9,6 +9,25 @@
 #
 #########################################################################################################################################
 
+# Configuration version, lets you know if you need to update your configuration or not.
+configVersion: 1
+
+# Displays more information in the console, if you have a problem please enable this option and send errors to support.
+enableDebug: true
+enableDebugTime: false
+
+# Default Economy that will be used for all ZSHOP_ITEMS if Economy is not specified
+# Economy available:
+# - ITEM (Use items like economy, for example gold)
+# - LEVEL (Minecraft player level)
+# - EXPERIENCE (Minecraft player level experience point)
+# - VAULT (requires https://www.spigotmc.org/resources/vault.34315/)
+# - PLAYERPOINTS (requires https://www.spigotmc.org/resources/playerpoints.80745/)
+# - VOTINGPLUGIN (requires https://www.spigotmc.org/resources/votingplugin.15358/)
+# - TOKENMANAGER (requires https://www.spigotmc.org/resources/tokenmanager.8610/)
+defaultEconomy: "VAULT"
+
+# Default lore of ZSHOP_ITEM buttons
 defaultLore:
   - "&f» &7Buying price&8: &e%buyPrice%"
   - "&f» &7Selling price&8: &e%sellPrice%"
@@ -17,6 +36,19 @@ defaultLore:
   - "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ"
   - "&f➥ &r&7Right click to &f&nsᴇʟʟ"
 
+# Name of the inventory for the sale of items
+sellInventoryName: "shop_sell"
+
+# Name of the inventory for the bought of items
+buyInventoryName: "shop_buy"
+
+# Name of the inventory for confirm of bought
+confirmInventoryName: "confirm"
+
+# Date format for limit placeholders (https://www.digitalocean.com/community/tutorials/java-simpledateformat-java-date-format#patterns)
+dateFormat: "EEEE, d MMM yyyy HH:mm:ss"
+
+# Allows to change the sale or serious purchase price has permission
 pricesModifier:
   - permission: "zshop.prices.vip"
     type: SELL
@@ -30,3 +62,24 @@ pricesModifier:
   - permission: "zshop.prices.legend.sell"
     type: SELL
     modifier: 3.0 # Multiplie sell price by x3.0 (+200%, 10 * 3.0 = 30)
+
+# Logging settings
+log:
+  # Enables the logs of transactions that the player will perform
+  enableLog: true
+  # Enables the logs of the transactions that the player will perform and saves them in a player file
+  enableLogInFile: true
+  # Enables the logs of transactions that the player will perform and displays them in the console
+  enableLogInConsole: true
+  # Date format of transactions (https://www.digitalocean.com/community/tutorials/java-simpledateformat-java-date-format#patterns)
+  dateFormatLog: "d/M/yyyy HH:mm:ss"
+  # Number of players before deleting logs, only for logs saved in files
+  expireLogDay: 14
+  # Log message for bought items
+  buyMessage: "%player% has purchased x%amount% %item% for %price%."
+  # Log message for confirmed bought items
+  buyConfirmMessage: "%player% has purchased %name% for %price%."
+  # Log message for sold items
+  sellMessage: "%player% has just sold x%amount% %item% for %price%."
+  # Log message for sold all items
+  sellAllMessage: "%player% sold all %amount% x %item% for %price% to %shop% shop"

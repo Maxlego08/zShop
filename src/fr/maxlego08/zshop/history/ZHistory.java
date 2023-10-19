@@ -3,6 +3,7 @@ package fr.maxlego08.zshop.history;
 import fr.maxlego08.zshop.api.history.History;
 import fr.maxlego08.zshop.api.history.HistoryType;
 import fr.maxlego08.zshop.save.Config;
+import fr.maxlego08.zshop.save.LogConfig;
 import fr.maxlego08.zshop.zcore.utils.MessageUtils;
 
 import java.text.SimpleDateFormat;
@@ -38,7 +39,7 @@ public class ZHistory implements History {
 
     @Override
     public String getDateAsString() {
-        return new SimpleDateFormat(Config.dateFormatLog).format(new Date(this.date));
+        return new SimpleDateFormat(LogConfig.dateFormatLog).format(new Date(this.date));
     }
 
 }

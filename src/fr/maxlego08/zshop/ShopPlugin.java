@@ -32,6 +32,7 @@ import fr.maxlego08.zshop.zcore.ZPlugin;
 import fr.maxlego08.zshop.zcore.utils.plugins.Metrics;
 import fr.maxlego08.zshop.zcore.utils.plugins.Plugins;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 
@@ -82,8 +83,8 @@ public class ShopPlugin extends ZPlugin {
         this.registerCommand("sell-hand", new CommandSellHand(this), "zshop-hand");
         this.registerCommand("sell-handall", new CommandSellAllHand(this), "zshop-handall");
 
-        this.addSave(Config.getInstance());
         this.addSave(new MessageLoader(this));
+        Config.load((YamlConfiguration) getConfig());
 
         Bukkit.getPluginManager().registerEvents(this.limitManager, this);
         Bukkit.getPluginManager().registerEvents(this.historyManager, this);
@@ -124,6 +125,8 @@ public class ShopPlugin extends ZPlugin {
     public void reloadFiles() {
 
         this.limitManager.invalid();
+
+        Config.load((YamlConfiguration) getConfig());
 
         super.reloadFiles();
         this.loadButtons();

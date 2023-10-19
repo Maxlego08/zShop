@@ -6,6 +6,7 @@ import fr.maxlego08.zshop.api.history.HistoryFile;
 import fr.maxlego08.zshop.api.history.HistoryManager;
 import fr.maxlego08.zshop.api.history.HistoryType;
 import fr.maxlego08.zshop.save.Config;
+import fr.maxlego08.zshop.save.LogConfig;
 import fr.maxlego08.zshop.zcore.enums.Message;
 import fr.maxlego08.zshop.zcore.utils.ZUtils;
 import fr.maxlego08.zshop.zcore.utils.inventory.Pagination;
@@ -140,7 +141,7 @@ public class ZHistoryManager extends ZUtils implements HistoryManager {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (Config.enableItemLog && Config.enableItemLogInFile) {
+        if (LogConfig.enableLog && LogConfig.enableLogInFile) {
             runAsync(this.plugin, () -> {
                 UUID uuid = event.getPlayer().getUniqueId();
                 File file = new File(this.plugin.getDataFolder(), this.folder + uuid + ".json");

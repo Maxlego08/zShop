@@ -2,7 +2,7 @@ package fr.maxlego08.zshop.history;
 
 import fr.maxlego08.zshop.api.history.History;
 import fr.maxlego08.zshop.api.history.HistoryFile;
-import fr.maxlego08.zshop.save.Config;
+import fr.maxlego08.zshop.save.LogConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -63,7 +63,7 @@ public class ZHistoryFile implements HistoryFile {
     @Override
     public void clear() {
         Iterator<ZHistory> iterator = this.histories.iterator();
-        long oldDay = System.currentTimeMillis() - (1000 * 86400 * Config.expireLogDay);
+        long oldDay = System.currentTimeMillis() - (1000 * 86400 * LogConfig.expireLogDay);
         while (iterator.hasNext()) {
             History history = iterator.next();
             if (history.getDate() < oldDay) {

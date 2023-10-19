@@ -10,8 +10,7 @@ import fr.maxlego08.zshop.api.history.History;
 import fr.maxlego08.zshop.api.history.HistoryType;
 import fr.maxlego08.zshop.history.ZHistory;
 import fr.maxlego08.zshop.placeholder.Placeholder;
-import fr.maxlego08.zshop.save.Config;
-import fr.maxlego08.zshop.zcore.enums.Message;
+import fr.maxlego08.zshop.save.LogConfig;
 import fr.maxlego08.zshop.zcore.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -81,17 +80,17 @@ public class ZItemConfirmButton extends ZButton implements ItemConfirmButton {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Placeholder.getPlaceholder().setPlaceholders(player, command));
         });
 
-        if (Config.enableItemLog || this.enableLog) {
+        if (LogConfig.enableLog || this.enableLog) {
 
-            String logMessage = Message.LOG_BUY_CONFIRM.getMessage();
+            String logMessage = LogConfig.buyConfirmMessage;
 
             logMessage = logMessage.replace("%name%", name);
             logMessage = logMessage.replace("%price%", String.valueOf(price));
             logMessage = logMessage.replace("%player%", player.getName());
 
-            if (Config.enableItemLogInConsole) Logger.info(logMessage);
+            if (LogConfig.enableLogInConsole) Logger.info(logMessage);
 
-            if (Config.enableItemLogInFile) {
+            if (LogConfig.enableLogInFile) {
                 History history = new ZHistory(HistoryType.BUY, logMessage);
                 this.plugin.getHistoryManager().asyncValue(player.getUniqueId(), history);
             }

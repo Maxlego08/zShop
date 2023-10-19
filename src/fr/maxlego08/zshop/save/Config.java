@@ -1,56 +1,59 @@
 package fr.maxlego08.zshop.save;
 
-import fr.maxlego08.zshop.zcore.utils.storage.Persist;
-import fr.maxlego08.zshop.zcore.utils.storage.Saveable;
+import fr.maxlego08.zshop.ZPriceModifier;
+import fr.maxlego08.zshop.api.PriceModifier;
+import fr.maxlego08.zshop.zcore.logger.Logger;
+import org.bukkit.configuration.file.YamlConfiguration;
 
-public class Config implements Saveable {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+public class Config {
+
+    public static int configVersion = 1;
     public static boolean enableDebug = true;
     public static boolean enableDebugTime = false;
-    public static boolean enableItemLog = true;
-    public static boolean enableItemLogInFile = true;
-    public static boolean enableItemLogInConsole = true;
-    public static long expireLogDay = 14;
-    public static String dateFormatLog = "d/M/yyyy HH:mm:ss";
     public static String defaultEconomy = "VAULT";
     public static String sellInventoryName = "shop_sell";
     public static String confirmInventoryName = "confirm";
     public static String buyInventoryName = "shop_buy";
     public static String dateFormat = "EEEE, d MMM yyyy HH:mm:ss";
+    public static List<String> defaultLore = Arrays.asList(
+            "&f» &7Buying price&8: &e%buyPrice%",
+            "&f» &7Selling price&8: &e%sellPrice%",
+            "",
+            "&f➥ &r&7Left click to &f&nʙᴜʏ",
+            "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ",
+            "&f➥ &r&7Right click to &f&nsᴇʟʟ"
+    );
+    public static List<PriceModifier> priceModifiers = new ArrayList<>();
 
-    /**
-     * static Singleton instance.
-     */
-    private static volatile Config instance;
-
-
-    /**
-     * Private constructor for singleton.
-     */
     private Config() {
     }
 
-    /**
-     * Return a singleton instance of Config.
-     */
-    public static Config getInstance() {
-        // Double lock for thread safety.
-        if (instance == null) {
-            synchronized (Config.class) {
-                if (instance == null) {
-                    instance = new Config();
-                }
-            }
+    public static void load(YamlConfiguration configuration) {
+
+        int version = configuration.getInt("configVersion", -1);
+        if (version != configVersion && version != -1) {
+            Logger.info("You are not using the latest version of the configuration, items can be added on deleted. Please update your configuration.", Logger.LogType.WARNING);
         }
-        return instance;
-    }
 
-    public void save(Persist persist) {
-        persist.save(getInstance());
-    }
+        enableDebug = configuration.getBoolean("enableDebug");
+        enableDebugTime = configuration.getBoolean("enableDebugTime");
 
-    public void load(Persist persist) {
-        persist.loadOrSaveDefault(getInstance(), Config.class);
+        defaultLore = configuration.getStringList("defaultLore");
+        defaultEconomy = configuration.getString("defaultEconomy");
+        confirmInventoryName = configuration.getString("confirmInventoryName");
+        sellInventoryName = configuration.getString("sellInventoryName");
+        buyInventoryName = configuration.getString("buyInventoryName");
+        dateFormat = configuration.getString("dateFormat");
+        priceModifiers = ((List<Map<String, Object>>) configuration.getList("pricesModifier", new ArrayList<>())).stream().map(ZPriceModifier::new).collect(Collectors.toList());
+
+        LogConfig.load(configuration);
+
     }
 
 }

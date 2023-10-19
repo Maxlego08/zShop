@@ -20,6 +20,7 @@ import fr.maxlego08.zshop.api.limit.PlayerLimit;
 import fr.maxlego08.zshop.history.ZHistory;
 import fr.maxlego08.zshop.placeholder.Placeholder;
 import fr.maxlego08.zshop.save.Config;
+import fr.maxlego08.zshop.save.LogConfig;
 import fr.maxlego08.zshop.zcore.enums.Message;
 import fr.maxlego08.zshop.zcore.logger.Logger;
 import org.bukkit.Bukkit;
@@ -371,9 +372,9 @@ public class ZItemButton extends ZButton implements ItemButton {
 
     @Override
     public void log(int amount, String itemName, String price, String playerName, UUID uuid, HistoryType type) {
-        if (Config.enableItemLog || this.enableLog) {
+        if (LogConfig.enableLog || this.enableLog) {
 
-            String logMessage = (type == HistoryType.SELL ? Message.LOG_SELL : Message.LOG_BUY).getMessage();
+            String logMessage = type == HistoryType.SELL ? LogConfig.sellMessage : LogConfig.buyMessage;
 
             logMessage = logMessage.replace("%amount%", String.valueOf(amount));
             logMessage = logMessage.replace("%item%", itemName);
@@ -381,9 +382,9 @@ public class ZItemButton extends ZButton implements ItemButton {
             logMessage = logMessage.replace("%player%", playerName);
             logMessage = logMessage.replace("%uuid%", uuid.toString());
 
-            if (Config.enableItemLogInConsole) Logger.info(logMessage);
+            if (LogConfig.enableLogInConsole) Logger.info(logMessage);
 
-            if (Config.enableItemLogInFile) {
+            if (LogConfig.enableLogInFile) {
                 History history = new ZHistory(type, logMessage);
                 this.plugin.getHistoryManager().asyncValue(uuid, history);
             }

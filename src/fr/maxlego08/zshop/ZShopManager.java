@@ -10,6 +10,7 @@ import fr.maxlego08.zshop.api.PlayerCache;
 import fr.maxlego08.zshop.api.PriceModifier;
 import fr.maxlego08.zshop.api.PriceType;
 import fr.maxlego08.zshop.api.ShopManager;
+import fr.maxlego08.zshop.api.buttons.EconomyAction;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
 import fr.maxlego08.zshop.api.buttons.ItemConfirmButton;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
@@ -20,12 +21,12 @@ import fr.maxlego08.zshop.api.history.HistoryType;
 import fr.maxlego08.zshop.api.limit.Limit;
 import fr.maxlego08.zshop.api.limit.LimiterManager;
 import fr.maxlego08.zshop.api.limit.PlayerLimit;
-import fr.maxlego08.zshop.api.buttons.EconomyAction;
 import fr.maxlego08.zshop.api.utils.PriceModifierCache;
 import fr.maxlego08.zshop.history.ZHistory;
 import fr.maxlego08.zshop.placeholder.ItemButtonPlaceholder;
 import fr.maxlego08.zshop.placeholder.LocalPlaceholder;
 import fr.maxlego08.zshop.save.Config;
+import fr.maxlego08.zshop.save.LogConfig;
 import fr.maxlego08.zshop.zcore.enums.Message;
 import fr.maxlego08.zshop.zcore.logger.Logger;
 import fr.maxlego08.zshop.zcore.utils.Pair;
@@ -33,7 +34,6 @@ import fr.maxlego08.zshop.zcore.utils.ZUtils;
 import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -65,8 +65,6 @@ public class ZShopManager extends ZUtils implements ShopManager {
     private final Map<UUID, PlayerCache> cachePlayers = new HashMap<>();
     private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
     private final List<ItemButton> itemButtons = new ArrayList<>();
-    private List<PriceModifier> priceModifiers = new ArrayList<>();
-    private List<String> defaultLore = new ArrayList<>();
 
     public ZShopManager(ShopPlugin plugin) {
         this.plugin = plugin;
@@ -74,10 +72,6 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
     @Override
     public void loadConfig() {
-
-        FileConfiguration configuration = this.plugin.getConfig();
-        this.defaultLore = configuration.getStringList("defaultLore");
-        this.priceModifiers = ((List<Map<String, Object>>) configuration.getList("pricesModifier", new ArrayList<>())).stream().map(ZPriceModifier::new).collect(Collectors.toList());
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             Optional<Inventory> optional = this.plugin.getIManager().getCurrentPlayerInventory(player);
@@ -235,7 +229,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
     @Override
     public List<String> getDefaultLore() {
-        return this.defaultLore;
+        return Config.defaultLore;
     }
 
     @Override
@@ -311,7 +305,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
         if (!cache.isExpired()) return cache.getPriceModifier();
 
-        Optional<PriceModifier> optional = this.priceModifiers.stream().filter(modifier -> {
+        Optional<PriceModifier> optional = Config.priceModifiers.stream().filter(modifier -> {
             // Check if type is the same and check if player has an effective permission
             return modifier.getType() == priceType && player.getEffectivePermissions().stream().anyMatch(e -> e.getPermission().equalsIgnoreCase(modifier.getPermission()));
         }).max(Comparator.comparingDouble(PriceModifier::getModifier));
@@ -432,16 +426,16 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
         message(this.plugin, player, Message.SELL_ALL_MESSAGE, "%items%", results);
 
-        if (Config.enableItemLog) {
-            String logMessage = Message.LOG_SELLALL.getMessage();
+        if (LogConfig.enableLog) {
+            String logMessage = LogConfig.sellAllMessage;
 
             logMessage = logMessage.replace("%items%", results);
             logMessage = logMessage.replace("%player%", player.getName());
             logMessage = logMessage.replace("%uuid%", player.getUniqueId().toString());
 
-            if (Config.enableItemLogInConsole) Logger.info(logMessage);
+            if (LogConfig.enableLogInConsole) Logger.info(logMessage);
 
-            if (Config.enableItemLogInFile) {
+            if (LogConfig.enableLogInFile) {
                 History history = new ZHistory(HistoryType.SELL, logMessage);
                 this.plugin.getHistoryManager().asyncValue(player.getUniqueId(), history);
             }
