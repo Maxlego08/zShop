@@ -153,7 +153,7 @@ public class ZItemButton extends ZButton implements ItemButton {
     @Override
     public String getBuyPriceFormat(Player player, int amount) {
         if (!this.canBuy()) return Message.CANT_BUY.msg();
-        double price = getSellPrice(player, amount);
+        double price = getBuyPrice(player, amount);
         return this.shopEconomy.format(this.shopManager.transformPrice(price), price);
     }
 
