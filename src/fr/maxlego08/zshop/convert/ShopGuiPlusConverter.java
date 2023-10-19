@@ -22,11 +22,16 @@ import java.util.stream.Stream;
 
 public class ShopGuiPlusConverter {
 
+    private final ShopPlugin plugin;
     private boolean isConvert = false;
     private File zShopFolderConvert;
     private YamlConfiguration shopGuiPlusConfiguration;
 
-    public void convert(ShopPlugin plugin, CommandSender sender) {
+    public ShopGuiPlusConverter(ShopPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    public void convert(CommandSender sender) {
 
         this.zShopFolderConvert = new File(plugin.getDataFolder(), "inventories/convert");
         if (!this.zShopFolderConvert.exists()) this.zShopFolderConvert.mkdir();
@@ -352,5 +357,4 @@ public class ShopGuiPlusConverter {
 
         sender.sendMessage("§fEnd convert §bconfig.yml");
     }
-
 }

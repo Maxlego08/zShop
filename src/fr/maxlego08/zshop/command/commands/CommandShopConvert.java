@@ -9,10 +9,11 @@ import fr.maxlego08.zshop.zcore.utils.commands.CommandType;
 
 public class CommandShopConvert extends VCommand {
 
-    private final ShopGuiPlusConverter shopGuiPlusConverter = new ShopGuiPlusConverter();
+    private final ShopGuiPlusConverter shopGuiPlusConverter;
 
     public CommandShopConvert(ShopPlugin plugin) {
         super(plugin);
+        this.shopGuiPlusConverter = new ShopGuiPlusConverter(plugin);
         this.setPermission(Permission.ZSHOP_CONVERT);
         this.addSubCommand("convert");
         this.setDescription(Message.DESCRIPTION_CONVERT);
@@ -20,7 +21,7 @@ public class CommandShopConvert extends VCommand {
 
     @Override
     protected CommandType perform(ShopPlugin plugin) {
-        this.shopGuiPlusConverter.convert(plugin, sender);
+        this.shopGuiPlusConverter.convert(sender);
         return CommandType.SUCCESS;
     }
 
