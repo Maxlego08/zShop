@@ -26,6 +26,7 @@ import fr.maxlego08.zshop.zcore.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -97,7 +98,8 @@ public class ZItemButton extends ZButton implements ItemButton {
     public double getSellPrice(Player player, int amount) {
         AtomicReference<Double> price = new AtomicReference<>(getSellPrice(amount));
         Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.SELL);
-        if (this.affectByPriceModifier()) optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
+        if (this.affectByPriceModifier())
+            optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
         return price.get();
     }
 
@@ -105,7 +107,8 @@ public class ZItemButton extends ZButton implements ItemButton {
     public double getBuyPrice(Player player, int amount) {
         AtomicReference<Double> price = new AtomicReference<>(getBuyPrice(amount));
         Optional<PriceModifier> optional = this.shopManager.getPriceModifier(player, PriceType.BUY);
-        if (this.affectByPriceModifier()) optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
+        if (this.affectByPriceModifier())
+            optional.ifPresent(modifier -> price.updateAndGet(v -> v * modifier.getModifier()));
         return price.get();
     }
 
@@ -435,6 +438,12 @@ public class ZItemButton extends ZButton implements ItemButton {
     public ItemStack getCustomItemStack(Player player) {
         ItemStack itemStack = super.getCustomItemStack(player);
         ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if (Config.disableItemFlag) {
+            for (ItemFlag itemFlag : ItemFlag.values()) {
+                itemMeta.addItemFlags(itemFlag);
+            }
+        }
 
         MetaUpdater metaUpdater = plugin.getIManager().getMeta();
         metaUpdater.updateLore(itemMeta, buildLore(player), player);

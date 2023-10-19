@@ -48,6 +48,10 @@ confirmInventoryName: "confirm"
 # Date format for limit placeholders (https://www.digitalocean.com/community/tutorials/java-simpledateformat-java-date-format#patterns)
 dateFormat: "EEEE, d MMM yyyy HH:mm:ss"
 
+# Disable all Flags of items, so you don’t need to configure each item (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/ItemFlag.html)
+# Disable only item flags for item display
+disableItemFlag: true
+
 # Allows to change the sale or serious purchase price has permission
 pricesModifier:
   - permission: "zshop.prices.vip"

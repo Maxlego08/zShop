@@ -16,6 +16,7 @@ public class Config {
     public static int configVersion = 1;
     public static boolean enableDebug = true;
     public static boolean enableDebugTime = false;
+    public static boolean disableItemFlag = true;
     public static String defaultEconomy = "VAULT";
     public static String sellInventoryName = "shop_sell";
     public static String confirmInventoryName = "confirm";
@@ -43,6 +44,7 @@ public class Config {
 
         enableDebug = configuration.getBoolean("enableDebug");
         enableDebugTime = configuration.getBoolean("enableDebugTime");
+        disableItemFlag = configuration.getBoolean("disableItemFlag");
 
         defaultLore = configuration.getStringList("defaultLore");
         defaultEconomy = configuration.getString("defaultEconomy");
