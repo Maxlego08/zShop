@@ -8,70 +8,70 @@ items:
     item:
       material: ROTTEN_FLESH
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 15.0
     sellPrice: 1.0
     slot: 20
   bone:
     item:
       material: BONE
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 15.0
     sellPrice: 1.0
     slot: 21
   gunpowder:
     item:
       material: GUNPOWDER
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 15.0
     sellPrice: 1.0
     slot: 22
   blaze_powder:
     item:
       material: BLAZE_POWDER
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 1.0
+    buyPrice: 50.0
+    sellPrice: 2.0
     slot: 23
   spider_eye:
     item:
       material: SPIDER_EYE
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 15.0
     sellPrice: 1.0
     slot: 24
   ender_pearl:
     item:
       material: ENDER_PEARL
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 1.0
+    buyPrice: 100.0
+    sellPrice: 5.0
     maxStack: 16
     slot: 29
   egg:
     item:
       material: EGG
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 1.0
+    buyPrice: 15.0
+    sellPrice: 2.0
     slot: 30
   ink_sac:
     item:
       material: INK_SAC
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 15.0
     sellPrice: 1.0
     slot: 31
   LEATHER:
     item:
       material: LEATHER
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 1.0
+    buyPrice: 15.0
+    sellPrice: 0.25
     slot: 32
   honeycomb:
     item:
       material: HONEYCOMB
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 1.0
+    buyPrice: 15.0
+    sellPrice: 2.0
     slot: 33

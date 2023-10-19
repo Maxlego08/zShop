@@ -5,3 +5,8 @@ commands:
       - shop
       - myshop
     inventory: main_shop
+  rank:
+    command: rank
+    aliases:
+      - zrank
+    inventory: rank

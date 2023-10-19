@@ -10,110 +10,113 @@ items:
     item:
       material: REDSTONE
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 4.0
+    sellPrice: 0.25
     slot: 20
   redstone_torch:
     item:
       material: REDSTONE_TORCH
     type: ZSHOP_ITEM
     buyPrice: 5.0
-    sellPrice: 0
+    sellPrice: 0.25
     slot: 21
   repeater:
     item:
       material: REPEATER
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 25.0
+    sellPrice: 1.0
     slot: 22
   comparator:
     item:
       material: COMPARATOR
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 50.0
+    sellPrice: 1.0
     slot: 23
   level:
     item:
       material: LEVER
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 10.0
+    sellPrice: 1.0
     slot: 24
   stone_button:
     item:
       material: STONE_BUTTON
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 10.0
+    sellPrice: 0.1
     slot: 29
   piston:
     item:
       material: PISTON
+      amount: 32
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 2500.0
+    sellPrice: 250.0
     slot: 30
   sticky_piston:
     item:
       material: STICKY_PISTON
+      amount: 32
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 3000.0
+    sellPrice: 300.0
     slot: 31
   redstone_block:
     item:
       material: REDSTONE_BLOCK
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 36.0
+    sellPrice: 2.0
     slot: 32
   tripwire_hook:
     item:
       material: TRIPWIRE_HOOK
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 15.0
+    sellPrice: 0.0
     slot: 33
   # Second page
   slime_block:
     item:
       material: SLIME_BLOCK
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 100.0
+    sellPrice: 5.0
     slot: 20
     page: 2
   dispenser:
     item:
       material: DISPENSER
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 10.0
+    sellPrice: 1.0
     slot: 21
     page: 2
   dropper:
     item:
       material: DROPPER
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 8.0
+    sellPrice: 1.0
     slot: 22
     page: 2
   hopper:
     item:
       material: HOPPER
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 800.0
+    sellPrice: 5.0
     slot: 23
     page: 2
   observer:
     item:
       material: OBSERVER
+      amount: 16
     type: ZSHOP_ITEM
-    buyPrice: 5.0
-    sellPrice: 0
+    buyPrice: 500.0
+    sellPrice: 5.0
     slot: 24
     page: 2

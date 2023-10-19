@@ -94,15 +94,17 @@ public class ZShopManager extends ZUtils implements ShopManager {
     private void registerDefaultFiles() {
         List<String> files = new ArrayList<>();
         files.add("inventories/main_shop.yml");
-        files.add("inventories/armors.yml");
-        files.add("inventories/blocks.yml");
-        files.add("inventories/farms.yml");
-        files.add("inventories/mics.yml");
-        files.add("inventories/mobs.yml");
-        files.add("inventories/ores.yml");
-        files.add("inventories/redstones.yml");
+        files.add("inventories/categories/armors.yml");
+        files.add("inventories/categories/blocks.yml");
+        files.add("inventories/categories/farms.yml");
+        files.add("inventories/categories/mics.yml");
+        files.add("inventories/categories/mobs.yml");
+        files.add("inventories/categories/ores.yml");
+        files.add("inventories/categories/redstones.yml");
         files.add("inventories/shop_buy.yml");
         files.add("inventories/shop_sell.yml");
+        files.add("inventories/confirm.yml");
+        files.add("inventories/rank.yml");
 
         files.forEach(e -> {
             if (!new File(this.plugin.getDataFolder(), e).exists()) {

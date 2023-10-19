@@ -5,7 +5,7 @@ items:
     isPermanent: true
     type: BACK
     item:
-      material: BARRIER
+      material: hdb:37794
       name: "#cf1717ʙᴀᴄᴋ"
       lore:
         - ""

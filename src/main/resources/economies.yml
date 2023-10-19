@@ -38,11 +38,10 @@ economies:
     currency: "%price% level"
     isEnable: true
     denyMessage: "&cYou don’t have enough level to buy this."
-  # Example with PlayerPoint
-  #playerpoints:
-  #  name: playerpoints
-  #  type: playerpoints
-  #  format: "P"
-  #  currency: "%price% P"
-  #  isEnable: true
-  #  denyMessage: "&cYou don’t have enough points to buy this."
+  playerpoints:
+    name: playerpoints
+    type: playerpoints
+    format: "P"
+    currency: "%price% P"
+    isEnable: true
+    denyMessage: "&cYou don’t have enough points to buy this."

@@ -29,7 +29,7 @@ items:
       name: "#fbd53cʀᴇᴍᴏᴠᴇ 1"
       lore:
         - ""
-        - "&f➥ &7Click to #fbd53remove 1"
+        - "&f➥ &7Click to #fbd53cremove 1"
     type: ZSHOP_REMOVE
     amount: 1
     slot: 30

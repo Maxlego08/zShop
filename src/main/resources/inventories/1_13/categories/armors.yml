@@ -8,69 +8,69 @@ items:
     item:
       material: DIAMOND_HELMET
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 150.0
     sellPrice: 0
     slot: 20
   diamond_chestplate:
     item:
       material: DIAMOND_CHESTPLATE
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 200.0
     sellPrice: 0
     slot: 21
   diamond_leggings:
     item:
       material: DIAMOND_LEGGINGS
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 175.0
     sellPrice: 0
     slot: 22
   diamond_boots:
     item:
       material: DIAMOND_BOOTS
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 125.0
     sellPrice: 0
     slot: 23
   diamond_sword:
     item:
       material: DIAMOND_SWORD
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 100.0
     sellPrice: 0
     slot: 24
   netherite_helmet:
     item:
       material: NETHERITE_HELMET
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 500.0
     sellPrice: 0
     slot: 29
   netherite_chestplate:
     item:
       material: NETHERITE_CHESTPLATE
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 750.0
     sellPrice: 0
     slot: 30
   netherite_leggings:
     item:
       material: NETHERITE_LEGGINGS
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 700.0
     sellPrice: 0
     slot: 31
   netherite_boots:
     item:
       material: NETHERITE_BOOTS
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 450.0
     sellPrice: 0
     slot: 32
   netherite_sword:
     item:
       material: NETHERITE_SWORD
     type: ZSHOP_ITEM
-    buyPrice: 5.0
+    buyPrice: 400.0
     sellPrice: 0
     slot: 33
