@@ -57,7 +57,7 @@ public class Config {
         priceModifiers = ((List<Map<String, Object>>) configuration.getList("pricesModifier", new ArrayList<>())).stream().map(ZPriceModifier::new).collect(Collectors.toList());
 
         LogConfig.load(configuration);
-
+        PriceFormatConfig.load(configuration);
     }
 
 }

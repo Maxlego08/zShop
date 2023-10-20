@@ -7,6 +7,10 @@
 #  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
 #  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
 #
+# Documentation : https://zshop.groupez.dev/
+# Sponsor : https://serveur-minecraft-vote.fr/
+# zMenu Documentation : https://docs.zmenu.dev/
+#
 #########################################################################################################################################
 
 # Configuration version, lets you know if you need to update your configuration or not.
@@ -90,3 +94,20 @@ log:
   sellMessage: "%player% has just sold x%amount% %item% for %price%."
   # Log message for sold all items
   sellAllMessage: "%player% sold all %amount% x %item% for %price% to %shop% shop"
+
+# Change the format of the numbers
+priceFormat:
+  # Decimal format (https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html)
+  format: "#.##"
+  # Character for decimals of the number
+  decimalSeparator: ","
+  # Character for spew tens, thousands, millions etc. Example 1000 -> 1.000, 4866554 -> 4.866.554
+  groupingSeparator: "."
+  # Sets the minimum number of digits allowed in the integer portion of a number.
+  minimumIntegerDigits: 1
+  # Sets the maximum number of digits allowed in the integer portion of a number.
+  maximumIntegerDigits: 16
+  # Sets the minimum number of digits allowed in the fraction portion of a number.
+  minimumFractionDigits: 0
+  # Sets the maximum number of digits allowed in the fraction portion of a number.
+  maximumFractionDigits: 2

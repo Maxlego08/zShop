@@ -27,6 +27,7 @@ import fr.maxlego08.zshop.placeholder.ItemButtonPlaceholder;
 import fr.maxlego08.zshop.placeholder.LocalPlaceholder;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.save.LogConfig;
+import fr.maxlego08.zshop.save.PriceFormatConfig;
 import fr.maxlego08.zshop.zcore.enums.Message;
 import fr.maxlego08.zshop.zcore.logger.Logger;
 import fr.maxlego08.zshop.zcore.utils.Pair;
@@ -46,12 +47,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -238,9 +241,16 @@ public class ZShopManager extends ZUtils implements ShopManager {
     @Override
     public String transformPrice(double price) {
 
-        // TODO
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.getDefault());
+        decimalFormatSymbols.setDecimalSeparator(PriceFormatConfig.decimalSeparator);
+        decimalFormatSymbols.setGroupingSeparator(PriceFormatConfig.groupingSeparator);
 
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        DecimalFormat decimalFormat = new DecimalFormat(PriceFormatConfig.format, decimalFormatSymbols);
+        decimalFormat.setMinimumIntegerDigits(PriceFormatConfig.minimumIntegerDigits);
+        decimalFormat.setMaximumIntegerDigits(PriceFormatConfig.maximumIntegerDigits);
+        decimalFormat.setMinimumFractionDigits(PriceFormatConfig.minimumFractionDigits);
+        decimalFormat.setMaximumFractionDigits(PriceFormatConfig.maximumFractionDigits);
+
         return decimalFormat.format(price);
     }
 
