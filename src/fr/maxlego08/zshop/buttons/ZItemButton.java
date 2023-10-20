@@ -190,7 +190,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         /* END ECONOMY CHECK */
 
         /* INVENTORY SLOT CHECK */
-        if (manager.hasInventoryFull(player)) {
+        if (manager.hasInventoryFull(player) && Config.enableInventoryFullBuy) {
             manager.message(this.plugin, player, Message.NOT_ENOUGH_PLACE);
             return;
         }
