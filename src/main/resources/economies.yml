@@ -1,47 +1,68 @@
-economies:
+#########################################################################################################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+# Documentation : https://zshop.groupez.dev/
+# Sponsor : https://serveur-minecraft-vote.fr/
+#
+# Economy available:
+# - ITEM (Use items like economy, for example gold)
+# - LEVEL (Minecraft player level)
+# - EXPERIENCE (Minecraft player level experience point)
+# - VAULT (requires https://www.spigotmc.org/resources/vault.34315/)
+# - PLAYERPOINTS (requires https://www.spigotmc.org/resources/playerpoints.80745/)
+# - VOTINGPLUGIN (requires https://www.spigotmc.org/resources/votingplugin.15358/)
+# - TOKENMANAGER (requires https://www.spigotmc.org/resources/tokenmanager.8610/)
+#
+#########################################################################################################################################
+
+economies: # Default Economy
   VAULT:
-    name: vault
-    type: VAULT
-    format: "v"
-    currency: "%price%$"
-    isEnable: true
-    denyMessage: "&cYou don’t have enough money to buy this."
+    name: vault # Name of the economy, the name can be specified in the items
+    type: VAULT # Economy type
+    currency: "%price%$" # Placeholder to display the price
+    isEnable: true # Activate or not the economy
+    denyMessage: "&cYou don’t have enough money to buy this." # Message if the player does not have the money for a purchase.
+  # Economy with an item, here diamond
   ITEM1:
-    name: item_diamond
-    type: ITEM
-    format: "d"
-    currency: "%price% diamond%s%"
-    isEnable: true
-    denyMessage: "&cYou don’t have enough money to buy this."
-    item:
+    name: item_diamond # Name of the economy, the name can be specified in the items
+    type: ITEM # Economy type
+    currency: "%price% diamond%s%" # Placeholder to display the price
+    isEnable: true # Activate or not the economy
+    denyMessage: "&cYou don’t have enough money to buy this." # Message if the player does not have the money for a purchase.
+    item: # Configure the item : https://docs.zmenu.dev/configurations/items
       material: DIAMOND
+  # Economy with an item, here emerald
   ITEM2:
-    name: item_emerald
-    type: ITEM
-    format: "E"
-    currency: "%price% emerald%s%"
-    isEnable: true
-    denyMessage: "&cYou don’t have enough money to buy this."
-    item:
+    name: item_emerald # Name of the economy, the name can be specified in the items
+    type: ITEM # Economy type
+    currency: "%price% emerald%s%" # Placeholder to display the price
+    isEnable: true # Activate or not the economy
+    denyMessage: "&cYou don’t have enough money to buy this." # Message if the player does not have the money for a purchase.
+    item: # Configure the item : https://docs.zmenu.dev/configurations/items
       material: EMERALD
+  # Minecraft player level experience point
   EXPERIENCE:
-    name: experience
-    type: experience
-    format: "xp"
-    currency: "%price% xp"
-    isEnable: true
-    denyMessage: "&cYou don’t have enough experience to buy this."
+    name: experience # Name of the economy, the name can be specified in the items
+    type: experience # Economy type
+    currency: "%price% xp" # Placeholder to display the price
+    isEnable: true # Activate or not the economy
+    denyMessage: "&cYou don’t have enough experience to buy this." # Message if the player does not have the money for a purchase.
+  # Minecraft player level
   LEVEL:
-    name: level
-    type: LEVEL
-    format: "LV"
-    currency: "%price% level"
-    isEnable: true
-    denyMessage: "&cYou don’t have enough level to buy this."
+    name: level # Name of the economy, the name can be specified in the items
+    type: LEVEL # Economy type
+    currency: "%price% level" # Placeholder to display the price
+    isEnable: true # Activate or not the economy
+    denyMessage: "&cYou don’t have enough level to buy this." # Message if the player does not have the money for a purchase.
   playerpoints:
-    name: playerpoints
-    type: playerpoints
-    format: "P"
-    currency: "%price% P"
-    isEnable: true
-    denyMessage: "&cYou don’t have enough points to buy this."
+    name: playerpoints # Name of the economy, the name can be specified in the items
+    type: playerpoints # Economy type
+    currency: "%price% P" # Placeholder to display the price
+    isEnable: true # Activate or not the economy
+    denyMessage: "&cYou don’t have enough points to buy this." # Message if the player does not have the money for a purchase.

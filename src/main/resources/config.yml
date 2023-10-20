@@ -11,6 +11,21 @@
 # Sponsor : https://serveur-minecraft-vote.fr/
 # zMenu Documentation : https://docs.zmenu.dev/
 #
+# Commands:
+# - /zshoplugin » Display commands (zshop.help) (aliases: /zpl)
+# - /zshoplugin reload » Reload config files (zshop.reload)
+# - /zshoplugin convert » Convert ShopGuiPlus config to zShop. Attention, about 90% of your configuration will be converted, you will have to adapt some elements (zshop.convert)
+# - /zshoplugin logs » Display player's logs (zshop.logs)
+#
+# Sell commands
+# - /sell-all » Sell all items (zshop.sell.all) (alaises: /zshop-sell-all)
+# - /sell-hand » Sell items in hand (zshop.sell.hand) (alaises: /zshop-sell-hand)
+# - /sell-handall » Sell all items in hand (zshop.sell.hand_all) (alaises: /zshop-sell-handall)
+#
+# Shop command
+# - /zshop » Open shop (alaises: /shop, /myshop)
+# - /rank » Open rank shop (alaises: /zrank)
+#
 #########################################################################################################################################
 
 # Configuration version, lets you know if you need to update your configuration or not.
