@@ -105,6 +105,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
         files.add("inventories/shop_sell.yml");
         files.add("inventories/confirm.yml");
         files.add("inventories/rank.yml");
+        files.add("inventories/buy_more.yml");
 
         files.forEach(e -> {
             if (!new File(this.plugin.getDataFolder(), e).exists()) {

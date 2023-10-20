@@ -36,6 +36,12 @@ public class ItemButtonPlaceholder implements ReturnBiConsumer<Player, String, S
                     if (optional.isPresent()) return key.consumer.accept(player, optional.get(), arg);
                     return "material " + material + " not found";
                 }
+
+                ItemButton button = shopManager.getCache(player).getItemButton();
+                if (button != null){
+                    return key.consumer.accept(player, button, args);
+                }
+
                 return "matcher for " + args + " not found";
             }
         }

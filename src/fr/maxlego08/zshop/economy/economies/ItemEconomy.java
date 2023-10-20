@@ -66,27 +66,12 @@ public class ItemEconomy extends DefaultExample {
                 item -= is.getAmount();
 
                 if (currentAmount <= 0) {
-                    if (slot == 40)
-                        playerInventory.setItemInOffHand(null);
-                    else
-                        playerInventory.removeItem(is);
+                    if (slot == 40) playerInventory.setItemInOffHand(null);
+                    else playerInventory.removeItem(is);
                 } else
                     is.setAmount(currentAmount);
             }
             slot++;
-        }
-    }
-
-    private void giveItem(Player player, long value, ItemStack itemStack) {
-        itemStack = itemStack.clone();
-        if (value > 64) {
-            value -= 64;
-            itemStack.setAmount(64);
-            player.getInventory().addItem(itemStack);
-            giveItem(player, value, itemStack);
-        } else {
-            itemStack.setAmount((int) value);
-            player.getInventory().addItem(itemStack);
         }
     }
 }

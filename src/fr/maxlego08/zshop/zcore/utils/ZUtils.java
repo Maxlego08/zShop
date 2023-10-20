@@ -137,10 +137,21 @@ public abstract class ZUtils extends MessageUtils {
      * @param item
      */
     public void give(Player player, ItemStack item) {
-        if (hasInventoryFull(player))
-            player.getWorld().dropItem(player.getLocation(), item);
-        else
-            player.getInventory().addItem(item);
+        if (hasInventoryFull(player)) player.getWorld().dropItem(player.getLocation(), item);
+        else player.getInventory().addItem(item);
+    }
+
+    public void giveItem(Player player, long value, ItemStack itemStack) {
+        itemStack = itemStack.clone();
+        if (value > 64) {
+            value -= 64;
+            itemStack.setAmount(64);
+            give(player, itemStack);
+            giveItem(player, value, itemStack);
+        } else {
+            itemStack.setAmount((int) value);
+            give(player, itemStack);
+        }
     }
 
     /**

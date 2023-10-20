@@ -1,9 +1,10 @@
 package fr.maxlego08.zshop.economy.economies;
 
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import fr.maxlego08.zshop.zcore.utils.ZUtils;
 import org.bukkit.OfflinePlayer;
 
-public abstract class DefaultExample implements ShopEconomy {
+public abstract class DefaultExample extends ZUtils implements ShopEconomy {
 
     private final String name;
     private final String currency;

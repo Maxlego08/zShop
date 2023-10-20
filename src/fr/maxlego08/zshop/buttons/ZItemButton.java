@@ -247,7 +247,11 @@ public class ZItemButton extends ZButton implements ItemButton {
         ItemStack itemStack = super.getItemStack().build(player).clone();
         itemStack.setAmount(amount);
 
-        if (this.giveItem) manager.give(player, itemStack);
+        if (this.giveItem) {
+            if (amount > 64) {
+                manager.giveItem(player, amount, itemStack);
+            } else manager.give(player, itemStack);
+        }
         /* END BUILD ITEM AND GIVE IT TO PLAYER */
 
         String itemName = manager.getItemName(itemStack);

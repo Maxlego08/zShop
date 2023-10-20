@@ -20,6 +20,7 @@ import fr.maxlego08.zshop.economy.ZEconomyManager;
 import fr.maxlego08.zshop.history.ZHistoryManager;
 import fr.maxlego08.zshop.limit.ZLimitManager;
 import fr.maxlego08.zshop.loader.AddButtonLoader;
+import fr.maxlego08.zshop.loader.BuyMoreLoader;
 import fr.maxlego08.zshop.loader.ItemButtonLoader;
 import fr.maxlego08.zshop.loader.ItemConfirmButtonLoader;
 import fr.maxlego08.zshop.loader.RemoveButtonLoader;
@@ -47,7 +48,7 @@ public class ShopPlugin extends ZPlugin {
     private final EconomyManager economyManager = new ZEconomyManager(this);
     private final ShopManager shopManager = new ZShopManager(this);
     private HistoryManager historyManager;
-    private ZLimitManager limitManager = new ZLimitManager(this);
+    private final ZLimitManager limitManager = new ZLimitManager(this);
     private InventoryManager inventoryManager;
     private CommandManager commandManager;
     private PatternManager patternManager;
@@ -167,6 +168,7 @@ public class ShopPlugin extends ZPlugin {
         this.buttonManager.register(new ItemConfirmButtonLoader(this));
         this.buttonManager.register(new ShowItemButtonLoader(this));
         this.buttonManager.register(new AddButtonLoader(this));
+        this.buttonManager.register(new BuyMoreLoader(this));
         this.buttonManager.register(new RemoveButtonLoader(this));
         this.buttonManager.register(new PluginLoader(this, ZConfirmBuyButton.class, "zshop_confirm_buy"));
         this.buttonManager.register(new PluginLoader(this, ZConfirmSellButton.class, "zshop_confirm_sell"));
