@@ -10,7 +10,7 @@ public abstract class DefaultExample extends ZUtils implements ShopEconomy {
     private final String currency;
     private final String denyMessage;
 
-    public DefaultExample(String name, String currency, String format, String denyMessage) {
+    public DefaultExample(String name, String currency, String denyMessage) {
         this.name = name;
         this.currency = currency;
         this.denyMessage = denyMessage;

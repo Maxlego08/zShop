@@ -10,8 +10,8 @@ public class PlayerPointEconomy extends DefaultExample {
 
     private final PlayerPointsAPI playerPointsApi;
 
-    public PlayerPointEconomy(Plugin plugin, String name, String currency, String format, String denyMessage) {
-        super(name, currency, format, denyMessage);
+    public PlayerPointEconomy(Plugin plugin, String name, String currency, String denyMessage) {
+        super(name, currency, denyMessage);
         PlayerPoints playerPoints = (PlayerPoints) plugin.getServer().getPluginManager().getPlugin(Plugins.PLAYERPOINT.getName());
         this.playerPointsApi = playerPoints.getAPI();
     }

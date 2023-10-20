@@ -78,49 +78,48 @@ public class ZEconomyManager implements EconomyManager {
 
             String name = configuration.getString(path + "name", "VAULT");
             String type = configuration.getString(path + "type", "VAULT");
-            String format = configuration.getString(path + "format", "v");
             String currency = configuration.getString(path + "currency", "$");
             String denyMessage = configuration.getString(path + "denyMessage");
 
             switch (type.toLowerCase()) {
                 case "vault":
                     if (Config.enableDebug) Logger.info("Register Vault economy");
-                    registerEconomy(new VaultEconomy(this.plugin, name, currency, format, denyMessage));
+                    registerEconomy(new VaultEconomy(this.plugin, name, currency, denyMessage));
                     break;
                 case "item":
                     if (Config.enableDebug) Logger.info("Register Item economy with name " + name);
                     Loader<MenuItemStack> loader = new MenuItemStackLoader(this.plugin.getIManager());
                     try {
                         MenuItemStack menuItemStack = loader.load(configuration, path + "item.", file);
-                        registerEconomy(new ItemEconomy(name, currency, format, denyMessage, menuItemStack));
+                        registerEconomy(new ItemEconomy(name, currency, denyMessage, menuItemStack));
                     } catch (InventoryException exception) {
                         Logger.info("Error with " + path + ".item. economy !", Logger.LogType.ERROR);
                     }
                     break;
                 case "level":
                     if (Config.enableDebug) Logger.info("Register Level economy with name " + name);
-                    registerEconomy(new LevelEconomy(name, currency, format, denyMessage));
+                    registerEconomy(new LevelEconomy(name, currency, denyMessage));
                     break;
                 case "experience":
                     if (Config.enableDebug) Logger.info("Register Experience economy with name " + name);
-                    registerEconomy(new ExperienceEconomy(name, currency, format, denyMessage));
+                    registerEconomy(new ExperienceEconomy(name, currency, denyMessage));
                     break;
                 case "playerpoints":
                     if (this.plugin.isEnable(Plugins.PLAYERPOINT)) {
                         if (Config.enableDebug) Logger.info("Register PlayerPoints economy");
-                        registerEconomy(new PlayerPointEconomy(this.plugin, name, currency, format, denyMessage));
+                        registerEconomy(new PlayerPointEconomy(this.plugin, name, currency, denyMessage));
                     } else Logger.info("Try to register PlayerPoints economy but PlayerPoints plugin is not enable");
                     break;
                 case "votingplugin":
                     if (this.plugin.isEnable(Plugins.VOTINGPLUGIN)) {
                         if (Config.enableDebug) Logger.info("Register VotingPlugin economy");
-                        registerEconomy(new VotingEconomy(name, currency, format, denyMessage));
+                        registerEconomy(new VotingEconomy(name, currency, denyMessage));
                     } else Logger.info("Try to register VotingPlugin economy but VotingPlugin plugin is not enable");
                     break;
                 case "tokenmanager":
                     if (this.plugin.isEnable(Plugins.TOKENMANAGER)) {
                         if (Config.enableDebug) Logger.info("Register TokenManager economy");
-                        registerEconomy(new TokenManagerEconomy(this.plugin, name, currency, format, denyMessage));
+                        registerEconomy(new TokenManagerEconomy(this.plugin, name, currency, denyMessage));
                     } else Logger.info("Try to register TokenManager economy but TokenManager plugin is not enable");
                     break;
                 default:

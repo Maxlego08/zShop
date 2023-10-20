@@ -9,8 +9,8 @@ public class TokenManagerEconomy extends DefaultExample {
 
     private final TokenManager tokenManager;
 
-    public TokenManagerEconomy(Plugin plugin, String name, String currency, String format, String denyMessage) {
-        super(name, currency, format, denyMessage);
+    public TokenManagerEconomy(Plugin plugin, String name, String currency, String denyMessage) {
+        super(name, currency, denyMessage);
         this.tokenManager = (TokenManager) plugin.getServer().getPluginManager().getPlugin("TokenManager");
     }
 

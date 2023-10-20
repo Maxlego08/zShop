@@ -12,8 +12,8 @@ public class ItemEconomy extends DefaultExample {
 
     private final MenuItemStack menuItemStack;
 
-    public ItemEconomy(String name, String currency, String format, String denyMessage, MenuItemStack itemStack) {
-        super(name, currency, format, denyMessage);
+    public ItemEconomy(String name, String currency, String denyMessage, MenuItemStack itemStack) {
+        super(name, currency, denyMessage);
         this.menuItemStack = itemStack;
     }
 

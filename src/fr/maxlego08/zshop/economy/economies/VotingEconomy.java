@@ -8,8 +8,8 @@ public class VotingEconomy extends DefaultExample {
 
     private final UserManager userManager = VotingPluginHooks.getInstance().getUserManager();
 
-    public VotingEconomy(String name, String currency, String format, String denyMessage) {
-        super(name, currency, format, denyMessage);
+    public VotingEconomy(String name, String currency, String denyMessage) {
+        super(name, currency, denyMessage);
     }
 
     @Override

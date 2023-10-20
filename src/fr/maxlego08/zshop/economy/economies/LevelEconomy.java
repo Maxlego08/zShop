@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 
 public class LevelEconomy extends DefaultExample {
 
-    public LevelEconomy(String name, String currency, String format, String denyMessage) {
-        super(name, currency, format, denyMessage);
+    public LevelEconomy(String name, String currency, String denyMessage) {
+        super(name, currency, denyMessage);
     }
 
     @Override

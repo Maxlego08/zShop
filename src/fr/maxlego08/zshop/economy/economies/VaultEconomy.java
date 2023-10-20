@@ -10,8 +10,8 @@ public class VaultEconomy extends DefaultExample {
 
     private final Economy economy;
 
-    public VaultEconomy(Plugin plugin, String name, String currency, String format, String denyMessage) {
-        super(name, currency, format, denyMessage);
+    public VaultEconomy(Plugin plugin, String name, String currency, String denyMessage) {
+        super(name, currency, denyMessage);
         RegisteredServiceProvider<Economy> economyRegisteredServiceProvider = plugin.getServer().getServicesManager().getRegistration(Economy.class);
         if (economyRegisteredServiceProvider == null) {
             throw new NullPointerException("Vault Economy interface not found");

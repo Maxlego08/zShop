@@ -46,13 +46,6 @@ public interface ShopEconomy {
     String getCurrency();
 
     /**
-     * Returns the format of the savings to be used in the sales command
-     *
-     * @return string
-     */
-    String getFormat();
-
-    /**
      * Get economy name
      *
      * @return string

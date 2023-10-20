@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 
 public class ExperienceEconomy extends DefaultExample {
 
-    public ExperienceEconomy(String name, String currency, String format, String denyMessage) {
-        super(name, currency, format, denyMessage);
+    public ExperienceEconomy(String name, String currency, String denyMessage) {
+        super(name, currency, denyMessage);
     }
 
     public void setTotalExperience(Player player, int experience) {
