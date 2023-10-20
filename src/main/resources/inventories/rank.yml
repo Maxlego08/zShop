@@ -13,95 +13,95 @@
 #
 #########################################################################################################################################
 
-name: "&e★ &3ᴢsʜᴏᴘ &e★"
+name: "&7Ranks"
 size: 54
 patterns:
   - "zshop_decoration"
 items:
   vip:
     item:
-      name: "#00bbffᴠɪᴘ"
+      name: "&bVIP"
       material: IRON_CHESTPLATE
       flags:
         - HIDE_ATTRIBUTES
       lore:
         - ""
-        - "#bbc4c4ʀᴀɴᴋ ᴘᴇʀᴋs:"
-        - " &f• #00bbfflight blue &fusername"
-        - " &f• #00bbff2 &fhomes"
-        - " &f• #00bbff10 &fminutes AFK"
-        - " &f• &fAccess to #00bbff/craft"
-        - " &f• &fAccess to #00bbff/ec"
-        - " &f• &fAccess to #00bbff/feed"
-        - " &f• #00bbff+1 &f Rare Daily Quest"
-        - " &f• &fCan #00bbfffly &fin the hub"
+        - "&6Rank perks:"
+        - " &f- &blight blue &fusername"
+        - " &f- &b2 &fhomes"
+        - " &f- &b10 &fminutes AFK"
+        - " &f- &fAccess to &b/craft"
+        - " &f- &fAccess to &b/ec"
+        - " &f- &fAccess to &b/feed"
+        - " &f- &b+1 &f Rare Daily Quest"
+        - " &f- &fCan &bfly &fin the hub"
         - ""
-        - "&f➥ &r&7Click to &f&nʙᴜʏ&r &7for &e100.000$"
+        - "&f> &r&7Click to &f&nbuy&r &7for &e100.000$"
     type: ZSHOP_ITEM_CONFIRM
     price: 100000.0
     slot: 21
     name: "Rank VIP"
     messages:
       - ""
-      - "&fThank you for purchasing the rank #00bbffᴠɪᴘ"
+      - "&fThank you for purchasing the rank &bVIP"
       - ""
     commands:
       - "lp user %player% permission set rank.vip"
   vip+:
     item:
-      name: "#0ff76cᴠɪᴘ+"
-      material: DIAMOND_CHESTPLATE
+      name: "&aVIP+"
+      material: GOLD_CHESTPLATE
       flags:
         - HIDE_ATTRIBUTES
       lore:
         - ""
-        - "#bbc4c4ʀᴀɴᴋ ᴘᴇʀᴋs:"
-        - " &f• #0ff76cgreen &fusername"
-        - " &f• #0ff76c4 &fhomes"
-        - " &f• #0ff76c30 &fminutes AFK"
-        - " &f• &fAccess to #0ff76c/craft"
-        - " &f• &fAccess to #0ff76c/ec"
-        - " &f• &fAccess to #0ff76c/feed"
-        - " &f• #0ff76c+3 &f Rare Daily Quest"
-        - " &f• &fCan #0ff76cfly &fin the hub"
+        - "&6Rank perks:"
+        - " &f- &agreen &fusername"
+        - " &f- &a4 &fhomes"
+        - " &f- &a30 &fminutes AFK"
+        - " &f- &fAccess to &a/craft"
+        - " &f- &fAccess to &a/ec"
+        - " &f- &fAccess to &a/feed"
+        - " &f- &a+3 &f Rare Daily Quest"
+        - " &f- &fCan &afly &fin the hub"
         - ""
-        - "&f➥ &r&7Click to &f&nʙᴜʏ&r &7for &e250.000$"
+        - "&f> &r&7Click to &f&nbuy&r &7for &e250.000$"
     type: ZSHOP_ITEM_CONFIRM
     price: 250000.0
     slot: 23
     name: "Rank VIP+"
     messages:
       - ""
-      - "&fThank you for purchasing the rank #0ff76cᴠɪᴘ+"
+      - "&fThank you for purchasing the rank &aVIP+"
       - ""
     commands:
       - "lp user %player% permission set rank.vipplus"
   legend:
     item:
-      name: "#7b0bdeʟᴇɢᴇɴᴅ"
-      material: NETHERITE_CHESTPLATE
+      name: "&dLegend"
+      material: DIAMOND_CHESTPLATE
       flags:
         - HIDE_ATTRIBUTES
       lore:
         - ""
-        - "#bbc4c4ʀᴀɴᴋ ᴘᴇʀᴋs:"
-        - " &f• #7b0bdepurple &fusername"
-        - " &f• #7b0bde10 &fhomes"
-        - " &f• #7b0bde60 &fminutes AFK"
-        - " &f• &fAccess to #7b0bde/craft"
-        - " &f• &fAccess to #7b0bde/ec"
-        - " &f• &fAccess to #7b0bde/feed"
-        - " &f• #7b0bde+5 &f Rare Daily Quest"
-        - " &f• &fCan #7b0bdefly &fin the hub"
+        - "&6Rank perks:"
+        - " &f- &dpurple &fusername"
+        - " &f- &d10 &fhomes"
+        - " &f- &d60 &fminutes AFK"
+        - " &f- &fAccess to &d/craft"
+        - " &f- &fAccess to &d/ec"
+        - " &f- &fAccess to &d/feed"
+        - " &f- &d+5 &f Rare Daily Quest"
+        - " &f- &fCan &dfly &fin the hub"
         - ""
-        - "&f➥ &r&7Click to &f&nʙᴜʏ&r &7for &e700.000$"
+        - "&f> &r&7Click to &f&nbuy&r &7for &e700.000$"
     type: ZSHOP_ITEM_CONFIRM
     price: 700000.0
     slot: 31
     name: "Rank Legend"
     messages:
       - ""
-      - "&fThank you for purchasing the rank #7b0bdeʟᴇɢᴇɴᴅ"
+      - "&fThank you for purchasing the rank &dLegend"
       - ""
     commands:
       - "lp user %player% permission set rank.legend"

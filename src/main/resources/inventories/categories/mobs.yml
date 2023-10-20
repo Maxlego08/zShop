@@ -13,7 +13,7 @@
 #
 #########################################################################################################################################
 
-name: "&e★ #695c18ᴍᴏʙs &e★"
+name: "&7Mobs"
 size: 54
 patterns:
   - "zshop_decoration"
@@ -35,7 +35,7 @@ items:
     slot: 21
   gunpowder:
     item:
-      material: GUNPOWDER
+      material: 289
     type: ZSHOP_ITEM
     buyPrice: 15.0
     sellPrice: 1.0
@@ -71,7 +71,7 @@ items:
     slot: 30
   ink_sac:
     item:
-      material: INK_SAC
+      material: 351
     type: ZSHOP_ITEM
     buyPrice: 15.0
     sellPrice: 1.0
@@ -83,10 +83,3 @@ items:
     buyPrice: 15.0
     sellPrice: 0.25
     slot: 32
-  honeycomb:
-    item:
-      material: HONEYCOMB
-    type: ZSHOP_ITEM
-    buyPrice: 15.0
-    sellPrice: 2.0
-    slot: 33

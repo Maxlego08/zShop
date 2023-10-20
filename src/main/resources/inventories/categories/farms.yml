@@ -13,7 +13,7 @@
 #
 #########################################################################################################################################
 
-name: "&e★ #fca53eғᴀʀᴍs &e★"
+name: "&7Farms"
 size: 54
 patterns:
   - "zshop_decoration"
@@ -21,7 +21,7 @@ patterns:
 items:
   carrot:
     item:
-      material: CARROT
+      material: CARROT_ITEM
       amount: 16
     type: ZSHOP_ITEM
     buyPrice: 30.0
@@ -29,7 +29,7 @@ items:
     slot: 20
   potato:
     item:
-      material: POTATO
+      material: POTATO_ITEM
       amount: 8
     type: ZSHOP_ITEM
     buyPrice: 15.0
@@ -44,14 +44,14 @@ items:
     slot: 22
   nether_wart:
     item:
-      material: NETHER_WART
+      material: 372
     type: ZSHOP_ITEM
     buyPrice: 5.0
     sellPrice: 0.75
     slot: 23
   melon:
     item:
-      material: MELON
+      material: MELON_BLOCK
       amount: 24
     type: ZSHOP_ITEM
     buyPrice: 30.0
@@ -59,7 +59,7 @@ items:
     slot: 24
   sugar_cane:
     item:
-      material: SUGAR_CANE
+      material: 338
     type: ZSHOP_ITEM
     buyPrice: 10.0
     sellPrice: 1.0
@@ -78,17 +78,10 @@ items:
     buyPrice: 10.0
     sellPrice: 1.25
     slot: 31
-  beetroot:
-    item:
-      material: BEETROOT
-    type: ZSHOP_ITEM
-    buyPrice: 50.0
-    sellPrice: 5.0
-    slot: 32
   apple:
     type: ZSHOP_ITEM
     item:
       material: APPLE
     buyPrice: 20.0
     sellPrice: 4.0
-    slot: 33
+    slot: 32

@@ -21,17 +21,19 @@ items:
     # Update the button when the player clicks on the inventory
     updateOnClick: true
     item:
-      material: PLAYER_HEAD
+      material: SKULL_ITEM
+      data: 3
       playerHead: "%player%"
       name: "&f%player%"
       lore:
         - ""
-        - "&f➥ &7Money&8: #ffed00%vault_eco_balance% #ffed0f⛃"
+        - "&f> &7Money&8: &e%vault_eco_balance% &f$"
     slot: 4
   decorations:
     isPermanent: true
     item:
-      material: BLACK_STAINED_GLASS_PANE
+      material: STAINED_GLASS_PANE
+      data: 15
       name: "&e"
     slots:
       - 0

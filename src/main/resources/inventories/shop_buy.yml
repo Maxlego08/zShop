@@ -13,7 +13,7 @@
 #
 #########################################################################################################################################
 
-name: "&e★ &3ᴘᴜʀᴄʜᴀsᴇ &e★"
+name: "&7Purchase"
 size: 54
 patterns:
   - "zshop_decoration"
@@ -30,13 +30,25 @@ items:
     slot: 22
     lore:
       - ""
-      - "&f» &7Buying price&8: &e%buyPrice%"
+      - "&f> &7Buying price&8: &e%buyPrice%"
   confirm_buy:
     type: ZSHOP_CONFIRM_BUY
     item:
-      material: LIME_STAINED_GLASS_PANE
-      name: "#94d160ᴄᴏɴғɪʀᴍ ᴛʜᴇ ᴘᴜʀᴄʜᴀsᴇ"
+      material: STAINED_GLASS_PANE
+      data: 5
+      name: "&aConfirme the purchase"
       lore:
         - ""
-        - "&f➥ &7Click to #94d160confirm the purchase"
+        - "&f> &7Click to &aconfirm the purchase"
     slot: 50
+  buy_more:
+    type: INVENTORY
+    inventory: "buy_more"
+    plugin: "zshop"
+    item:
+      url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjA1NmJjMTI0NGZjZmY5OTM0NGYxMmFiYTQyYWMyM2ZlZTZlZjZlMzM1MWQyN2QyNzNjMTU3MjUzMWYifX19"
+      name: "&aBuy more"
+      lore:
+        - ""
+        - "&f➥ &7Click to &abuy more"
+    slot: 49

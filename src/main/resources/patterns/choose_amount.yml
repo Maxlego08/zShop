@@ -19,64 +19,64 @@ items:
   remove_max:
     item:
       url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQ4ZDdkMWUwM2UxYWYxNDViMDEyNWFiODQxMjg1NjcyYjQyMTI2NWRhMmFiOTE1MDE1ZjkwNTg0MzhiYTJkOCJ9fX0="
-      name: "#ae2d26ʀᴇᴍᴏᴠᴇ %zshop_item_max%"
+      name: "&cRemove %zshop_item_max%"
       amount: "%zshop_item_max%"
       lore:
         - ""
-        - "&f➥ &7Click to #ae2d26remove %zshop_item_max%"
+        - "&f> &7Click to &cremove %zshop_item_max%"
     type: ZSHOP_REMOVE
     amount: "%zshop_item_max%"
     slot: 28
   remove_10:
     item:
       url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTI5MTYyMmM1MTA0ZjFjYzk0YTJiNGQzM2FkN2IyYzliMjE1ZmY5NDk1MDFlOGMyNTBjZmQ1YTg2MWU2YjkwNyJ9fX0="
-      name: "#f67e1dʀᴇᴍᴏᴠᴇ 10"
+      name: "&cRemove 10"
       amount: 10
       lore:
         - ""
-        - "&f➥ &7Click to #f67e1dremove 10"
+        - "&f> &7Click to &cremove 10"
     type: ZSHOP_REMOVE
     amount: 10
     slot: 29
   remove_1:
     item:
       url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmMxODNmMzYwMWY2NzI5M2E1MWUyNTc3ZGJlYTA1YTQ2MDJlZmE0MzNjYzM1NGU2M2ZjZjdmYmUwMjY0ODZiYyJ9fX0="
-      name: "#fbd53cʀᴇᴍᴏᴠᴇ 1"
+      name: "&cRemove 1"
       lore:
         - ""
-        - "&f➥ &7Click to #fbd53cremove 1"
+        - "&f> &7Click to &cremove 1"
     type: ZSHOP_REMOVE
     amount: 1
     slot: 30
   add_1:
     item:
       url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWMwMWY2Nzk2ZWI2M2QwZThhNzU5MjgxZDAzN2Y3YjM4NDMwOTBmOWE0NTZhNzRmNzg2ZDA0OTA2NWM5MTRjNyJ9fX0="
-      name: "#7ec51fᴀᴅᴅ 1"
+      name: "&aAdd 1"
       lore:
         - ""
-        - "&f➥ &7Click to #7ec51fadd 1"
+        - "&f> &7Click to &aadd 1"
     type: ZSHOP_ADD
     amount: 1
     slot: 32
   add_10:
     item:
       url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZlYzNkMjVhZTBkMTQ3YzM0MmM0NTM3MGUwZTQzMzAwYTRlNDhhNWI0M2Y5YmI4NThiYWJmZjc1NjE0NGRhYyJ9fX0="
-      name: "#5d7b16ᴀᴅᴅ 10"
+      name: "&aAdd 10"
       amount: 10
       lore:
         - ""
-        - "&f➥ &7Click to #5d7b16add 10"
+        - "&f> &7Click to &aadd 10"
     type: ZSHOP_ADD
     amount: 10
     slot: 33
   add_max:
     item:
       url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQwMjEyNjVkMDVmM2UzNTI0YzkwYTgwMGQ0ZDE3ZTY2ZjkzZGFiY2ZiZmFhMTNkYmJiNWIxNTczMGVlMmRkMyJ9fX0="
-      name: "#169a9aᴀᴅᴅ %zshop_item_max%"
+      name: "&aAdd %zshop_item_max%"
       amount: "%zshop_item_max%"
       lore:
         - ""
-        - "&f➥ &7Click to #169a9aadd %zshop_item_max%"
+        - "&f> &7Click to &aadd %zshop_item_max%"
     type: ZSHOP_ADD
     amount: "%zshop_item_max%"
     slot: 34

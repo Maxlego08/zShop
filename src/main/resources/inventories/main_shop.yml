@@ -13,29 +13,29 @@
 #
 #########################################################################################################################################
 
-name: "&e★ &3ᴢsʜᴏᴘ &e★"
+name: "&7zShop"
 size: 54
 patterns:
   - "zshop_decoration"
 items:
   block:
     item:
-      material: GRASS_BLOCK
-      name: "#5d8d50ʙʟᴏᴄᴋs"
+      material: GRASS
+      name: "&fBlocks"
       lore:
         - ""
-        - "&f➥ &7Click to access the #5d8d50blocks"
+        - "&f> &7Click to access the &nblocks"
     type: INVENTORY
     inventory: "blocks"
     plugin: "zShop"
     slot: 21
   farm:
     item:
-      material: CARROT
-      name: "#fca53eғᴀʀᴍs"
+      material: CARROT_ITEM
+      name: "&fFarms"
       lore:
         - ""
-        - "&f➥ &7Click to access the #fca53efarms"
+        - "&f> &7Click to access the &nfarms"
     type: INVENTORY
     inventory: "farms"
     plugin: "zShop"
@@ -43,10 +43,10 @@ items:
   ores:
     item:
       material: IRON_INGOT
-      name: "#d5d5d5ᴏʀᴇs"
+      name: "&fOres"
       lore:
         - ""
-        - "&f➥ &7Click to access the #d5d5d5ores"
+        - "&f> &7Click to access the &nores"
     type: INVENTORY
     inventory: "ores"
     plugin: "zShop"
@@ -54,10 +54,10 @@ items:
   redstone:
     item:
       material: REDSTONE_BLOCK
-      name: "#bb2008ʀᴇᴅsᴛᴏɴᴇs"
+      name: "&fRedstone"
       lore:
         - ""
-        - "&f➥ &7Click to access the #bb2008redstones"
+        - "&f> &7Click to access the &nredstones"
     type: INVENTORY
     inventory: "redstones"
     plugin: "zShop"
@@ -65,10 +65,10 @@ items:
   miscellaneous:
     item:
       material: HOPPER
-      name: "#515451ᴍɪsᴄᴇʟʟᴀɴᴇᴏᴜs"
+      name: "&fMiscellaneous"
       lore:
         - ""
-        - "&f➥ &7Click to access the #515451miscellaneous"
+        - "&f> &7Click to access the &nmiscellaneous"
     type: INVENTORY
     inventory: "mics"
     plugin: "zShop"
@@ -76,22 +76,22 @@ items:
   mobs:
     item:
       material: ROTTEN_FLESH
-      name: "#695c18ᴍᴏʙs"
+      name: "&fMobs"
       lore:
         - ""
-        - "&f➥ &7Click to access the #695c18mobs"
+        - "&f> &7Click to access the &nmobs"
     type: INVENTORY
     inventory: "mobs"
     slot: 39
   armor:
     item:
       material: DIAMOND_HELMET
-      name: "#49ead6ᴀʀᴍᴏʀs"
+      name: "&fArmors"
       flags:
         - HIDE_ATTRIBUTES
       lore:
         - ""
-        - "&f➥ &7Click to access the #49ead6armors"
+        - "&f> &7Click to access the &narmors"
     type: INVENTORY
     inventory: "armors"
     plugin: "zShop"

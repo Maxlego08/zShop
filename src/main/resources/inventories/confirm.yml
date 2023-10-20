@@ -13,7 +13,7 @@
 #
 #########################################################################################################################################
 
-name: "&e★ &3ᴘᴜʀᴄʜᴀsᴇ &e★"
+name: "&7Purchase"
 size: 54
 patterns:
   - "zshop_decoration"
@@ -30,9 +30,10 @@ items:
   confirm_buy:
     type: ZSHOP_CONFIRM_BUY
     item:
-      material: LIME_STAINED_GLASS_PANE
-      name: "#94d160ᴄᴏɴғɪʀᴍ ᴛʜᴇ ᴘᴜʀᴄʜᴀsᴇ"
+      material: STAINED_GLASS_PANE
+      data: 3
+      name: "&aConfirm the purchase"
       lore:
         - ""
-        - "&f➥ &7Click to #94d160confirm the purchase"
+        - "&f> &7Click to &aconfirm the purchase"
     slot: 50

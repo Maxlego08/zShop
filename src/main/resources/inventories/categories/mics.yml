@@ -13,7 +13,7 @@
 #
 #########################################################################################################################################
 
-name: "&e★ #515451ᴍɪsᴄᴇʟʟᴀɴᴇᴏᴜs &e★"
+name: "&7Misc"
 size: 54
 patterns:
   - "zshop_decoration"
@@ -28,7 +28,7 @@ items:
     slot: 20
   enchanting_table:
     item:
-      material: ENCHANTING_TABLE
+      material: ENCHANTMENT_TABLE
     type: ZSHOP_ITEM
     buyPrice: 500.0
     sellPrice: 0
@@ -42,7 +42,7 @@ items:
     slot: 22
   experience_bottle:
     item:
-      material: EXPERIENCE_BOTTLE
+      material: EXP_BOTTLE
       amount: 64
     type: ZSHOP_ITEM
     buyPrice: 250.0
@@ -88,7 +88,7 @@ items:
   cauldron:
     type: ZSHOP_ITEM
     item:
-      material: CAULDRON
+      material: CAULDRON_ITEM
     buyPrice: 300.0
     sellPrice: 30.0
     slot: 33

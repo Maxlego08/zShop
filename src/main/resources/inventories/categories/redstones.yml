@@ -13,7 +13,7 @@
 #
 #########################################################################################################################################
 
-name: "&e★ #bb2008ʀᴇᴅsᴛᴏɴᴇs &e★"
+name: "&7Redstones"
 size: 54
 patterns:
   - "zshop_decoration"
@@ -30,21 +30,21 @@ items:
     slot: 20
   redstone_torch:
     item:
-      material: REDSTONE_TORCH
+      material: 76
     type: ZSHOP_ITEM
     buyPrice: 5.0
     sellPrice: 0.25
     slot: 21
   repeater:
     item:
-      material: REPEATER
+      material: 356
     type: ZSHOP_ITEM
     buyPrice: 25.0
     sellPrice: 1.0
     slot: 22
   comparator:
     item:
-      material: COMPARATOR
+      material: 404
     type: ZSHOP_ITEM
     buyPrice: 50.0
     sellPrice: 1.0
@@ -58,14 +58,14 @@ items:
     slot: 24
   stone_button:
     item:
-      material: STONE_BUTTON
+      material: 77
     type: ZSHOP_ITEM
     buyPrice: 10.0
     sellPrice: 0.1
     slot: 29
   piston:
     item:
-      material: PISTON
+      material: 33
       amount: 32
     type: ZSHOP_ITEM
     buyPrice: 2500.0
@@ -73,7 +73,7 @@ items:
     slot: 30
   sticky_piston:
     item:
-      material: STICKY_PISTON
+      material: 29
       amount: 32
     type: ZSHOP_ITEM
     buyPrice: 3000.0
@@ -125,13 +125,4 @@ items:
     buyPrice: 800.0
     sellPrice: 5.0
     slot: 23
-    page: 2
-  observer:
-    item:
-      material: OBSERVER
-      amount: 16
-    type: ZSHOP_ITEM
-    buyPrice: 500.0
-    sellPrice: 5.0
-    slot: 24
     page: 2

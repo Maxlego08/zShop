@@ -13,7 +13,7 @@
 #
 #########################################################################################################################################
 
-name: "&e★ #49ead6ᴀʀᴍᴏʀs &e★"
+name: "&7Armors"
 size: 54
 patterns:
   - "zshop_decoration"
@@ -54,37 +54,37 @@ items:
     buyPrice: 100.0
     sellPrice: 0
     slot: 24
-  netherite_helmet:
+  iron_helmet:
     item:
-      material: NETHERITE_HELMET
+      material: IRON_HELMET
     type: ZSHOP_ITEM
     buyPrice: 500.0
     sellPrice: 0
     slot: 29
-  netherite_chestplate:
+  iron_chestplate:
     item:
-      material: NETHERITE_CHESTPLATE
+      material: IRON_CHESTPLATE
     type: ZSHOP_ITEM
     buyPrice: 750.0
     sellPrice: 0
     slot: 30
-  netherite_leggings:
+  iron_leggings:
     item:
-      material: NETHERITE_LEGGINGS
+      material: IRON_LEGGINGS
     type: ZSHOP_ITEM
     buyPrice: 700.0
     sellPrice: 0
     slot: 31
-  netherite_boots:
+  iron_boots:
     item:
-      material: NETHERITE_BOOTS
+      material: IRON_BOOTS
     type: ZSHOP_ITEM
     buyPrice: 450.0
     sellPrice: 0
     slot: 32
-  netherite_sword:
+  iron_sword:
     item:
-      material: NETHERITE_SWORD
+      material: IRON_SWORD
     type: ZSHOP_ITEM
     buyPrice: 400.0
     sellPrice: 0
