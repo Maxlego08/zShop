@@ -58,6 +58,7 @@ public class Config {
 
         LogConfig.load(configuration);
         PriceFormatConfig.load(configuration);
+        AbbreviateNumberConfig.load(configuration);
     }
 
 }

@@ -4,6 +4,7 @@ import fr.maxlego08.menu.api.Inventory;
 import fr.maxlego08.menu.api.InventoryManager;
 import fr.maxlego08.menu.api.button.Button;
 import fr.maxlego08.menu.api.command.CommandManager;
+import fr.maxlego08.menu.api.event.events.ButtonLoadEvent;
 import fr.maxlego08.menu.api.pattern.PatternManager;
 import fr.maxlego08.menu.exceptions.InventoryException;
 import fr.maxlego08.zshop.api.PlayerCache;
@@ -25,6 +26,7 @@ import fr.maxlego08.zshop.api.utils.PriceModifierCache;
 import fr.maxlego08.zshop.history.ZHistory;
 import fr.maxlego08.zshop.placeholder.ItemButtonPlaceholder;
 import fr.maxlego08.zshop.placeholder.LocalPlaceholder;
+import fr.maxlego08.zshop.save.AbbreviateNumberConfig;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.save.LogConfig;
 import fr.maxlego08.zshop.save.PriceFormatConfig;
@@ -240,6 +242,19 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
     @Override
     public String transformPrice(double price) {
+        
+        if (AbbreviateNumberConfig.enable) {
+            String[] suffixes = {"", AbbreviateNumberConfig.thousand, AbbreviateNumberConfig.millions, AbbreviateNumberConfig.billion, AbbreviateNumberConfig.trillion, AbbreviateNumberConfig.quadrillion, AbbreviateNumberConfig.quintillion};
+
+            if (price >= 1000) {
+                long val = (long) price;
+                int sNum = (int) Math.floor((double) String.valueOf(val).length() / 3);
+                double sVal = (sNum != 0) ? val / Math.pow(1000, sNum) : val;
+
+                if (sVal % 1 != 0) return String.format("%.1f%s", sVal, suffixes[sNum]);
+                else return String.format("%.0f%s", sVal, suffixes[sNum]);
+            }
+        }
 
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.getDefault());
         decimalFormatSymbols.setDecimalSeparator(PriceFormatConfig.decimalSeparator);
@@ -349,12 +364,11 @@ public class ZShopManager extends ZUtils implements ShopManager {
     }
 
     @Override
-    public Consumer<Button> getButtonListener() {
-        return button -> {
-            if (button instanceof ItemButton) {
-                this.itemButtons.add((ItemButton) button);
-            }
-        };
+    public void onButtonLoad(ButtonLoadEvent event) {
+        Button button = event.getButton();
+        if (button instanceof ItemButton) {
+            this.itemButtons.add((ItemButton) button);
+        }
     }
 
     @Override

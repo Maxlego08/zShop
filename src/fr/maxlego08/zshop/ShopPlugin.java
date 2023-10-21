@@ -19,6 +19,7 @@ import fr.maxlego08.zshop.command.commands.CommandShop;
 import fr.maxlego08.zshop.economy.ZEconomyManager;
 import fr.maxlego08.zshop.history.ZHistoryManager;
 import fr.maxlego08.zshop.limit.ZLimitManager;
+import fr.maxlego08.zshop.listener.MenuListener;
 import fr.maxlego08.zshop.loader.AddButtonLoader;
 import fr.maxlego08.zshop.loader.BuyMoreLoader;
 import fr.maxlego08.zshop.loader.ItemButtonLoader;
@@ -77,7 +78,7 @@ public class ShopPlugin extends ZPlugin {
         this.patternManager = this.getProvider(PatternManager.class);
         this.buttonManager = this.getProvider(ButtonManager.class);
 
-        this.inventoryManager.registerButtonListener(this, this.shopManager.getButtonListener());
+        this.inventoryManager.registerFastEvent(this, new MenuListener(this.shopManager));
 
         this.registerCommand("zshoplugin", new CommandShop(this), "zpl");
         this.registerCommand("sell-all", new CommandSellAll(this), "zshop-sell-all");

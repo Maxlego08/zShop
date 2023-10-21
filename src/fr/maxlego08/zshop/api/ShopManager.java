@@ -1,6 +1,7 @@
 package fr.maxlego08.zshop.api;
 
 import fr.maxlego08.menu.api.button.Button;
+import fr.maxlego08.menu.api.event.events.ButtonLoadEvent;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
 import fr.maxlego08.zshop.api.buttons.ItemConfirmButton;
 import org.bukkit.Material;
@@ -129,12 +130,10 @@ public interface ShopManager extends Listener {
     Collection<ItemButton> getItemButtons();
 
     /**
-     * Returns the listener for button register
+     * Event for button register
      * Allows you to cache ItemButtons
-     *
-     * @return consumer
      */
-    Consumer<Button> getButtonListener();
+    void onButtonLoad(ButtonLoadEvent event);
 
     /**
      * Sell all the contents of its inventory

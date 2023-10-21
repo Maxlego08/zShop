@@ -126,3 +126,13 @@ priceFormat:
   minimumFractionDigits: 0
   # Sets the maximum number of digits allowed in the fraction portion of a number.
   maximumFractionDigits: 2
+  # Allows to abbreviate the numbers
+  abbreviatedNumber:
+    # Activate the abbreviation of numbers
+    enable: false
+    thousand: "k" # 1.000 = 1k
+    millions: "m" # 1.000.000 = 1m
+    billion: "b" # 1.000.000.000 = 1b
+    trillion: "t" # 1.000.000.000.000 = 1t
+    quadrillion: "q" # 1.000.000.000.000.000 = 1q
+    quintillion: "Q" # 1.000.000.000.000.000.000 = 1Q
