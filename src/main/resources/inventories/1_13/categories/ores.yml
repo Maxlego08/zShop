@@ -1,0 +1,94 @@
+#########################################################################################################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+# Documentation : https://zshop.groupez.dev/
+# Sponsor : https://serveur-minecraft-vote.fr/
+# zMenu Documentation : https://docs.zmenu.dev/
+#
+#########################################################################################################################################
+
+name: "&e★ #d5d5d5ᴏʀᴇs &e★"
+size: 54
+patterns:
+  - "zshop_decoration"
+  - "zshop_return_home"
+items:
+  coal:
+    item:
+      material: COAL
+      amount: 16
+    type: ZSHOP_ITEM
+    buyPrice: 32.0
+    sellPrice: 1.0
+    slot: 20
+  iron_ingot:
+    item:
+      material: IRON_INGOT
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 2.0
+    slot: 21
+  gold_ingot:
+    item:
+      material: GOLD_INGOT
+    type: ZSHOP_ITEM
+    buyPrice: 25.0
+    sellPrice: 5.0
+    slot: 22
+  emerald:
+    item:
+      material: EMERALD
+    type: ZSHOP_ITEM
+    buyPrice: 50.0
+    sellPrice: 10.0
+    slot: 23
+  diamond:
+    item:
+      material: DIAMOND
+      amount: 4
+    type: ZSHOP_ITEM
+    buyPrice: 500.0
+    sellPrice: 50.0
+    slot: 24
+  lapis_lazuli:
+    item:
+      material: LAPIS_LAZULI
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0.25
+    slot: 29
+  quartz:
+    item:
+      material: QUARTZ
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.5
+    slot: 30
+  netherite_ingot:
+    item:
+      material: NETHERITE_INGOT
+    type: ZSHOP_ITEM
+    buyPrice: 1000.0
+    sellPrice: 150.0
+    slot: 31
+  redstone:
+    item:
+      material: REDSTONE
+    type: ZSHOP_ITEM
+    buyPrice: 4.0
+    sellPrice: 0.25
+    slot: 32
+  amethyst_shard:
+    item:
+      material: AMETHYST_SHARD
+      amount: 32
+    type: ZSHOP_ITEM
+    buyPrice: 200.0
+    sellPrice: 20.0
+    slot: 33

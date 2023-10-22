@@ -1,0 +1,50 @@
+#########################################################################################################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+# Documentation : https://zshop.groupez.dev/
+# Sponsor : https://serveur-minecraft-vote.fr/
+# zMenu Documentation : https://docs.zmenu.dev/
+#
+#########################################################################################################################################
+
+name: "zshop_decoration"
+size: 54
+items:
+  playerHead:
+    isPermanent: true
+    # Update the button when the player clicks on the inventory
+    updateOnClick: true
+    item:
+      material: SKULL_ITEM
+      data: 3
+      playerHead: "%player%"
+      name: "&f%player%"
+      lore:
+        - ""
+        - "&f> &7Money&8: &e%vault_eco_balance_formatted% &f$"
+    slot: 4
+  decorations:
+    isPermanent: true
+    item:
+      material: STAINED_GLASS_PANE
+      data: 15
+      name: "&e"
+    slots:
+      - 0
+      - 1
+      - 7
+      - 8
+      - 9
+      - 17
+      - 36
+      - 44
+      - 45
+      - 46
+      - 52
+      - 53

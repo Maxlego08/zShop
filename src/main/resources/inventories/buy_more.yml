@@ -1,0 +1,110 @@
+#########################################################################################################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+# Documentation : https://zshop.groupez.dev/
+# Sponsor : https://serveur-minecraft-vote.fr/
+# zMenu Documentation : https://docs.zmenu.dev/
+#
+#########################################################################################################################################
+
+name: "&7Buy more"
+size: 54
+patterns:
+  - "zshop_decoration"
+items:
+  playerHead:
+    isPermanent: true
+    type: BACK
+    item:
+      url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjllYTFkODYyNDdmNGFmMzUxZWQxODY2YmNhNmEzMDQwYTA2YzY4MTc3Yzc4ZTQyMzE2YTEwOThlNjBmYjdkMyJ9fX0="
+      name: "&cBack"
+      lore:
+        - ""
+        - "&f> &7Click to go &cback"
+    slot: 49
+  buy_more_128:
+    type: ZSHOP_BUY_MORE
+    amount: 128
+    item:
+      url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDY5OGFkZDM5Y2Y5ZTRlYTkyZDQyZmFkZWZkZWMzYmU4YTdkYWZhMTFmYjM1OWRlNzUyZTlmNTRhZWNlZGM5YSJ9fX0="
+      name: "&a2 stacks"
+      lore:
+        - ""
+        - "&f> &7Click to &a2 stacks &7for &e%zshop_item_buy_price_format_128%"
+    slot: 20
+  buy_more_192:
+    type: ZSHOP_BUY_MORE
+    amount: 192
+    item:
+      url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ5ZTRjZDVlMWI5ZjNjOGQ2Y2E1YTFiZjQ1ZDg2ZWRkMWQ1MWU1MzVkYmY4NTVmZTlkMmY1ZDRjZmZjZDIifX19"
+      name: "&a3 stacks"
+      lore:
+        - ""
+        - "&f> &7Click to &a3 stacks &7for &e%zshop_item_buy_price_format_192%"
+    slot: 21
+  buy_more_256:
+    type: ZSHOP_BUY_MORE
+    amount: 256
+    item:
+      url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjJhM2Q1Mzg5ODE0MWM1OGQ1YWNiY2ZjODc0NjlhODdkNDhjNWMxZmM4MmZiNGU3MmY3MDE1YTM2NDgwNTgifX19"
+      name: "&a4 stacks"
+      lore:
+        - ""
+        - "&f> &7Click to &a4 stacks &7for &e%zshop_item_buy_price_format_256%"
+    slot: 22
+  buy_more_320:
+    type: ZSHOP_BUY_MORE
+    amount: 320
+    item:
+      url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDFmZTM2YzQxMDQyNDdjODdlYmZkMzU4YWU2Y2E3ODA5YjYxYWZmZDYyNDVmYTk4NDA2OTI3NWQxY2JhNzYzIn19fQ=="
+      name: "&a5 stacks"
+      lore:
+        - ""
+        - "&f> &7Click to &a5 stacks &7for &e%zshop_item_buy_price_format_320%"
+    slot: 23
+  buy_more_384:
+    type: ZSHOP_BUY_MORE
+    amount: 384
+    item:
+      url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2FiNGRhMjM1OGI3YjBlODk4MGQwM2JkYjY0Mzk5ZWZiNDQxODc2M2FhZjg5YWZiMDQzNDUzNTYzN2YwYTEifX19"
+      name: "&a6 stacks"
+      lore:
+        - ""
+        - "&f> &7Click to &a6 stacks &7for &e%zshop_item_buy_price_format_384%"
+    slot: 24
+  buy_more_448:
+    type: ZSHOP_BUY_MORE
+    amount: 448
+    item:
+      url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjk3NzEyYmEzMjQ5NmM5ZTgyYjIwY2M3ZDE2ZTE2OGIwMzViNmY4OWYzZGYwMTQzMjRlNGQ3YzM2NWRiM2ZiIn19fQ=="
+      name: "&a7 stacks"
+      lore:
+        - ""
+        - "&f> &7Click to &a7 stacks &7for &e%zshop_item_buy_price_format_448%"
+    slot: 30
+  buy_more_512:
+    type: ZSHOP_BUY_MORE
+    amount: 512
+    item:
+      url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWJjMGZkYTlmYTFkOTg0N2EzYjE0NjQ1NGFkNjczN2FkMWJlNDhiZGFhOTQzMjQ0MjZlY2EwOTE4NTEyZCJ9fX0="
+      name: "&a8 stacks"
+      lore:
+        - ""
+        - "&f> &7Click to &a8 stacks &7for &e%zshop_item_buy_price_format_512%"
+    slot: 31
+  buy_more_576:
+    type: ZSHOP_BUY_MORE
+    amount: 576
+    item:
+      url: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDZhYmM2MWRjYWVmYmQ1MmQ5Njg5YzA2OTdjMjRjN2VjNGJjMWFmYjU2YjhiMzc1NWU2MTU0YjI0YTVkOGJhIn19fQ=="
+      name: "&a9 stacks"
+      lore:
+        - ""
+        - "&f> &7Click to &a9 stacks &7for &e%zshop_item_buy_price_format_576%"
+    slot: 32

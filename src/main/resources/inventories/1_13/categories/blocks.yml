@@ -1,0 +1,315 @@
+#########################################################################################################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+# Documentation : https://zshop.groupez.dev/
+# Sponsor : https://serveur-minecraft-vote.fr/
+# zMenu Documentation : https://docs.zmenu.dev/
+#
+#########################################################################################################################################
+
+name: "&e★ #5d8d50ʙʟᴏᴄᴋs &e★"
+size: 54
+updateInterval: 1
+patterns:
+  - "zshop_decoration"
+  - "zshop_return_home"
+  - "zshop_pagination"
+items:
+  # First page
+  grass_block:
+    update: true
+    item:
+      material: GRASS_BLOCK
+    type: ZSHOP_ITEM
+    buyPrice: 2
+    sellPrice: 1
+    slot: 20
+    serverBuyLimit:
+      limit: 100
+      schedulerType: DAILY
+      hour: 20
+      minute: 55
+    lore:
+      - "&f» &7Buying price&8: &e%buyPrice%"
+      - "&f» &7Selling price&8: &e%sellPrice%"
+      - ""
+      - "&f» &7Server buy limit&8: &f%serverBuyAmount%&7/#d1d1d1%serverBuyLimit% &8(&7%zshop_limiter_time_server_buy_GRASS_BLOCK%&8)"
+      - ""
+      - "&f➥ &r&7Left click to &f&nʙᴜʏ"
+      - "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ"
+      - "&f➥ &r&7Right click to &f&nsᴇʟʟ"
+  dirt:
+    item:
+      material: DIRT
+      amount: 10
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.5
+    slot: 21
+    update: true
+    serverSellLimit:
+      limit: 100
+      schedulerType: WEEKLY
+      day: "MONDAY"
+      hour: 18
+      minute: 00
+    lore:
+      - "&f» &7Buying price&8: &e%buyPrice%"
+      - "&f» &7Selling price&8: &e%sellPrice%"
+      - ""
+      - "&f» &7Server sell limit&8: &f%serverSellAmount%&7/#d1d1d1%serverSellLimit% &8(&7%zshop_limiter_time_server_sell_DIRT%&8)"
+      - ""
+      - "&f➥ &r&7Left click to &f&nʙᴜʏ"
+      - "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ"
+      - "&f➥ &r&7Right click to &f&nsᴇʟʟ"
+  gravel:
+    item:
+      material: GRAVEL
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1
+    slot: 22
+    update: true
+    playerSellLimit:
+      limit: 100
+      schedulerType: WEEKLY
+      day: "FRIDAY"
+      hour: 18
+      minute: 00
+    playerBuyLimit:
+      limit: 100
+      schedulerType: WEEKLY
+      day: "SUNDAY"
+      hour: 18
+      minute: 00
+    lore:
+      - "&f» &7Buying price&8: &e%buyPrice% &f%realBuyPrice% &ax%zshop_modifier_buy% &c%zshop_modifier_buy_percent%%"
+      - "&f» &7Selling price&8: &e%sellPrice% &f%realSellPrice% &ax%zshop_modifier_sell% &c+%zshop_modifier_sell_percent%%"
+      - ""
+      # - "&f» &7Server sell limit&8: &f%serverSellAmount%&7/#d1d1d1%serverSellLimit%"
+      - "&f» &7Player sell limit&8: &f%playerSellAmount%&7/#d1d1d1%playerSellLimit% &8(&7%zshop_limiter_time_player_sell_GRAVEL%&8)"
+      - "&f» &7Player buy limit&8: &f%playerBuyAmount%&7/#d1d1d1%playerBuyLimit% &8(&7%zshop_limiter_time_player_buy_GRAVEL%&8)"
+      - ""
+      - "&f➥ &r&7Left click to &f&nʙᴜʏ"
+      - "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ"
+      - "&f➥ &r&7Right click to &f&nsᴇʟʟ"
+  sand:
+    item:
+      material: SAND
+    type: ZSHOP_ITEM
+    economy: item_emerald
+    buyPrice: 5
+    sellPrice: 1
+    slot: 23
+  red_sand:
+    item:
+      material: RED_SAND
+    type: ZSHOP_ITEM
+    economy: experience
+    buyPrice: 10.0
+    sellPrice: 2
+    slot: 24
+  stone:
+    item:
+      material: STONE
+    type: ZSHOP_ITEM
+    economy: level
+    buyPrice: 10.0
+    sellPrice: 2
+    slot: 29
+  ice:
+    item:
+      material: ICE
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 30
+  diorite:
+    item:
+      material: DIORITE
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 31
+  andesite:
+    item:
+      material: ANDESITE
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 32
+  granite:
+    item:
+      material: GRANITE
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 33
+  # Second page
+  oak_log:
+    item:
+      material: OAK_LOG
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 20
+    page: 2
+  spruce_log:
+    item:
+      material: SPRUCE_LOG
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 21
+    page: 2
+  birch_log:
+    item:
+      material: BIRCH_LOG
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 22
+    page: 2
+  jungle_log:
+    item:
+      material: JUNGLE_LOG
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 23
+    page: 2
+  acacia_log:
+    item:
+      material: ACACIA_LOG
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 24
+    page: 2
+  dark_oak_log:
+    item:
+      material: DARK_OAK_LOG
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 29
+    page: 2
+  stone_bricks:
+    item:
+      material: STONE_BRICKS
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 30
+    page: 2
+  sea_lantern:
+    item:
+      material: SEA_LANTERN
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 31
+    page: 2
+  prismarine:
+    item:
+      material: PRISMARINE
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 32
+    page: 2
+  dark_prismarine:
+    item:
+      material: DARK_PRISMARINE
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 33
+    page: 2
+  # third page
+  end_stone:
+    item:
+      material: END_STONE
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 20
+    page: 3
+  end_stone_bricks:
+    item:
+      material: END_STONE_BRICKS
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 21
+    page: 3
+  purpur_block:
+    item:
+      material: PURPUR_BLOCK
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 22
+    page: 3
+  netherrack:
+    item:
+      material: NETHERRACK
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 23
+    page: 3
+  nether_bricks:
+    item:
+      material: NETHER_BRICKS
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 24
+    page: 3
+  red_nether_bricks:
+    item:
+      material: RED_NETHER_BRICKS
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 29
+    page: 3
+  basalt:
+    item:
+      material: BASALT
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 30
+    page: 3
+  blackstone:
+    item:
+      material: BLACKSTONE
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 31
+    page: 3
+  soul_sand:
+    item:
+      material: SOUL_SAND
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 32
+    page: 3
+  soul_soil:
+    item:
+      material: SOUL_SOIL
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 33
+    page: 3

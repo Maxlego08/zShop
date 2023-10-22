@@ -1,0 +1,42 @@
+#########################################################################################################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+# Documentation : https://zshop.groupez.dev/
+# Sponsor : https://serveur-minecraft-vote.fr/
+# zMenu Documentation : https://docs.zmenu.dev/
+#
+#########################################################################################################################################
+
+name: "&e★ &3sᴇʟʟ &e★"
+size: 54
+patterns:
+  - "zshop_decoration"
+  - "zshop_back"
+  - "zshop_choose_amount"
+items:
+  show_item:
+    item:
+      material: BARRIER
+      name: "&cError"
+      lore:
+        - "&cYou should not see this, please contact an administrator"
+    type: ZSHOP_SHOW
+    slot: 22
+    lore:
+      - ""
+      - "&f» &7Selling price&8: &e%sellPrice%"
+  confirm_buy:
+    type: ZSHOP_CONFIRM_SELL
+    item:
+      material: LIME_STAINED_GLASS_PANE
+      name: "#94d160ᴄᴏɴғɪʀᴍ ᴛʜᴇ sᴀʟᴇ"
+      lore:
+        - ""
+        - "&f➥ &7Click to #94d160confirm the sale"
+    slot: 50
