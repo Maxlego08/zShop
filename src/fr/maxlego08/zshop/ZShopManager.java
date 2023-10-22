@@ -253,9 +253,11 @@ public class ZShopManager extends ZUtils implements ShopManager {
             String[] suffixes = {"", AbbreviateNumberConfig.thousand, AbbreviateNumberConfig.millions, AbbreviateNumberConfig.billion, AbbreviateNumberConfig.trillion, AbbreviateNumberConfig.quadrillion, AbbreviateNumberConfig.quintillion};
 
             if (price >= 1000) {
-                long val = (long) price;
-                int sNum = (int) Math.floor((double) String.valueOf(val).length() / 3);
-                double sVal = (sNum != 0) ? val / Math.pow(1000, sNum) : val;
+                long value = (long) price;
+                int sNum = (int) (Math.log10(value) / 3);
+                double sVal = value / Math.pow(1000.0, sNum);
+
+                sVal = Double.parseDouble(new DecimalFormat("#.##").format(sVal));
 
                 if (sVal % 1 != 0) return String.format("%.1f%s", sVal, suffixes[sNum]);
                 else return String.format("%.0f%s", sVal, suffixes[sNum]);
