@@ -257,7 +257,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
                 int sNum = (int) (Math.log10(value) / 3);
                 double sVal = value / Math.pow(1000.0, sNum);
 
-                sVal = Double.parseDouble(new DecimalFormat("#.##").format(sVal));
+                sVal = Double.parseDouble(new DecimalFormat("#.##").format(sVal).replace(",", "."));
 
                 if (sVal % 1 != 0) return String.format("%.1f%s", sVal, suffixes[sNum]);
                 else return String.format("%.0f%s", sVal, suffixes[sNum]);
@@ -457,7 +457,18 @@ public class ZShopManager extends ZUtils implements ShopManager {
         });
 
         prices.forEach((economy, price) -> economy.depositMoney(player, price));
-        String results = toList(shopActions.stream().map(action -> getMessage(Message.SELL_ALL_INFO, "%amount%", action.getItemStack().getAmount(), "%item%", getItemName(action.getItemStack()), "%price%", action.getItemButton().getEconomy().format(transformPrice(action.getPrice()), action.getPrice()))).collect(Collectors.toList()), Message.SELL_ALL_COLOR_SEPARATOR.msg(), Message.SELL_ALL_COLOR_INFO.msg());
+        List<ShopAction> fixedShopActions = new ArrayList<>();
+
+        shopActions.forEach(action -> {
+            Optional<ShopAction> optional = fixedShopActions.stream().filter(e -> e.getItemStack().isSimilar(action.getItemStack())).findFirst();
+            if (optional.isPresent()) {
+                ShopAction currentAction = optional.get();
+                currentAction.setPrice(currentAction.getPrice() + action.getPrice());
+                currentAction.getItemStack().setAmount(currentAction.getItemStack().getAmount() + action.getItemStack().getAmount());
+            } else fixedShopActions.add(action);
+        });
+
+        String results = toList(fixedShopActions.stream().map(action -> getMessage(Message.SELL_ALL_INFO, "%amount%", action.getItemStack().getAmount(), "%item%", getItemName(action.getItemStack()), "%price%", action.getItemButton().getEconomy().format(transformPrice(action.getPrice()), action.getPrice()))).collect(Collectors.toList()), Message.SELL_ALL_COLOR_SEPARATOR.msg(), Message.SELL_ALL_COLOR_INFO.msg());
 
         message(this.plugin, player, Message.SELL_ALL_MESSAGE, "%items%", results);
 
