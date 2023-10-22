@@ -26,7 +26,7 @@ items:
       name: "&f%player%"
       lore:
         - ""
-        - "&f➥ &7Money&8: #ffed00%vault_eco_balance% #ffed0f⛃"
+        - "&f➥ &7Money&8: #ffed00%vault_eco_balance_formatted% #ffed0f⛃"
     slot: 4
   decorations:
     isPermanent: true

@@ -13,6 +13,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -214,6 +216,11 @@ public class ShopGuiPlusConverter {
 
                 configuration.set(zShopPath + "type", "ZSHOP_ITEM");
                 saveItemStack(configuration, shopGuiPlusConfiguration, path + "item.", key);
+
+                String mob = shopGuiPlusConfiguration.getString(path + "item.mob", null);
+                if (mob != null) configuration.set(zShopPath + "mob", mob.toUpperCase());
+
+
                 configuration.set(zShopPath + "buyPrice", shopGuiPlusConfiguration.getDouble(path + "buyPrice", 0.0));
                 configuration.set(zShopPath + "sellPrice", shopGuiPlusConfiguration.getDouble(path + "sellPrice", 0.0));
                 int page = shopGuiPlusConfiguration.getInt(path + "page", 1);
@@ -296,7 +303,13 @@ public class ShopGuiPlusConverter {
         if (shopGuiPlusConfiguration.getBoolean(path + "glow")) configuration.set(zShopPath + "glow", true);
 
         List<String> enchants = shopGuiPlusConfiguration.getStringList(path + "enchantments");
-        if (!enchants.isEmpty()) configuration.set(zShopPath + "enchants", enchants);
+        if (!enchants.isEmpty())
+            configuration.set(zShopPath + "enchants", enchants.stream().map(e -> {
+                if (e.contains(":")) {
+                    String[] values = e.split(":", 2);
+                    return EnchantmentNames.findEnchantmentName(values[0]) + "," + values[1];
+                } else return EnchantmentNames.findEnchantmentName(e);
+            }).collect(Collectors.toList()));
 
     }
 
@@ -360,4 +373,57 @@ public class ShopGuiPlusConverter {
 
         sender.sendMessage("§fEnd convert §bconfig.yml");
     }
+
+    private enum EnchantmentNames {
+        ARROW_DAMAGE(Collections.singletonList("power")),
+        ARROW_FIRE(Arrays.asList("firearrow", "flame")),
+        ARROW_INFINITE(Arrays.asList("infinity", "infinitearrow")),
+        ARROW_KNOCKBACK(Arrays.asList("punch", "knockbackarrow")),
+        BINDING_CURSE(Arrays.asList("binding", "curseofbinding")),
+        DAMAGE_ALL(Arrays.asList("sharpness", "alldamage", "dmg")),
+        DAMAGE_ARTHROPODS(Arrays.asList("baneofarthropods", "arthropodsdamage")),
+        DAMAGE_UNDEAD(Arrays.asList("smite", "undeaddamage")),
+        DEPTH_STRIDER(Arrays.asList("depthstrider", "striderdepth", "dstrider")),
+        DIG_SPEED(Collections.singletonList("efficiency")),
+        DURABILITY(Collections.singletonList("unbreaking")),
+        FIRE_ASPECT(Collections.singletonList("fire")),
+        FROST_WALKER(Collections.singletonList("frost")),
+        KNOCKBACK(Collections.singletonList("knock")),
+        LOOT_BONUS_BLOCKS(Arrays.asList("fortune", "lootbonusblock", "blockslootbonus")),
+        LOOT_BONUS_MOBS(Arrays.asList("looting", "lootbonusmob", "mobslootbonus")),
+        LUCK(Arrays.asList("luckofthesea", "luckofsea")),
+        LURE(Collections.singletonList("luring")),
+        MENDING(Collections.singletonList("mend")),
+        OXYGEN(Arrays.asList("respiration", "waterbreathing", "breathing")),
+        PROTECTION_ENVIRONMENTAL(Arrays.asList("protection", "protect", "prot")),
+        PROTECTION_EXPLOSIONS(Arrays.asList("blastprotection", "explosionsprotection", "expprotect", "expprot")),
+        PROTECTION_FALL(Arrays.asList("featherfalling", "fallprotection", "fallprotect", "fallprot")),
+        PROTECTION_FIRE(Arrays.asList("fireprotection", "fireprotect", "fireprot")),
+        PROTECTION_PROJECTILE(Arrays.asList("projectileprotection", "projectileprotect", "projectileprot")),
+        SILK_TOUCH(Collections.singletonList("silk")),
+        SOUL_SPEED(Collections.singletonList("soul")),
+        SWEEPING_EDGE(Collections.singletonList("sweeping")),
+        SWIFT_SNEAK(Collections.singletonList("sneak")),
+        THORNS(Collections.singletonList("thorn")),
+        VANISHING_CURSE(Arrays.asList("vanishing", "curseofvanishing")),
+        WATER_WORKER(Collections.singletonList("aquaaffinity"));
+
+        private final List<String> names;
+
+        EnchantmentNames(List<String> names) {
+            this.names = names;
+        }
+
+        public static String findEnchantmentName(String input) {
+            for (EnchantmentNames enchantment : EnchantmentNames.values()) {
+                if (enchantment.name().equalsIgnoreCase(input)) {
+                    return enchantment.name();
+                } else if (enchantment.names.contains(input.toLowerCase())) {
+                    return enchantment.name();
+                }
+            }
+            return input;
+        }
+    }
+
 }

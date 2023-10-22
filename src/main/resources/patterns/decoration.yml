@@ -27,7 +27,7 @@ items:
       name: "&f%player%"
       lore:
         - ""
-        - "&f> &7Money&8: &e%vault_eco_balance% &f$"
+        - "&f> &7Money&8: &e%vault_eco_balance_formatted% &f$"
     slot: 4
   decorations:
     isPermanent: true

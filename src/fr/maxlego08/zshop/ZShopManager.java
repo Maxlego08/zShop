@@ -505,7 +505,6 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
         ItemStack itemStack = event.getItemInHand();
         EntityType type = getEntityType(itemStack);
-        System.out.println(type);
         if (type == EntityType.UNKNOWN) return;
 
         Block block = event.getBlock();

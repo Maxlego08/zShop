@@ -8,6 +8,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import fr.maxlego08.zshop.zcore.utils.plugins.Plugins;
 import fr.maxlego08.ztranslator.api.Translator;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public abstract class TranslationHelper {
 
 	/**
@@ -46,13 +49,10 @@ public abstract class TranslationHelper {
 	 * @return item name
 	 */
 	public String getItemName(ItemStack itemStack) {
+		if (itemStack == null) return "";
 
-		if (itemStack == null) {
-			return "";
-
-		}
 		if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName()) {
-			return itemStack.getItemMeta().getDisplayName();
+			return convertOldHexString(itemStack.getItemMeta().getDisplayName());
 		}
 
 		if (Bukkit.getPluginManager().isPluginEnabled(Plugins.ZTRANSLATOR.getName())) {
@@ -66,5 +66,23 @@ public abstract class TranslationHelper {
 		String name = itemStack.serialize().get("type").toString().replace("_", " ").toLowerCase();
 		return name.substring(0, 1).toUpperCase() + name.substring(1);
 	}
+
+	private String convertOldHexString(String string) {
+
+		if (string == null) return null;
+
+		Pattern pattern = Pattern.compile("§x[a-fA-F0-9-§]{12}");
+		Matcher matcher = pattern.matcher(string);
+		while (matcher.find()) {
+			String color = string.substring(matcher.start(), matcher.end());
+			String colorReplace = color.replace("§x", "#");
+			colorReplace = colorReplace.replace("§", "");
+			string = string.replace(color, colorReplace);
+			matcher = pattern.matcher(string);
+		}
+
+		return string;
+	}
+
 
 }
