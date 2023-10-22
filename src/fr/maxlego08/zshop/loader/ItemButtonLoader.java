@@ -53,6 +53,7 @@ public class ItemButtonLoader implements ButtonLoader {
         boolean affectByPriceModifier = configuration.getBoolean(path + "affectByPriceModifier", true);
         List<String> buyCommands = configuration.getStringList(path + "buyCommands");
         List<String> sellCommands = configuration.getStringList(path + "sellCommands");
+        String mob = configuration.getString(path + "mob", null);
 
         String economyName = configuration.getString(path + "economy", Config.defaultEconomy);
         Optional<ShopEconomy> optional = plugin.getEconomyManager().getEconomy(economyName);
@@ -90,9 +91,8 @@ public class ItemButtonLoader implements ButtonLoader {
         if (configuration.contains(path + "playerBuyLimit")) {
             Loader<Limit> loader = new LimitLoader(plugin, material, LimitType.PLAYER_BUY);
             playerBuyLimit = loader.load(configuration, path + "playerBuyLimit.");
-            this.plugin.getLimiterManager().create(playerBuyLimit);
-        }
+            this.plugin.getLimiterManager().create(playerBuyLimit);}
 
-        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit, enableLog, affectByPriceModifier);
+        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit, enableLog, affectByPriceModifier, mob);
     }
 }

@@ -1,5 +1,6 @@
 package fr.maxlego08.zshop.buttons;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import fr.maxlego08.menu.api.utils.MetaUpdater;
 import fr.maxlego08.menu.button.ZButton;
 import fr.maxlego08.menu.inventory.inventories.InventoryDefault;
@@ -54,8 +55,9 @@ public class ZItemButton extends ZButton implements ItemButton {
     private final Limit playerBuyLimit;
     private final boolean enableLog;
     private final boolean affectByPriceModifier;
+    private final String mob;
 
-    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog, boolean affectByPriceModifier) {
+    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog, boolean affectByPriceModifier, String mob) {
         this.plugin = plugin;
         this.shopManager = plugin.getShopManager();
         this.sellPrice = sellPrice;
@@ -72,6 +74,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         this.playerBuyLimit = playerBuyLimit;
         this.enableLog = enableLog;
         this.affectByPriceModifier = affectByPriceModifier;
+        this.mob = mob;
     }
 
     @Override
@@ -245,6 +248,13 @@ public class ZItemButton extends ZButton implements ItemButton {
 
         /* BUILD ITEM AND GIVE IT TO PLAYER */
         ItemStack itemStack = super.getItemStack().build(player).clone();
+
+        if (this.mob != null) {
+            NBTItem nbtItem = new NBTItem(itemStack);
+            nbtItem.setString(ItemButton.nbtMobSpawnerKey, this.mob.toUpperCase());
+            itemStack = nbtItem.getItem();
+        }
+
         itemStack.setAmount(amount);
 
         if (this.giveItem) {
@@ -401,6 +411,11 @@ public class ZItemButton extends ZButton implements ItemButton {
     @Override
     public boolean affectByPriceModifier() {
         return this.affectByPriceModifier;
+    }
+
+    @Override
+    public String getMob() {
+        return this.mob;
     }
 
     @Override

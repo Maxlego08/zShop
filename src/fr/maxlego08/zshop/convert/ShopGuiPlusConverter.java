@@ -295,6 +295,9 @@ public class ShopGuiPlusConverter {
         if (!flags.isEmpty()) configuration.set(zShopPath + "flags", flags);
         if (shopGuiPlusConfiguration.getBoolean(path + "glow")) configuration.set(zShopPath + "glow", true);
 
+        List<String> enchants = shopGuiPlusConfiguration.getStringList(path + "enchantments");
+        if (!enchants.isEmpty()) configuration.set(zShopPath + "enchants", enchants);
+
     }
 
     private String convertOldHexString(String string) {

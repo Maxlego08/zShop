@@ -17,7 +17,6 @@ public class CommandShop extends VCommand {
 
     @Override
     protected CommandType perform(ShopPlugin plugin) {
-
         syntaxMessage();
         return CommandType.SUCCESS;
     }

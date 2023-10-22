@@ -1,5 +1,6 @@
 package fr.maxlego08.zshop;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import fr.maxlego08.menu.api.Inventory;
 import fr.maxlego08.menu.api.InventoryManager;
 import fr.maxlego08.menu.api.button.Button;
@@ -37,8 +38,13 @@ import fr.maxlego08.zshop.zcore.utils.ZUtils;
 import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -242,7 +248,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
     @Override
     public String transformPrice(double price) {
-        
+
         if (AbbreviateNumberConfig.enable) {
             String[] suffixes = {"", AbbreviateNumberConfig.thousand, AbbreviateNumberConfig.millions, AbbreviateNumberConfig.billion, AbbreviateNumberConfig.trillion, AbbreviateNumberConfig.quadrillion, AbbreviateNumberConfig.quintillion};
 
@@ -490,5 +496,32 @@ public class ZShopManager extends ZUtils implements ShopManager {
     @Override
     public void sellAllHand(Player player) {
         sellHand(player, 0);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onBlockPlace(BlockPlaceEvent event) {
+
+        if (event.isCancelled()) return;
+
+        ItemStack itemStack = event.getItemInHand();
+        EntityType type = getEntityType(itemStack);
+        System.out.println(type);
+        if (type == EntityType.UNKNOWN) return;
+
+        Block block = event.getBlock();
+        CreatureSpawner creatureSpawner = (CreatureSpawner) block.getState();
+        creatureSpawner.setSpawnedType(type);
+        creatureSpawner.update();
+    }
+
+    private EntityType getEntityType(ItemStack itemStack) {
+        if (itemStack == null) return EntityType.UNKNOWN;
+        NBTItem nbtItem = new NBTItem(itemStack);
+        if (!nbtItem.hasTag(ItemButton.nbtMobSpawnerKey)) return EntityType.UNKNOWN;
+        try {
+            return EntityType.valueOf(nbtItem.getString(ItemButton.nbtMobSpawnerKey));
+        } catch (Exception ignored) {
+            return EntityType.UNKNOWN;
+        }
     }
 }

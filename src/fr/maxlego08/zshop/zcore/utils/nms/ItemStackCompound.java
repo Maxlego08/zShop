@@ -5,6 +5,13 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemStackCompound {
 
+    public static ItemStackCompound instance;
+
+    static {
+        if (NMSUtils.isNewVersion()) instance = new ItemStackCompound(EnumReflectionCompound.V1_18_2);
+        else instance = new ItemStackCompound(EnumReflectionCompound.V1_8_8);
+    }
+
     private final EnumReflectionCompound reflection;
 
     public ItemStackCompound(EnumReflectionCompound reflection) {
@@ -20,10 +27,8 @@ public class ItemStackCompound {
      * @throws Exception
      */
     public Object getCompound(ItemStack itemStack) throws Exception {
-        Object localItemStackObject = EnumReflectionItemStack.CRAFTITEMSTACK.getClassz()
-                .getMethod("asNMSCopy", new Class[]{ItemStack.class}).invoke(null, new Object[]{itemStack});
-        Object localCompoundObject = localItemStackObject.getClass().getMethod(this.reflection.getMethodGetTag())
-                .invoke(localItemStackObject);
+        Object localItemStackObject = EnumReflectionItemStack.CRAFTITEMSTACK.getClassz().getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
+        Object localCompoundObject = localItemStackObject.getClass().getMethod(this.reflection.getMethodGetTag()).invoke(localItemStackObject);
         if (localCompoundObject != null) {
             return localCompoundObject;
         }
@@ -39,27 +44,19 @@ public class ItemStackCompound {
      * @throws Exception
      */
     public ItemStack applyCompound(ItemStack itemStack, Object compoundObject) throws Exception {
-        Object localItemStackObject = EnumReflectionItemStack.CRAFTITEMSTACK.getClassz()
-                .getMethod("asNMSCopy", new Class[]{ItemStack.class}).invoke(null, new Object[]{itemStack});
+        Object localItemStackObject = EnumReflectionItemStack.CRAFTITEMSTACK.getClassz().getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
 
-        localItemStackObject.getClass()
-                .getMethod(this.reflection.getMethodSetTag(),
-                        new Class[]{EnumReflectionItemStack.NBTTAGCOMPOUND.getClassz()})
-                .invoke(localItemStackObject, compoundObject);
+        localItemStackObject.getClass().getMethod(this.reflection.getMethodSetTag(), EnumReflectionItemStack.NBTTAGCOMPOUND.getClassz()).invoke(localItemStackObject, compoundObject);
 
-        return (ItemStack) EnumReflectionItemStack.CRAFTITEMSTACK.getClassz()
-                .getMethod("asBukkitCopy", new Class[]{EnumReflectionItemStack.ITEMSTACK.getClassz()})
-                .invoke(null, new Object[]{localItemStackObject});
+        return (ItemStack) EnumReflectionItemStack.CRAFTITEMSTACK.getClassz().getMethod("asBukkitCopy", EnumReflectionItemStack.ITEMSTACK.getClassz()).invoke(null, new Object[]{localItemStackObject});
     }
 
     public ItemStack setString(ItemStack itemStack, String key, String value) {
 
         try {
             Object compoundObject = this.getCompound(itemStack);
-
-            compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodSetString(), new Class[]{String.class, String.class})
-                    .invoke(compoundObject, new Object[]{key, value});
+            System.out.println(compoundObject);
+            compoundObject.getClass().getMethod(this.reflection.getMethodSetString(), String.class, String.class).invoke(compoundObject, key, value);
 
             return this.applyCompound(itemStack, compoundObject);
         } catch (Exception e) {
@@ -74,9 +71,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            return (String) compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodGetString(), new Class[]{String.class})
-                    .invoke(compoundObject, new Object[]{key});
+            return (String) compoundObject.getClass().getMethod(this.reflection.getMethodGetString(), String.class).invoke(compoundObject, new Object[]{key});
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,9 +85,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            return (double) compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodGetDouble(), new Class[]{String.class})
-                    .invoke(compoundObject, new Object[]{key});
+            return (double) compoundObject.getClass().getMethod(this.reflection.getMethodGetDouble(), String.class).invoke(compoundObject, new Object[]{key});
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,9 +99,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            return (long) compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodGetLong(), new Class[]{String.class})
-                    .invoke(compoundObject, new Object[]{key});
+            return (long) compoundObject.getClass().getMethod(this.reflection.getMethodGetLong(), String.class).invoke(compoundObject, new Object[]{key});
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,9 +113,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            return (int) compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodGetInt(), new Class[]{String.class})
-                    .invoke(compoundObject, new Object[]{key});
+            return (int) compoundObject.getClass().getMethod(this.reflection.getMethodGetInt(), String.class).invoke(compoundObject, new Object[]{key});
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,9 +127,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            return (float) compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodGetFloat(), new Class[]{String.class})
-                    .invoke(compoundObject, new Object[]{key});
+            return (float) compoundObject.getClass().getMethod(this.reflection.getMethodGetFloat(), String.class).invoke(compoundObject, new Object[]{key});
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,9 +141,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            return (boolean) compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodGetBoolean(), new Class[]{String.class})
-                    .invoke(compoundObject, new Object[]{key});
+            return (boolean) compoundObject.getClass().getMethod(this.reflection.getMethodGetBoolean(), String.class).invoke(compoundObject, new Object[]{key});
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,9 +155,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodSetInt(), new Class[]{String.class, int.class})
-                    .invoke(compoundObject, new Object[]{key, value});
+            compoundObject.getClass().getMethod(this.reflection.getMethodSetInt(), String.class, int.class).invoke(compoundObject, key, value);
 
             return this.applyCompound(itemStack, compoundObject);
         } catch (Exception e) {
@@ -187,9 +170,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodSetLong(), new Class[]{String.class, long.class})
-                    .invoke(compoundObject, new Object[]{key, value});
+            compoundObject.getClass().getMethod(this.reflection.getMethodSetLong(), String.class, long.class).invoke(compoundObject, key, value);
 
             return this.applyCompound(itemStack, compoundObject);
         } catch (Exception e) {
@@ -204,9 +185,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodSetFloat(), new Class[]{String.class, float.class})
-                    .invoke(compoundObject, new Object[]{key, value});
+            compoundObject.getClass().getMethod(this.reflection.getMethodSetFloat(), String.class, float.class).invoke(compoundObject, key, value);
 
             return this.applyCompound(itemStack, compoundObject);
         } catch (Exception e) {
@@ -221,9 +200,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodSetBoolean(), new Class[]{String.class, boolean.class})
-                    .invoke(compoundObject, new Object[]{key, value});
+            compoundObject.getClass().getMethod(this.reflection.getMethodSetBoolean(), String.class, boolean.class).invoke(compoundObject, key, value);
 
             return this.applyCompound(itemStack, compoundObject);
         } catch (Exception e) {
@@ -238,9 +215,7 @@ public class ItemStackCompound {
         try {
             Object compoundObject = this.getCompound(itemStack);
 
-            compoundObject.getClass()
-                    .getMethod(this.reflection.getMethodSetDouble(), new Class[]{String.class, double.class})
-                    .invoke(compoundObject, new Object[]{key, value});
+            compoundObject.getClass().getMethod(this.reflection.getMethodSetDouble(), String.class, double.class).invoke(compoundObject, key, value);
 
             return this.applyCompound(itemStack, compoundObject);
         } catch (Exception e) {
@@ -266,9 +241,7 @@ public class ItemStackCompound {
                 return false;
             }
 
-            return (boolean) nbttagCompound.getClass()
-                    .getMethod(this.reflection.getMethodHaskey(), new Class[]{String.class})
-                    .invoke(nbttagCompound, new Object[]{key});
+            return (boolean) nbttagCompound.getClass().getMethod(this.reflection.getMethodHaskey(), String.class).invoke(nbttagCompound, new Object[]{key});
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -278,8 +251,8 @@ public class ItemStackCompound {
 
     public enum EnumReflectionCompound {
 
-        V1_8_8("getTag", "setTag", "hasKey", "getBoolean", "getFloat", "getDouble", "getLong", "getInt", "getString",
-                "setBoolean", "setFloat", "setDouble", "setLong", "setInt", "setString"),
+        V1_8_8("getTag", "setTag", "hasKey", "getBoolean", "getFloat", "getDouble", "getLong", "getInt", "getString", "setBoolean", "setFloat", "setDouble", "setLong", "setInt", "setString"),
+
         V1_18_2("t", "c", "e", "q", "j", "k", "i", "h", "l", "a", "a", "a", "a", "a", "a"),
         // V1_8_8("", "", "", "", "", "", "", "", "", "", "", "", "", "", ""),
 
@@ -304,10 +277,7 @@ public class ItemStackCompound {
         private final String methodSetInt;
         private final String methodSetString;
 
-        private EnumReflectionCompound(String methodGetTag, String methodSetTag, String methodHaskey,
-                                       String methodGetBoolean, String methodGetFloat, String methodGetDouble, String methodGetLong,
-                                       String methodGetInt, String methodGetString, String methodSetBoolean, String methodSetFloat,
-                                       String methodSetDouble, String methodSetLong, String methodSetInt, String methodSetString) {
+        EnumReflectionCompound(String methodGetTag, String methodSetTag, String methodHaskey, String methodGetBoolean, String methodGetFloat, String methodGetDouble, String methodGetLong, String methodGetInt, String methodGetString, String methodSetBoolean, String methodSetFloat, String methodSetDouble, String methodSetLong, String methodSetInt, String methodSetString) {
             this.methodGetTag = methodGetTag;
             this.methodSetTag = methodSetTag;
             this.methodHaskey = methodHaskey;

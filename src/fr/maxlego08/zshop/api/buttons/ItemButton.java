@@ -100,4 +100,8 @@ public interface ItemButton extends EconomyAction {
 
     boolean affectByPriceModifier();
 
+    String getMob();
+
+    String nbtMobSpawnerKey = "zshop-mob";
+
 }
