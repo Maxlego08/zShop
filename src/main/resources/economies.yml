@@ -67,3 +67,10 @@ economies: # Default Economy
     currency: "%price% P" # Placeholder to display the price
     isEnable: true # Activate or not the economy
     denyMessage: "&cYou don’t have enough points to buy this." # Message if the player does not have the money for a purchase.
+  # coinsEngine:
+  #  name: coinsengine # Name of the economy, the name can be specified in the items
+  #  type: coinsengine # Economy type
+  #  currency: "%price% C" # Placeholder to display the price
+  #  isEnable: true # Activate or not the economy
+  #  currencyName: "coins" # Coins engine currency name
+  #  denyMessage: "&cYou don’t have enough points to buy this." # Message if the player does not have the money for a purchase.
