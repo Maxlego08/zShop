@@ -13,6 +13,7 @@ public enum Plugins {
 	VOTINGPLUGIN("VotingPlugin"),
 	TOKENMANAGER("TokenManager"),
 	SHOPGUIPLUS("ShopGUIPlus"),
+	COINSENGINE("CoinsEngine"),
 
 	;
 

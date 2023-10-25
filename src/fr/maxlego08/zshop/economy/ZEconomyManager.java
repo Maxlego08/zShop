@@ -7,6 +7,7 @@ import fr.maxlego08.menu.zcore.utils.loader.Loader;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.economy.EconomyManager;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import fr.maxlego08.zshop.economy.economies.CoinsEngineEconomy;
 import fr.maxlego08.zshop.economy.economies.ExperienceEconomy;
 import fr.maxlego08.zshop.economy.economies.ItemEconomy;
 import fr.maxlego08.zshop.economy.economies.LevelEconomy;
@@ -18,6 +19,7 @@ import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.logger.Logger;
 import fr.maxlego08.zshop.zcore.utils.plugins.Plugins;
 import org.bukkit.configuration.file.YamlConfiguration;
+import su.nightexpress.coinsengine.api.currency.Currency;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -121,6 +123,15 @@ public class ZEconomyManager implements EconomyManager {
                         if (Config.enableDebug) Logger.info("Register TokenManager economy");
                         registerEconomy(new TokenManagerEconomy(this.plugin, name, currency, denyMessage));
                     } else Logger.info("Try to register TokenManager economy but TokenManager plugin is not enable");
+                    break;
+                case "coinsengine":
+                    if (this.plugin.isEnable(Plugins.COINSENGINE)) {
+                        if (Config.enableDebug) Logger.info("Register CoinsEngine economy");
+
+                        String currencyName = configuration.getString(path+"currencyName");
+                        registerEconomy(new CoinsEngineEconomy(this.plugin, name, currency, denyMessage, currencyName));
+
+                    } else Logger.info("Try to register CoinsEngine economy but CoinsEngine plugin is not enable");
                     break;
                 default:
                     break;
