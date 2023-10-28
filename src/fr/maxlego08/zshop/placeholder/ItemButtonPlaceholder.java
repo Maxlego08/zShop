@@ -25,7 +25,8 @@ public class ItemButtonPlaceholder implements ReturnBiConsumer<Player, String, S
 
         for (ItemButtonPlaceholderKey key : ItemButtonPlaceholderKey.values()) {
             if (args.toLowerCase().startsWith(key.name().toLowerCase())) {
-                args = args.replace(key.name().toLowerCase() + "_", "");
+                args = args.replace(key.name().toLowerCase(), "");
+                if (args.startsWith("_")) args = args.substring(1);
                 Matcher matcher = regex.matcher(args);
                 boolean find = matcher.find();
                 if (find) {
@@ -33,12 +34,17 @@ public class ItemButtonPlaceholder implements ReturnBiConsumer<Player, String, S
                     String arg = matcher.group(2);
                     if (material.endsWith("_")) material = material.substring(0, material.length() - 1);
                     Optional<ItemButton> optional = this.shopManager.getItemButton(material);
-                    if (optional.isPresent()) return key.consumer.accept(player, optional.get(), arg);
+                    if (optional.isPresent()){
+                        return key.consumer.accept(player, optional.get(), arg);
+                    } else {
+                        optional = this.shopManager.getItemButton(args);
+                        if (optional.isPresent()) return key.consumer.accept(player, optional.get(), "");
+                    }
                     return "material " + material + " not found";
                 }
 
                 ItemButton button = shopManager.getCache(player).getItemButton();
-                if (button != null){
+                if (button != null) {
                     return key.consumer.accept(player, button, args);
                 }
 
