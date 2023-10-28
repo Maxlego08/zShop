@@ -156,12 +156,12 @@ public class ZShopManager extends ZUtils implements ShopManager {
     @Override
     public void registerPlaceholders() {
         LocalPlaceholder localPlaceholder = LocalPlaceholder.getInstance();
-        localPlaceholder.register("item_max", (player, args) -> {
+
+        /*localPlaceholder.register("item_max", (player, args) -> {
             PlayerCache playerCache = getCache(player);
             ItemButton itemButton = playerCache.getItemButton();
             return itemButton == null ? "0" : String.valueOf(itemButton.getMaxStack());
-        });
-
+        });*/
         localPlaceholder.register("modifier_sell", (player, args) -> priceModifierPrice(getPriceModifier(player, PriceType.SELL), args.isEmpty()));
         localPlaceholder.register("modifier_buy", (player, args) -> priceModifierPrice(getPriceModifier(player, PriceType.BUY), args.isEmpty()));
 

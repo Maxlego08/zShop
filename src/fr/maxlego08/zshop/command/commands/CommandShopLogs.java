@@ -14,12 +14,12 @@ public class CommandShopLogs extends VCommand {
 
     public CommandShopLogs(ShopPlugin plugin) {
         super(plugin);
-        this.setPermission(Permission.ZSHOP_RELOAD);
+        this.setPermission(Permission.ZSHOP_LOGS);
         this.addSubCommand("logs", "log");
         this.addRequireArg("player");
         this.addRequireArg("type", (a, b) -> Arrays.asList("sell", "buy"));
         this.addOptionalArg("page");
-        this.setDescription(Message.DESCRIPTION_RELOAD);
+        this.setDescription(Message.DESCRIPTION_LOGS);
     }
 
     @Override

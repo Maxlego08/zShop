@@ -44,6 +44,7 @@ public enum Message {
     RELOAD("§aYou have just reloaded the configuration files."),
 
     DESCRIPTION_RELOAD("Reload configuration files"),
+    DESCRIPTION_LOGS("Display logs informations"),
     DESCRIPTION_CONVERT("Convert ShopGUIPlus config to zShop"),
 
     CANT_SELL("§c✘ Unable to sell"),
