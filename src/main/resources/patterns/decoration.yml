@@ -21,8 +21,6 @@ items:
     # Update the button when the player clicks on the inventory
     updateOnClick: true
     item:
-      material: SKULL_ITEM
-      data: 3
       playerHead: "%player%"
       name: "&f%player%"
       lore:

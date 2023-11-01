@@ -11,61 +11,41 @@ import java.util.Map;
 public enum Message {
 
     PREFIX("§8(§6zShop§8) ", "#757575(#f78d23zShop#757575) "),
-
-    TELEPORT_MOVE("§cYou must not move!"),
-    TELEPORT_MESSAGE("§7Teleportation in §3%second% §7seconds!"),
-    TELEPORT_ERROR("§cYou already have a teleportation in progress!"),
-    TELEPORT_SUCCESS("§7Teleportation done!"),
-    INVENTORY_CLONE_NULL("§cThe inventory clone is null!"),
-    INVENTORY_OPEN_ERROR("§cAn error occurred with the opening of the inventory §6%id%§c."),
     TIME_DAY("%02d %day% %02d %hour% %02d %minute% %02d %second%"),
     TIME_HOUR("%02d %hour% %02d minute(s) %02d %second%"),
     TIME_MINUTE("%02d %minute% %02d %second%"),
     TIME_SECOND("%02d %second%"),
-
     FORMAT_SECOND("second"),
     FORMAT_SECONDS("seconds"),
-
     FORMAT_MINUTE("minute"),
     FORMAT_MINUTES("minutes"),
-
     FORMAT_HOUR("hour"),
     FORMAT_HOURS("hours"),
-
     FORMAT_DAY("d"),
     FORMAT_DAYS("days"),
-
     COMMAND_SYNTAXE_ERROR("§cYou must execute the command like this§7: §a%syntax%"),
     COMMAND_NO_PERMISSION("§cYou do not have permission to run this command."),
     COMMAND_NO_CONSOLE("§cOnly one player can execute this command."),
     COMMAND_NO_ARG("§cImpossible to find the command with its arguments."),
     COMMAND_SYNTAXE_HELP("§f%syntax% §7» §7%description%"),
-
     RELOAD("§aYou have just reloaded the configuration files."),
-
     DESCRIPTION_RELOAD("Reload configuration files"),
     DESCRIPTION_LOGS("Display logs informations"),
     DESCRIPTION_CONVERT("Convert ShopGUIPlus config to zShop"),
-
     CANT_SELL("§c✘ Unable to sell"),
     CANT_BUY("§c✘ Unable to buy"),
-
     INVENTORY_NOT_FOUND("§cImpossible to find the inventory §f%name%§c."),
-
     NOT_ENOUGH_PLACE("§cYour inventory is full."),
     SELL_ITEM("§fYou just sold §7x%amount% %item%§f for §b%price%§f.", "&fYou just sold #37e674x%amount% #10e674%item%&f for #49e4f2%price%&f."),
     BUY_ITEM("§fYou have just bought §7x%amount% %item%§f for §b%price%§f.", "&fYou have just bought #b188f7x%amount% #a77af5%item% &ffor #49e4f2%price%&f."),
     NOT_ENOUGH_ITEMS("§cYou do not have enough items in your inventory."),
     NOT_ITEMS("§cYou do not have this item in your inventory."),
-
     LIMIT_SERVER_BUY("§cYou cannot buy this, the server has exceeded the purchasing capacity."),
     LIMIT_SERVER_SELL("§cYou cannot sell this, the server has exceeded the selling capacity."),
-
     SELL_HAND_ALL("§aYou just sold §6%item% §afor §6%price%§a."),
     SELL_HAND_ALLITEM("§ax§e%amount% §2%item%§a"),
     SELL_HAND_EMPTY("§cUnable to find an item for sale."),
     SELL_HAND_AIR("§cYou can't sell air ! It’s like you’re trying to sell something empty."),
-
     SELL_ALL_MESSAGE("§fYou gave just sold §7%items%§7."),
     SELL_ALL_INFO("§7x%amount% %item%§f for §b%price%"),
     SELL_ALL_COLOR_SEPARATOR("§f"),

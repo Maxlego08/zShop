@@ -129,7 +129,7 @@
         <dependency>
             <groupId>com.github.Maxlego08</groupId>
             <artifactId>zMenu-API</artifactId>
-            <version>3748cb4ca4</version>
+            <version>042cdaaccd</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
