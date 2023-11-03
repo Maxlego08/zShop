@@ -1,0 +1,54 @@
+####################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+#   zShop uses the zMenu API for inventory configurations.
+#   zMenu documentation : https://docs.zmenu.dev/
+#   zShop documentation : https://zshop.groupez.dev/
+#   Discord: https://discord.groupez.dev
+#   Sponsor: https://serveur-minecraft-vote.fr/
+#
+# It is advisable to read the file basic_configuration.yml and advanced_configuration.yml to better understand how zMenu works
+#
+# In this configuration you will find the pattern for the decoration
+#
+####################################################
+
+name: "zshop_decoration"
+size: 54
+items:
+  playerHead:
+    isPermanent: true
+    # Update the button when the player clicks on the inventory
+    updateOnClick: true
+    item:
+      playerHead: "%player%"
+      name: "&f%player%"
+      lore:
+        - ""
+        - "&f> &7Money&8: &e%vault_eco_balance_formatted% &f$"
+    slot: 4
+  decorations:
+    isPermanent: true
+    item:
+      material: STAINED_GLASS_PANE
+      data: 15
+      name: "&e"
+    slots:
+      - 0
+      - 1
+      - 7
+      - 8
+      - 9
+      - 17
+      - 36
+      - 44
+      - 45
+      - 46
+      - 52
+      - 53

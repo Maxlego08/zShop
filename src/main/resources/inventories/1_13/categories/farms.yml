@@ -1,0 +1,98 @@
+####################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+#   zShop uses the zMenu API for inventory configurations.
+#   zMenu documentation : https://docs.zmenu.dev/
+#   zShop documentation : https://zshop.groupez.dev/
+#   Discord: https://discord.groupez.dev
+#   Sponsor: https://serveur-minecraft-vote.fr/
+#
+# It is advisable to read the file basic_configuration.yml and advanced_configuration.yml to better understand how zMenu works
+#
+####################################################
+
+name: "&e★ #fca53eғᴀʀᴍs &e★"
+size: 54
+patterns:
+  - "zshop_decoration" # Pattern for the decoration of the inventory
+  - "zshop_return_home" # Pattern for the back button
+items:
+  carrot:
+    item:
+      material: CARROT
+      amount: 16
+    type: ZSHOP_ITEM
+    buyPrice: 30.0
+    sellPrice: 6.0
+    slot: 20
+  potato:
+    item:
+      material: POTATO
+      amount: 8
+    type: ZSHOP_ITEM
+    buyPrice: 15.0
+    sellPrice: 3.0
+    slot: 21
+  wheat:
+    item:
+      material: WHEAT
+    type: ZSHOP_ITEM
+    buyPrice: 2.0
+    sellPrice: 0.5
+    slot: 22
+  nether_wart:
+    item:
+      material: NETHER_WART
+    type: ZSHOP_ITEM
+    buyPrice: 5.0
+    sellPrice: 0.75
+    slot: 23
+  melon:
+    item:
+      material: MELON
+      amount: 24
+    type: ZSHOP_ITEM
+    buyPrice: 30.0
+    sellPrice: 6.0
+    slot: 24
+  sugar_cane:
+    item:
+      material: SUGAR_CANE
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.0
+    slot: 29
+  cactus:
+    item:
+      material: CACTUS
+    type: ZSHOP_ITEM
+    buyPrice: 30.0
+    sellPrice: 0.25
+    slot: 30
+  pumpkin:
+    item:
+      material: PUMPKIN
+    type: ZSHOP_ITEM
+    buyPrice: 10.0
+    sellPrice: 1.25
+    slot: 31
+  beetroot:
+    item:
+      material: BEETROOT
+    type: ZSHOP_ITEM
+    buyPrice: 50.0
+    sellPrice: 5.0
+    slot: 32
+  apple:
+    type: ZSHOP_ITEM
+    item:
+      material: APPLE
+    buyPrice: 20.0
+    sellPrice: 4.0
+    slot: 33

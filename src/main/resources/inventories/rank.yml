@@ -1,0 +1,107 @@
+#########################################################################################################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+# Documentation : https://zshop.groupez.dev/
+# Sponsor : https://serveur-minecraft-vote.fr/
+# zMenu Documentation : https://docs.zmenu.dev/
+#
+#########################################################################################################################################
+
+name: "&7Ranks"
+size: 54
+patterns:
+  - "zshop_decoration"
+items:
+  vip:
+    item:
+      name: "&bVIP"
+      material: IRON_CHESTPLATE
+      flags:
+        - HIDE_ATTRIBUTES
+      lore:
+        - ""
+        - "&6Rank perks:"
+        - " &f- &blight blue &fusername"
+        - " &f- &b2 &fhomes"
+        - " &f- &b10 &fminutes AFK"
+        - " &f- &fAccess to &b/craft"
+        - " &f- &fAccess to &b/ec"
+        - " &f- &fAccess to &b/feed"
+        - " &f- &b+1 &f Rare Daily Quest"
+        - " &f- &fCan &bfly &fin the hub"
+        - ""
+        - "&f> &r&7Click to &f&nbuy&r &7for &e100.000$"
+    type: ZSHOP_ITEM_CONFIRM
+    price: 100000.0
+    slot: 21
+    name: "Rank VIP"
+    messages:
+      - ""
+      - "&fThank you for purchasing the rank &bVIP"
+      - ""
+    commands:
+      - "lp user %player% permission set rank.vip"
+  vip+:
+    item:
+      name: "&aVIP+"
+      material: GOLD_CHESTPLATE
+      flags:
+        - HIDE_ATTRIBUTES
+      lore:
+        - ""
+        - "&6Rank perks:"
+        - " &f- &agreen &fusername"
+        - " &f- &a4 &fhomes"
+        - " &f- &a30 &fminutes AFK"
+        - " &f- &fAccess to &a/craft"
+        - " &f- &fAccess to &a/ec"
+        - " &f- &fAccess to &a/feed"
+        - " &f- &a+3 &f Rare Daily Quest"
+        - " &f- &fCan &afly &fin the hub"
+        - ""
+        - "&f> &r&7Click to &f&nbuy&r &7for &e250.000$"
+    type: ZSHOP_ITEM_CONFIRM
+    price: 250000.0
+    slot: 23
+    name: "Rank VIP+"
+    messages:
+      - ""
+      - "&fThank you for purchasing the rank &aVIP+"
+      - ""
+    commands:
+      - "lp user %player% permission set rank.vipplus"
+  legend:
+    item:
+      name: "&dLegend"
+      material: DIAMOND_CHESTPLATE
+      flags:
+        - HIDE_ATTRIBUTES
+      lore:
+        - ""
+        - "&6Rank perks:"
+        - " &f- &dpurple &fusername"
+        - " &f- &d10 &fhomes"
+        - " &f- &d60 &fminutes AFK"
+        - " &f- &fAccess to &d/craft"
+        - " &f- &fAccess to &d/ec"
+        - " &f- &fAccess to &d/feed"
+        - " &f- &d+5 &f Rare Daily Quest"
+        - " &f- &fCan &dfly &fin the hub"
+        - ""
+        - "&f> &r&7Click to &f&nbuy&r &7for &e700.000$"
+    type: ZSHOP_ITEM_CONFIRM
+    price: 700000.0
+    slot: 31
+    name: "Rank Legend"
+    messages:
+      - ""
+      - "&fThank you for purchasing the rank &dLegend"
+      - ""
+    commands:
+      - "lp user %player% permission set rank.legend"

@@ -1,0 +1,30 @@
+#########################################################################################################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+# Documentation : https://zshop.groupez.dev/
+# Sponsor : https://serveur-minecraft-vote.fr/
+# zMenu Documentation : https://docs.zmenu.dev/
+#
+#########################################################################################################################################
+
+# Read this: https://docs.zmenu.dev/configurations/commands
+commands:
+  # Main shop
+  zshop:
+    command: zshop
+    aliases:
+      - shop
+      - myshop
+    inventory: main_shop
+  # Other type of shop example
+  rank:
+    command: rank
+    aliases:
+      - zrank
+    inventory: rank

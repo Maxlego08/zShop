@@ -1,0 +1,89 @@
+####################################################
+#
+#  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
+#  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
+#  ░░███╔═╝╚█████╗░███████║██║░░██║██████╔╝
+#  ██╔══╝░░░╚═══██╗██╔══██║██║░░██║██╔═══╝░
+#  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
+#  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
+#
+#   zShop uses the zMenu API for inventory configurations.
+#   zMenu documentation : https://docs.zmenu.dev/
+#   zShop documentation : https://zshop.groupez.dev/
+#   Discord: https://discord.groupez.dev
+#   Sponsor: https://serveur-minecraft-vote.fr/
+#
+# It is advisable to read the file basic_configuration.yml and advanced_configuration.yml to better understand how zMenu works
+#
+####################################################
+
+name: "&7Mobs"
+size: 54
+patterns:
+  - "zshop_decoration"
+  - "zshop_return_home"
+items:
+  rotten_flesh:
+    item:
+      material: ROTTEN_FLESH
+    type: ZSHOP_ITEM
+    buyPrice: 15.0
+    sellPrice: 1.0
+    slot: 20
+  bone:
+    item:
+      material: BONE
+    type: ZSHOP_ITEM
+    buyPrice: 15.0
+    sellPrice: 1.0
+    slot: 21
+  gunpowder:
+    item:
+      material: 289
+    type: ZSHOP_ITEM
+    buyPrice: 15.0
+    sellPrice: 1.0
+    slot: 22
+  blaze_powder:
+    item:
+      material: BLAZE_POWDER
+    type: ZSHOP_ITEM
+    buyPrice: 50.0
+    sellPrice: 2.0
+    slot: 23
+  spider_eye:
+    item:
+      material: SPIDER_EYE
+    type: ZSHOP_ITEM
+    buyPrice: 15.0
+    sellPrice: 1.0
+    slot: 24
+  ender_pearl:
+    item:
+      material: ENDER_PEARL
+    type: ZSHOP_ITEM
+    buyPrice: 100.0
+    sellPrice: 5.0
+    maxStack: 16
+    slot: 29
+  egg:
+    item:
+      material: EGG
+    type: ZSHOP_ITEM
+    buyPrice: 15.0
+    sellPrice: 2.0
+    slot: 30
+  ink_sac:
+    item:
+      material: 351
+    type: ZSHOP_ITEM
+    buyPrice: 15.0
+    sellPrice: 1.0
+    slot: 31
+  LEATHER:
+    item:
+      material: LEATHER
+    type: ZSHOP_ITEM
+    buyPrice: 15.0
+    sellPrice: 0.25
+    slot: 32
