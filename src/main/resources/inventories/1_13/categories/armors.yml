@@ -1,4 +1,4 @@
-#########################################################################################################################################
+####################################################
 #
 #  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
 #  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
@@ -7,17 +7,21 @@
 #  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
 #  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
 #
-# Documentation : https://zshop.groupez.dev/
-# Sponsor : https://serveur-minecraft-vote.fr/
-# zMenu Documentation : https://docs.zmenu.dev/
+#   zShop uses the zMenu API for inventory configurations.
+#   zMenu documentation : https://docs.zmenu.dev/
+#   zShop documentation : https://zshop.groupez.dev/
+#   Discord: https://discord.groupez.dev
+#   Sponsor: https://serveur-minecraft-vote.fr/
 #
-#########################################################################################################################################
+# It is advisable to read the file basic_configuration.yml and advanced_configuration.yml to better understand how zMenu works
+#
+####################################################
 
 name: "&e★ #49ead6ᴀʀᴍᴏʀs &e★"
 size: 54
 patterns:
-  - "zshop_decoration"
-  - "zshop_return_home"
+  - "zshop_decoration" # Pattern for the decoration of the inventory
+  - "zshop_return_home" # Pattern for the back button
 items:
   diamond_helmet:
     item:
@@ -65,27 +69,27 @@ items:
     item:
       material: NETHERITE_CHESTPLATE
     type: ZSHOP_ITEM
-    buyPrice: 750.0
+    buyPrice: 75000.0
     sellPrice: 0
     slot: 30
   netherite_leggings:
     item:
       material: NETHERITE_LEGGINGS
     type: ZSHOP_ITEM
-    buyPrice: 700.0
+    buyPrice: 7000000.0
     sellPrice: 0
     slot: 31
   netherite_boots:
     item:
       material: NETHERITE_BOOTS
     type: ZSHOP_ITEM
-    buyPrice: 450.0
+    buyPrice: 4500000000.0
     sellPrice: 0
     slot: 32
   netherite_sword:
     item:
       material: NETHERITE_SWORD
     type: ZSHOP_ITEM
-    buyPrice: 400.0
+    buyPrice: 400000000000.0
     sellPrice: 0
     slot: 33
