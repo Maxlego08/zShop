@@ -1,13 +1,13 @@
 # Economies
-- EcoBits
-- EcoQuests
-- EcoItems
+- [ ] EcoBits 
+- [ ] EcoQuests
+- [ ] EcoItems
 
 # Plugins
-- WildTools
-- SuperiorSkyblock
-- WildChests
+- [ ] WildTools
+- [ ] SuperiorSkyblock
+- [ ] WildChests
 
 # Others
-- Spawners
-- Create addon advanced logs
+- [x] Spawners
+- [ ] Create addon advanced logs
