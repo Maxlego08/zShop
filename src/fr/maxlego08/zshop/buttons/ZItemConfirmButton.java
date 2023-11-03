@@ -87,6 +87,7 @@ public class ZItemConfirmButton extends ZButton implements ItemConfirmButton {
             logMessage = logMessage.replace("%name%", name);
             logMessage = logMessage.replace("%price%", String.valueOf(price));
             logMessage = logMessage.replace("%player%", player.getName());
+            logMessage = logMessage.replace("%uuid%", player.getUniqueId().toString());
 
             if (LogConfig.enableLogInConsole) Logger.info(logMessage);
 

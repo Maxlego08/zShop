@@ -128,6 +128,7 @@ public class ShopPlugin extends ZPlugin {
 
         this.limitManager.invalid();
 
+        reloadConfig();
         Config.load((YamlConfiguration) getConfig());
 
         super.reloadFiles();

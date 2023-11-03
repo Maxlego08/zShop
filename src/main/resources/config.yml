@@ -26,6 +26,16 @@
 # - /zshop » Open shop (alaises: /shop, /myshop)
 # - /rank » Open rank shop (alaises: /zrank)
 #
+# FAQ
+# 1. What is the limits.json file for?
+# - The limits.json file allows you to save the data linked to the server item limit. You must not touch the file.
+#
+# 2. What is the players folders for ?
+# - The players folder will contain all the information related to the limit of items per player. You must not touch the file.
+#
+# 3. What is the logs folders for ?
+# - The logs folder will contain the actions performed by the players, the logs will be deleted after 14 days (in the default configuration). You must not touch the file.
+#
 #########################################################################################################################################
 
 # Configuration version, lets you know if you need to update your configuration or not.
@@ -44,6 +54,7 @@ enableDebugTime: false
 # - PLAYERPOINTS (requires https://www.spigotmc.org/resources/playerpoints.80745/)
 # - VOTINGPLUGIN (requires https://www.spigotmc.org/resources/votingplugin.15358/)
 # - TOKENMANAGER (requires https://www.spigotmc.org/resources/tokenmanager.8610/)
+# - COINSENGINE (requires https://www.spigotmc.org/resources/84121/)
 defaultEconomy: "VAULT"
 
 # Default lore of ZSHOP_ITEM buttons
@@ -136,3 +147,15 @@ priceFormat:
     trillion: "t" # 1.000.000.000.000 = 1t
     quadrillion: "q" # 1.000.000.000.000.000 = 1q
     quintillion: "Q" # 1.000.000.000.000.000.000 = 1Q
+
+
+# NONE - Nothing append
+# CLOSE - Closes inventory after purchase
+# OPEN_BACK- Returns to previous inventory after purchase
+# RESET_AMOUNT - Set the number of items to one after purchase
+
+# Action performed when an item is purchased by a player
+purchaseAction: NONE
+
+# Action performed when an item is sold by a player
+sellAction: NONE

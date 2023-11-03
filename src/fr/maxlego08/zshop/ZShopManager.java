@@ -156,12 +156,12 @@ public class ZShopManager extends ZUtils implements ShopManager {
     @Override
     public void registerPlaceholders() {
         LocalPlaceholder localPlaceholder = LocalPlaceholder.getInstance();
-        localPlaceholder.register("item_max", (player, args) -> {
+
+        /*localPlaceholder.register("item_max", (player, args) -> {
             PlayerCache playerCache = getCache(player);
             ItemButton itemButton = playerCache.getItemButton();
             return itemButton == null ? "0" : String.valueOf(itemButton.getMaxStack());
-        });
-
+        });*/
         localPlaceholder.register("modifier_sell", (player, args) -> priceModifierPrice(getPriceModifier(player, PriceType.SELL), args.isEmpty()));
         localPlaceholder.register("modifier_buy", (player, args) -> priceModifierPrice(getPriceModifier(player, PriceType.BUY), args.isEmpty()));
 
@@ -253,9 +253,11 @@ public class ZShopManager extends ZUtils implements ShopManager {
             String[] suffixes = {"", AbbreviateNumberConfig.thousand, AbbreviateNumberConfig.millions, AbbreviateNumberConfig.billion, AbbreviateNumberConfig.trillion, AbbreviateNumberConfig.quadrillion, AbbreviateNumberConfig.quintillion};
 
             if (price >= 1000) {
-                long val = (long) price;
-                int sNum = (int) Math.floor((double) String.valueOf(val).length() / 3);
-                double sVal = (sNum != 0) ? val / Math.pow(1000, sNum) : val;
+                long value = (long) price;
+                int sNum = (int) (Math.log10(value) / 3);
+                double sVal = value / Math.pow(1000.0, sNum);
+
+                sVal = Double.parseDouble(new DecimalFormat("#.##").format(sVal).replace(",", "."));
 
                 if (sVal % 1 != 0) return String.format("%.1f%s", sVal, suffixes[sNum]);
                 else return String.format("%.0f%s", sVal, suffixes[sNum]);
@@ -455,7 +457,18 @@ public class ZShopManager extends ZUtils implements ShopManager {
         });
 
         prices.forEach((economy, price) -> economy.depositMoney(player, price));
-        String results = toList(shopActions.stream().map(action -> getMessage(Message.SELL_ALL_INFO, "%amount%", action.getItemStack().getAmount(), "%item%", getItemName(action.getItemStack()), "%price%", action.getItemButton().getEconomy().format(transformPrice(action.getPrice()), action.getPrice()))).collect(Collectors.toList()), Message.SELL_ALL_COLOR_SEPARATOR.msg(), Message.SELL_ALL_COLOR_INFO.msg());
+        List<ShopAction> fixedShopActions = new ArrayList<>();
+
+        shopActions.forEach(action -> {
+            Optional<ShopAction> optional = fixedShopActions.stream().filter(e -> e.getItemStack().isSimilar(action.getItemStack())).findFirst();
+            if (optional.isPresent()) {
+                ShopAction currentAction = optional.get();
+                currentAction.setPrice(currentAction.getPrice() + action.getPrice());
+                currentAction.getItemStack().setAmount(currentAction.getItemStack().getAmount() + action.getItemStack().getAmount());
+            } else fixedShopActions.add(action);
+        });
+
+        String results = toList(fixedShopActions.stream().map(action -> getMessage(Message.SELL_ALL_INFO, "%amount%", action.getItemStack().getAmount(), "%item%", getItemName(action.getItemStack()), "%price%", action.getItemButton().getEconomy().format(transformPrice(action.getPrice()), action.getPrice()))).collect(Collectors.toList()), Message.SELL_ALL_COLOR_SEPARATOR.msg(), Message.SELL_ALL_COLOR_INFO.msg());
 
         message(this.plugin, player, Message.SELL_ALL_MESSAGE, "%items%", results);
 

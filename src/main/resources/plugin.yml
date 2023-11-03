@@ -12,4 +12,5 @@ softdepend:
   - PlayerPoints
   - VotingPlugin
   - TokenManager
+  - CoinsEngine
 commands:

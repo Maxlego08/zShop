@@ -1,4 +1,4 @@
-#########################################################################################################################################
+####################################################
 #
 #  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
 #  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
@@ -7,18 +7,22 @@
 #  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
 #  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
 #
-# Documentation : https://zshop.groupez.dev/
-# Sponsor : https://serveur-minecraft-vote.fr/
-# zMenu Documentation : https://docs.zmenu.dev/
+#   zShop uses the zMenu API for inventory configurations.
+#   zMenu documentation : https://docs.zmenu.dev/
+#   zShop documentation : https://zshop.groupez.dev/
+#   Discord: https://discord.groupez.dev
+#   Sponsor: https://serveur-minecraft-vote.fr/
 #
-#########################################################################################################################################
+# It is advisable to read the file basic_configuration.yml and advanced_configuration.yml to better understand how zMenu works
+#
+####################################################
 
 name: "&e★ #bb2008ʀᴇᴅsᴛᴏɴᴇs &e★"
 size: 54
 patterns:
-  - "zshop_decoration"
-  - "zshop_return_home"
-  - "zshop_pagination"
+  - "zshop_decoration" # Pattern for the decoration of the inventory
+  - "zshop_return_home" # Pattern for the back button
+  - "zshop_pagination" # Pattern for the next and previous buttons
 items:
   # First page
   redstone:

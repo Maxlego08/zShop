@@ -18,6 +18,7 @@
 # - PLAYERPOINTS (requires https://www.spigotmc.org/resources/playerpoints.80745/)
 # - VOTINGPLUGIN (requires https://www.spigotmc.org/resources/votingplugin.15358/)
 # - TOKENMANAGER (requires https://www.spigotmc.org/resources/tokenmanager.8610/)
+# - COINSENGINE (requires https://www.spigotmc.org/resources/84121/)
 #
 #########################################################################################################################################
 
@@ -66,3 +67,10 @@ economies: # Default Economy
     currency: "%price% P" # Placeholder to display the price
     isEnable: true # Activate or not the economy
     denyMessage: "&cYou don’t have enough points to buy this." # Message if the player does not have the money for a purchase.
+  # coinsEngine:
+  #  name: coinsengine # Name of the economy, the name can be specified in the items
+  #  type: coinsengine # Economy type
+  #  currency: "%price% C" # Placeholder to display the price
+  #  isEnable: true # Activate or not the economy
+  #  currencyName: "coins" # Coins engine currency name
+  #  denyMessage: "&cYou don’t have enough points to buy this." # Message if the player does not have the money for a purchase.

@@ -1,4 +1,4 @@
-#########################################################################################################################################
+####################################################
 #
 #  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
 #  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
@@ -7,11 +7,17 @@
 #  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
 #  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
 #
-# Documentation : https://zshop.groupez.dev/
-# Sponsor : https://serveur-minecraft-vote.fr/
-# zMenu Documentation : https://docs.zmenu.dev/
+#   zShop uses the zMenu API for inventory configurations.
+#   zMenu documentation : https://docs.zmenu.dev/
+#   zShop documentation : https://zshop.groupez.dev/
+#   Discord: https://discord.groupez.dev
+#   Sponsor: https://serveur-minecraft-vote.fr/
 #
-#########################################################################################################################################
+# It is advisable to read the file basic_configuration.yml and advanced_configuration.yml to better understand how zMenu works
+#
+# In this configuration you will find the pattern for the decoration
+#
+####################################################
 
 name: "zshop_decoration"
 size: 54
@@ -21,8 +27,6 @@ items:
     # Update the button when the player clicks on the inventory
     updateOnClick: true
     item:
-      material: SKULL_ITEM
-      data: 3
       playerHead: "%player%"
       name: "&f%player%"
       lore:

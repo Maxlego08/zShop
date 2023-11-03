@@ -9,10 +9,10 @@ public class LogConfig {
     public static boolean enableLogInConsole = true;
     public static String dateFormatLog = "d/M/yyyy HH:mm:ss";
     public static long expireLogDay = 14;
-    public static String buyMessage = "%player% has purchased x%amount% %item% for %price%.";
-    public static String buyConfirmMessage = "%player% has purchased %name% for %price%.";
-    public static String sellMessage = "%player% has just sold x%amount% %item% for %price%.";
-    public static String sellAllMessage = "%player% sold all %amount% x %item% for %price% to %shop% shop";
+    public static String buyMessage = "%player% (%uuid%) has purchased x%amount% %item% for %price%.";
+    public static String buyConfirmMessage = "%player% (%uuid%) has purchased %name% for %price%.";
+    public static String sellMessage = "%player% (%uuid%) has just sold x%amount% %item% for %price%.";
+    public static String sellAllMessage = "%players% (%uuid%) sold %items% (Sell all)";
 
     private LogConfig() {
     }

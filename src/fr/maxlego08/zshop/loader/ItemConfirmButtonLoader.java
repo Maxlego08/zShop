@@ -1,6 +1,7 @@
 package fr.maxlego08.zshop.loader;
 
 import fr.maxlego08.menu.api.button.Button;
+import fr.maxlego08.menu.api.button.DefaultButtonValue;
 import fr.maxlego08.menu.api.loader.ButtonLoader;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.buttons.ItemConfirmButton;
@@ -39,7 +40,7 @@ public class ItemConfirmButtonLoader implements ButtonLoader {
     }
 
     @Override
-    public Button load(YamlConfiguration configuration, String path) {
+    public Button load(YamlConfiguration configuration, String path, DefaultButtonValue defaultButtonValue) {
 
         double price = configuration.getDouble(path + "price", 0.0);
 

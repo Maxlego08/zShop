@@ -18,19 +18,14 @@ public class Config {
     public static boolean enableDebugTime = false;
     public static boolean disableItemFlag = true;
     public static boolean enableInventoryFullBuy = true;
+    public static ConfirmAction sellConfirmationConfig;
+    public static ConfirmAction purchaseConfirmationConfig;
     public static String defaultEconomy = "VAULT";
     public static String sellInventoryName = "shop_sell";
     public static String confirmInventoryName = "confirm";
     public static String buyInventoryName = "shop_buy";
     public static String dateFormat = "EEEE, d MMM yyyy HH:mm:ss";
-    public static List<String> defaultLore = Arrays.asList(
-            "&f» &7Buying price&8: &e%buyPrice%",
-            "&f» &7Selling price&8: &e%sellPrice%",
-            "",
-            "&f➥ &r&7Left click to &f&nʙᴜʏ",
-            "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ",
-            "&f➥ &r&7Right click to &f&nsᴇʟʟ"
-    );
+    public static List<String> defaultLore = Arrays.asList("&f» &7Buying price&8: &e%buyPrice%", "&f» &7Selling price&8: &e%sellPrice%", "", "&f➥ &r&7Left click to &f&nʙᴜʏ", "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ", "&f➥ &r&7Right click to &f&nsᴇʟʟ");
     public static List<PriceModifier> priceModifiers = new ArrayList<>();
 
     private Config() {
@@ -59,6 +54,8 @@ public class Config {
         LogConfig.load(configuration);
         PriceFormatConfig.load(configuration);
         AbbreviateNumberConfig.load(configuration);
-    }
 
+        sellConfirmationConfig = ConfirmAction.valueOf(configuration.getString("sellAction", "NONE"));
+        purchaseConfirmationConfig = ConfirmAction.valueOf(configuration.getString("purchaseAction", "NONE"));
+    }
 }

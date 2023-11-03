@@ -1,6 +1,5 @@
 package fr.maxlego08.zshop.api;
 
-import fr.maxlego08.menu.api.button.Button;
 import fr.maxlego08.menu.api.event.events.ButtonLoadEvent;
 import fr.maxlego08.zshop.api.buttons.ItemButton;
 import fr.maxlego08.zshop.api.buttons.ItemConfirmButton;
@@ -12,8 +11,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
+/**
+ * @author Maxlego08
+ * Manage all the essentials of the plugin, open inventories, retrieve items!
+ */
 public interface ShopManager extends Listener {
 
     /**

@@ -1,4 +1,4 @@
-#########################################################################################################################################
+####################################################
 #
 #  ███████╗░██████╗██╗░░██╗░█████╗░██████╗░
 #  ╚════██║██╔════╝██║░░██║██╔══██╗██╔══██╗
@@ -7,20 +7,28 @@
 #  ███████╗██████╔╝██║░░██║╚█████╔╝██║░░░░░
 #  ╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░
 #
-# Documentation : https://zshop.groupez.dev/
-# Sponsor : https://serveur-minecraft-vote.fr/
-# zMenu Documentation : https://docs.zmenu.dev/
+#   zShop uses the zMenu API for inventory configurations.
+#   zMenu documentation : https://docs.zmenu.dev/
+#   zShop documentation : https://zshop.groupez.dev/
+#   Discord: https://discord.groupez.dev
+#   Sponsor: https://serveur-minecraft-vote.fr/
 #
-#########################################################################################################################################
+# It is advisable to read the file basic_configuration.yml and advanced_configuration.yml to better understand how zMenu works
+#
+# In this configuration you will find the purchase inventory, this inventory allows to purchase an item
+#
+####################################################
 
 name: "&e★ &3ᴘᴜʀᴄʜᴀsᴇ &e★"
 size: 54
 patterns:
-  - "zshop_decoration"
-  - "zshop_back"
-  - "zshop_choose_amount"
+  - "zshop_decoration" # Pattern for the decoration of the inventory
+  - "zshop_back" # Pattern for go back
+  - "zshop_choose_amount" # Pattern for choose amount of item
 items:
   show_item:
+    # For the ZSHOP_SHOW button the displayed item will be the one the player has selected, but an item is still present in the configuration in case there is an error with the plugin
+    # If this happens, please contact the plugin developer on discord
     item:
       material: BARRIER
       name: "&cError"
