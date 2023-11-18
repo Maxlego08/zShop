@@ -14,6 +14,7 @@ public enum Plugins {
 	TOKENMANAGER("TokenManager"),
 	SHOPGUIPLUS("ShopGUIPlus"),
 	COINSENGINE("CoinsEngine"),
+	ZMENU("zMenu"),
 
 	;
 
