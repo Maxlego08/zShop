@@ -31,10 +31,12 @@ import fr.maxlego08.zshop.placeholder.Placeholder;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.save.MessageLoader;
 import fr.maxlego08.zshop.zcore.ZPlugin;
+import fr.maxlego08.zshop.zcore.logger.Logger;
 import fr.maxlego08.zshop.zcore.utils.plugins.Metrics;
 import fr.maxlego08.zshop.zcore.utils.plugins.Plugins;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 
@@ -48,15 +50,41 @@ public class ShopPlugin extends ZPlugin {
 
     private final EconomyManager economyManager = new ZEconomyManager(this);
     private final ShopManager shopManager = new ZShopManager(this);
-    private HistoryManager historyManager;
     private final ZLimitManager limitManager = new ZLimitManager(this);
+    public int minimumVersion = 1016;
+    private HistoryManager historyManager;
     private InventoryManager inventoryManager;
     private CommandManager commandManager;
     private PatternManager patternManager;
     private ButtonManager buttonManager;
+    private boolean isLoad = false;
+
+    private String transformNumberToString(int number) {
+        String numberStr = String.valueOf(number);
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < numberStr.length(); i++) {
+            result.append(numberStr.charAt(i));
+            if (i < numberStr.length() - 1) {
+                result.append('.');
+            }
+        }
+        return result.toString();
+    }
 
     @Override
     public void onEnable() {
+
+        Plugin plugin = getPlugin(Plugins.ZMENU);
+        int version = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
+        if (version < this.minimumVersion) {
+            Logger.info("");
+            Logger.info("");
+            Logger.info("You must use a newer version of zMenu. Minimum version: " + transformNumberToString(this.minimumVersion), Logger.LogType.ERROR);
+            Logger.info("");
+            Logger.info("");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
         LocalPlaceholder placeholder = LocalPlaceholder.getInstance();
         placeholder.setPrefix("zshop");
@@ -109,6 +137,8 @@ public class ShopPlugin extends ZPlugin {
         this.limitManager.deletes();
         this.limitManager.verifyPlayersLimit();
 
+        this.isLoad = true;
+
         this.postEnable();
     }
 
@@ -117,8 +147,10 @@ public class ShopPlugin extends ZPlugin {
 
         this.preDisable();
 
-        this.limitManager.save(this.getPersist());
-        this.saveFiles();
+        if (this.isLoad) {
+            this.limitManager.save(this.getPersist());
+            this.saveFiles();
+        }
 
         this.postDisable();
     }
