@@ -64,7 +64,7 @@ public interface ShopManager extends Listener {
      * @param player     the player
      * @param itemButton the current item button
      */
-    void openBuy(Player player, ItemButton itemButton);
+    void openBuy(Player player, ItemButton itemButton, String inventoryName);
 
     /**
      * Open sell inventory
@@ -72,7 +72,7 @@ public interface ShopManager extends Listener {
      * @param player     the player
      * @param itemButton the current item button
      */
-    void openSell(Player player, ItemButton itemButton);
+    void openSell(Player player, ItemButton itemButton, String inventoryName);
 
     /**
      * Open confirm inventory
@@ -80,7 +80,7 @@ public interface ShopManager extends Listener {
      * @param player     the player
      * @param itemButton the current item button
      */
-    void openConfirm(Player player, ItemConfirmButton itemButton);
+    void openConfirm(Player player, ItemConfirmButton itemButton, String inventoryName);
 
     /**
      * Allows to return the cache of the player, data will be saved in cache according to the player to avoid having to calculate several times' data.

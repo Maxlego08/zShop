@@ -92,8 +92,12 @@ public class ItemButtonLoader implements ButtonLoader {
         if (configuration.contains(path + "playerBuyLimit")) {
             Loader<Limit> loader = new LimitLoader(plugin, material, LimitType.PLAYER_BUY);
             playerBuyLimit = loader.load(configuration, path + "playerBuyLimit.");
-            this.plugin.getLimiterManager().create(playerBuyLimit);}
+            this.plugin.getLimiterManager().create(playerBuyLimit);
+        }
 
-        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit, enableLog, affectByPriceModifier, mob);
+        String inventoryBuy = configuration.getString(path + "inventoryBuy", null);
+        String inventorySell = configuration.getString(path + "inventorySell", null);
+
+        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit, enableLog, affectByPriceModifier, mob, inventoryBuy, inventorySell);
     }
 }

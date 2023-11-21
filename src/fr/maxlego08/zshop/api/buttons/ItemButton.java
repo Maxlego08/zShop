@@ -104,4 +104,8 @@ public interface ItemButton extends EconomyAction {
 
     String nbtMobSpawnerKey = "zshop-mob";
 
+    String getInventoryBuy();
+
+    String getInventorySell();
+
 }
