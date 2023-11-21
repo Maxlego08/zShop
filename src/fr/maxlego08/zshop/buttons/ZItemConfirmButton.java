@@ -27,8 +27,9 @@ public class ZItemConfirmButton extends ZButton implements ItemConfirmButton {
     private final boolean enableLog;
     private final List<String> messages;
     private final String name;
+    private final String inventoryConfirm;
 
-    public ZItemConfirmButton(ShopPlugin plugin, ShopEconomy economy, double price, List<String> commands, boolean enableLog, List<String> messages, String name) {
+    public ZItemConfirmButton(ShopPlugin plugin, ShopEconomy economy, double price, List<String> commands, boolean enableLog, List<String> messages, String name, String inventoryConfirm) {
         this.plugin = plugin;
         this.shopEconomy = economy;
         this.price = price;
@@ -36,6 +37,7 @@ public class ZItemConfirmButton extends ZButton implements ItemConfirmButton {
         this.enableLog = enableLog;
         this.messages = messages;
         this.name = name;
+        this.inventoryConfirm = inventoryConfirm;
     }
 
     @Override
@@ -105,7 +107,7 @@ public class ZItemConfirmButton extends ZButton implements ItemConfirmButton {
 
     @Override
     public void onClick(Player player, InventoryClickEvent event, InventoryDefault inventory, int slot) {
-        this.plugin.getShopManager().openConfirm(player, this);
+        this.plugin.getShopManager().openConfirm(player, this, this.inventoryConfirm);
     }
 
     @Override
@@ -116,5 +118,10 @@ public class ZItemConfirmButton extends ZButton implements ItemConfirmButton {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public String getInventoryConfirm() {
+        return this.inventoryConfirm;
     }
 }

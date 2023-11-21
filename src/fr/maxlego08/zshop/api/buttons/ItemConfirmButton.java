@@ -18,4 +18,6 @@ public interface ItemConfirmButton extends EconomyAction {
 
     String getName();
 
+    String getInventoryConfirm();
+
 }

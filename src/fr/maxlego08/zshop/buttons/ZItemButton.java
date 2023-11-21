@@ -56,8 +56,10 @@ public class ZItemButton extends ZButton implements ItemButton {
     private final boolean enableLog;
     private final boolean affectByPriceModifier;
     private final String mob;
+    private final String inventoryBuy;
+    private final String inventorySell;
 
-    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog, boolean affectByPriceModifier, String mob) {
+    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog, boolean affectByPriceModifier, String mob, String inventoryBuy, String inventorySell) {
         this.plugin = plugin;
         this.shopManager = plugin.getShopManager();
         this.sellPrice = sellPrice;
@@ -75,6 +77,8 @@ public class ZItemButton extends ZButton implements ItemButton {
         this.enableLog = enableLog;
         this.affectByPriceModifier = affectByPriceModifier;
         this.mob = mob;
+        this.inventoryBuy = inventoryBuy;
+        this.inventorySell = inventorySell;
     }
 
     @Override
@@ -419,6 +423,16 @@ public class ZItemButton extends ZButton implements ItemButton {
     }
 
     @Override
+    public String getInventoryBuy() {
+        return this.inventoryBuy;
+    }
+
+    @Override
+    public String getInventorySell() {
+        return this.inventorySell;
+    }
+
+    @Override
     public List<String> getBuyCommands() {
         return this.buyCommands;
     }
@@ -475,7 +489,7 @@ public class ZItemButton extends ZButton implements ItemButton {
     public void onRightClick(Player player, InventoryClickEvent event, InventoryDefault inventory, int slot) {
         super.onRightClick(player, event, inventory, slot);
         if (canSell()) {
-            this.plugin.getShopManager().openSell(player, this);
+            this.plugin.getShopManager().openSell(player, this, this.inventorySell);
         }
     }
 
@@ -491,7 +505,7 @@ public class ZItemButton extends ZButton implements ItemButton {
     public void onLeftClick(Player player, InventoryClickEvent event, InventoryDefault inventory, int slot) {
         super.onLeftClick(player, event, inventory, slot);
         if (canBuy()) {
-            this.plugin.getShopManager().openBuy(player, this);
+            this.plugin.getShopManager().openBuy(player, this, this.inventoryBuy);
         }
     }
 

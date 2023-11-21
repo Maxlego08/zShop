@@ -283,18 +283,18 @@ public class ZShopManager extends ZUtils implements ShopManager {
     }
 
     @Override
-    public void openBuy(Player player, ItemButton itemButton) {
-        this.openInventory(player, itemButton, Config.buyInventoryName);
+    public void openBuy(Player player, ItemButton itemButton, String inventoryName) {
+        this.openInventory(player, itemButton, inventoryName == null ? Config.buyInventoryName : inventoryName);
     }
 
     @Override
-    public void openSell(Player player, ItemButton itemButton) {
-        this.openInventory(player, itemButton, Config.sellInventoryName);
+    public void openSell(Player player, ItemButton itemButton, String inventoryName) {
+        this.openInventory(player, itemButton, inventoryName == null ? Config.sellInventoryName : inventoryName);
     }
 
     @Override
-    public void openConfirm(Player player, ItemConfirmButton itemButton) {
-        this.openInventory(player, itemButton, Config.confirmInventoryName);
+    public void openConfirm(Player player, ItemConfirmButton itemButton, String inventoryName) {
+        this.openInventory(player, itemButton, inventoryName == null ? Config.confirmInventoryName : inventoryName);
     }
 
     /**

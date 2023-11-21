@@ -59,7 +59,8 @@ public class ItemConfirmButtonLoader implements ButtonLoader {
             throw new EconomyNotFoundException("Economy " + economyName + " was not found for button " + path);
         }
         ShopEconomy shopEconomy = optional.get();
+        String inventoryConfirm = configuration.getString(path + "inventoryConfirm", null);
 
-        return new ZItemConfirmButton(plugin, shopEconomy, price, commands, enableLog, messages, name);
+        return new ZItemConfirmButton(plugin, shopEconomy, price, commands, enableLog, messages, name, inventoryConfirm);
     }
 }
