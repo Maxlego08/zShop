@@ -58,8 +58,9 @@ public class ZItemButton extends ZButton implements ItemButton {
     private final String mob;
     private final String inventoryBuy;
     private final String inventorySell;
+    private final boolean unstackable;
 
-    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog, boolean affectByPriceModifier, String mob, String inventoryBuy, String inventorySell) {
+    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog, boolean affectByPriceModifier, String mob, String inventoryBuy, String inventorySell, boolean unstackable) {
         this.plugin = plugin;
         this.shopManager = plugin.getShopManager();
         this.sellPrice = sellPrice;
@@ -79,6 +80,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         this.mob = mob;
         this.inventoryBuy = inventoryBuy;
         this.inventorySell = inventorySell;
+        this.unstackable = unstackable;
     }
 
     @Override
@@ -262,9 +264,21 @@ public class ZItemButton extends ZButton implements ItemButton {
         itemStack.setAmount(amount);
 
         if (this.giveItem) {
-            if (amount > 64) {
-                manager.giveItem(player, amount, itemStack);
-            } else manager.give(player, itemStack);
+
+            if (this.isUnStackable()) { // If the item cannot be stacked, create the item with an amount of 1 and add it x times in the inventory
+
+                ItemStack clonedItemStack = itemStack.clone();
+                clonedItemStack.setAmount(1);
+
+                for (int i = 0; i != amount; i++) {
+                    manager.give(player, clonedItemStack);
+                }
+
+            } else {
+                if (amount > 64) {
+                    manager.giveItem(player, amount, itemStack);
+                } else manager.give(player, itemStack);
+            }
         }
         /* END BUILD ITEM AND GIVE IT TO PLAYER */
 
@@ -554,5 +568,10 @@ public class ZItemButton extends ZButton implements ItemButton {
     @Override
     public boolean enableLog() {
         return this.enableLog;
+    }
+
+    @Override
+    public boolean isUnStackable() {
+        return this.unstackable;
     }
 }
