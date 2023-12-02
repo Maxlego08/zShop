@@ -52,6 +52,7 @@ public class ItemButtonLoader implements ButtonLoader {
         boolean giveItem = configuration.getBoolean(path + "giveItem", true);
         boolean enableLog = configuration.getBoolean(path + "enableLog", true);
         boolean affectByPriceModifier = configuration.getBoolean(path + "affectByPriceModifier", true);
+        boolean unstackable = configuration.getBoolean(path + "unstackable", false);
         List<String> buyCommands = configuration.getStringList(path + "buyCommands");
         List<String> sellCommands = configuration.getStringList(path + "sellCommands");
         String mob = configuration.getString(path + "mob", null);
@@ -98,6 +99,6 @@ public class ItemButtonLoader implements ButtonLoader {
         String inventoryBuy = configuration.getString(path + "inventoryBuy", null);
         String inventorySell = configuration.getString(path + "inventorySell", null);
 
-        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit, enableLog, affectByPriceModifier, mob, inventoryBuy, inventorySell);
+        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit, enableLog, affectByPriceModifier, mob, inventoryBuy, inventorySell, unstackable);
     }
 }
