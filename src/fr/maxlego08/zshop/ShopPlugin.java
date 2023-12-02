@@ -51,7 +51,7 @@ public class ShopPlugin extends ZPlugin {
     private final EconomyManager economyManager = new ZEconomyManager(this);
     private final ShopManager shopManager = new ZShopManager(this);
     private final ZLimitManager limitManager = new ZLimitManager(this);
-    public int minimumVersion = 1016;
+    public int minimumVersion = 1017;
     private HistoryManager historyManager;
     private InventoryManager inventoryManager;
     private CommandManager commandManager;
