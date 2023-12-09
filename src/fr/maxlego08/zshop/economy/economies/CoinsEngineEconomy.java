@@ -5,7 +5,7 @@ import org.bukkit.plugin.Plugin;
 import su.nightexpress.coinsengine.api.CoinsEngineAPI;
 import su.nightexpress.coinsengine.api.currency.Currency;
 
-public class CoinsEngineEconomy extends DefaultExample {
+public class CoinsEngineEconomy extends DefaultEconomy {
 
     private final Currency currency;
 

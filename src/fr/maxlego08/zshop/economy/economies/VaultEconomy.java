@@ -1,12 +1,11 @@
 package fr.maxlego08.zshop.economy.economies;
 
-import fr.maxlego08.zshop.api.economy.ShopEconomy;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-public class VaultEconomy extends DefaultExample {
+public class VaultEconomy extends DefaultEconomy {
 
     private final Economy economy;
 

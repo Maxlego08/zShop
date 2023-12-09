@@ -4,7 +4,7 @@ import com.bencodez.votingplugin.VotingPluginHooks;
 import com.bencodez.votingplugin.user.UserManager;
 import org.bukkit.OfflinePlayer;
 
-public class VotingEconomy extends DefaultExample {
+public class VotingEconomy extends DefaultEconomy {
 
     private final UserManager userManager = VotingPluginHooks.getInstance().getUserManager();
 
