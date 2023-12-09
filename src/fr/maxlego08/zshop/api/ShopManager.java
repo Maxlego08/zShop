@@ -100,7 +100,8 @@ public interface ShopManager extends Listener {
     Optional<PriceModifier> getPriceModifier(Player player, PriceType priceType);
 
     /**
-     * Get an ItemButton
+     * Get an ItemButton. Attention, here only the string of the material will check. So if your material is not the name of the material it will not work.
+     * For example, if your material is NETHER_STALK and in the configuration you put 372, it will not work.
      *
      * @param material {@link Material}
      * @return optional of {@link ItemButton}
@@ -108,7 +109,8 @@ public interface ShopManager extends Listener {
     Optional<ItemButton> getItemButton(Material material);
 
     /**
-     * Get an ItemButton
+     * Get an ItemButton. Attention, here only the string of the material will check. So if your material is not the name of the material it will not work.
+     * For example, if your material is NETHER_STALK and in the configuration you put 372, it will not work.
      *
      * @param material as string
      * @return optional of {@link ItemButton}
