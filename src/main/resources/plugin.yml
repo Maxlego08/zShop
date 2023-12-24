@@ -3,7 +3,7 @@ author: Maxlego08
 main: fr.maxlego08.zshop.ShopPlugin
 website: https://groupez.dev
 description: Shop plugin
-version: 3.0.3
+version: 3.0.4
 api-version: 1.13
 depend:
   - zMenu
