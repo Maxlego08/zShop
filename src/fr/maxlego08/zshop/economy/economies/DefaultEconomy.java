@@ -4,13 +4,13 @@ import fr.maxlego08.zshop.api.economy.ShopEconomy;
 import fr.maxlego08.zshop.zcore.utils.ZUtils;
 import org.bukkit.OfflinePlayer;
 
-public abstract class DefaultExample extends ZUtils implements ShopEconomy {
+public abstract class DefaultEconomy extends ZUtils implements ShopEconomy {
 
     private final String name;
     private final String currency;
     private final String denyMessage;
 
-    public DefaultExample(String name, String currency, String denyMessage) {
+    public DefaultEconomy(String name, String currency, String denyMessage) {
         this.name = name;
         this.currency = currency;
         this.denyMessage = denyMessage;

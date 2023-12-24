@@ -5,7 +5,7 @@ import me.realized.tokenmanager.api.TokenManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 
-public class TokenManagerEconomy extends DefaultExample {
+public class TokenManagerEconomy extends DefaultEconomy {
 
     private final TokenManager tokenManager;
 

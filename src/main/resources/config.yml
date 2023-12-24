@@ -55,6 +55,7 @@ enableDebugTime: false
 # - VOTINGPLUGIN (requires https://www.spigotmc.org/resources/votingplugin.15358/)
 # - TOKENMANAGER (requires https://www.spigotmc.org/resources/tokenmanager.8610/)
 # - COINSENGINE (requires https://www.spigotmc.org/resources/84121/)
+# - BEASTTOKEN (requires https://www.spigotmc.org/resources/20806/)
 defaultEconomy: "VAULT"
 
 # Default lore of ZSHOP_ITEM buttons

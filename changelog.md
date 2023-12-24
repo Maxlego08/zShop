@@ -1,5 +1,11 @@
 # Unreleased
 
+# 3.0.4
+
+- Correction of price display during purchase and sale, taking into account events.
+- Ajout de l'économie BeastToken
+- Fix NPE with ``ShopManger#getItemButton`` method
+
 # 3.0.3
 
 - Add ``unstackable`` tag for ZSHOP_ITEM, allows you to choose the number of items to buy but not receive them stacked. Perfect for potions for example.

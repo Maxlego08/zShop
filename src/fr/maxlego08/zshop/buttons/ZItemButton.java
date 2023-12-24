@@ -283,7 +283,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         /* END BUILD ITEM AND GIVE IT TO PLAYER */
 
         String itemName = manager.getItemName(itemStack);
-        String buyPrice = getBuyPriceFormat(player, amount);
+        String buyPrice = this.shopEconomy.format(this.shopManager.transformPrice(currentPrice), currentPrice);
         manager.message(this.plugin, player, Message.BUY_ITEM, "%amount%", String.valueOf(amount), "%item%", itemName, "%price%", buyPrice);
 
         commands(amount, itemName, buyPrice, HistoryType.BUY, player);
@@ -388,7 +388,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         if (currentPrice > 0) this.shopEconomy.depositMoney(player, currentPrice);
 
         String itemName = manager.getItemName(itemStack);
-        String sellPrice = getSellPriceFormat(player, realAmount);
+        String sellPrice = this.shopEconomy.format(this.shopManager.transformPrice(currentPrice), currentPrice);
         manager.message(this.plugin, player, Message.SELL_ITEM, "%amount%", String.valueOf(realAmount), "%item%", itemName, "%price%", sellPrice);
 
         commands(realAmount, itemName, sellPrice, HistoryType.SELL, player);

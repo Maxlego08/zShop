@@ -6,7 +6,7 @@ import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 
-public class PlayerPointEconomy extends DefaultExample {
+public class PlayerPointEconomy extends DefaultEconomy {
 
     private final PlayerPointsAPI playerPointsApi;
 

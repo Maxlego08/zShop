@@ -7,6 +7,7 @@ import fr.maxlego08.menu.zcore.utils.loader.Loader;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.economy.EconomyManager;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import fr.maxlego08.zshop.economy.economies.BeastTokenEconomy;
 import fr.maxlego08.zshop.economy.economies.CoinsEngineEconomy;
 import fr.maxlego08.zshop.economy.economies.ExperienceEconomy;
 import fr.maxlego08.zshop.economy.economies.ItemEconomy;
@@ -101,6 +102,10 @@ public class ZEconomyManager implements EconomyManager {
                 case "level":
                     if (Config.enableDebug) Logger.info("Register Level economy with name " + name);
                     registerEconomy(new LevelEconomy(name, currency, denyMessage));
+                    break;
+                case "beasttoken":
+                    if (Config.enableDebug) Logger.info("Register BeastToken economy with name " + name);
+                    registerEconomy(new BeastTokenEconomy(name, currency, denyMessage));
                     break;
                 case "experience":
                     if (Config.enableDebug) Logger.info("Register Experience economy with name " + name);

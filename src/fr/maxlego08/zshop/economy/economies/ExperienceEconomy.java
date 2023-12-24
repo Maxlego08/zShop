@@ -4,7 +4,7 @@ import fr.maxlego08.zshop.zcore.logger.Logger;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-public class ExperienceEconomy extends DefaultExample {
+public class ExperienceEconomy extends DefaultEconomy {
 
     public ExperienceEconomy(String name, String currency, String denyMessage) {
         super(name, currency, denyMessage);
