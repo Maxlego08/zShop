@@ -528,6 +528,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         ItemStack itemStack = super.getCustomItemStack(player);
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> itemLore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
+        if (itemLore.size() == this.lore.size()) itemLore = new ArrayList<>();
 
         String sellPrice = getSellPriceFormat(player, itemStack.getAmount());
         String buyPrice = getBuyPriceFormat(player, itemStack.getAmount());
@@ -535,8 +536,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         String realSellPrice = getSellPriceFormat(itemStack.getAmount());
         String realBuyPrice = getBuyPriceFormat(itemStack.getAmount());
 
-        this.lore.forEach(line -> {
-
+        for (String line : this.lore) {
             line = line.replace("%sellPrice%", sellPrice);
             line = line.replace("%buyPrice%", buyPrice);
             line = line.replace("%realSellPrice%", realSellPrice);
@@ -561,7 +561,7 @@ public class ZItemButton extends ZButton implements ItemButton {
             /* END PLAYER LIMIT */
 
             itemLore.add(line);
-        });
+        }
         return itemLore;
     }
 
