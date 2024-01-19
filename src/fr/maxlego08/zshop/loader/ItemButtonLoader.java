@@ -44,6 +44,8 @@ public class ItemButtonLoader implements ButtonLoader {
     @Override
     public Button load(YamlConfiguration configuration, String path, DefaultButtonValue defaultButtonValue) {
 
+        String defaultEconomy = configuration.getString("economy", Config.defaultEconomy);
+
         double sellPrice = configuration.getDouble(path + "sellPrice", 0.0);
         double buyPrice = configuration.getDouble(path + "buyPrice", 0.0);
 
@@ -57,7 +59,7 @@ public class ItemButtonLoader implements ButtonLoader {
         List<String> sellCommands = configuration.getStringList(path + "sellCommands");
         String mob = configuration.getString(path + "mob", null);
 
-        String economyName = configuration.getString(path + "economy", Config.defaultEconomy);
+        String economyName = configuration.getString(path + "economy", defaultEconomy);
         Optional<ShopEconomy> optional = plugin.getEconomyManager().getEconomy(economyName);
         if (!optional.isPresent()) {
             throw new EconomyNotFoundException("Economy " + economyName + " was not found for button " + path);

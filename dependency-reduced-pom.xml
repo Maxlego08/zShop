@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.maxlego08</groupId>
   <artifactId>zshop</artifactId>
-  <version>3.0.4</version>
+  <version>3.0.5</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
@@ -122,7 +122,7 @@
     <dependency>
       <groupId>com.github.Maxlego08</groupId>
       <artifactId>zMenu-API</artifactId>
-      <version>042cdaaccd</version>
+      <version>6655d3298d</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
