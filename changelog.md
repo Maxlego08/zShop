@@ -1,5 +1,7 @@
 # Unreleased
 
+# 3.0.6
+
 - Fix error with MenuItemStack cache on purchase and sell items
 - Added ``economy`` configuration for each inventory. You can now choose the default economy by file 
 
