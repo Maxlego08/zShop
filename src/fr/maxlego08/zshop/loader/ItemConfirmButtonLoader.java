@@ -42,6 +42,7 @@ public class ItemConfirmButtonLoader implements ButtonLoader {
     @Override
     public Button load(YamlConfiguration configuration, String path, DefaultButtonValue defaultButtonValue) {
 
+        String defaultEconomy = configuration.getString("economy", Config.defaultEconomy);
         double price = configuration.getDouble(path + "price", 0.0);
 
         if (price == 0.0) {
@@ -53,7 +54,7 @@ public class ItemConfirmButtonLoader implements ButtonLoader {
         List<String> messages = configuration.getStringList(path + "messages");
         String name = configuration.getString(path + "name", path);
 
-        String economyName = configuration.getString(path + "economy", Config.defaultEconomy);
+        String economyName = configuration.getString(path + "economy", defaultEconomy);
         Optional<ShopEconomy> optional = plugin.getEconomyManager().getEconomy(economyName);
         if (!optional.isPresent()) {
             throw new EconomyNotFoundException("Economy " + economyName + " was not found for button " + path);

@@ -1,5 +1,14 @@
 # Unreleased
 
+# 3.0.6
+
+- Fix error with MenuItemStack cache on purchase and sell items
+- Added ``economy`` configuration for each inventory. You can now choose the default economy by file 
+
+# 3.0.5
+
+- Fix error with lore
+
 # 3.0.4
 
 - Correction of price display during purchase and sale, taking into account events.

@@ -253,7 +253,7 @@ public class ZItemButton extends ZButton implements ItemButton {
         if (currentPrice > 0) this.shopEconomy.withdrawMoney(player, currentPrice);
 
         /* BUILD ITEM AND GIVE IT TO PLAYER */
-        ItemStack itemStack = super.getItemStack().build(player).clone();
+        ItemStack itemStack = super.getItemStack().build(player, false).clone();
 
         if (this.mob != null) {
             NBTItem nbtItem = new NBTItem(itemStack);
@@ -294,7 +294,7 @@ public class ZItemButton extends ZButton implements ItemButton {
     public void sell(Player player, int amount) {
         ZShopManager manager = (ZShopManager) this.plugin.getShopManager();
 
-        ItemStack itemStack = getItemStack().build(player);
+        ItemStack itemStack = getItemStack().build(player, false);
         int items = 0;
 
         for (int a = 0; a != 36; a++) {
