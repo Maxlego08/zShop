@@ -1,5 +1,6 @@
 package fr.maxlego08.zshop.buttons;
 
+import fr.maxlego08.menu.MenuItemStack;
 import fr.maxlego08.menu.button.ZButton;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.PlayerCache;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,14 +39,19 @@ public class ZShowItemButton extends ZButton implements ShowItemButton {
         String sellPrice = itemButton.getSellPriceFormat(player, itemStack.getAmount());
         String buyPrice = itemButton.getBuyPriceFormat(player, itemStack.getAmount());
 
-        List<String> lore = this.lore.stream().map(line -> {
+        MenuItemStack menuItemStack = this.getItemStack();
+        List<String> itemLore = new ArrayList<>();
+        if (menuItemStack.getLore() != null && !menuItemStack.getLore().isEmpty()) itemLore = new ArrayList<>(menuItemStack.getLore());
+
+        itemLore.addAll(this.lore.stream().map(line -> {
 
             line = line.replace("%sellPrice%", sellPrice);
             line = line.replace("%buyPrice%", buyPrice);
 
             return line;
-        }).collect(Collectors.toList());
-        this.plugin.getIManager().getMeta().updateLore(itemMeta, lore, player);
+        }).collect(Collectors.toList()));
+
+        this.plugin.getIManager().getMeta().updateLore(itemMeta, itemLore, player);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

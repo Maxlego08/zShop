@@ -1,5 +1,9 @@
 # Unreleased
 
+# 3.0.7
+
+- Fix error with item lore
+
 # 3.0.6
 
 - Fix error with MenuItemStack cache on purchase and sell items

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.maxlego08</groupId>
     <artifactId>zshop</artifactId>
-    <version>3.0.6</version>
+    <version>3.0.7</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
@@ -129,7 +129,7 @@
         <dependency>
             <groupId>com.github.Maxlego08</groupId>
             <artifactId>zMenu-API</artifactId>
-            <version>6655d3298d</version>
+            <version>1.0.2.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
