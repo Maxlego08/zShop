@@ -469,7 +469,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
         });
 
         String results = toList(fixedShopActions.stream().map(action -> getMessage(Message.SELL_ALL_INFO, "%amount%", action.getItemStack().getAmount(), "%item%", getItemName(action.getItemStack()), "%price%", action.getItemButton().getEconomy().format(transformPrice(action.getPrice()), action.getPrice()))).collect(Collectors.toList()), Message.SELL_ALL_COLOR_SEPARATOR.msg(), Message.SELL_ALL_COLOR_INFO.msg());
-        if (results == null){
+        if (results == null) {
             Logger.info("Error with results on sellall !");
             player.sendMessage("§cError with results on sellall !");
         }

@@ -1,5 +1,8 @@
 # Unreleased
 
+- Fix /sell-hand command
+- Fix sell lore confirm
+
 # 3.0.7
 
 - Fix error with item lore

@@ -16,7 +16,7 @@ public class CommandSellHand extends VCommand {
 
     @Override
     protected CommandType perform(ShopPlugin plugin) {
-        int amount = this.argAsInteger(0, 0);
+        int amount = this.argAsInteger(0, 64);
         this.plugin.getShopManager().sellHand(player, amount);
         return CommandType.SUCCESS;
     }

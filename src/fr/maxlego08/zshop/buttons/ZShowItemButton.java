@@ -39,17 +39,13 @@ public class ZShowItemButton extends ZButton implements ShowItemButton {
         String sellPrice = itemButton.getSellPriceFormat(player, itemStack.getAmount());
         String buyPrice = itemButton.getBuyPriceFormat(player, itemStack.getAmount());
 
-        MenuItemStack menuItemStack = this.getItemStack();
-        List<String> itemLore = new ArrayList<>();
-        if (menuItemStack.getLore() != null && !menuItemStack.getLore().isEmpty()) itemLore = new ArrayList<>(menuItemStack.getLore());
-
-        itemLore.addAll(this.lore.stream().map(line -> {
+        List<String> itemLore = this.lore.stream().map(line -> {
 
             line = line.replace("%sellPrice%", sellPrice);
             line = line.replace("%buyPrice%", buyPrice);
 
             return line;
-        }).collect(Collectors.toList()));
+        }).collect(Collectors.toList());
 
         this.plugin.getIManager().getMeta().updateLore(itemMeta, itemLore, player);
         itemStack.setItemMeta(itemMeta);
