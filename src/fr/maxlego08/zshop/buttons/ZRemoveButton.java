@@ -1,5 +1,6 @@
 package fr.maxlego08.zshop.buttons;
 
+import fr.maxlego08.menu.api.utils.Placeholders;
 import fr.maxlego08.menu.button.ZButton;
 import fr.maxlego08.menu.inventory.inventories.InventoryDefault;
 import fr.maxlego08.zshop.ShopPlugin;
@@ -36,8 +37,8 @@ public class ZRemoveButton extends ZButton implements AddButton {
     }
 
     @Override
-    public void onClick(Player player, InventoryClickEvent event, InventoryDefault inventory, int slot) {
-        super.onClick(player, event, inventory, slot);
+    public void onClick(Player player, InventoryClickEvent event, InventoryDefault inventory, int slot, Placeholders placeholders) {
+        super.onClick(player, event, inventory, slot, placeholders);
 
         int amount = parseInt(player);
         PlayerCache cache = this.plugin.getShopManager().getCache(player);

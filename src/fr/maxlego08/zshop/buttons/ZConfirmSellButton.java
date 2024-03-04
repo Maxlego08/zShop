@@ -1,5 +1,6 @@
 package fr.maxlego08.zshop.buttons;
 
+import fr.maxlego08.menu.api.utils.Placeholders;
 import fr.maxlego08.menu.inventory.inventories.InventoryDefault;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.PlayerCache;
@@ -19,8 +20,8 @@ public class ZConfirmSellButton extends ConfirmationButton implements ConfirmSel
     }
 
     @Override
-    public void onClick(Player player, InventoryClickEvent event, InventoryDefault inventory, int slot) {
-        super.onClick(player, event, inventory, slot);
+    public void onClick(Player player, InventoryClickEvent event, InventoryDefault inventory, int slot, Placeholders placeholders) {
+        super.onClick(player, event, inventory, slot, placeholders);
 
         PlayerCache cache = this.plugin.getShopManager().getCache(player);
         EconomyAction economyAction = cache.getEconomyAction();

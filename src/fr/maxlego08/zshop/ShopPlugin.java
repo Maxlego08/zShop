@@ -4,6 +4,7 @@ import fr.maxlego08.menu.api.ButtonManager;
 import fr.maxlego08.menu.api.InventoryManager;
 import fr.maxlego08.menu.api.command.CommandManager;
 import fr.maxlego08.menu.api.pattern.PatternManager;
+import fr.maxlego08.menu.api.scheduler.ZScheduler;
 import fr.maxlego08.menu.button.loader.PluginLoader;
 import fr.maxlego08.zshop.api.ShopManager;
 import fr.maxlego08.zshop.api.economy.EconomyManager;
@@ -57,6 +58,7 @@ public class ShopPlugin extends ZPlugin {
     private CommandManager commandManager;
     private PatternManager patternManager;
     private ButtonManager buttonManager;
+    private ZScheduler scheduler;
     private boolean isLoad = false;
 
     private String transformNumberToString(int number) {

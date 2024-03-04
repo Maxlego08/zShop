@@ -20,7 +20,6 @@ import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.logger.Logger;
 import fr.maxlego08.zshop.zcore.utils.plugins.Plugins;
 import org.bukkit.configuration.file.YamlConfiguration;
-import su.nightexpress.coinsengine.api.currency.Currency;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,7 +45,9 @@ public class ZEconomyManager implements EconomyManager {
     @Override
     public boolean registerEconomy(ShopEconomy economy) {
         Optional<ShopEconomy> optional = getEconomy(economy.getName());
+        System.out.println("Try register " + economy.getName() + " - " + optional);
         if (!optional.isPresent()) {
+            System.out.println("Register " + economy.getName());
             this.shopEconomies.add(economy);
             return true;
         }
@@ -133,7 +134,7 @@ public class ZEconomyManager implements EconomyManager {
                     if (this.plugin.isEnable(Plugins.COINSENGINE)) {
                         if (Config.enableDebug) Logger.info("Register CoinsEngine economy");
 
-                        String currencyName = configuration.getString(path+"currencyName");
+                        String currencyName = configuration.getString(path + "currencyName");
                         registerEconomy(new CoinsEngineEconomy(this.plugin, name, currency, denyMessage, currencyName));
 
                     } else Logger.info("Try to register CoinsEngine economy but CoinsEngine plugin is not enable");
