@@ -1,5 +1,7 @@
 # Unreleased
 
+- Fix sellall message
+
 # 1.0.8
 
 - Update to zMenu 1.0.2.7

@@ -456,6 +456,11 @@ public class ZShopManager extends ZUtils implements ShopManager {
             inventory.remove(itemStack);
         });
 
+        if (prices.isEmpty()){
+            message(this.plugin, player, Message.SELL_ALL_EMPTY);
+            return;
+        }
+
         prices.forEach((economy, price) -> economy.depositMoney(player, price));
         List<ShopAction> fixedShopActions = new ArrayList<>();
 
