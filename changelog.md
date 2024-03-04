@@ -1,5 +1,8 @@
 # Unreleased
 
+# 1.0.8
+
+- Update to zMenu 1.0.2.7
 - Fix /sell-hand command
 - Fix sell lore confirm
 
