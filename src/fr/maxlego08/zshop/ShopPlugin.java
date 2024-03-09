@@ -13,6 +13,7 @@ import fr.maxlego08.zshop.api.limit.LimiterManager;
 import fr.maxlego08.zshop.buttons.ZConfirmBuyButton;
 import fr.maxlego08.zshop.buttons.ZConfirmSellButton;
 import fr.maxlego08.zshop.buttons.ZShowConfirmItemButton;
+import fr.maxlego08.zshop.command.commands.CommandSell;
 import fr.maxlego08.zshop.command.commands.CommandSellAll;
 import fr.maxlego08.zshop.command.commands.CommandSellAllHand;
 import fr.maxlego08.zshop.command.commands.CommandSellHand;
@@ -140,6 +141,10 @@ public class ShopPlugin extends ZPlugin {
         this.limitManager.verifyPlayersLimit();
 
         this.isLoad = true;
+
+        if (Config.enableSellCommand) {
+            this.registerCommand("sell", new CommandSell(this), "zsell");
+        }
 
         this.postEnable();
     }

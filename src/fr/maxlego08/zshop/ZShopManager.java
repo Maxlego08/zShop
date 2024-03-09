@@ -385,9 +385,8 @@ public class ZShopManager extends ZUtils implements ShopManager {
         PlayerInventory inventory = player.getInventory();
         List<ShopAction> shopActions = new ArrayList<>();
         List<Pair<ItemStack, ItemButton>> buttons = this.itemButtons.stream().map(button -> {
-            ItemStack itemStack = button.getItemStack().build(player);
+            ItemStack itemStack = button.getItemStack().build(player, false);
             return new Pair<>(itemStack, button);
-
         }).collect(Collectors.toList());
 
         /* SCAN ITEMS */
@@ -455,6 +454,11 @@ public class ZShopManager extends ZUtils implements ShopManager {
             prices.put(button.getEconomy(), prices.getOrDefault(button.getEconomy(), 0.0) + action.getPrice());
             inventory.remove(itemStack);
         });
+
+        if (prices.isEmpty()){
+            message(this.plugin, player, Message.SELL_ALL_EMPTY);
+            return;
+        }
 
         prices.forEach((economy, price) -> economy.depositMoney(player, price));
         List<ShopAction> fixedShopActions = new ArrayList<>();

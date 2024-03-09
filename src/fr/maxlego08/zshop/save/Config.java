@@ -18,6 +18,7 @@ public class Config {
     public static boolean enableDebugTime = false;
     public static boolean disableItemFlag = true;
     public static boolean enableInventoryFullBuy = true;
+    public static boolean enableSellCommand = true;
     public static ConfirmAction sellConfirmationConfig;
     public static ConfirmAction purchaseConfirmationConfig;
     public static String defaultEconomy = "VAULT";
@@ -41,6 +42,7 @@ public class Config {
         enableDebug = configuration.getBoolean("enableDebug");
         enableDebugTime = configuration.getBoolean("enableDebugTime");
         disableItemFlag = configuration.getBoolean("disableItemFlag");
+        enableSellCommand = configuration.getBoolean("enableSellCommand");
         enableInventoryFullBuy = configuration.getBoolean("enableInventoryFullBuy");
 
         defaultLore = configuration.getStringList("defaultLore");
