@@ -1,6 +1,7 @@
 # Unreleased
 
 - Fix sellall message
+- Add option for /sell <all/hand/handall>
 
 # 1.0.8
 

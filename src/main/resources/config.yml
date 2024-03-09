@@ -160,3 +160,9 @@ purchaseAction: NONE
 
 # Action performed when an item is sold by a player
 sellAction: NONE
+
+# Enable the following commands:
+# /sell all
+# /sell hand
+# /sell handall
+enableSellCommand: false

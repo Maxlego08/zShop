@@ -48,7 +48,7 @@ public enum Message {
     SELL_HAND_AIR("§cYou can't sell air ! It’s like you’re trying to sell something empty."),
     SELL_ALL_MESSAGE("§fYou gave just sold §7%items%§7."),
     SELL_ALL_INFO("§7x%amount% %item%§f for §b%price%"),
-    SELL_ALL_EMPTY("§cVous ne pouvez rien vendre."),
+    SELL_ALL_EMPTY("§cYou can’t sell anything."),
     SELL_ALL_COLOR_SEPARATOR("§f"),
     SELL_ALL_COLOR_INFO("§7"),
     AND("and"),
