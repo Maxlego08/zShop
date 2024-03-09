@@ -1,9 +1,11 @@
 # Unreleased
 
+# 3.0.9
+
 - Fix sellall message
 - Add option for /sell <all/hand/handall>
 
-# 1.0.8
+# 3.0.8
 
 - Update to zMenu 1.0.2.7
 - Fix /sell-hand command
