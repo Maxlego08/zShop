@@ -385,9 +385,8 @@ public class ZShopManager extends ZUtils implements ShopManager {
         PlayerInventory inventory = player.getInventory();
         List<ShopAction> shopActions = new ArrayList<>();
         List<Pair<ItemStack, ItemButton>> buttons = this.itemButtons.stream().map(button -> {
-            ItemStack itemStack = button.getItemStack().build(player);
+            ItemStack itemStack = button.getItemStack().build(player, false);
             return new Pair<>(itemStack, button);
-
         }).collect(Collectors.toList());
 
         /* SCAN ITEMS */
