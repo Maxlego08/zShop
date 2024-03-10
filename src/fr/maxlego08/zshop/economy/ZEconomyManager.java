@@ -7,6 +7,7 @@ import fr.maxlego08.menu.zcore.utils.loader.Loader;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.economy.EconomyManager;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
+import fr.maxlego08.zshop.api.event.events.ZShopEconomyRegisterEvent;
 import fr.maxlego08.zshop.economy.economies.BeastTokenEconomy;
 import fr.maxlego08.zshop.economy.economies.CoinsEngineEconomy;
 import fr.maxlego08.zshop.economy.economies.ExperienceEconomy;
@@ -45,9 +46,7 @@ public class ZEconomyManager implements EconomyManager {
     @Override
     public boolean registerEconomy(ShopEconomy economy) {
         Optional<ShopEconomy> optional = getEconomy(economy.getName());
-        System.out.println("Try register " + economy.getName() + " - " + optional);
         if (!optional.isPresent()) {
-            System.out.println("Register " + economy.getName());
             this.shopEconomies.add(economy);
             return true;
         }
@@ -143,5 +142,8 @@ public class ZEconomyManager implements EconomyManager {
                     break;
             }
         }
+
+        ZShopEconomyRegisterEvent event = new ZShopEconomyRegisterEvent(this);
+        event.call();
     }
 }
