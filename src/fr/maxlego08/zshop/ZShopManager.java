@@ -395,6 +395,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
             if (itemStack == null) continue;
 
             Optional<ItemButton> optional = buttons.stream().filter(e -> e.first.isSimilar(itemStack)).map(e -> e.second).findFirst();
+            System.out.println("Check for " + itemStack + " -> " + optional);
             if (!optional.isPresent()) continue;
 
             ItemButton itemButton = optional.get();
@@ -404,6 +405,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
             ShopAction shopAction = new ShopAction(itemStack, itemButton, price);
             shopActions.add(shopAction);
         }
+        System.out.println("After ? " + shopActions.size() + " -> " + shopActions);
 
         /* BUKKIT EVENT */
         ZShopSellAllEvent event = new ZShopSellAllEvent(player, shopActions);
@@ -455,7 +457,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
             inventory.remove(itemStack);
         });
 
-        if (prices.isEmpty()){
+        if (prices.isEmpty()) {
             message(this.plugin, player, Message.SELL_ALL_EMPTY);
             return;
         }
