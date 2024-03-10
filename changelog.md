@@ -1,6 +1,7 @@
 # Unreleased
 
 - Fix folia
+- Add ZShopEconomyRegisterEvent
 
 # 3.0.9
 
