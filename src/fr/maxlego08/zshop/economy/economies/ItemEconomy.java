@@ -41,14 +41,9 @@ public class ItemEconomy extends DefaultEconomy {
     }
 
     private int getAmount(Player player, ItemStack itemStack) {
-        System.out.println("getAmount -> " + itemStack);
         int items = 0;
         for (int slot = 0; slot != 36; slot++) {
             ItemStack currentItemStack = player.getInventory().getItem(slot);
-            if (currentItemStack != null) {
-
-                System.out.println(currentItemStack.isSimilar(itemStack) + " -> " + currentItemStack);
-            }
             if (currentItemStack != null && currentItemStack.isSimilar(itemStack))
                 items += currentItemStack.getAmount();
         }

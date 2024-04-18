@@ -397,26 +397,28 @@ public class ZItemButton extends ZButton implements ItemButton {
     }
 
     private void commands(int amount, String itemName, String price, HistoryType type, Player player) {
-        for (String command : (type == HistoryType.SELL ? sellCommands : buyCommands)) {
-            command = command.replace("%amount%", String.valueOf(amount));
-            command = command.replace("%item%", itemName);
-            command = command.replace("%price%", price);
-            command = command.replace("%player%", player.getName());
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Placeholder.getPlaceholder().setPlaceholders(player, command));
-        }
+        plugin.getIManager().getScheduler().runTask(null, () -> {
+            for (String command : (type == HistoryType.SELL ? sellCommands : buyCommands)) {
+                command = command.replace("%amount%", String.valueOf(amount));
+                command = command.replace("%item%", itemName);
+                command = command.replace("%price%", price);
+                command = command.replace("%player%", player.getName());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Placeholder.getPlaceholder().setPlaceholders(player, command));
+            }
+        });
     }
 
     @Override
     public void log(int amount, String itemName, String price, String playerName, UUID uuid, HistoryType type) {
         if (LogConfig.enableLog || this.enableLog) {
 
-            String logMessage = type == HistoryType.SELL ? LogConfig.sellMessage : LogConfig.buyMessage;
-
-            logMessage = logMessage.replace("%amount%", String.valueOf(amount));
-            logMessage = logMessage.replace("%item%", itemName);
-            logMessage = logMessage.replace("%price%", price);
-            logMessage = logMessage.replace("%player%", playerName);
-            logMessage = logMessage.replace("%uuid%", uuid.toString());
+            String logMessage = getMessage(type == HistoryType.SELL ? LogConfig.sellMessage : LogConfig.buyMessage,
+                    "%amount%", String.valueOf(amount),
+                    "%item%", itemName,
+                    "%price%", price,
+                    "%player%", playerName,
+                    "%uuid%", uuid.toString()
+            );
 
             if (LogConfig.enableLogInConsole) Logger.info(logMessage);
 
@@ -531,7 +533,8 @@ public class ZItemButton extends ZButton implements ItemButton {
         int amount = menuItemStack.parseAmount(player);
 
         List<String> itemLore = new ArrayList<>();
-        if (menuItemStack.getLore() != null && !menuItemStack.getLore().isEmpty()) itemLore = new ArrayList<>(menuItemStack.getLore());
+        if (menuItemStack.getLore() != null && !menuItemStack.getLore().isEmpty())
+            itemLore = new ArrayList<>(menuItemStack.getLore());
 
         String sellPrice = getSellPriceFormat(player, amount);
         String buyPrice = getBuyPriceFormat(player, amount);

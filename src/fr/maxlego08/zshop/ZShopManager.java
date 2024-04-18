@@ -368,7 +368,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
     @Override
     public Optional<ItemButton> getItemButton(Player player, ItemStack itemStack) {
-        return this.itemButtons.stream().filter(button -> button.getItemStack().build(player).isSimilar(itemStack)).findFirst();
+        return this.itemButtons.stream().filter(button -> button.getItemStack().build(player, false).isSimilar(itemStack)).findFirst();
     }
 
     @Override
@@ -395,7 +395,6 @@ public class ZShopManager extends ZUtils implements ShopManager {
             if (itemStack == null) continue;
 
             Optional<ItemButton> optional = buttons.stream().filter(e -> e.first.isSimilar(itemStack)).map(e -> e.second).findFirst();
-            System.out.println("Check for " + itemStack + " -> " + optional);
             if (!optional.isPresent()) continue;
 
             ItemButton itemButton = optional.get();
@@ -405,7 +404,6 @@ public class ZShopManager extends ZUtils implements ShopManager {
             ShopAction shopAction = new ShopAction(itemStack, itemButton, price);
             shopActions.add(shopAction);
         }
-        System.out.println("After ? " + shopActions.size() + " -> " + shopActions);
 
         /* BUKKIT EVENT */
         ZShopSellAllEvent event = new ZShopSellAllEvent(player, shopActions);
@@ -485,7 +483,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
         if (LogConfig.enableLog) {
             String logMessage = LogConfig.sellAllMessage;
 
-            logMessage = logMessage.replace("%items%", results);
+            logMessage = logMessage.replace("%items%", results == null ? "ERROR" : results);
             logMessage = logMessage.replace("%player%", player.getName());
             logMessage = logMessage.replace("%uuid%", player.getUniqueId().toString());
 
