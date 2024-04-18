@@ -1,4 +1,14 @@
+# ToDo
+
+- [ ] Add an option to disable certain click for purchase confirmation (https://discord.com/channels/511516467615760405/1216306371604250624/1217474577974825081)
+
 # Unreleased
+
+# 3.1.0
+
+- Fix folia
+- Add ZShopEconomyRegisterEvent
+- Fix CoinsEngine
 
 # 3.0.9
 

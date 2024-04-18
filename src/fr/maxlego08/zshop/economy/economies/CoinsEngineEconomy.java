@@ -16,16 +16,16 @@ public class CoinsEngineEconomy extends DefaultEconomy {
 
     @Override
     public double getMoney(OfflinePlayer offlinePlayer) {
-        return CoinsEngineAPI.getBalance(offlinePlayer.getPlayer(), currency);
+        return CoinsEngineAPI.getUserData(offlinePlayer.getUniqueId()).getCurrencyData(this.currency).getBalance();
     }
 
     @Override
     public void depositMoney(OfflinePlayer offlinePlayer, double value) {
-        CoinsEngineAPI.addBalance(offlinePlayer.getPlayer(), currency, value);
+        CoinsEngineAPI.getUserData(offlinePlayer.getUniqueId()).removeBalance(this.currency, value);
     }
 
     @Override
     public void withdrawMoney(OfflinePlayer offlinePlayer, double value) {
-        CoinsEngineAPI.removeBalance(offlinePlayer.getPlayer(), currency, value);
+        CoinsEngineAPI.getUserData(offlinePlayer.getUniqueId()).addBalance(this.currency, value);
     }
 }

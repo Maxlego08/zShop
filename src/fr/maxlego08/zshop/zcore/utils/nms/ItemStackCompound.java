@@ -55,7 +55,6 @@ public class ItemStackCompound {
 
         try {
             Object compoundObject = this.getCompound(itemStack);
-            System.out.println(compoundObject);
             compoundObject.getClass().getMethod(this.reflection.getMethodSetString(), String.class, String.class).invoke(compoundObject, key, value);
 
             return this.applyCompound(itemStack, compoundObject);

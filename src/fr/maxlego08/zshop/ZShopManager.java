@@ -368,7 +368,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
     @Override
     public Optional<ItemButton> getItemButton(Player player, ItemStack itemStack) {
-        return this.itemButtons.stream().filter(button -> button.getItemStack().build(player).isSimilar(itemStack)).findFirst();
+        return this.itemButtons.stream().filter(button -> button.getItemStack().build(player, false).isSimilar(itemStack)).findFirst();
     }
 
     @Override
@@ -455,7 +455,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
             inventory.remove(itemStack);
         });
 
-        if (prices.isEmpty()){
+        if (prices.isEmpty()) {
             message(this.plugin, player, Message.SELL_ALL_EMPTY);
             return;
         }
@@ -483,7 +483,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
         if (LogConfig.enableLog) {
             String logMessage = LogConfig.sellAllMessage;
 
-            logMessage = logMessage.replace("%items%", results);
+            logMessage = logMessage.replace("%items%", results == null ? "ERROR" : results);
             logMessage = logMessage.replace("%player%", player.getName());
             logMessage = logMessage.replace("%uuid%", player.getUniqueId().toString());
 

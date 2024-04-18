@@ -920,8 +920,8 @@ public abstract class ZUtils extends MessageUtils {
      *
      * @param runnable
      */
-    protected void runAsync(Plugin plugin, Runnable runnable) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
+    protected void runAsync(ShopPlugin plugin, Runnable runnable) {
+        plugin.getIManager().getScheduler().runTaskAsynchronously(runnable);
     }
 
     /**

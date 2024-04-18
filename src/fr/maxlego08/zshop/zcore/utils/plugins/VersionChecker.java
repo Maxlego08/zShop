@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
+import fr.maxlego08.zshop.ShopPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,7 @@ public class VersionChecker implements Listener {
 
 	private final String URL_API = "https://groupez.dev/api/v1/resource/version/%s";
 	private final String URL_RESOURCE = "https://groupez.dev/resources/%s";
-	private final Plugin plugin;
+	private final ShopPlugin plugin;
 	private final int pluginID;
 	private boolean useLastVersion = false;
 
@@ -37,7 +38,7 @@ public class VersionChecker implements Listener {
 	 * @param plugin
 	 * @param pluginID
 	 */
-	public VersionChecker(Plugin plugin, int pluginID) {
+	public VersionChecker(ShopPlugin plugin, int pluginID) {
 		super();
 		this.plugin = plugin;
 		this.pluginID = pluginID;
@@ -92,7 +93,7 @@ public class VersionChecker implements Listener {
 	 *            - Do something after
 	 */
 	public void getVersion(Consumer<String> consumer) {
-		Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
+		plugin.getIManager().getScheduler().runTaskAsynchronously(() -> {
 			final String apiURL = String.format(URL_API, this.pluginID);
 			try {
 				URL url = new URL(apiURL);
