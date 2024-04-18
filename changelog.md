@@ -4,6 +4,8 @@
 
 # Unreleased
 
+# 3.1.0
+
 - Fix folia
 - Add ZShopEconomyRegisterEvent
 - Fix CoinsEngine
