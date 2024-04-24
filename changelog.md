@@ -4,6 +4,8 @@
 
 # Unreleased
 
+- Fix CoinsEngine API
+
 # 3.1.0
 
 - Fix folia
