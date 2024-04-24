@@ -21,11 +21,11 @@ public class CoinsEngineEconomy extends DefaultEconomy {
 
     @Override
     public void depositMoney(OfflinePlayer offlinePlayer, double value) {
-        CoinsEngineAPI.getUserData(offlinePlayer.getUniqueId()).removeBalance(this.currency, value);
+        CoinsEngineAPI.getUserData(offlinePlayer.getUniqueId()).addBalance(this.currency, value);
     }
 
     @Override
     public void withdrawMoney(OfflinePlayer offlinePlayer, double value) {
-        CoinsEngineAPI.getUserData(offlinePlayer.getUniqueId()).addBalance(this.currency, value);
+        CoinsEngineAPI.getUserData(offlinePlayer.getUniqueId()).removeBalance(this.currency, value);
     }
 }
