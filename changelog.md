@@ -4,6 +4,8 @@
 
 # Unreleased
 
+# 3.1.1
+
 - Fix CoinsEngine API
 
 # 3.1.0
