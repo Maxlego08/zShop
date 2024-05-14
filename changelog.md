@@ -4,6 +4,11 @@
 
 # Unreleased
 
+# 3.1.2
+
+- Fix error with items amount
+- Add description for some commands (/sell all, /sell hand, /sell handall)
+
 # 3.1.1
 
 - Fix CoinsEngine API
