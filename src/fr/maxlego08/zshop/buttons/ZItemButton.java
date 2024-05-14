@@ -486,7 +486,8 @@ public class ZItemButton extends ZButton implements ItemButton {
 
     @Override
     public ItemStack getCustomItemStack(Player player) {
-        ItemStack itemStack = super.getCustomItemStack(player);
+        // ItemStack itemStack = super.getCustomItemStack(player);
+        ItemStack itemStack = this.getItemStack().build(player, false);
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         if (Config.disableItemFlag) {
