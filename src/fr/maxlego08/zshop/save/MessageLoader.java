@@ -3,7 +3,7 @@ package fr.maxlego08.zshop.save;
 import fr.maxlego08.zshop.zcore.enums.Message;
 import fr.maxlego08.zshop.zcore.enums.MessageType;
 import fr.maxlego08.zshop.zcore.logger.Logger;
-import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
+import fr.maxlego08.zshop.zcore.utils.nms.NmsVersion;
 import fr.maxlego08.zshop.zcore.utils.storage.Persist;
 import fr.maxlego08.zshop.zcore.utils.storage.Saveable;
 import fr.maxlego08.zshop.zcore.utils.yaml.YamlUtils;
@@ -53,7 +53,7 @@ public class MessageLoader extends YamlUtils implements Saveable {
                 if (message.isMessage()) {
                     configuration.set(path + ".messages", colorReverse(message.getMessages()));
                 } else {
-                    configuration.set(path + ".message", colorReverse(NMSUtils.isHexColor() && message.getMessageNewVersion() != null ? message.getMessageNewVersion() : message.getMessage()));
+                    configuration.set(path + ".message", colorReverse(NmsVersion.nmsVersion.isHexVersion() && message.getMessageNewVersion() != null ? message.getMessageNewVersion() : message.getMessage()));
                 }
 
             } else if (message.getType().equals(MessageType.TITLE)) {

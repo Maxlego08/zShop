@@ -35,7 +35,7 @@ import fr.maxlego08.zshop.zcore.enums.Message;
 import fr.maxlego08.zshop.zcore.logger.Logger;
 import fr.maxlego08.zshop.zcore.utils.Pair;
 import fr.maxlego08.zshop.zcore.utils.ZUtils;
-import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
+import fr.maxlego08.zshop.zcore.utils.nms.NmsVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -121,7 +121,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
         files.forEach(e -> {
             if (!new File(this.plugin.getDataFolder(), e).exists()) {
 
-                if (NMSUtils.isNewVersion()) {
+                if (NmsVersion.nmsVersion.isNewMaterial()) {
                     plugin.saveResource(e.replace("inventories/", "inventories/1_13/"), e, false);
                 } else {
                     plugin.saveResource(e, false);
@@ -144,7 +144,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
         files.forEach(e -> {
             if (!new File(this.plugin.getDataFolder(), e).exists()) {
 
-                if (NMSUtils.isNewVersion()) {
+                if (NmsVersion.nmsVersion.isNewMaterial()) {
                     plugin.saveResource(e.replace("patterns/", "patterns/1_13/"), e, false);
                 } else {
                     plugin.saveResource(e, false);

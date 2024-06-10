@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import fr.maxlego08.zshop.zcore.utils.nms.NmsVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,8 +17,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-
-import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
 
 /**
  * 
@@ -111,11 +110,11 @@ public class PlayerSkin {
 	}
 
 	public static String getMethodName() {
-		double version = NMSUtils.getNMSVersion();
-		if (version == 1.18) {
-			return "fp";
-		} else if (version == 1.19) {
+		double nmsVersion = NmsVersion.nmsVersion.getVersion();
+		if (nmsVersion >= NmsVersion.V_1_19.getVersion() && nmsVersion <= NmsVersion.V_1_19_2.getVersion()) {
 			return "fz";
+		} else if (nmsVersion >= NmsVersion.V_1_18.getVersion() && nmsVersion <= NmsVersion.V_1_18_2.getVersion()) {
+			return "fp";
 		}
 		return "getProfile";
 	}
