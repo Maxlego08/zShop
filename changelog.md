@@ -4,6 +4,10 @@
 
 # Unreleased
 
+# 3.1.3
+
+- Update to 1.20.6
+
 # 3.1.2
 
 - Fix error with items amount

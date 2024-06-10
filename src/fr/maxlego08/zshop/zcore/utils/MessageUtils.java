@@ -3,7 +3,7 @@ package fr.maxlego08.zshop.zcore.utils;
 import fr.maxlego08.menu.api.utils.MetaUpdater;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.zcore.enums.Message;
-import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
+import fr.maxlego08.zshop.zcore.utils.nms.NmsVersion;
 import fr.maxlego08.zshop.zcore.utils.players.ActionBar;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -183,19 +183,9 @@ public abstract class MessageUtils extends LocationUtils {
         return null;
     }
 
-    /**
-     * Send title to player
-     *
-     * @param player
-     * @param title
-     * @param subtitle
-     * @param fadeInTime
-     * @param showTime
-     * @param fadeOutTime
-     */
     protected void title(Player player, String title, String subtitle, int fadeInTime, int showTime, int fadeOutTime) {
 
-        if (NMSUtils.isNewVersion()) {
+        if (NmsVersion.nmsVersion.isNewMaterial()) {
             player.sendTitle(title, subtitle, fadeInTime, showTime, fadeOutTime);
             return;
         }

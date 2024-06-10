@@ -1,6 +1,5 @@
 package fr.maxlego08.zshop.zcore.enums;
 
-import fr.maxlego08.zshop.zcore.utils.nms.NMSUtils;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -154,10 +153,6 @@ public enum Message {
         return use;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public List<String> getMessages() {
         return messages == null ? Arrays.asList(message) : messages;
     }
@@ -168,6 +163,10 @@ public enum Message {
 
     public boolean isMessage() {
         return messages != null && messages.size() > 1;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getTitle() {
@@ -212,15 +211,15 @@ public enum Message {
     }
 
     public MessageType getType() {
-        return type.equals(MessageType.ACTION) && NMSUtils.isVeryOldVersion() ? MessageType.TCHAT : type;
-    }
-
-    public ItemStack getItemStack() {
-        return itemStack;
+        return type;
     }
 
     public void setType(MessageType type) {
         this.type = type;
+    }
+
+    public ItemStack getItemStack() {
+        return itemStack;
     }
 
     public void setItemStack(ItemStack itemStack) {
@@ -233,13 +232,15 @@ public enum Message {
 
     public boolean isValid() {
 
-        switch (type){
+        switch (type) {
             case ACTION:
                 return this.message != null;
             case CENTER:
-            case TCHAT: return this.message != null || !this.messages.isEmpty();
+            case TCHAT:
+                return this.message != null || !this.messages.isEmpty();
             case TITLE:
-            case NONE: return true;
+            case NONE:
+                return true;
         }
 
         return true;
