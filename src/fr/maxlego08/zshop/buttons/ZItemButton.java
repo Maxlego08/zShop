@@ -25,6 +25,8 @@ import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.save.LogConfig;
 import fr.maxlego08.zshop.zcore.enums.Message;
 import fr.maxlego08.zshop.zcore.logger.Logger;
+import fr.maxlego08.zshop.zcore.utils.ItemStackSpawnerHelper;
+import fr.maxlego08.zshop.zcore.utils.nms.NmsVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -257,9 +259,13 @@ public class ZItemButton extends ZButton implements ItemButton {
         ItemStack itemStack = super.getItemStack().build(player, false).clone();
 
         if (this.mob != null) {
-            NBTItem nbtItem = new NBTItem(itemStack);
-            nbtItem.setString(ItemButton.nbtMobSpawnerKey, this.mob.toUpperCase());
-            itemStack = nbtItem.getItem();
+            if (NmsVersion.nmsVersion.isItemStackComponent()) {
+                ItemStackSpawnerHelper.setEntityType(itemStack, this.mob.toUpperCase());
+            } else {
+                NBTItem nbtItem = new NBTItem(itemStack);
+                nbtItem.setString(ItemButton.nbtMobSpawnerKey, this.mob.toUpperCase());
+                itemStack = nbtItem.getItem();
+            }
         }
 
         itemStack.setAmount(amount);
@@ -412,13 +418,7 @@ public class ZItemButton extends ZButton implements ItemButton {
     public void log(int amount, String itemName, String price, String playerName, UUID uuid, HistoryType type) {
         if (LogConfig.enableLog || this.enableLog) {
 
-            String logMessage = getMessage(type == HistoryType.SELL ? LogConfig.sellMessage : LogConfig.buyMessage,
-                    "%amount%", String.valueOf(amount),
-                    "%item%", itemName,
-                    "%price%", price,
-                    "%player%", playerName,
-                    "%uuid%", uuid.toString()
-            );
+            String logMessage = getMessage(type == HistoryType.SELL ? LogConfig.sellMessage : LogConfig.buyMessage, "%amount%", String.valueOf(amount), "%item%", itemName, "%price%", price, "%player%", playerName, "%uuid%", uuid.toString());
 
             if (LogConfig.enableLogInConsole) Logger.info(logMessage);
 

@@ -4,6 +4,10 @@
 
 # Unreleased
 
+# 3.1.4
+
+- Update to 1.21
+
 # 3.1.3
 
 - Update to 1.20.6
