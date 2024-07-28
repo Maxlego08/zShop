@@ -33,6 +33,7 @@ import fr.maxlego08.zshop.save.LogConfig;
 import fr.maxlego08.zshop.save.PriceFormatConfig;
 import fr.maxlego08.zshop.zcore.enums.Message;
 import fr.maxlego08.zshop.zcore.logger.Logger;
+import fr.maxlego08.zshop.zcore.utils.ItemStackSpawnerHelper;
 import fr.maxlego08.zshop.zcore.utils.Pair;
 import fr.maxlego08.zshop.zcore.utils.ZUtils;
 import fr.maxlego08.zshop.zcore.utils.nms.NmsVersion;
@@ -536,6 +537,11 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
     private EntityType getEntityType(ItemStack itemStack) {
         if (itemStack == null) return EntityType.UNKNOWN;
+
+        if (NmsVersion.nmsVersion.isItemStackComponent()) {
+            return ItemStackSpawnerHelper.getEntityType(itemStack);
+        }
+
         NBTItem nbtItem = new NBTItem(itemStack);
         if (!nbtItem.hasTag(ItemButton.nbtMobSpawnerKey)) return EntityType.UNKNOWN;
         try {

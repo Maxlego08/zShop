@@ -193,4 +193,8 @@ public enum NmsVersion {
         return version >= V_1_17.version;
     }
 
+    public boolean isItemStackComponent(){
+        return version >= V_1_17.version;
+    }
+
 }
