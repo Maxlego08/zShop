@@ -4,6 +4,8 @@
 
 # Unreleased
 
+- Fixed enchant for 1.21+
+
 # 3.1.4
 
 - Update to 1.21

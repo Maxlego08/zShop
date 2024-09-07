@@ -70,7 +70,7 @@ items:
     item:
       material: ENCHANTED_BOOK
       enchants:
-        - PROTECTION_ENVIRONMENTAL,4
+        - PROTECTION,4
     type: ZSHOP_ITEM
     buyPrice: 500.0
     sellPrice: 0
