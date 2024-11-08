@@ -4,6 +4,7 @@
 
 # Unreleased
 
+- Using the [CurrenciesAPI](https://github.com/Traqueur-dev/CurrenciesAPI) library, this allows introducing new economies like `ZESSENTIALS` and `ECOBITS`
 - Fixed enchant for 1.21+
 
 # 3.1.4

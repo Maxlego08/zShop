@@ -53,6 +53,10 @@
                   <pattern>de.tr7zw.changeme.nbtapi</pattern>
                   <shadedPattern>fr.maxlego08.zshop.nbtapi</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>fr.traqueur.currencies</pattern>
+                  <shadedPattern>fr.maxlego08.zshop.currencies</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>
@@ -124,64 +128,6 @@
       <artifactId>zMenu-API</artifactId>
       <version>1.0.2.7</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.MilkBowl</groupId>
-      <artifactId>VaultAPI</artifactId>
-      <version>1.7</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.black_ixx</groupId>
-      <artifactId>playerpoints</artifactId>
-      <version>3.0.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.bencodez</groupId>
-      <artifactId>votingplugin</artifactId>
-      <version>6.14.1</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.Realizedd</groupId>
-      <artifactId>TokenManager</artifactId>
-      <version>3.2.4</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>*</artifactId>
-          <groupId>*</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>me.mraxetv.beasttokens.apo</groupId>
-      <artifactId>BeastTokensAPI</artifactId>
-      <version>3.11.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/libs/bt-api-3.11.0.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>su.nightexpress.coinsengine</groupId>
-      <artifactId>CoinsEngine</artifactId>
-      <version>2.0.9</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/libs/CoinsEngine.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>su.nexmedia.engine</groupId>
-      <artifactId>Nightcore</artifactId>
-      <version>2.5.1</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/libs/NexEngine.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>su.nexmedia.core</groupId>
-      <artifactId>Nightcore</artifactId>
-      <version>2.5.1</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/libs/n.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>
