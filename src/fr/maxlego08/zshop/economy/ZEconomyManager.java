@@ -6,6 +6,7 @@ import fr.maxlego08.zshop.api.economy.ShopEconomy;
 import fr.maxlego08.zshop.api.event.events.ZShopEconomyRegisterEvent;
 import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.logger.Logger;
+import fr.maxlego08.zshop.zcore.utils.loader.ItemStackLoader;
 import fr.traqueur.currencies.Currencies;
 import fr.traqueur.currencies.CurrencyProvider;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -77,8 +78,11 @@ public class ZEconomyManager implements EconomyManager {
 
             switch (currencies) {
                 case ZMENUITEMS:
-                case ITEM:
                     currencyProvider = currencies.createProvider(plugin, file, path + "item.");
+                    break;
+                case ITEM:
+                    ItemStackLoader itemStackLoader = new ItemStackLoader();
+                    currencyProvider = currencies.createProvider(itemStackLoader.load(configuration, path + "item."));
                     break;
                 case ECOBITS:
                 case ZESSENTIALS:
