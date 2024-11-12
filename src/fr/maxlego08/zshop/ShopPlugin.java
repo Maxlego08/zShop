@@ -17,6 +17,7 @@ import fr.maxlego08.zshop.command.commands.CommandSell;
 import fr.maxlego08.zshop.command.commands.CommandSellAll;
 import fr.maxlego08.zshop.command.commands.CommandSellAllHand;
 import fr.maxlego08.zshop.command.commands.CommandSellHand;
+import fr.maxlego08.zshop.command.commands.CommandSellInventory;
 import fr.maxlego08.zshop.command.commands.CommandShop;
 import fr.maxlego08.zshop.economy.ZEconomyManager;
 import fr.maxlego08.zshop.history.ZHistoryManager;
@@ -144,6 +145,10 @@ public class ShopPlugin extends ZPlugin {
 
         if (Config.enableSellCommand) {
             this.registerCommand("sell", new CommandSell(this), "zsell");
+        }
+
+        if (Config.enableSellInventoryCommand) {
+            this.registerCommand("sellinventory", new CommandSellInventory(this), "zsellinventory", "zsi", "si");
         }
 
         this.postEnable();

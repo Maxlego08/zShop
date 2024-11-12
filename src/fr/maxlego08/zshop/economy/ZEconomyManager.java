@@ -78,7 +78,7 @@ public class ZEconomyManager implements EconomyManager {
             switch (currencies) {
                 case ZMENUITEMS:
                 case ITEM:
-                    currencyProvider = currencies.createProvider(plugin, file, path + "item.");
+                    currencyProvider = Currencies.ZMENUITEMS.createProvider(plugin, file, path + "item.");
                     break;
                 case ECOBITS:
                 case ZESSENTIALS:

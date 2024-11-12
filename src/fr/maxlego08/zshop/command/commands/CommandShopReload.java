@@ -5,6 +5,8 @@ import fr.maxlego08.zshop.command.VCommand;
 import fr.maxlego08.zshop.zcore.enums.Message;
 import fr.maxlego08.zshop.zcore.enums.Permission;
 import fr.maxlego08.zshop.zcore.utils.commands.CommandType;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class CommandShopReload extends VCommand {
 
@@ -20,8 +22,7 @@ public class CommandShopReload extends VCommand {
 		
 		plugin.reloadFiles();
 		message(plugin, sender, Message.RELOAD);
-		
+
 		return CommandType.SUCCESS;
 	}
-
 }

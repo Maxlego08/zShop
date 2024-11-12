@@ -25,6 +25,7 @@ import fr.maxlego08.zshop.api.limit.LimiterManager;
 import fr.maxlego08.zshop.api.limit.PlayerLimit;
 import fr.maxlego08.zshop.api.utils.PriceModifierCache;
 import fr.maxlego08.zshop.history.ZHistory;
+import fr.maxlego08.zshop.inventory.SellInventoryHolder;
 import fr.maxlego08.zshop.placeholder.ItemButtonPlaceholder;
 import fr.maxlego08.zshop.placeholder.LocalPlaceholder;
 import fr.maxlego08.zshop.save.AbbreviateNumberConfig;
@@ -46,9 +47,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -382,8 +384,11 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
     @Override
     public void sellAll(Player player) {
+        sellAllContent(player, player.getInventory());
+    }
 
-        PlayerInventory inventory = player.getInventory();
+    public void sellAllContent(Player player, org.bukkit.inventory.Inventory inventory) {
+
         List<ShopAction> shopActions = new ArrayList<>();
         List<Pair<ItemStack, ItemButton>> buttons = this.itemButtons.stream().map(button -> {
             ItemStack itemStack = button.getItemStack().build(player, false);
@@ -391,7 +396,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
         }).collect(Collectors.toList());
 
         /* SCAN ITEMS */
-        for (int slot = 0; slot != 36; slot++) {
+        for (int slot = 0; slot != inventory.getContents().length; slot++) {
             ItemStack itemStack = inventory.getContents()[slot];
             if (itemStack == null) continue;
 
@@ -548,6 +553,26 @@ public class ZShopManager extends ZUtils implements ShopManager {
             return EntityType.valueOf(nbtItem.getString(ItemButton.nbtMobSpawnerKey));
         } catch (Exception ignored) {
             return EntityType.UNKNOWN;
+        }
+    }
+
+    @Override
+    public void openSellInventory(Player player) {
+        org.bukkit.inventory.Inventory inventory = new SellInventoryHolder(this.plugin.getIManager().getMeta()).getInventory();
+        player.openInventory(inventory);
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getInventory().getHolder() instanceof SellInventoryHolder) {
+            Player player = (Player) event.getPlayer();
+            sellAllContent(player, event.getInventory());
+
+            for (@Nullable ItemStack content : event.getInventory().getContents()) {
+                if (content != null) {
+                    give(player, content);
+                }
+            }
         }
     }
 }
