@@ -76,6 +76,9 @@ buyInventoryName: "shop_buy"
 # Name of the inventory for confirm of bought
 confirmInventoryName: "confirm"
 
+# Title of the inventory for the /sellinventory
+sellInventoryTitle: "&8Sell Inventory"
+
 # Date format for limit placeholders (https://www.digitalocean.com/community/tutorials/java-simpledateformat-java-date-format#patterns)
 dateFormat: "EEEE, d MMM yyyy HH:mm:ss"
 
@@ -152,13 +155,13 @@ priceFormat:
 
 # NONE - Nothing append
 # CLOSE - Closes inventory after purchase
-# OPEN_BACK- Returns to previous inventory after purchase
+# OPEN_BACK - Returns to previous inventory after purchase
 # RESET_AMOUNT - Set the number of items to one after purchase
 
-# Action performed when an item is purchased by a player
+# Action performed when a player purchases an item
 purchaseAction: NONE
 
-# Action performed when an item is sold by a player
+# Action performed when a player sells an item
 sellAction: NONE
 
 # Enable the following commands:
@@ -166,3 +169,7 @@ sellAction: NONE
 # /sell hand
 # /sell handall
 enableSellCommand: false
+
+# Enable the following command:
+# /sellinventory
+enableSellInventoryCommand: false

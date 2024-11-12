@@ -161,4 +161,6 @@ public interface ShopManager extends Listener {
      * @param player the Player
      */
     void sellAllHand(Player player);
+
+    void openSellInventory(Player player);
 }

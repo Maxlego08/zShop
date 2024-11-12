@@ -19,11 +19,13 @@ public class Config {
     public static boolean disableItemFlag = true;
     public static boolean enableInventoryFullBuy = true;
     public static boolean enableSellCommand = true;
+    public static boolean enableSellInventoryCommand = true;
     public static ConfirmAction sellConfirmationConfig;
     public static ConfirmAction purchaseConfirmationConfig;
     public static String defaultEconomy = "VAULT";
     public static String sellInventoryName = "shop_sell";
     public static String confirmInventoryName = "confirm";
+    public static String sellInventoryTitle = "&8Sell Inventory";
     public static String buyInventoryName = "shop_buy";
     public static String dateFormat = "EEEE, d MMM yyyy HH:mm:ss";
     public static List<String> defaultLore = Arrays.asList("&f» &7Buying price&8: &e%buyPrice%", "&f» &7Selling price&8: &e%sellPrice%", "", "&f➥ &r&7Left click to &f&nʙᴜʏ", "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ", "&f➥ &r&7Right click to &f&nsᴇʟʟ");
@@ -43,6 +45,7 @@ public class Config {
         enableDebugTime = configuration.getBoolean("enableDebugTime");
         disableItemFlag = configuration.getBoolean("disableItemFlag");
         enableSellCommand = configuration.getBoolean("enableSellCommand");
+        enableSellInventoryCommand = configuration.getBoolean("enableSellInventoryCommand");
         enableInventoryFullBuy = configuration.getBoolean("enableInventoryFullBuy");
 
         defaultLore = configuration.getStringList("defaultLore");
@@ -50,6 +53,7 @@ public class Config {
         confirmInventoryName = configuration.getString("confirmInventoryName");
         sellInventoryName = configuration.getString("sellInventoryName");
         buyInventoryName = configuration.getString("buyInventoryName");
+        sellInventoryTitle = configuration.getString("sellInventoryTitle", "&8Sell Inventory");
         dateFormat = configuration.getString("dateFormat");
         priceModifiers = ((List<Map<String, Object>>) configuration.getList("pricesModifier", new ArrayList<>())).stream().map(ZPriceModifier::new).collect(Collectors.toList());
 

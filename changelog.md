@@ -4,6 +4,11 @@
 
 # Unreleased
 
+- Fix currencies API
+- Added ``/sellinventory``, Opens an inventory and sells the content. Enable this feature with `enableSellInventoryCommand: true`
+
+# 3.1.5
+
 - Using the [CurrenciesAPI](https://github.com/Traqueur-dev/CurrenciesAPI) library, this allows introducing new economies like `ZESSENTIALS` and `ECOBITS`
 - Fixed enchant for 1.21+
 
