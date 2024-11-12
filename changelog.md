@@ -4,6 +4,8 @@
 
 # Unreleased
 
+# 3.1.6
+
 - Fix currencies API
 - Added ``/sellinventory``, Opens an inventory and sells the content. Enable this feature with `enableSellInventoryCommand: true`
 
