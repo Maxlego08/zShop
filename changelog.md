@@ -4,6 +4,8 @@
 
 # Unreleased
 
+- Improve price modifier
+
 # 3.1.6
 
 - Fix currencies API

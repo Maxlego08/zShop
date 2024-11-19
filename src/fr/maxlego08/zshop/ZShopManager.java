@@ -346,7 +346,7 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
         Optional<PriceModifier> optional = Config.priceModifiers.stream().filter(modifier -> {
             // Check if type is the same and check if player has an effective permission
-            return modifier.getType() == priceType && player.getEffectivePermissions().stream().anyMatch(e -> e.getPermission().equalsIgnoreCase(modifier.getPermission()));
+            return modifier.getType() == priceType && player.hasPermission(modifier.getPermission());
         }).max(Comparator.comparingDouble(PriceModifier::getModifier));
 
         // 5 seconds of cache
