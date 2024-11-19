@@ -344,10 +344,11 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
         if (!cache.isExpired()) return cache.getPriceModifier();
 
-        Optional<PriceModifier> optional = Config.priceModifiers.stream().filter(modifier -> {
+        Stream<PriceModifier> stream = Config.priceModifiers.stream().filter(modifier -> {
             // Check if type is the same and check if player has an effective permission
             return modifier.getType() == priceType && player.hasPermission(modifier.getPermission());
-        }).max(Comparator.comparingDouble(PriceModifier::getModifier));
+        });
+        Optional<PriceModifier> optional = priceType == PriceType.BUY ? stream.min(Comparator.comparingDouble(PriceModifier::getModifier)) : stream.max(Comparator.comparingDouble(PriceModifier::getModifier));
 
         // 5 seconds of cache
         playerCache.setPriceModifier(priceType, new PriceModifierCache(System.currentTimeMillis() + 5000, optional));
