@@ -62,8 +62,10 @@ public class ZItemButton extends ZButton implements ItemButton {
     private final String inventoryBuy;
     private final String inventorySell;
     private final boolean unstackable;
+    private final String withdrawReason;
+    private final String depositReason;
 
-    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog, boolean affectByPriceModifier, String mob, String inventoryBuy, String inventorySell, boolean unstackable) {
+    public ZItemButton(ShopPlugin plugin, double sellPrice, double buyPrice, int maxStack, List<String> lore, ShopEconomy shopEconomy, List<String> buyCommands, List<String> sellCommands, boolean giveItem, Limit serverSellLimit, Limit serverBuyLimit, Limit playerSellLimit, Limit playerBuyLimit, boolean enableLog, boolean affectByPriceModifier, String mob, String inventoryBuy, String inventorySell, boolean unstackable, String withdrawReason, String depositReason) {
         this.plugin = plugin;
         this.shopManager = plugin.getShopManager();
         this.sellPrice = sellPrice;
@@ -84,6 +86,8 @@ public class ZItemButton extends ZButton implements ItemButton {
         this.inventoryBuy = inventoryBuy;
         this.inventorySell = inventorySell;
         this.unstackable = unstackable;
+        this.withdrawReason = withdrawReason;
+        this.depositReason = depositReason;
     }
 
     @Override
@@ -252,11 +256,15 @@ public class ZItemButton extends ZButton implements ItemButton {
         currentPrice = event.getPrice();
         /* END BUKKIT EVENT */
 
+        ItemStack itemStack = super.getItemStack().build(player, false).clone();
+        String itemName = manager.getItemName(itemStack);
+
         /* We withdraw the money if the price is greater than 0  */
-        if (currentPrice > 0) this.shopEconomy.withdrawMoney(player, currentPrice);
+        if (currentPrice > 0){
+            this.shopEconomy.withdrawMoney(player, currentPrice, this.withdrawReason.replace("%amount%", String.valueOf(amount)).replace("%item%", itemName));
+        }
 
         /* BUILD ITEM AND GIVE IT TO PLAYER */
-        ItemStack itemStack = super.getItemStack().build(player, false).clone();
 
         if (this.mob != null) {
             if (NmsVersion.nmsVersion.isItemStackComponent()) {
@@ -289,7 +297,6 @@ public class ZItemButton extends ZButton implements ItemButton {
         }
         /* END BUILD ITEM AND GIVE IT TO PLAYER */
 
-        String itemName = manager.getItemName(itemStack);
         String buyPrice = this.shopEconomy.format(this.shopManager.transformPrice(currentPrice), currentPrice);
         manager.message(this.plugin, player, Message.BUY_ITEM, "%amount%", String.valueOf(amount), "%item%", itemName, "%price%", buyPrice);
 
@@ -392,9 +399,12 @@ public class ZItemButton extends ZButton implements ItemButton {
         /* END ITEMS */
 
         /* We withdraw the money if the price is greater than 0  */
-        if (currentPrice > 0) this.shopEconomy.depositMoney(player, currentPrice);
-
         String itemName = manager.getItemName(itemStack);
+
+        if (currentPrice > 0) {
+            this.shopEconomy.depositMoney(player, currentPrice, this.depositReason.replace("%amount%", String.valueOf(realAmount)).replace("%item%", itemName));
+        }
+
         String sellPrice = this.shopEconomy.format(this.shopManager.transformPrice(currentPrice), currentPrice);
         manager.message(this.plugin, player, Message.SELL_ITEM, "%amount%", String.valueOf(realAmount), "%item%", itemName, "%price%", sellPrice);
 

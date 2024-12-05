@@ -46,13 +46,13 @@ public class ZShopEconomy extends ZUtils implements ShopEconomy {
     }
 
     @Override
-    public void depositMoney(OfflinePlayer offlinePlayer, double value) {
-        this.currencyProvider.deposit(offlinePlayer, BigDecimal.valueOf(value));
+    public void depositMoney(OfflinePlayer offlinePlayer, double value, String reason) {
+        this.currencyProvider.deposit(offlinePlayer, BigDecimal.valueOf(value), reason);
     }
 
     @Override
-    public void withdrawMoney(OfflinePlayer offlinePlayer, double value) {
-        this.currencyProvider.withdraw(offlinePlayer, BigDecimal.valueOf(value));
+    public void withdrawMoney(OfflinePlayer offlinePlayer, double value, String reason) {
+        this.currencyProvider.withdraw(offlinePlayer, BigDecimal.valueOf(value), reason);
     }
 
     public CurrencyProvider getCurrencyProvider() {

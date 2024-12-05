@@ -100,7 +100,9 @@ public class ItemButtonLoader implements ButtonLoader {
 
         String inventoryBuy = configuration.getString(path + "inventoryBuy", null);
         String inventorySell = configuration.getString(path + "inventorySell", null);
+        String depositReason = configuration.getString(path + "deposit-reason", plugin.getConfig().getString("deposit-reason"));
+        String withdrawReason = configuration.getString(path + "withdraw-reason", plugin.getConfig().getString("withdraw-reason"));
 
-        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit, enableLog, affectByPriceModifier, mob, inventoryBuy, inventorySell, unstackable);
+        return new ZItemButton(plugin, sellPrice, buyPrice, maxStack, lore, shopEconomy, buyCommands, sellCommands, giveItem, serverSellLimit, serverBuyLimit, playerSellLimit, playerBuyLimit, enableLog, affectByPriceModifier, mob, inventoryBuy, inventorySell, unstackable, depositReason, withdrawReason);
     }
 }

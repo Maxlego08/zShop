@@ -144,7 +144,7 @@
         <dependency>
             <groupId>com.github.Traqueur-dev</groupId>
             <artifactId>CurrenciesAPI</artifactId>
-            <version>7078a467bb</version>
+            <version>a6cd17464d</version>
         </dependency>
     </dependencies>
 </project>

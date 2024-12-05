@@ -173,3 +173,8 @@ enableSellCommand: false
 # Enable the following command:
 # /sellinventory
 enableSellInventoryCommand: false
+
+withdraw-reason: "Sale of x%amount% %item%"
+deposit-reason: "Purchase of x%amount% %item%"
+deposit-all-reason: "Sale of %items%"
+deposit-all-line: "x%amount% %item% for %price%"

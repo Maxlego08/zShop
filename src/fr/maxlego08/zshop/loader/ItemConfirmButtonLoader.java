@@ -53,6 +53,7 @@ public class ItemConfirmButtonLoader implements ButtonLoader {
         List<String> commands = configuration.getStringList(path + "commands");
         List<String> messages = configuration.getStringList(path + "messages");
         String name = configuration.getString(path + "name", path);
+        String reason = configuration.getString(path + "reason", "No reason");
 
         String economyName = configuration.getString(path + "economy", defaultEconomy);
         Optional<ShopEconomy> optional = plugin.getEconomyManager().getEconomy(economyName);
@@ -62,6 +63,6 @@ public class ItemConfirmButtonLoader implements ButtonLoader {
         ShopEconomy shopEconomy = optional.get();
         String inventoryConfirm = configuration.getString(path + "inventoryConfirm", null);
 
-        return new ZItemConfirmButton(plugin, shopEconomy, price, commands, enableLog, messages, name, inventoryConfirm);
+        return new ZItemConfirmButton(plugin, shopEconomy, price, commands, enableLog, messages, name, inventoryConfirm, reason);
     }
 }

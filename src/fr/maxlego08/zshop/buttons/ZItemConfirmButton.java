@@ -29,8 +29,9 @@ public class ZItemConfirmButton extends ZButton implements ItemConfirmButton {
     private final List<String> messages;
     private final String name;
     private final String inventoryConfirm;
+    private final String withdrawReason;
 
-    public ZItemConfirmButton(ShopPlugin plugin, ShopEconomy economy, double price, List<String> commands, boolean enableLog, List<String> messages, String name, String inventoryConfirm) {
+    public ZItemConfirmButton(ShopPlugin plugin, ShopEconomy economy, double price, List<String> commands, boolean enableLog, List<String> messages, String name, String inventoryConfirm, String withdrawReason) {
         this.plugin = plugin;
         this.shopEconomy = economy;
         this.price = price;
@@ -39,6 +40,7 @@ public class ZItemConfirmButton extends ZButton implements ItemConfirmButton {
         this.messages = messages;
         this.name = name;
         this.inventoryConfirm = inventoryConfirm;
+        this.withdrawReason = withdrawReason;
     }
 
     @Override
@@ -73,7 +75,7 @@ public class ZItemConfirmButton extends ZButton implements ItemConfirmButton {
             return;
         }
 
-        this.shopEconomy.withdrawMoney(player, currentPrice);
+        this.shopEconomy.withdrawMoney(player, currentPrice, this.withdrawReason);
 
         /* END ECONOMY CHECK */
 

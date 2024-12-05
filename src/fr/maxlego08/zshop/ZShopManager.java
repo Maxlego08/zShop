@@ -467,7 +467,6 @@ public class ZShopManager extends ZUtils implements ShopManager {
             return;
         }
 
-        prices.forEach((economy, price) -> economy.depositMoney(player, price));
         List<ShopAction> fixedShopActions = new ArrayList<>();
 
         shopActions.forEach(action -> {
@@ -484,6 +483,9 @@ public class ZShopManager extends ZUtils implements ShopManager {
             Logger.info("Error with results on sellall !");
             player.sendMessage("§cError with results on sellall !");
         }
+
+        String resultsReason = toList(fixedShopActions.stream().map(action -> getMessage(Config.depositAllLine, "%amount%", action.getItemStack().getAmount(), "%item%", getItemName(action.getItemStack()), "%price%", action.getItemButton().getEconomy().format(transformPrice(action.getPrice()), action.getPrice()))).collect(Collectors.toList()), "", "");
+        prices.forEach((economy, price) -> economy.depositMoney(player, price, Config.depositAllReason.replace("%items%", resultsReason == null ? "" : resultsReason)));
 
         message(this.plugin, player, Message.SELL_ALL_MESSAGE, "%items%", results == null ? "ERROR" : results);
 

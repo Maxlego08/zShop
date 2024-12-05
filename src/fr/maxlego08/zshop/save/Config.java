@@ -28,6 +28,8 @@ public class Config {
     public static String sellInventoryTitle = "&8Sell Inventory";
     public static String buyInventoryName = "shop_buy";
     public static String dateFormat = "EEEE, d MMM yyyy HH:mm:ss";
+    public static String depositAllReason = "";
+    public static String depositAllLine = "";
     public static List<String> defaultLore = Arrays.asList("&f» &7Buying price&8: &e%buyPrice%", "&f» &7Selling price&8: &e%sellPrice%", "", "&f➥ &r&7Left click to &f&nʙᴜʏ", "&f➥ &r&7Click wheel (or drop key) to &f&nsᴇʟʟ ᴇᴠᴇʀʏᴛʜɪɴɢ", "&f➥ &r&7Right click to &f&nsᴇʟʟ");
     public static List<PriceModifier> priceModifiers = new ArrayList<>();
 
@@ -63,5 +65,8 @@ public class Config {
 
         sellConfirmationConfig = ConfirmAction.valueOf(configuration.getString("sellAction", "NONE"));
         purchaseConfirmationConfig = ConfirmAction.valueOf(configuration.getString("purchaseAction", "NONE"));
+
+        depositAllReason = configuration.getString("deposit-all-reason");
+        depositAllLine = configuration.getString("deposit-all-line");
     }
 }
