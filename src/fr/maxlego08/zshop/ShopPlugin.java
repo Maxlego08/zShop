@@ -229,4 +229,8 @@ public class ShopPlugin extends ZPlugin {
     public HistoryManager getHistoryManager() {
         return historyManager;
     }
+
+    public ButtonManager getButtonManager() {
+        return buttonManager;
+    }
 }

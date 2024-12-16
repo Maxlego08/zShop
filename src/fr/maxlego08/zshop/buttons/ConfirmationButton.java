@@ -39,9 +39,8 @@ public class ConfirmationButton extends ZButton {
     @Override
     public void onInventoryOpen(Player player, InventoryDefault inventory) {
         List<Inventory> oldInventories = inventory.getOldInventories();
-        if (oldInventories.size() >= 1) {
+        if (!oldInventories.isEmpty()) {
             this.inventory = oldInventories.get(oldInventories.size() - 1);
         }
     }
-
 }

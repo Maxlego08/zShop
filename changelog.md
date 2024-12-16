@@ -5,6 +5,7 @@
 # Unreleased
 
 - Improve price modifier
+- Fix confirm button with commands and message, you need to use now a ``confirm-actions``
 
 # 3.1.6
 
