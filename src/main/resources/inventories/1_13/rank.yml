@@ -26,12 +26,16 @@ items:
     price: 100000.0
     slot: 21
     name: "Rank VIP"
-    messages:
-      - ""
-      - "&fThank you for purchasing the rank #00bbffᴠɪᴘ"
-      - ""
-    commands:
-      - "lp user %player% permission set rank.vip"
+    confirm-actions:
+      - type: close
+      - type: message
+        messages:
+          - ""
+          - "&fThank you for purchasing the rank #00bbffᴠɪᴘ"
+          - ""
+      - type: command
+        commands:
+          - "lp user %player% permission set rank.vip"
   vip+:
     item:
       name: "#0ff76cᴠɪᴘ+"
@@ -55,12 +59,16 @@ items:
     price: 250000.0
     slot: 23
     name: "Rank VIP+"
-    messages:
-      - ""
-      - "&fThank you for purchasing the rank #0ff76cᴠɪᴘ+"
-      - ""
-    commands:
-      - "lp user %player% permission set rank.vipplus"
+    confirm-actions:
+      - type: close
+      - type: message
+        messages:
+          - ""
+          - "&fThank you for purchasing the rank #0ff76cᴠɪᴘ+"
+          - ""
+      - type: command
+        commands:
+          - "lp user %player% permission set rank.vipplus"
   legend:
     item:
       name: "#7b0bdeʟᴇɢᴇɴᴅ"
@@ -84,9 +92,13 @@ items:
     price: 700000.0
     slot: 31
     name: "Rank Legend"
-    messages:
-      - ""
-      - "&fThank you for purchasing the rank #7b0bdeʟᴇɢᴇɴᴅ"
-      - ""
-    commands:
-      - "lp user %player% permission set rank.legend"
+    confirm-actions:
+      - type: close
+      - type: message
+        messages:
+          - ""
+          - "&fThank you for purchasing the rank #7b0bdeʟᴇɢᴇɴᴅ"
+          - ""
+      - type: command
+        commands:
+          - "lp user %player% permission set rank.legend"

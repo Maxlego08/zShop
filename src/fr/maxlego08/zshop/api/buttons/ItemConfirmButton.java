@@ -14,8 +14,6 @@ public interface ItemConfirmButton extends EconomyAction {
 
     boolean enableLog();
 
-    List<String> getConfirmMessages();
-
     String getName();
 
     String getInventoryConfirm();

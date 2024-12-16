@@ -344,10 +344,11 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
         if (!cache.isExpired()) return cache.getPriceModifier();
 
-        Optional<PriceModifier> optional = Config.priceModifiers.stream().filter(modifier -> {
+        Stream<PriceModifier> stream = Config.priceModifiers.stream().filter(modifier -> {
             // Check if type is the same and check if player has an effective permission
-            return modifier.getType() == priceType && player.getEffectivePermissions().stream().anyMatch(e -> e.getPermission().equalsIgnoreCase(modifier.getPermission()));
-        }).max(Comparator.comparingDouble(PriceModifier::getModifier));
+            return modifier.getType() == priceType && player.hasPermission(modifier.getPermission());
+        });
+        Optional<PriceModifier> optional = priceType == PriceType.BUY ? stream.min(Comparator.comparingDouble(PriceModifier::getModifier)) : stream.max(Comparator.comparingDouble(PriceModifier::getModifier));
 
         // 5 seconds of cache
         playerCache.setPriceModifier(priceType, new PriceModifierCache(System.currentTimeMillis() + 5000, optional));
@@ -466,7 +467,6 @@ public class ZShopManager extends ZUtils implements ShopManager {
             return;
         }
 
-        prices.forEach((economy, price) -> economy.depositMoney(player, price));
         List<ShopAction> fixedShopActions = new ArrayList<>();
 
         shopActions.forEach(action -> {
@@ -483,6 +483,9 @@ public class ZShopManager extends ZUtils implements ShopManager {
             Logger.info("Error with results on sellall !");
             player.sendMessage("§cError with results on sellall !");
         }
+
+        String resultsReason = toList(fixedShopActions.stream().map(action -> getMessage(Config.depositAllLine, "%amount%", action.getItemStack().getAmount(), "%item%", getItemName(action.getItemStack()), "%price%", action.getItemButton().getEconomy().format(transformPrice(action.getPrice()), action.getPrice()))).collect(Collectors.toList()), "", "");
+        prices.forEach((economy, price) -> economy.depositMoney(player, price, Config.depositAllReason.replace("%items%", resultsReason == null ? "" : resultsReason)));
 
         message(this.plugin, player, Message.SELL_ALL_MESSAGE, "%items%", results == null ? "ERROR" : results);
 

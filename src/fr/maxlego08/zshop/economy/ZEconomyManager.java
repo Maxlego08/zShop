@@ -8,6 +8,7 @@ import fr.maxlego08.zshop.save.Config;
 import fr.maxlego08.zshop.zcore.logger.Logger;
 import fr.traqueur.currencies.Currencies;
 import fr.traqueur.currencies.CurrencyProvider;
+import fr.traqueur.currencies.providers.ZEssentialsProvider;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -80,8 +81,8 @@ public class ZEconomyManager implements EconomyManager {
                 case ITEM:
                     currencyProvider = Currencies.ZMENUITEMS.createProvider(plugin, file, path + "item.");
                     break;
-                case ECOBITS:
                 case ZESSENTIALS:
+                case ECOBITS:
                 case COINSENGINE:
                     String currencyName = configuration.getString(path + "currencyName");
                     currencyProvider = currencies.createProvider(currencyName);

@@ -3,6 +3,7 @@ package fr.maxlego08.zshop.loader;
 import fr.maxlego08.menu.api.button.Button;
 import fr.maxlego08.menu.api.button.DefaultButtonValue;
 import fr.maxlego08.menu.api.loader.ButtonLoader;
+import fr.maxlego08.menu.api.requirement.Action;
 import fr.maxlego08.zshop.ShopPlugin;
 import fr.maxlego08.zshop.api.buttons.ItemConfirmButton;
 import fr.maxlego08.zshop.api.economy.ShopEconomy;
@@ -13,7 +14,10 @@ import fr.maxlego08.zshop.zcore.logger.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ItemConfirmButtonLoader implements ButtonLoader {
@@ -50,9 +54,8 @@ public class ItemConfirmButtonLoader implements ButtonLoader {
         }
 
         boolean enableLog = configuration.getBoolean(path + "enableLog", true);
-        List<String> commands = configuration.getStringList(path + "commands");
-        List<String> messages = configuration.getStringList(path + "messages");
         String name = configuration.getString(path + "name", path);
+        String reason = configuration.getString(path + "reason", "No reason");
 
         String economyName = configuration.getString(path + "economy", defaultEconomy);
         Optional<ShopEconomy> optional = plugin.getEconomyManager().getEconomy(economyName);
@@ -62,6 +65,13 @@ public class ItemConfirmButtonLoader implements ButtonLoader {
         ShopEconomy shopEconomy = optional.get();
         String inventoryConfirm = configuration.getString(path + "inventoryConfirm", null);
 
-        return new ZItemConfirmButton(plugin, shopEconomy, price, commands, enableLog, messages, name, inventoryConfirm);
+        List<Action> confirmActions = new ArrayList<>();
+        List<?> list = configuration.getList(path + "confirm-actions");
+        if (list != null) {
+            List<Map<String, Object>> maps = (List<Map<String, Object>>) list;
+            confirmActions = this.plugin.getButtonManager().loadActions(maps, path, new File(plugin.getDataFolder(), "?.yml"));
+        }
+
+        return new ZItemConfirmButton(plugin, shopEconomy, price, enableLog, name, inventoryConfirm, reason, confirmActions);
     }
 }

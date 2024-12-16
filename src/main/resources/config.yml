@@ -86,10 +86,10 @@ dateFormat: "EEEE, d MMM yyyy HH:mm:ss"
 # Disable only item flags for item display
 disableItemFlag: true
 
-# Check if the inventory is full during the purchase, if the option is disabled then the items purchased will be thrown to the ground if the player has full inventory
+# Check if the inventory is full during the purchase, if the option is disabled, then the items purchased will be thrown to the ground if the player has full inventory
 enableInventoryFullBuy: true
 
-# Allows to change the sale or serious purchase price has permission
+# Allows changing the sale or serious purchase price has permission
 pricesModifier:
   - permission: "zshop.prices.vip"
     type: SELL
@@ -173,3 +173,8 @@ enableSellCommand: false
 # Enable the following command:
 # /sellinventory
 enableSellInventoryCommand: false
+
+withdraw-reason: "Sale of x%amount% %item%"
+deposit-reason: "Purchase of x%amount% %item%"
+deposit-all-reason: "Sale of %items%"
+deposit-all-line: "x%amount% %item% for %price%"

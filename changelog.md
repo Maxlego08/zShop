@@ -4,6 +4,11 @@
 
 # Unreleased
 
+# 3.1.7
+
+- Improve price modifier
+- Fix confirm button with commands and message, you need to use now a ``confirm-actions``
+
 # 3.1.6
 
 - Fix currencies API
