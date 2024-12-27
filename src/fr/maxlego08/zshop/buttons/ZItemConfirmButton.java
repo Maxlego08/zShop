@@ -63,7 +63,7 @@ public class ZItemConfirmButton extends ZButton implements ItemConfirmButton {
 
         /* ECONOMY CHECK */
         if (!this.shopEconomy.hasMoney(player, currentPrice)) {
-            manager.message(this.plugin, player, manager.color(this.shopEconomy.getDenyMessage()));
+            manager.message(this.plugin, player, this.shopEconomy.getDenyMessage());
             return;
         }
 

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.maxlego08</groupId>
     <artifactId>zshop</artifactId>
-    <version>3.1.7</version>
+    <version>3.1.8</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
@@ -144,7 +144,7 @@
         <dependency>
             <groupId>com.github.Traqueur-dev</groupId>
             <artifactId>CurrenciesAPI</artifactId>
-            <version>a6cd17464d</version>
+            <version>1.0.5</version>
         </dependency>
     </dependencies>
 </project>
