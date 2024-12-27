@@ -84,6 +84,7 @@ public class ZEconomyManager implements EconomyManager {
                 case ZESSENTIALS:
                 case ECOBITS:
                 case COINSENGINE:
+                case REDISECONOMY:
                     String currencyName = configuration.getString(path + "currencyName");
                     currencyProvider = currencies.createProvider(currencyName);
                     break;

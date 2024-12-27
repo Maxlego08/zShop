@@ -4,6 +4,9 @@
 
 # Unreleased
 
+- **Updated**: [CurrenciesAPI](https://github.com/Traqueur-dev/CurrenciesAPI) to version 1.0.5. (Bug fix + add RedisEconomy)
+- **Fixed** Color message for don't have money.
+
 # 3.1.7
 
 - Improve price modifier
