@@ -459,7 +459,8 @@ public class ZShopManager extends ZUtils implements ShopManager {
 
             /* REMOVE ITEMS AND UPDATE MONEY */
             prices.put(button.getEconomy(), prices.getOrDefault(button.getEconomy(), 0.0) + action.getPrice());
-            inventory.remove(itemStack);
+            // inventory.remove(itemStack);
+            InventoryUtils.removeItem(inventory, itemStack, itemStack.getAmount());
         });
 
         if (prices.isEmpty()) {
